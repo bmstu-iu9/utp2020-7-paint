@@ -1,0 +1,28 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    top: 0;
+    left: 0;
+}
+
+#buttonsField {
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 5%;
+  margin: 0;
+  top: 0;
+  left: 0;
+  background: #eeeeee;
+  border-bottom: 1px solid #cccccc;
+}
+
+#mainCanvas {
+  position: absolute;
+  width: 100%;
+  height: 95%;
+  margin: 0;
+  top: 5%;
+  left: 0;
+}

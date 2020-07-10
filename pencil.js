@@ -1,7 +1,7 @@
 let pencilButton = document.getElementById("pencil");
 
 function drawPencil() { 
-	canvas.addEventListener("mousedown", drawWithPencil);
+ canvas.addEventListener("mousedown", drawWithPencil);
 }
 
 function drawWithPencil(eventClick) {
@@ -15,18 +15,18 @@ function drawWithPencil(eventClick) {
   drawPointWithPencil(startX, startY);
   
   canvas.addEventListener("mousemove", drawLinesWithPencil);
-	canvas.addEventListener("mouseup", pencilUp);
-	canvas.addEventListener("mouseout", pencilOut);
+  canvas.addEventListener("mouseup", pencilUp);
+  canvas.addEventListener("mouseout", pencilOut);
 }
 
 function pencilUp(eventUp) {
-	context.lineTo(eventUp.offsetX, eventUp.offsetY);
-	context.stroke();
-	canvas.removeEventListener("mousemove", drawLinesWithPencil);
+  context.lineTo(eventUp.offsetX, eventUp.offsetY);
+  context.stroke();
+  canvas.removeEventListener("mousemove", drawLinesWithPencil);
 }
 
 function pencilOut(eventOut) {
-	canvas.removeEventListener("mousemove", drawLinesWithPencil);
+  canvas.removeEventListener("mousemove", drawLinesWithPencil);
 }
 
 function drawLinesWithPencil(eventMove) {
@@ -42,7 +42,7 @@ function drawPointWithPencil(startX, startY) {
 }
 
 function deletePencil() {
-	canvas.removeEventListener("mousedown", drawWithPencil);
-	canvas.removeEventListener("mouseout", pencilOut);
-	canvas.removeEventListener("mouseup", pencilUp);
+  canvas.removeEventListener("mousedown", drawWithPencil);
+  canvas.removeEventListener("mouseout", pencilOut);
+  canvas.removeEventListener("mouseup", pencilUp);
 }

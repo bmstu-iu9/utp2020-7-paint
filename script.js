@@ -2,6 +2,7 @@
 
 let curColor = [0, 0, 0];
 let canvas = document.getElementById("mainCanvas");
+let context = canvas.getContext('2d');
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
@@ -9,7 +10,7 @@ canvas.height = canvas.offsetHeight;
 function getElementPosition(element) {
   let curLeft = 0, curTop = 0;
   if (!element.offsetParent) return undefined;
-  while (true){
+  while (true) {
     curLeft += element.offsetLeft;
     curTop += element.offsetTop;
     element = element.offsetParent;
@@ -32,10 +33,12 @@ function getEventLocation(element, event) {
 }
 
 
-function rgbToHex(r, g, b) {
-  if (r < 255 && g < 255 && b < 255) {
+function rgbToHex(rgb) {
+  let r = rgb[0], g = rgb[1], b = rgb[2];
+
+  if (r < 256 && g < 256 && b < 256) {
     let color = (r << 16) | (g << 8) | b;
-    return (color.toString(16));
+    return (("000000" + color.toString(16)).slice(-6));
   } else {
     throw "Wrong color code";
   }
@@ -47,7 +50,7 @@ function drawImageFromUrl(path) {
 
   img.addEventListener("load", function () {
     canvas.getContext("2d").drawImage(img,
-      0,0,
+      0, 0,
       img.width, img.height,
       0, 0,
       canvas.width, canvas.height);
@@ -58,11 +61,18 @@ function drawImageFromUrl(path) {
 }
 
 
-canvas.addEventListener("mousemove", function (e) {
-  let eventLocation = getEventLocation(this, e);
-  let context = this.getContext('2d');
+canvas.addEventListener("mousemove", function (event) {
+  let eventLocation = getEventLocation(this, event);
   let pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
-  const colorHex = "#" + ("000000" + rgbToHex(pixelData[0], pixelData[1], pixelData[2])).slice(-6);
+  const colorHex = "#" + rgbToHex(pixelData);
 
-  document.getElementById("colorIndicator").style.backgroundColor = colorHex;
+  document.getElementById("colorIndicatorDynamic").style.backgroundColor = colorHex;
+}, false);
+
+canvas.addEventListener("click", function(event) {
+  let eventLocation = getEventLocation(this, event);
+  let pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
+  const colorHex = "#" + rgbToHex(pixelData);
+
+  document.getElementById("colorIndicatorStatic").style.backgroundColor = colorHex;
 }, false);

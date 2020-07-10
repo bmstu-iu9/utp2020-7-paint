@@ -9,7 +9,7 @@ function drawWithPencil(eventClick) {
   let startY = eventClick.offsetY;
   
   context.lineWidth = curToolSize;
-  context.strokeStyle = `rgb(curColor[0],curColor[1],curColor[2])`;
+  context.strokeStyle = `rgb(curColor[0], curColor[1], curColor[2])`;
   context.lineCap = "round";
   
   drawPointWithPencil(startX, startY);
@@ -35,14 +35,14 @@ function drawLinesWithPencil(eventMove) {
   context.moveTo(eventMove.offsetX, eventMove.offsetY);
 }
 
-function drawPointWithPencil(startX,startY) {
+function drawPointWithPencil(startX, startY) {
   context.moveTo(startX,startY);
   context.lineTo(startX,startY);
   context.stroke();
 }
 
-/*function deletePencil() {
+function deletePencil() {
 	canvas.removeEventListener("mousedown", drawWithPencil);
 	canvas.removeEventListener("mouseout", pencilOut);
 	canvas.removeEventListener("mouseup", pencilUp);
-}*/
+}

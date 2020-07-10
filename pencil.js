@@ -36,8 +36,8 @@ function drawLinesWithPencil(eventMove) {
 }
 
 function drawPointWithPencil(startX, startY) {
-  context.moveTo(startX,startY);
-  context.lineTo(startX,startY);
+  context.moveTo(startX, startY);
+  context.lineTo(startX, startY);
   context.stroke();
 }
 

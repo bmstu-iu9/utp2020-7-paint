@@ -41,8 +41,8 @@ function drawPointWithPencil(startX,startY) {
   context.stroke();
 }
 
-function deletePencil() {
+/*function deletePencil() {
 	canvas.removeEventListener("mousedown", drawWithPencil);
 	canvas.removeEventListener("mouseout", pencilOut);
 	canvas.removeEventListener("mouseup", pencilUp);
-}
+}*/

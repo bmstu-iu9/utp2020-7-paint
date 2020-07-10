@@ -9,7 +9,7 @@ canvas.height = canvas.offsetHeight;
 function getElementPosition(element) {
   let curLeft = 0, curTop = 0;
   if (!element.offsetParent) return undefined;
-  while (true){
+  while (true) {
     curLeft += element.offsetLeft;
     curTop += element.offsetTop;
     element = element.offsetParent;

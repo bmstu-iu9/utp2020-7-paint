@@ -1,7 +1,7 @@
 let pencilButton = document.getElementById("pencil");
 
 function drawPencil() { 
- canvas.addEventListener("mousedown", drawWithPencil);
+  canvas.addEventListener("mousedown", drawWithPencil);
 }
 
 function drawWithPencil(eventClick) {

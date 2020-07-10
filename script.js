@@ -62,7 +62,6 @@ canvas.addEventListener("mousemove", function (e) {
   let eventLocation = getEventLocation(this, e);
   let context = this.getContext('2d');
   let pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
-
   const colorHex = "#" + ("000000" + rgbToHex(pixelData[0], pixelData[1], pixelData[2])).slice(-6);
 
   document.getElementById("colorIndicator").style.backgroundColor = colorHex;

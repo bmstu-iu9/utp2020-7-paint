@@ -63,7 +63,7 @@ body {
   left: 0;
 }
 
-#colorIndicatorDynamic{
+#colorIndicator{
   box-sizing: border-box;
   position: absolute;
   width: 20px;

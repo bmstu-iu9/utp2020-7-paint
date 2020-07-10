@@ -10,12 +10,48 @@ body {
   box-sizing: border-box;
   position: absolute;
   width: 100%;
-  height: 5%;
+  height: 10%;
   margin: 0;
   top: 0;
   left: 0;
   background: #eeeeee;
   border-bottom: 1px solid #cccccc;
+}
+
+.panel {
+  height: 100%;
+  width: 25%;
+  border-right: 1px solid #cccccc;
+  float: left;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.toolBtn {
+  display: inline-block;
+  padding: 0px;
+  margin: 5px;
+  width: 30px;
+  height: 30px;
+  float: left;
+  border: none;
+  background-size: cover;
+  background-color: #f8f7f7;
+}
+
+.toolBtn:hover {
+    background-color: #786b59;
+}
+
+.description {
+  margin: 0;
+  padding: 0px;
+  clear: both;
+  text-align: center;
+  color: #786b59;
 }
 
 #mainCanvas {

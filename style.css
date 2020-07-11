@@ -30,6 +30,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .toolBtn {
   display: inline-block;
   padding: 0px;
@@ -81,4 +82,10 @@ body {
   margin: 0;
   top: 20%;
   left: 0;
+}
+
+#mainCanvas.highlight {
+  box-sizing: border-box;
+  border: 5px dashed #bbbbbb;
+  border-radius: 20px;
 }

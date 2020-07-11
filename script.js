@@ -57,7 +57,6 @@ function drawImageFromUrl(path) {
       img.width, img.height,
       0, 0,
       canvas.width, canvas.height);
-
   });
 
   img.setAttribute("src", path);
@@ -79,3 +78,27 @@ canvas.addEventListener("click", function (event) {
 
   document.getElementById("colorIndicatorStatic").style.backgroundColor = colorHex;
 }, false);
+
+document.getElementById("uploadImage").addEventListener('change', function() {
+  if (this.files && this.files[0]) {
+    handleImg(this.files[0]);
+  }
+});
+
+function handleImg(img) {
+  let reader = new FileReader();
+  reader.onload = drawUploaded;
+  reader.readAsDataURL(img);
+}
+
+function drawUploaded(e) {
+  let img = new Image();
+  img.src = e.target.result;
+  img.onload = function () {
+    canvas.getContext("2d").drawImage(img,
+    0, 0,
+    img.width, img.height,
+    0, 0,
+    canvas.width, canvas.height);
+  }
+}

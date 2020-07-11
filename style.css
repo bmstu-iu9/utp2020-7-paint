@@ -43,7 +43,7 @@ body {
 }
 
 .toolBtn:hover {
-    background-color: #786b59;
+  background-color: #786b59;
 }
 
 .description {
@@ -60,5 +60,25 @@ body {
   height: 720px;
   margin: 0;
   top: 10%;
+  left: 0;
+}
+
+#colorIndicatorDynamic {
+  box-sizing: border-box;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  top: 10%;
+  left: 0;
+}
+
+#colorIndicatorStatic {
+  box-sizing: border-box;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  top: 20%;
   left: 0;
 }

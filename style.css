@@ -83,3 +83,9 @@ body {
   top: 20%;
   left: 0;
 }
+
+#mainCanvas.highlight {
+  box-sizing: border-box;
+  border: 5px dashed #bbbbbb;
+  border-radius: 20px;
+}

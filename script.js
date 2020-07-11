@@ -81,11 +81,15 @@ canvas.addEventListener("click", function (event) {
 
 document.getElementById("uploadImage").addEventListener('change', function() {
   if (this.files && this.files[0]) {
-    let reader = new FileReader();
-    reader.onload = drawUploaded;
-    reader.readAsDataURL(this.files[0])
+    handleImg(this.files[0]);
   }
 });
+
+function handleImg(img) {
+  let reader = new FileReader();
+  reader.onload = drawUploaded;
+  reader.readAsDataURL(img);
+}
 
 function drawUploaded(e) {
   let img = new Image();

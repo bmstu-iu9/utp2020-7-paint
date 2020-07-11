@@ -56,10 +56,10 @@ body {
 
 #mainCanvas {
   position: absolute;
-  width: 100%;
-  height: 95%;
+  width: 1080px;
+  height: 720px;
   margin: 0;
-  top: 5%;
+  top: 10%;
   left: 0;
 }
 

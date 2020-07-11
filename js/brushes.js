@@ -11,7 +11,7 @@ function initBasicBrush() {
     context.beginPath();
   }
 
-  function drawBasicBrush(e){
+  function drawBasicBrush(e) {
     if (!isDrawing) return;
 
     context.lineWidth = curToolSize;

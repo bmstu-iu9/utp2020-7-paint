@@ -1,3 +1,5 @@
+'use strict'
+
 function initBasicBrush() {
   let isDrawing = false;
 

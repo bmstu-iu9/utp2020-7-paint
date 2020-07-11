@@ -32,10 +32,12 @@ function pencilUp(eventUp) {
   context.lineTo(eventUp.offsetX, eventUp.offsetY);
   context.stroke();
   canvas.removeEventListener("mousemove", drawLinesWithPencil);
+  context.beginPath();
 }
 
 function pencilOut(eventOut) {
   canvas.removeEventListener("mousemove", drawLinesWithPencil);
+  context.beginPath();
 }
 
 function drawLinesWithPencil(eventMove) {

@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-;['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
   canvas.addEventListener(eventName, preventDefaults, false);
 });
 

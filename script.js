@@ -47,38 +47,6 @@ function rgbToHex(rgb) {
   }
 }
 
-
-function drawImageFromUrl(path) {
-  let img = new Image();
-
-  img.addEventListener("load", function () {
-    canvas.getContext("2d").drawImage(img,
-      0, 0,
-      img.width, img.height,
-      0, 0,
-      canvas.width, canvas.height);
-  });
-
-  img.setAttribute("src", path);
-}
-
-
-canvas.addEventListener("mousemove", function (event) {
-  let eventLocation = getEventLocation(this, event);
-  let pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
-  const colorHex = "#" + rgbToHex(pixelData);
-
-  document.getElementById("colorIndicatorDynamic").style.backgroundColor = colorHex;
-}, false);
-
-canvas.addEventListener("click", function (event) {
-  let eventLocation = getEventLocation(this, event);
-  let pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
-  const colorHex = "#" + rgbToHex(pixelData);
-
-  document.getElementById("colorIndicatorStatic").style.backgroundColor = colorHex;
-}, false);
-
 document.getElementById("uploadImage").addEventListener('change', function() {
   if (this.files && this.files[0]) {
     handleImg(this.files[0]);

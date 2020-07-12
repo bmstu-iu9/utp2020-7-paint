@@ -59,6 +59,7 @@ body {
   position: absolute;
   width: 1080px;
   height: 720px;
+  border: 1px solid #000000;
   margin: 0;
   top: 10%;
   left: 0;
@@ -88,4 +89,44 @@ body {
   box-sizing: border-box;
   border: 5px dashed #bbbbbb;
   border-radius: 20px;
+}
+
+.droplist {
+    position: relative;
+    display: inline-block;
+    justify-content: center;
+}
+
+.dropbtn {
+    background-color: #ffe680;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+.droplist-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.droplist:hover .droplist-content {
+  display: block;
+}
+
+.droplist:hover .dropbtn {
+  background-color: #ffeb99;
+}
+
+.field {
+  clear:both;
+  text-align:right;
+  margin-top: 5px;
+}
+
+.field label {
+  float:left;
 }

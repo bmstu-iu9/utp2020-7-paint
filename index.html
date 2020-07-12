@@ -17,12 +17,12 @@
       </button>
       <button title="Заливка цветом" class="toolBtn" id="fill" style="background-image: url(img/fill-icon.png)">
       </button>
-      <button title="Выбор цвета" class="toolBtn" id="palette" style="background-image: url(img/palette-icon.png)">
-      </button>
+      <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
       <a id="download" download="image.png">
         <button title="Сохранить" class="toolBtn" id ="save" style="background-image: url(img/save-icon.png)">
         </button>
       </a>
+      <button title="Очистить" class="toolBtn" id="clear"></button>
     </div>
     <p class="description">Инструменты</p>
   </div>
@@ -31,14 +31,13 @@
     <div class="container">
       <button class="toolBtn" >
       </button>
-      <input type="color" class="toolBtn" id="color">
     </div>
     <p class="description">Другие функции</p>
   </div>
 
   <div class="panel">
     <div class="container">
-      <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage"></input>
+      <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
     </div>
     <p class="description">Загрузка изображения</p>
   </div>

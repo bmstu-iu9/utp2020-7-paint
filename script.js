@@ -78,3 +78,13 @@ downloadBtn.addEventListener('click', () => {
                   .replace("image/png", "image/octet-stream");
   downloadBtn.setAttribute("href", img);
 });
+
+document.getElementById("clear").addEventListener('click', () => {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.keyCode == 67) {
+    clear();
+  }
+});

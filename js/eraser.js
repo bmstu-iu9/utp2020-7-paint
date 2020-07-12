@@ -39,6 +39,7 @@ function handleMouseOut(e) {
   mouseX = e.offsetX;
   mouseY = e.offsetY;
   isMouseDown = false;
+  context.beginPath();
 }
 
 function handleMouseMove(e) {

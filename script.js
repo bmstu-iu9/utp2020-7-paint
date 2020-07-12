@@ -92,69 +92,57 @@ document.addEventListener('keydown', (event) => {
 });
 
 changeCanvasHeight.oninput = function () {
-<<<<<<< HEAD
   let height = document.getElementById("changeCanvasHeight").value;
   if (height) {
     canvas.style.height = height + 'px';
   } else {
-=======
   let x = document.getElementById("changeCanvasHeight").value;
   if (x) {
     canvas.style.height = x + 'px';
   }
   else {
->>>>>>> ef18fec3b9ce0d7355896543aa7bcccf3e0c67d0
     canvas.style.height = 720 + 'px';
   }
 }
 
 changeCanvasWidth.oninput = function () {
-<<<<<<< HEAD
   let width = document.getElementById("changeCanvasWidth").value;
   if (width) {
     canvas.style.width = width + 'px';
   } else {
-=======
   let x = document.getElementById("changeCanvasWidth").value;
   if (x) {
     canvas.style.width = x + 'px';
   }
   else {
->>>>>>> ef18fec3b9ce0d7355896543aa7bcccf3e0c67d0
     canvas.style.width = 1080 + 'px';
   }
 }
 
 borderWidth.oninput = function () {
-<<<<<<< HEAD
   let width = document.getElementById("borderWidth").value;
   if (width) {
     canvas.style.borderWidth = width + 'px';
   } else {
-=======
   let x = document.getElementById("borderWidth").value;
   if (x) {
     canvas.style.borderWidth = x + 'px';
   }
   else {
->>>>>>> ef18fec3b9ce0d7355896543aa7bcccf3e0c67d0
     canvas.style.borderWidth = 1 + 'px';
   }
 }
 
 borderColor.oninput = function () {
-<<<<<<< HEAD
   let color = document.getElementById("borderColor").value;
   if (color) {
     canvas.style.borderColor = color;
   } else {
-=======
   let x = document.getElementById("borderColor").value;
   if (x) {
     canvas.style.borderColor = x;
   }
   else {
->>>>>>> ef18fec3b9ce0d7355896543aa7bcccf3e0c67d0
     canvas.style.borderColor = '#000000';
   }
 }

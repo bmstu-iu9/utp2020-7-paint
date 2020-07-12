@@ -70,3 +70,15 @@ function drawUploaded(e) {
     canvas.width, canvas.height);
   }
 }
+
+function clear() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+document.getElementById("clear").onclick = clear;
+
+document.addEventListener('keydown', (event) => {
+  if (event.keyCode == 67) {
+    clear();
+  }
+});

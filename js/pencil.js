@@ -18,7 +18,7 @@ function drawWithPencil(eventClick) {
   let startY = eventClick.offsetY;
 
   context.lineWidth = curToolSize;
-  context.strokeStyle = `rgb(curColor[0], curColor[1], curColor[2])`;
+  context.strokeStyle = 'rgb(' + curColor[0] + ',' + curColor[1] + ',' + curColor[2] + ')';
   context.lineCap = "round";
 
   drawPointWithPencil(startX, startY);

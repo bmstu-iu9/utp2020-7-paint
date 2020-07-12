@@ -47,7 +47,7 @@ function rgbToHex(rgb) {
   }
 }
 
-document.getElementById("uploadImage").addEventListener('change', function() {
+document.getElementById("uploadImage").addEventListener('change', () => {
   if (this.files && this.files[0]) {
     handleImg(this.files[0]);
   }
@@ -70,3 +70,11 @@ function drawUploaded(e) {
     canvas.width, canvas.height);
   }
 }
+
+let downloadBtn = document.getElementById("download");
+
+downloadBtn.addEventListener('click', () => {
+  let img = canvas.toDataURL("image/png")
+                  .replace("image/png", "image/octet-stream");
+  downloadBtn.setAttribute("href", img);
+});

@@ -92,6 +92,7 @@ body {
 }
 
 .droplist {
+<<<<<<< HEAD
   position: relative;
   display: inline-block;
 }
@@ -110,6 +111,27 @@ body {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+=======
+    position: relative;
+    display: inline-block;
+    justify-content: center;
+}
+
+.dropbtn {
+    background-color: #ffe680;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+.droplist-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+>>>>>>> ef18fec3b9ce0d7355896543aa7bcccf3e0c67d0
 }
 
 .droplist:hover .droplist-content {

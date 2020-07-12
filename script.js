@@ -96,11 +96,6 @@ changeCanvasHeight.oninput = function () {
   if (height) {
     canvas.style.height = height + 'px';
   } else {
-  let x = document.getElementById("changeCanvasHeight").value;
-  if (x) {
-    canvas.style.height = x + 'px';
-  }
-  else {
     canvas.style.height = 720 + 'px';
   }
 }
@@ -110,11 +105,6 @@ changeCanvasWidth.oninput = function () {
   if (width) {
     canvas.style.width = width + 'px';
   } else {
-  let x = document.getElementById("changeCanvasWidth").value;
-  if (x) {
-    canvas.style.width = x + 'px';
-  }
-  else {
     canvas.style.width = 1080 + 'px';
   }
 }
@@ -124,11 +114,6 @@ borderWidth.oninput = function () {
   if (width) {
     canvas.style.borderWidth = width + 'px';
   } else {
-  let x = document.getElementById("borderWidth").value;
-  if (x) {
-    canvas.style.borderWidth = x + 'px';
-  }
-  else {
     canvas.style.borderWidth = 1 + 'px';
   }
 }
@@ -138,11 +123,6 @@ borderColor.oninput = function () {
   if (color) {
     canvas.style.borderColor = color;
   } else {
-  let x = document.getElementById("borderColor").value;
-  if (x) {
-    canvas.style.borderColor = x;
-  }
-  else {
     canvas.style.borderColor = '#000000';
   }
 }

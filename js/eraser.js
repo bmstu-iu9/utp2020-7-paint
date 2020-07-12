@@ -48,7 +48,7 @@ function handleMouseMove(e) {
   if(isMouseDown) {
     context.beginPath();
     context.globalCompositeOperation = "destination-out";
-    context.arc(lastX, lastY, 8, 0, Math.PI*2);
+    context.arc(lastX, lastY, curToolSize, 0, Math.PI*2);
     context.fill();
     lastX = mouseX;
     lastY = mouseY;

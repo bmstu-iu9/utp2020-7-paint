@@ -90,3 +90,43 @@ document.addEventListener('keydown', (event) => {
     clearCanvas();
   }
 });
+
+changeCanvasHeight.oninput = function () {
+  let x = document.getElementById("changeCanvasHeight").value;
+  if (x) {
+    canvas.style.height = x + 'px';
+  }
+  else {
+    canvas.style.height = 720 + 'px';
+  }
+}
+
+changeCanvasWidth.oninput = function () {
+  let x = document.getElementById("changeCanvasWidth").value;
+  if (x) {
+    canvas.style.width = x + 'px';
+  }
+  else {
+    canvas.style.width = 1080 + 'px';
+  }
+}
+
+borderWidth.oninput = function () {
+  let x = document.getElementById("borderWidth").value;
+  if (x) {
+    canvas.style.borderWidth = x + 'px';
+  }
+  else {
+    canvas.style.borderWidth = 1 + 'px';
+  }
+}
+
+borderColor.oninput = function () {
+  let x = document.getElementById("borderColor").value;
+  if (x) {
+    canvas.style.borderColor = x;
+  }
+  else {
+    canvas.style.borderColor = '#000000';
+  }
+}

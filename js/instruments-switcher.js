@@ -21,7 +21,7 @@ function instrumentsHandler(event) {
   let targetId = event.target.id;
 
   if (activeInstrument !== null) {
-    document.getElementById(activeInstrument.id).classList.remove('isPressed');
+    document.getElementById(activeInstrument.id).classList.remove('pressed');
     activeInstrument.delete();
     if (activeInstrument.id === targetId) {
       activeInstrument = null;
@@ -30,7 +30,7 @@ function instrumentsHandler(event) {
   }
 
   activeInstrument = allInstruments.get(targetId);
-  document.getElementById(targetId).classList.add('isPressed');
+  document.getElementById(targetId).classList.add('pressed');
   activeInstrument.init();
 }
 

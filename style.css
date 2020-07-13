@@ -47,7 +47,7 @@ body {
   background-color: #786b59;
 }
 
-.isPressed {
+.toolBtn.pressed {
   border: solid 1px #FF7F50;
 }
 

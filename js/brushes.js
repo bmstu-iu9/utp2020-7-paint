@@ -58,12 +58,61 @@ function startPointNeon(e) {
   context.lineWidth = curToolSize;
   context.lineJoin = 'round';
   context.lineCap = 'round';
-  context.strokeStyle = 'rgb(' + curColor[0] + ',' + curColor[1] + ',' + curColor[2] + ')';
-  context.shadowBlur = curToolSize + 2;
-  context.shadowColor = 'rgb(' + curColor[0] + ',' + curColor[1] + ',' + curColor[2] + ')';
+  context.strokeStyle = arrayToRgb(curColor)
+  context.shadowBlur = curToolSize;
+  context.shadowColor = arrayToRgb(curColor)
 
   drawLine(e);
 
   canvas.addEventListener("mousemove", drawLine);
   canvas.addEventListener("mouseup", endPoint);
+}
+
+
+function initSmoothBrush() {
+  canvas.addEventListener("mousedown", startPointSmooth);
+}
+
+function deleteSmoothBrush() {
+  canvas.removeEventListener("mousedown", startPointSmooth);
+  canvas.removeEventListener("mousemove", drawLineSmooth);
+  canvas.removeEventListener("mouseup", endPoint);
+  context.globalAlpha = "1";
+}
+
+let oldX, oldY, newX, newY, distance, angle;
+
+function startPointSmooth(e) {
+  isDrawing = true;
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+
+  context.lineWidth = 0;
+  context.globalAlpha = "0.02";
+  context.fillStyle = arrayToRgb(curColor);
+  context.strokeStyle = arrayToRgb(curColor);
+
+  canvas.addEventListener("mousemove", drawLineSmooth);
+  canvas.addEventListener("mouseup", endPoint);
+}
+
+function drawLineSmooth(e) {
+  if (!isDrawing) return;
+
+  distance = Math.sqrt(Math.pow(e.offsetX - oldX, 2) + Math.pow(e.offsetY - oldY, 2))
+  angle = Math.atan2(e.offsetX - oldX, e.offsetY - oldY);
+
+  for (let i = 0; i < distance; i++) {
+    newX = oldX + i * Math.sin(angle);
+    newY = oldY + i * Math.cos(angle);
+    context.beginPath();
+    context.arc(newX, newY, curToolSize/2, 0, Math.PI * 2, false);
+    context.closePath();
+    context.fill();
+    context.stroke();
+  }
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
 }

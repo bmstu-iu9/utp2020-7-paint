@@ -47,6 +47,10 @@ body {
   background-color: #786b59;
 }
 
+.isPressed {
+  border: solid 1px #FF7F50;
+}
+
 .description {
   margin: 0;
   padding: 0px;
@@ -166,12 +170,12 @@ body {
   font-family: 'Times New Roman';
   font-size: 17px;
   text-align: center;
-  
+
   -webkit-appearance: none;
   outline:none;
 }
 
-#toolSizeRange { 
+#toolSizeRange {
   height: 100%;
   margin: 0px;
   width: 70%;

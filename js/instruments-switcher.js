@@ -18,12 +18,19 @@ class Instrument {
 }
 
 function instrumentsHandler(event) {
+  let targetId = event.target.id;
+
   if (activeInstrument !== null) {
+    document.getElementById(activeInstrument.id).classList.remove('pressed');
     activeInstrument.delete();
+    if (activeInstrument.id === targetId) {
+      activeInstrument = null;
+      return;
+    }
   }
 
-  let targetId = event.target.id;
   activeInstrument = allInstruments.get(targetId);
+  document.getElementById(targetId).classList.add('pressed');
   activeInstrument.init();
 }
 

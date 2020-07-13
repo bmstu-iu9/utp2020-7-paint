@@ -47,6 +47,10 @@ function rgbToHex(rgb) {
   }
 }
 
+function arrayToRgb(color) {
+  return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+}
+
 document.getElementById("uploadImage").addEventListener('change', () => {
   if (this.files && this.files[0]) {
     handleImg(this.files[0]);

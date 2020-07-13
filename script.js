@@ -47,7 +47,7 @@ function rgbToHex(rgb) {
   }
 }
 
-document.getElementById("uploadImage").addEventListener('change', function() {
+document.getElementById("uploadImage").addEventListener('change', () => {
   if (this.files && this.files[0]) {
     handleImg(this.files[0]);
   }
@@ -71,14 +71,58 @@ function drawUploaded(e) {
   }
 }
 
-function clear() {
+let downloadBtn = document.getElementById("download");
+
+downloadBtn.addEventListener('click', () => {
+  let img = canvas.toDataURL("image/png")
+                  .replace("image/png", "image/octet-stream");
+  downloadBtn.setAttribute("href", img);
+});
+
+function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-document.getElementById("clear").onclick = clear;
+document.getElementById("clear").addEventListener('click', clearCanvas);
 
 document.addEventListener('keydown', (event) => {
   if (event.keyCode == 67) {
-    clear();
+    clearCanvas();
   }
 });
+
+changeCanvasHeight.oninput = function () {
+  let height = document.getElementById("changeCanvasHeight").value;
+  if (height) {
+    canvas.style.height = height + 'px';
+  } else {
+    canvas.style.height = 720 + 'px';
+  }
+}
+
+changeCanvasWidth.oninput = function () {
+  let width = document.getElementById("changeCanvasWidth").value;
+  if (width) {
+    canvas.style.width = width + 'px';
+  } else {
+    canvas.style.width = 1080 + 'px';
+  }
+}
+
+borderWidth.oninput = function () {
+  let width = document.getElementById("borderWidth").value;
+  if (width) {
+    canvas.style.borderWidth = width + 'px';
+  } else {
+    canvas.style.borderWidth = 1 + 'px';
+  }
+}
+
+borderColor.oninput = function () {
+  let color = document.getElementById("borderColor").value;
+  if (color) {
+    canvas.style.borderColor = color;
+  } else {
+    canvas.style.borderColor = '#000000';
+  }
+}

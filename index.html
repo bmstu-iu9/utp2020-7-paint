@@ -20,8 +20,10 @@
       <button title="Заливка цветом" class="toolBtn" id="fill" style="background-image: url(img/fill-icon.png)">
       </button>
       <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
-      <button title="Сохранить" class="toolBtn" id ="save" style="background-image: url(img/save-icon.png)">
-      </button>
+      <a id="download" download="image.png">
+        <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/save-icon.png)">
+        </button>
+      </a>
       <button title="Очистить" class="toolBtn" id="clear"></button>
     </div>
     <p class="description">Инструменты</p>
@@ -29,6 +31,10 @@
 
   <div class="panel">
     <div class="container">
+      <div id="toolSize">
+        <input type="range" id="toolSizeRange" min="1" max="300">
+        <input type="text" id="toolSizeText">
+      </div>
       <button class="toolBtn" >
       </button>
     </div>
@@ -37,9 +43,33 @@
 
   <div class="panel">
     <div class="container">
-      <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage"></input>
+      <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
     </div>
     <p class="description">Загрузка изображения</p>
+  </div>
+
+  <div class="panel" style="width:20%">
+    <div class="droplist">
+      <button class="dropbtn">Параметры холста</button>
+      <div class="droplist-content">
+        <div class="field">
+          <label>Высота холста:</label>
+          <input type="text" size="1" id="changeCanvasHeight">
+        </div>
+        <div class="field">
+          <label>Ширина холста:</label>
+          <input type="text" size="1" id="changeCanvasWidth">
+        </div>
+        <div class="field">
+          <label>Ширина рамки:</label>
+          <input type="text" size="1" id="borderWidth">
+        </div>
+        <div class="field">
+          <label>Цвет рамки:</label>
+          <input type="color" size="1" id="borderColor">
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -51,6 +81,8 @@
 <script src="js/pencil.js"></script>
 <script src="js/brushes.js"></script>
 <script src="js/palette.js"></script>
+<script src="js/eraser.js"></script>
 <script src="js/instruments-switcher.js"></script>
+<script src="js/toolSize.js"></script>
 </body>
 </html>

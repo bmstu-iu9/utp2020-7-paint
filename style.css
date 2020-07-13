@@ -47,6 +47,10 @@ body {
   background-color: #786b59;
 }
 
+.toolBtn.pressed {
+  border: solid 1px #FF7F50;
+}
+
 .description {
   margin: 0;
   padding: 0px;
@@ -59,6 +63,7 @@ body {
   position: absolute;
   width: 1080px;
   height: 720px;
+  border: 1px solid #000000;
   margin: 0;
   top: 10%;
   left: 0;
@@ -88,4 +93,170 @@ body {
   box-sizing: border-box;
   border: 5px dashed #bbbbbb;
   border-radius: 20px;
+}
+
+.droplist {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: #ffe680;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.droplist-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  position: relative;
+  display: inline-block;
+  justify-content: center;
+}
+
+.dropbtn {
+  background-color: #ffe680;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.droplist-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.droplist:hover .droplist-content {
+  display: block;
+}
+
+.droplist:hover .dropbtn {
+  background-color: #ffeb99;
+}
+
+.field {
+  clear:both;
+  text-align:right;
+  margin-top: 5px;
+}
+
+.field label {
+  float:left;
+}
+
+#toolSize {
+  width: 150px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+#toolSizeText {
+  padding: 0px 2px 0px 2px;
+  margin: 0px;
+  height: 100%;
+  width: 30%;
+  background: #FFFFFF;
+  border: none;
+  font-family: 'Times New Roman';
+  font-size: 17px;
+  text-align: center;
+
+  -webkit-appearance: none;
+  outline:none;
+}
+
+#toolSizeRange {
+  height: 100%;
+  margin: 0px;
+  width: 70%;
+  border: none;
+  border-right: 1px solid darkgray;
+  -webkit-appearance: none;
+  overflow: hidden;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0px;
+  box-shadow: none;
+  background: white;
+  border: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 100%;
+  width: 1px;
+  border: none;
+  background: lightgrey;
+  cursor: pointer;
+  box-shadow: -80px 0 0 80px lightgrey;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0px;
+  box-shadow: none;
+  background: white;
+  border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 100%;
+  width: 1px;
+  border: none;
+  background: lightgrey;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-progress {
+  background-color: lightgrey;
+  height: 100%;
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0px;
+  box-shadow: none;
+  background: white;
+  border: none;
+}
+
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 100%;
+  width: 1px;
+  border: none;
+  background: lightgrey;
+  cursor: pointer;
+}
+
+input[type=range]::-ms-fill-lower {
+  background: #3071A9;
+  border: 1px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px lightgrey;
 }

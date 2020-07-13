@@ -18,7 +18,7 @@ function startPoint(e) {
   context.lineWidth = curToolSize;
   context.lineJoin = 'round';
   context.lineCap = 'round';
-  context.strokeStyle = 'rgb(' + curColor[0] + ',' + curColor[1] + ',' + curColor[2] + ')';
+  context.strokeStyle = arrayToRgb(curColor)
 
   drawLine(e);
 

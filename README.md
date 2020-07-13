@@ -6,7 +6,7 @@
 Разработчики :
 
 * Тимур Ионов (капитан) - [@Timur-Ionov](https://github.com/Timur-Ionov)
-* Валерия Захарова -[@Zyxkim](https://github.com/Zyxkim)
+* Валерия Захарова - [@Zyxkim](https://github.com/Zyxkim)
 * Павел Дьячек - [@Perpure](https://github.com/Perpure)
 * Алина Торопчина - [@alina-torr](https://github.com/alina-torr)
 * Даниэла Обущарова - [@DanielaObushcharova](https://github.com/DanielaObushcharova)

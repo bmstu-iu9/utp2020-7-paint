@@ -134,6 +134,7 @@ let pointsCounter, prevPoints;
 function startPointSketch(e) {
   isDrawing = true;
 
+  curToolSize = 1;
   oldX = e.offsetX;
   oldY = e.offsetY;
 

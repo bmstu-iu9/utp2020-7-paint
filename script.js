@@ -89,18 +89,18 @@ document.getElementById("clear").addEventListener('click', () => {
 
 addEventListener('keydown', (event) => {
   if (event.altKey) {
-    switch (event.which) {
-      case 67:
+    switch (event.key) {
+      case 'c':
         document.getElementById("clear").click();
         break;
-      case 80:
+      case 'p':
         colorInput.focus();
         colorInput.click();
         break;
-      case 83:
+      case 's':
         downloadBtn.click();
         break;
-      case 85:
+      case 'u':
         document.getElementById("uploadImage").click();
         break;
     }

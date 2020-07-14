@@ -16,8 +16,8 @@ function startPointBasic(e) {
   isDrawing = true;
 
   context.lineWidth = curToolSize;
-  context.lineJoin = 'round';
-  context.lineCap = 'round';
+  context.lineJoin = "round";
+  context.lineCap = "round";
   context.strokeStyle = arrayToRgb(curColor)
 
   drawLine(e);
@@ -56,8 +56,8 @@ function startPointNeon(e) {
   isDrawing = true;
 
   context.lineWidth = curToolSize;
-  context.lineJoin = 'round';
-  context.lineCap = 'round';
+  context.lineJoin = "round";
+  context.lineCap = "round";
   context.strokeStyle = arrayToRgb(curColor)
   context.shadowBlur = curToolSize;
   context.shadowColor = arrayToRgb(curColor)
@@ -89,7 +89,7 @@ function startPointSmooth(e) {
   oldY = e.offsetY;
 
   context.lineWidth = 0;
-  context.globalAlpha = "0.02";
+  context.globalAlpha = "0.01";
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
 
@@ -115,4 +115,70 @@ function drawLineSmooth(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+}
+
+
+function initSketchBrush() {
+  canvas.addEventListener("mousedown", startPointSketch);
+}
+
+function deleteSketchBrush() {
+  canvas.removeEventListener("mousedown", startPointSketch);
+  canvas.removeEventListener("mousemove", drawLineSketch);
+  canvas.removeEventListener("mouseup", endPoint);
+  context.globalAlpha = "1";
+}
+
+let pointsCounter, prevPoints;
+
+function startPointSketch(e) {
+  isDrawing = true;
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+
+  context.strokeStyle = arrayToRgb(curColor);
+  context.globalAlpha = "0.1";
+
+  if (curToolSize > 5) {
+    context.lineWidth = 5;
+  } else {
+    context.lineWidth = curToolSize;
+  }
+
+  prevPoints = new Array(10);
+  pointsCounter = 0;
+  prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
+
+  drawLineSketch(e);
+
+  canvas.addEventListener("mousemove", drawLineSketch);
+  canvas.addEventListener("mouseup", endPoint);
+}
+
+function drawLineSketch(e) {
+  if (!isDrawing) return;
+
+  pointsCounter = pointsCounter + 1;
+
+  if (pointsCounter == 10) pointsCounter = 0;
+
+  context.beginPath();
+  context.moveTo(oldX, oldY);
+  context.lineTo(e.offsetX, e.offsetY);
+
+  if (prevPoints[pointsCounter]) {
+    newX = prevPoints[pointsCounter][0];
+    newY = prevPoints[pointsCounter][1];
+
+    context.moveTo(newX, newY);
+    context.lineTo(e.offsetX, e.offsetY);
+  }
+
+  context.stroke();
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+
+  prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
 }

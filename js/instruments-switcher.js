@@ -1,6 +1,6 @@
 'use strict'
 
-const allIds = ['pencil', 'basicBrush', 'eraser', 'neonBrush', 'smoothBrush'];
+const allIds = ['pencil', 'basicBrush', 'eraser', 'neonBrush', 'smoothBrush', 'sketchBrush'];
 
 let allInstruments = new Map();
 let activeInstrument = null;

@@ -83,17 +83,32 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute("href", img);
 });
 
-function clearCanvas() {
+document.getElementById("clear").addEventListener('click', () => {
   context.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-document.getElementById("clear").addEventListener('click', clearCanvas);
+});
 
 document.addEventListener('keydown', (event) => {
-  if (event.keyCode == 67) {
-    clearCanvas();
-  }
-});
+  switch (event.keyCode) {
+  case 67:
+    document.getElementById("clear").click();
+    console.log("Cleared");
+    break;
+  case 80:
+    colorInput.focus();
+    colorInput.click();
+    console.log("The palette is open");
+    break;
+  case 83:
+    downloadBtn.click();
+    console.log("Saved");
+    break;
+  case 85:
+    document.getElementById("uploadImage").click();
+    console.log("Choose file");
+    break;
+  default:
+    console.log("Wrong key");
+}});
 
 changeCanvasHeight.oninput = function () {
   let height = document.getElementById("changeCanvasHeight").value;
@@ -130,3 +145,9 @@ borderColor.oninput = function () {
     canvas.style.borderColor = '#000000';
   }
 }
+
+document.getElementById("help").addEventListener('click', (event) => {
+  let helpMenu = document.getElementById("helpMenu");
+  helpMenu.hidden = !helpMenu.hidden;
+  event.currentTarget.classList.toggle("pressed");
+});

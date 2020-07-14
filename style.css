@@ -47,7 +47,9 @@ body {
   background-color: #786b59;
 }
 
-.toolBtn.pressed {
+.toolBtn.pressed,
+#help:hover,
+#help.pressed {
   border: solid 1px #FF7F50;
 }
 
@@ -93,6 +95,35 @@ body {
   box-sizing: border-box;
   border: 5px dashed #bbbbbb;
   border-radius: 20px;
+}
+
+#help {
+  position: fixed;
+  right: 1%;
+  border-radius: 50%;
+  padding: 20px;
+  font-size: 3px;
+  margin: 4px 2px;
+  outline: none;
+}
+
+#helpMenu {
+  position: fixed;
+  right: 3%;
+  top: 8%;
+}
+
+.menu {
+  background-color: #ffe252c2;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
 }
 
 .droplist {

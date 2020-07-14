@@ -1,57 +1,52 @@
 'use strict'
 
 let eraserButton = document.getElementById("eraser");
-let lastX, lastY, mouseX, mouseY;
-let isMouseDown = false;
 
 function initEraser() {
-  canvas.addEventListener("mousedown", eraseLines);
+  canvas.addEventListener("mousedown", erase);
 }
 
 function deleteEraser() {
-  canvas.removeEventListener("mousedown", eraseLines);
-  canvas.removeEventListener("mousemove", handleMouseMove);
-  canvas.removeEventListener("mouseout", handleMouseOut);
-  canvas.removeEventListener("mouseup", handleMouseUp);
-  context.globalCompositeOperation="source-over";
+  canvas.removeEventListener("mousedown", erase);
+  canvas.removeEventListener("mouseout", eraserOut);
+  canvas.removeEventListener("mouseup", eraserUp);
 }
 
-function eraseLines(e) {
-  isMouseDown = true;
+function erase(eventClick) {
+  let startX = eventClick.offsetX;
+  let startY = eventClick.offsetY;
 
-  mouseX = e.offsetX;
-  mouseY = e.offsetY;
-  lastX = mouseX;
-  lastY = mouseY;
+  context.lineWidth = curToolSize;
+  context.strokeStyle = arrayToRgb(curCanvasColor);
+  context.lineCap = "round";
 
-  canvas.addEventListener("mousemove", handleMouseMove);
-  canvas.addEventListener("mouseup", handleMouseUp);
-  canvas.addEventListener("mouseout", handleMouseOut);
+  erasePoint(startX, startY);
+
+  canvas.addEventListener("mousemove", eraseLines);
+  canvas.addEventListener("mouseup", eraserUp);
+  canvas.addEventListener("mouseout", eraserOut);
 }
 
-function handleMouseUp(e) {
-  mouseX = e.offsetX;
-  mouseY = e.offsetY;
-  isMouseDown = false;
-}
-
-function handleMouseOut(e) {
-  mouseX = e.offsetX;
-  mouseY = e.offsetY;
-  isMouseDown = false;
+function eraserUp(eventUp) {
+  context.lineTo(eventUp.offsetX, eventUp.offsetY);
+  context.stroke();
+  canvas.removeEventListener("mousemove", eraseLines);
   context.beginPath();
 }
 
-function handleMouseMove(e) {
-  mouseX = e.offsetX;
-  mouseY = e.offsetY;
+function eraserOut(eventOut) {
+  canvas.removeEventListener("mousemove", eraseLines);
+  context.beginPath();
+}
 
-  if(isMouseDown) {
-    context.beginPath();
-    context.globalCompositeOperation = "destination-out";
-    context.arc(lastX, lastY, curToolSize, 0, Math.PI*2);
-    context.fill();
-    lastX = mouseX;
-    lastY = mouseY;
-  }
+function eraseLines(eventMove) {
+  context.lineTo(eventMove.offsetX, eventMove.offsetY);
+  context.stroke();
+  context.moveTo(eventMove.offsetX, eventMove.offsetY);
+}
+
+function erasePoint(startX, startY) {
+  context.moveTo(startX, startY);
+  context.lineTo(startX, startY);
+  context.stroke();
 }

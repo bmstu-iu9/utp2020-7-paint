@@ -8,7 +8,7 @@ function initBasicBrush() {
 
 function deleteBasicBrush() {
   canvas.removeEventListener("mousedown", startPointBasic);
-  canvas.removeEventListener("mousemove", drawLine);
+  canvas.removeEventListener("mousemove", drawLineBasic);
   canvas.removeEventListener("mouseup", endPoint);
 }
 
@@ -20,9 +20,9 @@ function startPointBasic(e) {
   context.lineCap = "round";
   context.strokeStyle = arrayToRgb(curColor)
 
-  drawLine(e);
+  drawLineBasic(e);
 
-  canvas.addEventListener("mousemove", drawLine);
+  canvas.addEventListener("mousemove", drawLineBasic);
   canvas.addEventListener("mouseup", endPoint);
 }
 
@@ -31,7 +31,7 @@ function endPoint() {
   context.beginPath();
 }
 
-function drawLine(e) {
+function drawLineBasic(e) {
   if (!isDrawing) return;
 
   context.lineTo(e.offsetX, e.offsetY);
@@ -47,7 +47,7 @@ function initNeonBrush() {
 
 function deleteNeonBrush() {
   canvas.removeEventListener("mousedown", startPointNeon);
-  canvas.removeEventListener("mousemove", drawLine);
+  canvas.removeEventListener("mousemove", drawLineBasic);
   canvas.removeEventListener("mouseup", endPoint);
   context.shadowBlur = 0;
 }
@@ -62,9 +62,9 @@ function startPointNeon(e) {
   context.shadowBlur = curToolSize;
   context.shadowColor = arrayToRgb(curColor)
 
-  drawLine(e);
+  drawLineBasic(e);
 
-  canvas.addEventListener("mousemove", drawLine);
+  canvas.addEventListener("mousemove", drawLineBasic);
   canvas.addEventListener("mouseup", endPoint);
 }
 

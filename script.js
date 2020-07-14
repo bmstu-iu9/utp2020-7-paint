@@ -83,15 +83,27 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute("href", img);
 });
 
-function clearCanvas() {
+document.getElementById("clear").addEventListener('click', () => {
   context.clearRect(0, 0, canvas.width, canvas.height);
-}
+});
 
-document.getElementById("clear").addEventListener('click', clearCanvas);
-
-document.addEventListener('keydown', (event) => {
-  if (event.keyCode == 67) {
-    clearCanvas();
+addEventListener('keydown', (event) => {
+  if (event.altKey) {
+    switch (event.key) {
+      case 'c':
+        document.getElementById("clear").click();
+        break;
+      case 'p':
+        colorInput.focus();
+        colorInput.click();
+        break;
+      case 's':
+        downloadBtn.click();
+        break;
+      case 'u':
+        document.getElementById("uploadImage").click();
+        break;
+    }
   }
 });
 
@@ -130,3 +142,9 @@ borderColor.oninput = function () {
     canvas.style.borderColor = '#000000';
   }
 }
+
+document.getElementById("help").addEventListener('click', (event) => {
+  let helpMenu = document.getElementById("helpMenu");
+  helpMenu.hidden = !helpMenu.hidden;
+  event.currentTarget.classList.toggle("pressed");
+});

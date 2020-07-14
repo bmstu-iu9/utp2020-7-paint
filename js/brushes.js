@@ -140,11 +140,7 @@ function startPointSketch(e) {
   context.strokeStyle = arrayToRgb(curColor);
   context.globalAlpha = "0.1";
 
-  if (curToolSize > 5) {
-    context.lineWidth = 5;
-  } else {
-    context.lineWidth = curToolSize;
-  }
+context.lineWidth = Math.min(5, curToolSize);
 
   prevPoints = new Array(10);
   pointsCounter = 0;

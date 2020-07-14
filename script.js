@@ -108,21 +108,39 @@ addEventListener('keydown', (event) => {
   }
 });
 
-changeCanvasHeight.oninput = function () {
-  let height = document.getElementById("changeCanvasHeight").value;
-  if (height) {
-    canvas.style.height = height + 'px';
-  } else {
-    canvas.style.height = 720 + 'px';
-  }
+//memory-canvas for saving image
+let memCanvas = document.createElement('canvas');
+let memCtx = memCanvas.getContext('2d');
+
+function saveImg() {
+  memCanvas.width = canvas.width;
+  memCanvas.height = canvas.height;
+  memCtx.drawImage(canvas, 0, 0);
 }
 
 changeCanvasWidth.oninput = function () {
   let width = document.getElementById("changeCanvasWidth").value;
   if (width) {
+    saveImg();
     canvas.style.width = width + 'px';
+    canvas.setAttribute('width', width + 'px');
+    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   } else {
+    canvas.setAttribute('width', '1080');
     canvas.style.width = 1080 + 'px';
+  }
+}
+
+changeCanvasHeight.oninput = function () {
+  let height = document.getElementById("changeCanvasHeight").value;
+  if (height) {
+    saveImg();
+    canvas.style.height = height + 'px';
+    canvas.setAttribute('height', height + 'px');
+    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  } else {
+    canvas.setAttribute('height', '720');
+    canvas.style.height = 720 + 'px';
   }
 }
 

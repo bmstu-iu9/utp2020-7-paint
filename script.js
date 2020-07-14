@@ -88,15 +88,22 @@ document.getElementById("clear").addEventListener('click', () => {
 });
 
 addEventListener('keydown', (event) => {
-  if (event.altKey && event.which == 67) {
-    document.getElementById("clear").click();
-  } else if (event.altKey && event.which == 80) {
-    colorInput.focus();
-    colorInput.click();
-  } else if (event.altKey && event.which == 83) {
-    downloadBtn.click();
-  } else if (event.altKey && event.which == 85) {
-    document.getElementById("uploadImage").click();
+  if (event.altKey) {
+    switch (event.which) {
+      case 67:
+        document.getElementById("clear").click();
+        break;
+      case 80:
+        colorInput.focus();
+        colorInput.click();
+        break;
+      case 83:
+        downloadBtn.click();
+        break;
+      case 85:
+        document.getElementById("uploadImage").click();
+        break;
+    }
   }
 });
 

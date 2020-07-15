@@ -38,7 +38,7 @@ function startPointNeonBrush(e) {
 
   canvas.addEventListener("mousemove", drawLineNeonBrush);
   canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPointLeave);
+  canvas.addEventListener("mouseleave", endPoint);
 }
 
 function drawLineNeonBrush(e) {

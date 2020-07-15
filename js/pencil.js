@@ -8,20 +8,21 @@ function deletePencil() {
   canvas.removeEventListener("mousedown", startPointPencil);
   canvas.removeEventListener("mousemove", drawLinePencil);
   canvas.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", endPoint);
 }
 
 function startPointPencil(e) {
   isDrawing = true;
 
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
   context.lineCap = "round";
-  context.strokeStyle = arrayToRgb(curColor)
+  context.strokeStyle = arrayToRgb(curColor);
 
   drawLinePencil(e);
 
   canvas.addEventListener("mousemove", drawLinePencil);
   canvas.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", endPoint);
 }
 
 function drawLinePencil(e) {

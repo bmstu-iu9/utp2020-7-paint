@@ -7,10 +7,6 @@ function endPoint() {
   context.beginPath();
 }
 
-function endPointLeave(e) {
-  isDrawing = false;
-  context.beginPath();
-}
 
 function initNeonBrush() {
   canvas.addEventListener("mousedown", startPointNeonBrush);

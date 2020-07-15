@@ -78,7 +78,7 @@ function startPointSmoothBrush(e) {
 
   canvas.addEventListener("mousemove", drawLineSmoothBrush);
   canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPointLeave);
+  canvas.addEventListener("mouseleave", endPoint);
 }
 
 function drawLineSmoothBrush(e) {

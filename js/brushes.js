@@ -87,7 +87,7 @@ function drawLineSmoothBrush(e) {
     newX = oldX + i * Math.sin(angle);
     newY = oldY + i * Math.cos(angle);
     context.beginPath();
-    context.arc(newX, newY, curToolSize/2, 0, Math.PI * 2, false);
+    context.arc(newX, newY, curToolSize / 2, 0, Math.PI * 2, false);
     context.closePath();
     context.fill();
     context.stroke();

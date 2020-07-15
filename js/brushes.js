@@ -110,7 +110,7 @@ function deleteSketchBrush() {
   canvas.removeEventListener("mousedown", startPointSketchBrush);
   canvas.removeEventListener("mousemove", drawLineSketchBrush);
   canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPointLeave);
+  canvas.removeEventListener("mouseleave", endPoint);
   context.globalAlpha = "1";
 }
 

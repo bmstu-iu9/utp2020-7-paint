@@ -36,7 +36,7 @@ function fill(event) {
     let curPoint = stack.pop();
     let x = curPoint[0];
     let y = curPoint[1];
-    if (areInCanvas(x, y) && haveSameColor(x, y)) {
+    if (haveSameColor(x, y)) {
       changePixel(x, y);
       let arrayOfNeedChecking = [[x, y+1], [x-1, y],  [x+1, y], [x, y-1]];
       arrayOfNeedChecking.forEach((elem) => {
@@ -71,9 +71,9 @@ function fill(event) {
   function getAlphaInData(x, y) { return canvas.width*(y-1)*4+x*4+3; }
   
   function changePixel(x, y) {
-    resultImageData.data[canvas.width*(y-1)*4+x*4] = curColor[0];
-    resultImageData.data[canvas.width*(y-1)*4+x*4+1] = curColor[1];
-    resultImageData.data[canvas.width*(y-1)*4+x*4+2] = curColor[2];
-    resultImageData.data[canvas.width*(y-1)*4+x*4+3] = 255;
+    resultImageData.data[getRedInData(x, y)] = curColor[0];
+    resultImageData.data[getGreenInData(x, y)] = curColor[1];
+    resultImageData.data[getBlueInData(x, y)] = curColor[2];
+    resultImageData.data[getAlphaInData(x, y)] = 255;
   }
 }

@@ -131,7 +131,7 @@ function startPointSketchBrush(e) {
 
   canvas.addEventListener("mousemove", drawLineSketchBrush);
   canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint;
+  canvas.addEventListener("mouseleave", endPoint);
 }
 
 function drawLineSketchBrush(e) {

@@ -1,53 +1,34 @@
-'use strict'
-
-let pencilButton = document.getElementById("pencil");
-
+'use strict';
 
 function initPencil() {
-  canvas.addEventListener("mousedown", drawWithPencil);
+  canvas.addEventListener("mousedown", startPointPencil);
 }
 
 function deletePencil() {
-  canvas.removeEventListener("mousedown", drawWithPencil);
-  canvas.removeEventListener("mouseout", pencilOut);
-  canvas.removeEventListener("mouseup", pencilUp);
+  canvas.removeEventListener("mousedown", startPointPencil);
+  canvas.removeEventListener("mousemove", drawLinePencil);
+  canvas.removeEventListener("mouseup", endPoint);
 }
 
-function drawWithPencil(eventClick) {
-  let startX = eventClick.offsetX;
-  let startY = eventClick.offsetY;
+function startPointPencil(e) {
+  isDrawing = true;
 
   context.lineWidth = curToolSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  context.lineJoin = "round";
   context.lineCap = "round";
+  context.strokeStyle = arrayToRgb(curColor)
 
-  drawPointWithPencil(startX, startY);
+  drawLinePencil(e);
 
-  canvas.addEventListener("mousemove", drawLinesWithPencil);
-  canvas.addEventListener("mouseup", pencilUp);
-  canvas.addEventListener("mouseout", pencilOut);
+  canvas.addEventListener("mousemove", drawLinePencil);
+  canvas.addEventListener("mouseup", endPoint);
 }
 
-function pencilUp(eventUp) {
-  context.lineTo(eventUp.offsetX, eventUp.offsetY);
+function drawLinePencil(e) {
+  if (!isDrawing) return;
+
+  context.lineTo(e.offsetX, e.offsetY);
   context.stroke();
-  canvas.removeEventListener("mousemove", drawLinesWithPencil);
   context.beginPath();
-}
-
-function pencilOut(eventOut) {
-  canvas.removeEventListener("mousemove", drawLinesWithPencil);
-  context.beginPath();
-}
-
-function drawLinesWithPencil(eventMove) {
-  context.lineTo(eventMove.offsetX, eventMove.offsetY);
-  context.stroke();
-  context.moveTo(eventMove.offsetX, eventMove.offsetY);
-}
-
-function drawPointWithPencil(startX, startY) {
-  context.moveTo(startX, startY);
-  context.lineTo(startX, startY);
-  context.stroke();
+  context.moveTo(e.offsetX, e.offsetY);
 }

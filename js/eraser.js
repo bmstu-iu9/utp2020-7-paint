@@ -23,7 +23,7 @@ function startPointEraser(e) {
 
   canvas.addEventListener("mousemove", drawLineEraser);
   canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPointLeave);
+  canvas.addEventListener("mouseleave", endPoint);
 }
 
 function drawLineEraser(e) {

@@ -22,7 +22,7 @@ function startPointPencil(e) {
 
   canvas.addEventListener("mousemove", drawLinePencil);
   canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPointLeave);
+  canvas.addEventListener("mouseleave", endPoint);
 }
 
 function drawLinePencil(e) {

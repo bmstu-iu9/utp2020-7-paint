@@ -20,7 +20,7 @@ function deleteNeonBrush() {
   canvas.removeEventListener("mousedown", startPointNeonBrush);
   canvas.removeEventListener("mousemove", drawLineNeonBrush);
   canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPointLeave);
+  canvas.removeEventListener("mouseleave", endPoint);
   context.shadowBlur = 0;
 }
 

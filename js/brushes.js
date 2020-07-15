@@ -7,6 +7,10 @@ function endPoint() {
   context.beginPath();
 }
 
+function endPointLeave(e) {
+  isDrawing = false;
+  context.beginPath();
+}
 
 function initNeonBrush() {
   canvas.addEventListener("mousedown", startPointNeonBrush);
@@ -16,6 +20,7 @@ function deleteNeonBrush() {
   canvas.removeEventListener("mousedown", startPointNeonBrush);
   canvas.removeEventListener("mousemove", drawLineNeonBrush);
   canvas.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", endPointLeave);
   context.shadowBlur = 0;
 }
 
@@ -33,6 +38,7 @@ function startPointNeonBrush(e) {
 
   canvas.addEventListener("mousemove", drawLineNeonBrush);
   canvas.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", endPointLeave);
 }
 
 function drawLineNeonBrush(e) {
@@ -53,6 +59,7 @@ function deleteSmoothBrush() {
   canvas.removeEventListener("mousedown", startPointSmoothBrush);
   canvas.removeEventListener("mousemove", drawLineSmoothBrush);
   canvas.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", endPointLeave);
   context.globalAlpha = "1";
 }
 
@@ -71,6 +78,7 @@ function startPointSmoothBrush(e) {
 
   canvas.addEventListener("mousemove", drawLineSmoothBrush);
   canvas.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", endPointLeave);
 }
 
 function drawLineSmoothBrush(e) {
@@ -102,6 +110,7 @@ function deleteSketchBrush() {
   canvas.removeEventListener("mousedown", startPointSketchBrush);
   canvas.removeEventListener("mousemove", drawLineSketchBrush);
   canvas.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", endPointLeave);
   context.globalAlpha = "1";
 }
 
@@ -126,6 +135,7 @@ function startPointSketchBrush(e) {
 
   canvas.addEventListener("mousemove", drawLineSketchBrush);
   canvas.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", endPointLeave);
 }
 
 function drawLineSketchBrush(e) {

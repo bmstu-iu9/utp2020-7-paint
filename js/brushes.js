@@ -59,7 +59,7 @@ function deleteSmoothBrush() {
   canvas.removeEventListener("mousedown", startPointSmoothBrush);
   canvas.removeEventListener("mousemove", drawLineSmoothBrush);
   canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPointLeave);
+  canvas.removeEventListener("mouseleave", endPoint);
   context.globalAlpha = "1";
 }
 

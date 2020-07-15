@@ -8,7 +8,7 @@ function deletePencil() {
   canvas.removeEventListener("mousedown", startPointPencil);
   canvas.removeEventListener("mousemove", drawLinePencil);
   canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPointLeave);
+  canvas.removeEventListener("mouseleave", endPoint);
 }
 
 function startPointPencil(e) {

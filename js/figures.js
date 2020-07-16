@@ -119,10 +119,6 @@ function drawLineEllipse(e) {
 
   radius = Math.sqrt(Math.pow(e.offsetX - centerX, 2) + Math.pow(e.offsetY - centerY, 2));
 
-  let circumference = Math.max(e.offsetX, e.offsetY);
-  let scaleX = e.offsetX / circumference;
-  let scaleY = e.offsetY / circumference;
-
   context.beginPath();
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.moveTo(centerX, centerY + (e.offsetY - centerY) / 2);

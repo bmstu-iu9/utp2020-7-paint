@@ -17,10 +17,10 @@ class curImage extends curTool {
 }
 
 class curDrawingTool extends curTool {
-  constructor(id, toolSize, r, g, b) {
+  constructor(id, toolSize, ...color) {
     super(id);
     this.toolSize = toolSize;
-    this.color = [r, g, b];
+    this.color = color;
   }
 }
 

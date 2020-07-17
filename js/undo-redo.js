@@ -69,7 +69,7 @@ function replayActions() {
   for (let i = 0; i < curState; i++) {
     switch (curCords[i].id) {
       case 'Image':
-        //TODO change when the image upload will be modified
+        // TODO: change when the image upload will be modified
         replayImage(curCords[i].img);
         break;
       case 'Filling':

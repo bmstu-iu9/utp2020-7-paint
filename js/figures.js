@@ -117,8 +117,6 @@ function startPointEllipse(e) {
 function drawLineEllipse(e) {
   if (!isDrawing) return;
 
-  radius = Math.sqrt(Math.pow(e.offsetX - centerX, 2) + Math.pow(e.offsetY - centerY, 2));
-
   context.beginPath();
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.moveTo(centerX, centerY + (e.offsetY - centerY) / 2);
@@ -128,6 +126,102 @@ function drawLineEllipse(e) {
 }
 
 function endPointEllipse() {
+  isDrawing = false;
+  context.beginPath();
+}
+
+
+let startX, startY;
+
+function initEqTriangle() {
+  canvas.addEventListener("mousedown", startPointEqTriangle);
+}
+
+function deleteEqTriangle() {
+  canvas.removeEventListener("mousedown", startPointEqTriangle);
+  canvas.removeEventListener("mousemove", drawLineEqTriangle);
+  canvas.removeEventListener("mouseup", endPointEqTriangle);
+}
+
+function startPointEqTriangle(e) {
+  isDrawing = true;
+
+  context.lineWidth = curToolSize;
+  context.lineJoin = "round";
+  context.lineCap = "round";
+  context.strokeStyle = arrayToRgb(curColor);
+
+  startX = e.offsetX;
+  startY = e.offsetY;
+
+  drawLineEqTriangle(e);
+
+  canvas.addEventListener("mousemove", drawLineEqTriangle);
+  canvas.addEventListener("mouseup", endPointEqTriangle);
+}
+
+function drawLineEqTriangle(e) {
+  if (!isDrawing) return;
+
+  context.beginPath();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.beginPath();
+  context.moveTo(startX, startY);
+  context.lineTo(e.offsetX, e.offsetY);
+  context.lineTo(startX + (startX - e.offsetX), e.offsetY);
+  context.lineTo(startX, startY);
+  context.stroke();
+}
+
+function endPointEqTriangle() {
+  isDrawing = false;
+  context.beginPath();
+}
+
+
+function initRightTriangle() {
+  canvas.addEventListener("mousedown", startPointRightTriangle);
+}
+
+function deleteRightTriangle() {
+  canvas.removeEventListener("mousedown", startPointRightTriangle);
+  canvas.removeEventListener("mousemove", drawLineRightTriangle);
+  canvas.removeEventListener("mouseup", endPointRightTriangle);
+}
+
+function startPointRightTriangle(e) {
+  isDrawing = true;
+
+  context.lineWidth = curToolSize;
+  context.lineJoin = "round";
+  context.lineCap = "round";
+  context.strokeStyle = arrayToRgb(curColor);
+
+  startX = e.offsetX;
+  startY = e.offsetY;
+
+  drawLineEqTriangle(e);
+
+  canvas.addEventListener("mousemove", drawLineRightTriangle);
+  canvas.addEventListener("mouseup", endPointRightTriangle);
+}
+
+function drawLineRightTriangle(e) {
+  if (!isDrawing) return;
+
+  context.beginPath();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.beginPath();
+  context.moveTo(startX, startY);
+  context.lineTo(e.offsetX, e.offsetY);
+  context.lineTo(startX, e.offsetY);
+  context.lineTo(startX, startY);
+  context.stroke();
+}
+
+function endPointRightTriangle() {
   isDrawing = false;
   context.beginPath();
 }

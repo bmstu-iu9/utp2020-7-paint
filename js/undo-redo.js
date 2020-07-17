@@ -93,7 +93,7 @@ function replayFilling(cords) {
   let e = {
     offsetX: cords[0],
     offsetY: cords[1]
-  }
+  };
   fill(e);
 }
 

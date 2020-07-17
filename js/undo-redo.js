@@ -102,7 +102,7 @@ function replayDrawing(tool) {
   let e = {
     offsetX: cords[0][0],
     offsetY: cords[0][1]
-  }
+  };
   curToolSize = tool.toolSize;
   curColor = tool.color;
   window['startPoint' + tool.id](e);

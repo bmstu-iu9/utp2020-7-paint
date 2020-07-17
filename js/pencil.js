@@ -13,6 +13,7 @@ function deletePencil() {
 
 function startPointPencil(e) {
   isDrawing = true;
+  if (!isReplaying) rememberDrawingTool("Pencil");
 
   context.lineWidth = curToolSize;
   context.lineCap = "round";
@@ -27,6 +28,7 @@ function startPointPencil(e) {
 
 function drawLinePencil(e) {
   if (!isDrawing) return;
+  if (!isReplaying) curCords[curState].cords.push([e.offsetX, e.offsetY]);
 
   context.lineTo(e.offsetX, e.offsetY);
   context.stroke();

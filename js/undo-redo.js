@@ -39,6 +39,7 @@ function rememberImage(img) {
 function rememberDrawingTool(id) {
   checkCurCords();
   curCords.push(new curDrawingTool(id, curToolSize, ...curColor));
+  ++curState;
 }
 
 function checkCurCords() {

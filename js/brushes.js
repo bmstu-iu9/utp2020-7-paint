@@ -3,10 +3,7 @@
 let isDrawing = false;
 
 function endPoint() {
-  if (isDrawing) {
-    isDrawing = false;
-    ++curState;
-  }
+  isDrawing = false;
   context.beginPath();
 }
 
@@ -42,7 +39,7 @@ function startPointNeonBrush(e) {
 
 function drawLineNeonBrush(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   context.lineTo(e.offsetX, e.offsetY);
   context.stroke();
@@ -84,7 +81,7 @@ function startPointSmoothBrush(e) {
 
 function drawLineSmoothBrush(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   distance = Math.sqrt(Math.pow(e.offsetX - oldX, 2) + Math.pow(e.offsetY - oldY, 2))
   angle = Math.atan2(e.offsetX - oldX, e.offsetY - oldY);
@@ -143,7 +140,7 @@ function startPointSketchBrush(e) {
 
 function drawLineSketchBrush(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   pointsCounter = pointsCounter + 1;
 

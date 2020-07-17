@@ -29,7 +29,7 @@ function startPointEraser(e) {
 
 function drawLineEraser(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   context.lineTo(e.offsetX, e.offsetY);
   context.stroke();

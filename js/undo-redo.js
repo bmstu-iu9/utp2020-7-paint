@@ -83,6 +83,8 @@ document.getElementById('redo').addEventListener('click', () => {
 function replayActions() {
   isReplaying = true;
   if (activeInstrument !== null) activeInstrument.delete();
+  let activeToolSize = curToolSize;
+  let activeColor = curColor;
   for (let i = 0; i < curState; i++) {
     switch (curCords[i].id) {
       case 'Image':
@@ -97,6 +99,8 @@ function replayActions() {
     }
   }
   isReplaying = false;
+  curToolSize = activeToolSize;
+  curColor = activeColor;
   if (activeInstrument !== null) activeInstrument.init();
 }
 

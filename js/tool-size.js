@@ -46,6 +46,6 @@ toolSizeText.onchange = () => {
 function checkSizeToolInput(str) {
   const regExp = new RegExp(`^\\d+(px|)$`, 'i');
   return (regExp.test(str)) && 
-         (parseInt(str) <= toolSizeRange.max) && 
+         (parseInt(str) <= toolSizeRange.max) &&
          (parseInt(str) >= toolSizeRange.min);
 }

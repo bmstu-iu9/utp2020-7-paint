@@ -2,43 +2,33 @@
 
 let isReplaying = false;
 
-class curTool {
-  constructor(id, ...cords) {
-    this.id = id;
-    this.cords = cords;
-  }
-}
-
-class curImage extends curTool {
-  constructor(img) {
-    super('Image');
-    this.img = img;
-  }
-}
-
-class curDrawingTool extends curTool {
-  constructor(id, toolSize, ...color) {
-    super(id);
-    this.toolSize = toolSize;
-    this.color = color;
-  }
-}
-
-function rememberFilling(x, y) {
+function rememberFilling(...cords) {
   checkCurCords();
-  curCords.push(new curTool('Filling', x, y));
+  curCords.push({
+    id: 'Filling',
+    cords: cords,
+    color: curColor
+  });
   ++curState;
 }
 
 function rememberImage(img) {
   checkCurCords();
-  curCords.push(new curImage(img));
+  curCords.push({
+    id: 'Image',
+    img: img
+  });
   ++curState;
 }
 
 function rememberDrawingTool(id) {
   checkCurCords();
-  curCords.push(new curDrawingTool(id, curToolSize, ...curColor));
+  curCords.push({
+    id: id,
+    color: curColor.slice(0),
+    toolSize: curToolSize,
+    cords: []
+  });
   ++curState;
 }
 
@@ -73,7 +63,7 @@ function replayActions() {
         replayImage(curCords[i].img);
         break;
       case 'Filling':
-        replayFilling(curCords[i].cords);
+        replayFilling(curCords[i]);
         break;
       default:
         replayDrawing(curCords[i]);
@@ -89,11 +79,13 @@ function replayImage(img) {
     0, 0, canvas.width, canvas.height);
 }
 
-function replayFilling(cords) {
+function replayFilling(tool) {
+  let cords = tool.cords;
   let e = {
     offsetX: cords[0],
     offsetY: cords[1]
   };
+  curColor = tool.color;
   fill(e);
 }
 

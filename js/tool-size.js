@@ -1,3 +1,5 @@
+'use strict';
+
 let toolSizeRange = document.getElementById("toolSizeRange");
 let toolSizeText = document.getElementById("toolSizeText");
 
@@ -7,7 +9,7 @@ toolSizeText.value = `${curToolSize}px`;
 let defaultSize = curToolSize;
 
 toolSizeRange.oninput = () => { 
-  toolSizeText.value = toolSizeRange.value +'px'; 
+  toolSizeText.value = toolSizeRange.value + 'px'; 
   toolSizeText.style.background = "white";
 }
 
@@ -20,13 +22,13 @@ toolSizeText.oninput = () => {
     curToolSize = parseInt(toolSizeText.value);  
   } else {
     toolSizeText.style.background = "#ffd4d4";
-    if (parseInt(toolSizeText.value) > toolSizeRange.max) {
-      curToolSize = toolSizeRange.max;
-    } else if (parseInt(toolSizeText.value) < toolSizeRange.min) {
-      curToolSize = toolSizeRange.min;
-    } else {
-      curToolSize = defaultSize;
-    }
+    curToolSize = getToolSize(toolSizeText, toolSizeRange);
+  }
+  
+  function getToolSize(toolSizeText, toolSizeRange) {
+    if (parseInt(toolSizeText.value) > toolSizeRange.max) { return toolSizeRange.max; }
+    if (parseInt(toolSizeText.value) < toolSizeRange.min) { return toolSizeRange.min; } 
+    return defaultSize;
   }
 }  
                                            
@@ -36,12 +38,14 @@ toolSizeText.onchange = () => {
     toolSizeRange.value = parseInt(toolSizeText.value);    
   } else {
     toolSizeRange.value = curToolSize;
-    toolSizeText.value = curToolSize +'px';
+    toolSizeText.value = curToolSize + 'px';
     toolSizeText.style.background = "white";
   }
 }
 
 function checkSizeToolInput(str) {
   const regExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return (regExp.test(str)) && (parseInt(str) <= toolSizeRange.max) && (parseInt(str) >= toolSizeRange.min);
+  return (regExp.test(str)) && 
+         (parseInt(str) <= toolSizeRange.max) && 
+         (parseInt(str) >= toolSizeRange.min);
 }

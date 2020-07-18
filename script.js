@@ -95,6 +95,7 @@ document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
   curCords = [];
   curState = 0;
+  photoOfState = [];
 });
 
 addEventListener('keydown', (event) => {

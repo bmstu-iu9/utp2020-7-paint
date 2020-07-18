@@ -1,6 +1,7 @@
 'use strict';
 
 let isReplaying = false;
+let photoOfState = [];
 
 function rememberFilling(...cords) {
   checkCurCords();
@@ -35,13 +36,30 @@ function rememberDrawingTool(id) {
 function checkCurCords() {
   let d = curCords.length - curState;
   if (d >= 1) curCords.splice(curState, d);
+  if (curCords.length == 40) {
+    photoOfState.pop();
+    photoOfState.push(canvas.toDataURL());
+  } else if (curCords.length == 80) {
+    if (photoOfState.length == 2) photoOfState.shift();
+    photoOfState.push(canvas.toDataURL());
+    curCords.splice(0, curState = 40);
+  }
 }
 
 document.getElementById('undo').addEventListener('click', () => {
   if (curState > 0) {
     --curState;
     clearCanvas();
-    replayActions();
+    if (photoOfState.length == 2) {
+      let canvasPhoto = new Image();
+      canvasPhoto.onload = () => {
+        context.drawImage(canvasPhoto,
+          0, 0, canvasPhoto.width, canvasPhoto.height,
+          0, 0, canvas.width, canvas.height);
+        replayActions();
+      };
+      canvasPhoto.src = photoOfState[0];
+    } else replayActions();
   }
 });
 
@@ -49,7 +67,16 @@ document.getElementById('redo').addEventListener('click', () => {
   if (curState < curCords.length) {
     ++curState;
     clearCanvas();
-    replayActions();
+    if (photoOfState.length == 2) {
+      let canvasPhoto = new Image();
+      canvasPhoto.onload = () => {
+        context.drawImage(canvasPhoto,
+          0, 0, canvasPhoto.width, canvasPhoto.height,
+          0, 0, canvas.width, canvas.height);
+        replayActions();
+      };
+      canvasPhoto.src = photoOfState[0];
+    } else replayActions();
   }
 });
 

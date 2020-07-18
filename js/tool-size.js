@@ -36,7 +36,7 @@ toolSizeText.onchange = () => {
     toolSizeRange.value = parseInt(toolSizeText.value);    
   } else {
     toolSizeRange.value = curToolSize;
-    toolSizeText.value = curToolSize +'px';
+    toolSizeText.value = curToolSize + 'px';
     toolSizeText.style.background = "white";
   }
 }

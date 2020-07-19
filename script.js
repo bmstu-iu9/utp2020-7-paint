@@ -21,7 +21,7 @@ let memContext = memCanvas.getContext('2d');
 function saveImg() {
   memCanvas.width = canvas.width;
   memCanvas.height = canvas.height;
-  memCtx.drawImage(canvas, 0, 0);
+  memContext.drawImage(canvas, 0, 0);
 }
 
 function getElementPosition(element) {

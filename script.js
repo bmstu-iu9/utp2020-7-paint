@@ -15,6 +15,15 @@ const defaultHeight = 720;
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
+let memCanvas = document.createElement('canvas');
+let memContext = memCanvas.getContext('2d');
+
+function saveImg() {
+  memCanvas.width = canvas.width;
+  memCanvas.height = canvas.height;
+  memContext.drawImage(canvas, 0, 0);
+}
+
 function getElementPosition(element) {
   let curLeft = 0, curTop = 0;
   if (!element.offsetParent) return undefined;
@@ -85,7 +94,7 @@ let downloadBtn = document.getElementById("download");
 
 downloadBtn.addEventListener('click', () => {
   let img = canvas.toDataURL("image/png")
-                  .replace("image/png", "image/octet-stream");
+    .replace("image/png", "image/octet-stream");
   downloadBtn.setAttribute("href", img);
 });
 
@@ -128,7 +137,7 @@ addEventListener('keydown', (event) => {
 
 changeCanvasWidth.oninput = function () {
   let width = document.getElementById("changeCanvasWidth").value;
-  if (width  && width >= 50 && width <= 1400) {
+  if (width && width >= 50 && width <= 1400) {
     canvas.style.width = width + 'px';
     canvas.setAttribute('width', width + 'px');
     document.getElementById("curWidth").innerHTML = width + "";

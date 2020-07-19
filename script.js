@@ -95,45 +95,35 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-//memory-canvas for saving image
-let memCanvas = document.createElement('canvas');
-let memCtx = memCanvas.getContext('2d');
-
-function saveImg() {
-  memCanvas.width = canvas.width;
-  memCanvas.height = canvas.height;
-  memCtx.drawImage(canvas, 0, 0);
-}
-
 changeCanvasWidth.oninput = function () {
   let width = document.getElementById("changeCanvasWidth").value;
-  if (width) {
-    saveImg();
+  if (width  && width >= 50 && width <= 1400) {
     canvas.style.width = width + 'px';
     canvas.setAttribute('width', width + 'px');
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+    document.getElementById("curWidth").innerHTML=width+"";
   } else {
     canvas.setAttribute('width', '1080');
     canvas.style.width = 1080 + 'px';
+    document.getElementById("curWidth").innerHTML="1080";
   }
 }
 
 changeCanvasHeight.oninput = function () {
   let height = document.getElementById("changeCanvasHeight").value;
-  if (height) {
-    saveImg();
+  if (height && height >= 50 && height <= 1000) {
     canvas.style.height = height + 'px';
     canvas.setAttribute('height', height + 'px');
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+    document.getElementById("curHeight").innerHTML=height+"";
   } else {
     canvas.setAttribute('height', '720');
     canvas.style.height = 720 + 'px';
+    document.getElementById("curHeight").innerHTML="720";
   }
 }
 
 borderWidth.oninput = function () {
   let width = document.getElementById("borderWidth").value;
-  if (width) {
+  if (width && width >= 1 && width <= 30) {
     canvas.style.borderWidth = width + 'px';
   } else {
     canvas.style.borderWidth = 1 + 'px';

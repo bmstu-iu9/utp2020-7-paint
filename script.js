@@ -15,6 +15,15 @@ const defaultHeight = 720;
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
+let memCanvas = document.createElement('canvas');
+let memCtx = memCanvas.getContext('2d');
+
+function saveImg() {
+  memCanvas.width = canvas.width;
+  memCanvas.height = canvas.height;
+  memCtx.drawImage(canvas, 0, 0);
+}
+
 function getElementPosition(element) {
   let curLeft = 0, curTop = 0;
   if (!element.offsetParent) return undefined;
@@ -73,10 +82,10 @@ function drawUploaded(e) {
   img.src = e.target.result;
   img.onload = function () {
     canvas.getContext("2d").drawImage(img,
-    0, 0,
-    img.width, img.height,
-    0, 0,
-    canvas.width, canvas.height);
+      0, 0,
+      img.width, img.height,
+      0, 0,
+      canvas.width, canvas.height);
   }
   rememberImage(img);
 }
@@ -85,7 +94,7 @@ let downloadBtn = document.getElementById("download");
 
 downloadBtn.addEventListener('click', () => {
   let img = canvas.toDataURL("image/png")
-                  .replace("image/png", "image/octet-stream");
+    .replace("image/png", "image/octet-stream");
   downloadBtn.setAttribute("href", img);
 });
 
@@ -128,7 +137,7 @@ addEventListener('keydown', (event) => {
 
 changeCanvasWidth.oninput = function () {
   let width = document.getElementById("changeCanvasWidth").value;
-  if (width  && width >= 50 && width <= 1400) {
+  if (width && width >= 50 && width <= 1400) {
     canvas.style.width = width + 'px';
     canvas.setAttribute('width', width + 'px');
     document.getElementById("curWidth").innerHTML = width + "";

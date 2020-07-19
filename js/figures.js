@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 function endPointFigures() {
   isDrawing = false;

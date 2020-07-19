@@ -66,17 +66,19 @@
     <div class="droplist">
       <button class="dropbtn">Параметры холста</button>
       <div class="droplist-content">
+        <p>При изменении параметров изображение не сохраняется</p>
+        <p>Текущие параметры: <span id="curWidth">1080</span>x<span id="curHeight">720</span></p>
         <div class="field">
           <label>Высота холста:</label>
-          <input type="text" size="1" id="changeCanvasHeight">
+          <input type="number" size="1" id="changeCanvasHeight" min="50" max ="1000">
         </div>
         <div class="field">
           <label>Ширина холста:</label>
-          <input type="text" size="1" id="changeCanvasWidth">
+          <input type="number" size="1" id="changeCanvasWidth" min="50" max="1400">
         </div>
         <div class="field">
           <label>Ширина рамки:</label>
-          <input type="text" size="1" id="borderWidth">
+          <input type="number" size="1" id="borderWidth" min="1" max="30">
         </div>
         <div class="field">
           <label>Цвет рамки:</label>

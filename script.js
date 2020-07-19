@@ -82,10 +82,10 @@ function drawUploaded(e) {
   img.src = e.target.result;
   img.onload = function () {
     canvas.getContext("2d").drawImage(img,
-      0, 0,
-      img.width, img.height,
-      0, 0,
-      canvas.width, canvas.height);
+    0, 0,
+    img.width, img.height,
+    0, 0,
+    canvas.width, canvas.height);
   }
   rememberImage(img);
 }

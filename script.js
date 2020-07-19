@@ -6,9 +6,11 @@ let context = canvas.getContext("2d");
 let curColor = [0, 0, 0];
 let curToolSize = 5;
 
+const defaultWidth = 1080;
+const defaultHeight = 720;
+
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
-
 
 function getElementPosition(element) {
   let curLeft = 0, curTop = 0;
@@ -100,11 +102,11 @@ changeCanvasWidth.oninput = function () {
   if (width  && width >= 50 && width <= 1400) {
     canvas.style.width = width + 'px';
     canvas.setAttribute('width', width + 'px');
-    document.getElementById("curWidth").innerHTML=width+"";
+    document.getElementById("curWidth").innerHTML = width + "";
   } else {
-    canvas.setAttribute('width', '1080');
-    canvas.style.width = 1080 + 'px';
-    document.getElementById("curWidth").innerHTML="1080";
+    canvas.setAttribute('width', defaultWidth + 'px');
+    canvas.style.width = defaultWidth + 'px';
+    document.getElementById("curWidth").innerHTML = defaultWidth + "";
   }
 }
 
@@ -113,11 +115,11 @@ changeCanvasHeight.oninput = function () {
   if (height && height >= 50 && height <= 1000) {
     canvas.style.height = height + 'px';
     canvas.setAttribute('height', height + 'px');
-    document.getElementById("curHeight").innerHTML=height+"";
+    document.getElementById("curHeight").innerHTML = height + "";
   } else {
-    canvas.setAttribute('height', '720');
-    canvas.style.height = 720 + 'px';
-    document.getElementById("curHeight").innerHTML="720";
+    canvas.setAttribute('height', defaultHeight + 'px');
+    canvas.style.height = defaultHeight + 'px';
+    document.getElementById("curHeight").innerHTML = defaultHeight + "";
   }
 }
 

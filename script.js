@@ -9,9 +9,11 @@ let curToolSize = 5;
 let curCords = [];
 let curState = 0;
 
+const defaultWidth = 1080;
+const defaultHeight = 720;
+
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
-
 
 function getElementPosition(element) {
   let curLeft = 0, curTop = 0;
@@ -124,45 +126,35 @@ addEventListener('keydown', (event) => {
   }
 });
 
-//memory-canvas for saving image
-let memCanvas = document.createElement('canvas');
-let memCtx = memCanvas.getContext('2d');
-
-function saveImg() {
-  memCanvas.width = canvas.width;
-  memCanvas.height = canvas.height;
-  memCtx.drawImage(canvas, 0, 0);
-}
-
 changeCanvasWidth.oninput = function () {
   let width = document.getElementById("changeCanvasWidth").value;
-  if (width) {
-    saveImg();
+  if (width  && width >= 50 && width <= 1400) {
     canvas.style.width = width + 'px';
     canvas.setAttribute('width', width + 'px');
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+    document.getElementById("curWidth").innerHTML = width + "";
   } else {
-    canvas.setAttribute('width', '1080');
-    canvas.style.width = 1080 + 'px';
+    canvas.setAttribute('width', defaultWidth + 'px');
+    canvas.style.width = defaultWidth + 'px';
+    document.getElementById("curWidth").innerHTML = defaultWidth + "";
   }
 }
 
 changeCanvasHeight.oninput = function () {
   let height = document.getElementById("changeCanvasHeight").value;
-  if (height) {
-    saveImg();
+  if (height && height >= 50 && height <= 1000) {
     canvas.style.height = height + 'px';
     canvas.setAttribute('height', height + 'px');
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+    document.getElementById("curHeight").innerHTML = height + "";
   } else {
-    canvas.setAttribute('height', '720');
-    canvas.style.height = 720 + 'px';
+    canvas.setAttribute('height', defaultHeight + 'px');
+    canvas.style.height = defaultHeight + 'px';
+    document.getElementById("curHeight").innerHTML = defaultHeight + "";
   }
 }
 
 borderWidth.oninput = function () {
   let width = document.getElementById("borderWidth").value;
-  if (width) {
+  if (width && width >= 1 && width <= 30) {
     canvas.style.borderWidth = width + 'px';
   } else {
     canvas.style.borderWidth = 1 + 'px';

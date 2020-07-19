@@ -132,22 +132,11 @@ ul {
 }
 
 .dropbtn {
+  width: 200px;
   background-color: #ffe680;
   padding: 16px;
   font-size: 16px;
   border: none;
-}
-
-.droplist-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  position: relative;
-  display: inline-block;
-  justify-content: center;
 }
 
 .dropbtn {
@@ -160,6 +149,7 @@ ul {
 .droplist-content {
   display: none;
   position: absolute;
+  padding: 5px;
   background-color: #f1f1f1;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -182,6 +172,17 @@ ul {
 
 .field label {
   float:left;
+}
+
+.field input{
+  width: 50px;
+}
+
+.droplist-content p {
+  margin: 0;
+  padding: 0px;
+  color: #786b59;
+  font-size: 14px;
 }
 
 #toolSize {

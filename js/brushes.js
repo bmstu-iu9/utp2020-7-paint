@@ -7,7 +7,6 @@ function endPoint() {
   context.beginPath();
 }
 
-
 function initNeonBrush() {
   canvas.addEventListener("mousedown", startPointNeonBrush);
 }
@@ -22,6 +21,7 @@ function deleteNeonBrush() {
 
 function startPointNeonBrush(e) {
   isDrawing = true;
+  if (!isReplaying) rememberDrawingTool("NeonBrush");
 
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
@@ -39,6 +39,7 @@ function startPointNeonBrush(e) {
 
 function drawLineNeonBrush(e) {
   if (!isDrawing) return;
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   context.lineTo(e.offsetX, e.offsetY);
   context.stroke();
@@ -63,6 +64,7 @@ let oldX, oldY, newX, newY, distance, angle;
 
 function startPointSmoothBrush(e) {
   isDrawing = true;
+  if (!isReplaying) rememberDrawingTool("SmoothBrush");
 
   oldX = e.offsetX;
   oldY = e.offsetY;
@@ -79,6 +81,7 @@ function startPointSmoothBrush(e) {
 
 function drawLineSmoothBrush(e) {
   if (!isDrawing) return;
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   distance = Math.sqrt(Math.pow(e.offsetX - oldX, 2) + Math.pow(e.offsetY - oldY, 2))
   angle = Math.atan2(e.offsetX - oldX, e.offsetY - oldY);
@@ -114,6 +117,7 @@ let pointsCounter, prevPoints;
 
 function startPointSketchBrush(e) {
   isDrawing = true;
+  if (!isReplaying) rememberDrawingTool("SketchBrush");
 
   oldX = e.offsetX;
   oldY = e.offsetY;
@@ -136,6 +140,7 @@ function startPointSketchBrush(e) {
 
 function drawLineSketchBrush(e) {
   if (!isDrawing) return;
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   pointsCounter = pointsCounter + 1;
 

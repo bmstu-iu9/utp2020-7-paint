@@ -6,6 +6,8 @@ let context = canvas.getContext("2d");
 let curColor = [0, 0, 0];
 let curCanvasColor = [255, 255, 255];
 let curToolSize = 5;
+let curCords = [];
+let curState = 0;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -74,6 +76,7 @@ function drawUploaded(e) {
     0, 0,
     canvas.width, canvas.height);
   }
+  rememberImage(img);
 }
 
 let downloadBtn = document.getElementById("download");
@@ -84,8 +87,15 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute("href", img);
 });
 
-document.getElementById("clear").addEventListener('click', () => {
+function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+document.getElementById("clear").addEventListener('click', () => {
+  clearCanvas();
+  curCords = [];
+  curState = 0;
+  photoOfState = [];
 });
 
 addEventListener('keydown', (event) => {
@@ -103,6 +113,12 @@ addEventListener('keydown', (event) => {
         break;
       case 'u':
         document.getElementById("uploadImage").click();
+        break;
+      case 'y':
+        document.getElementById("redo").click();
+        break;
+      case 'z':
+        document.getElementById("undo").click();
         break;
     }
   }

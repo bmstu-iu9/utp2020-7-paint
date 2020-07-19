@@ -16,7 +16,7 @@ canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
 let memCanvas = document.createElement('canvas');
-let memCtx = memCanvas.getContext('2d');
+let memContext = memCanvas.getContext('2d');
 
 function saveImg() {
   memCanvas.width = canvas.width;

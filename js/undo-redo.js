@@ -28,6 +28,7 @@ function rememberDrawingTool(id) {
     id: id,
     color: curColor.slice(0),
     toolSize: curToolSize,
+    allowableColorDifference: curAllowableColorDifference,
     cords: []
   });
   ++curState;
@@ -85,6 +86,7 @@ function replayActions() {
   if (activeInstrument !== null) activeInstrument.delete();
   let activeToolSize = curToolSize;
   let activeColor = curColor;
+  let activeAllowableColorDifference = curAllowableColorDifference;
   for (let i = 0; i < curState; i++) {
     switch (curCords[i].id) {
       case 'Image':
@@ -101,6 +103,7 @@ function replayActions() {
   isReplaying = false;
   curToolSize = activeToolSize;
   curColor = activeColor;
+  curAllowableColorDifference = activeAllowableColorDifference;
   if (activeInstrument !== null) activeInstrument.init();
 }
 
@@ -117,6 +120,7 @@ function replayFilling(tool) {
     offsetY: cords[1]
   };
   curColor = tool.color;
+  curAllowableColorDifference = tool.allowableColorDifference;
   fill(e);
 }
 
@@ -128,6 +132,7 @@ function replayDrawing(tool) {
   };
   curToolSize = tool.toolSize;
   curColor = tool.color;
+  curAllowableColorDifference = tool.allowableColorDifference;
   window['startPoint' + tool.id](e);
   let drawLine = window['drawLine' + tool.id];
   for (let j = 1; j < cords.length; j++) {

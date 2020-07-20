@@ -37,9 +37,13 @@
 
   <div class="panel">
     <div class="container">
-      <div id="toolSize">
+      <div class="rangeAndText">
         <input type="range" id="toolSizeRange" min="1" max="300">
         <input type="text" id="toolSizeText">
+      </div>
+      <div class="rangeAndText">
+        <input type="range" id="colorDifferenceRange" min="0" max="100">
+        <input type="text" id="colorDifferenceText">
       </div>
       <button title="Неоновая Кисть" class="toolBtn" id="neonBrush">
       </button>
@@ -116,6 +120,7 @@
 <script src="js/filling.js"></script>
 <script src="js/instruments-switcher.js"></script>
 <script src="js/tool-size.js"></script>
+<script src="js/color-difference.js"></script>
 <script src="js/undo-redo.js"></script>
 </body>
 </html>

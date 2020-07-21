@@ -40,7 +40,7 @@ function drawStraightLine(e) {
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.moveTo (oldX, oldY);
-  context.lineTo (e.clientX, e.clientY);
+  context.lineTo (e.offsetX, e.offsetY);
   context.stroke();
 }
 

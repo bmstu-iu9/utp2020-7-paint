@@ -126,7 +126,7 @@ function startPointSmoothBrush(e) {
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
 
-  drawLineSmoothBrush(e)
+  drawLineSmoothBrush(e);
 
   canvas.addEventListener("mousemove", drawLineSmoothBrush);
   canvas.addEventListener("mouseup", endPoint);

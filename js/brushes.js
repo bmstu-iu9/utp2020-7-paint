@@ -28,9 +28,15 @@ function startPointBasicBrush(e) {
   oldX = e.offsetX;
   oldY = e.offsetY;
 
-  context.lineWidth = 0;
+  context.lineWidth = 0.1;
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
+
+  context.beginPath();
+  context.arc(oldX, oldY, curToolSize / 2, 0, Math.PI * 2, false);
+  context.fill();
+  context.stroke();
+  context.closePath();
 
   drawLineBasicBrush(e);
 
@@ -51,7 +57,6 @@ function drawLineBasicBrush(e) {
     newY = oldY + i * Math.cos(angle);
     context.beginPath();
     context.arc(newX, newY, curToolSize / 2, 0, Math.PI * 2, false);
-    context.closePath();
     context.fill();
     context.stroke();
   }
@@ -121,12 +126,18 @@ function startPointSmoothBrush(e) {
   oldX = e.offsetX;
   oldY = e.offsetY;
 
-  context.lineWidth = 0;
+  context.lineWidth = 0.1;
   context.globalAlpha = "0.01";
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
 
-  drawLineSmoothBrush(e)
+  context.beginPath();
+  context.arc(oldX, oldY, curToolSize / 2, 0, Math.PI * 2, false);
+  context.fill();
+  context.stroke();
+  context.closePath();
+
+  drawLineSmoothBrush(e);
 
   canvas.addEventListener("mousemove", drawLineSmoothBrush);
   canvas.addEventListener("mouseup", endPoint);
@@ -144,8 +155,7 @@ function drawLineSmoothBrush(e) {
     newX = oldX + i * Math.sin(angle);
     newY = oldY + i * Math.cos(angle);
     context.beginPath();
-    context.arc(newX, newY, curToolSize/2, 0, Math.PI * 2, false);
-    context.closePath();
+    context.arc(newX, newY, curToolSize / 2, 0, Math.PI * 2, false);
     context.fill();
     context.stroke();
   }

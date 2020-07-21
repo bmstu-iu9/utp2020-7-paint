@@ -1,7 +1,6 @@
 'use strict';
 
 function getColorDifference(rgb1, rgb2) {
-  //alert("a");
   let rmean = (rgb1[0] + rgb2[0]) / 2;
   let r = rgb1[0] - rgb2[0];
   let g = rgb1[1] - rgb2[1];
@@ -15,8 +14,6 @@ function RGBAtoRGB(rgba) {
   let B = ((1 - rgba[3]/255) * 255) + (rgba[3]/255 * rgba[2]);
   return [R, G, B];
 }
-
-//alert(RGBAtoRGB([0,255,0,125]));
 
 let maxAllowableColorDifference = getColorDifference([255, 255, 255], [0, 0, 0]);
 

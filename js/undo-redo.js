@@ -8,7 +8,8 @@ function rememberFilling(...cords) {
   curCords.push({
     id: 'Filling',
     cords: cords,
-    color: curColor
+    color: curColor,
+    allowableColorDifference: curAllowableColorDifference,
   });
   ++curState;
 }
@@ -28,7 +29,6 @@ function rememberDrawingTool(id) {
     id: id,
     color: curColor.slice(0),
     toolSize: curToolSize,
-    allowableColorDifference: curAllowableColorDifference,
     cords: []
   });
   ++curState;
@@ -132,7 +132,6 @@ function replayDrawing(tool) {
   };
   curToolSize = tool.toolSize;
   curColor = tool.color;
-  curAllowableColorDifference = tool.allowableColorDifference;
   window['startPoint' + tool.id](e);
   let drawLine = window['drawLine' + tool.id];
   for (let j = 1; j < cords.length; j++) {

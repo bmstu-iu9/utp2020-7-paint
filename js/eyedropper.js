@@ -23,7 +23,7 @@ function stopEyedropper(event) {
   curColor = color;
   colorInput.value = "#" + rgbToHex(color);
   switchEyedropperWindow();
-  eyedropperButton.dispatchEvent(new Event('click'));
+  eyedropperButton.click();
 }
 
 function switchEyedropperWindow() {

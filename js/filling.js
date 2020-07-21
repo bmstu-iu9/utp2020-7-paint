@@ -15,10 +15,10 @@ function fill(event) {
   if (!isReplaying) rememberFilling(event.offsetX, event.offsetY);
 
   let startRGBA = [
-    originalImageData.data[getRedInData(event.offsetX, event.offsetY)],
-    originalImageData.data[getGreenInData(event.offsetX, event.offsetY)],
-    originalImageData.data[getBlueInData(event.offsetX, event.offsetY)],
-    originalImageData.data[getAlphaInData(event.offsetX, event.offsetY)]
+    originalImageData.data[getIndexOfRedInData(event.offsetX, event.offsetY)],
+    originalImageData.data[getIndexOfGreenInData(event.offsetX, event.offsetY)],
+    originalImageData.data[getIndexOfBlueInData(event.offsetX, event.offsetY)],
+    originalImageData.data[getIndexOfAlphaInData(event.offsetX, event.offsetY)]
   ];
 
   let stack = [];
@@ -51,12 +51,14 @@ function fill(event) {
   }
 
   context.putImageData(resultImageData, 0, 0);
-
   function haveSameColor(x, y) {
-    return (originalImageData.data[getRedInData(x, y)] === startRGBA[0] &&
-     originalImageData.data[getGreenInData(x, y)] === startRGBA[1] &&
-     originalImageData.data[getBlueInData(x, y)] === startRGBA[2] &&
-     originalImageData.data[getAlphaInData(x, y)] === startRGBA[3]);
+    let thisRGBA = [
+      originalImageData.data[getIndexOfRedInData(x, y)],
+      originalImageData.data[getIndexOfGreenInData(x, y)],
+      originalImageData.data[getIndexOfBlueInData(x, y)],
+      originalImageData.data[getIndexOfAlphaInData(x, y)],
+    ]
+    return ((getColorDifference(RGBAtoRGB(thisRGBA), RGBAtoRGB(startRGBA))/maxAllowableColorDifference)*100 <= curAllowableColorDifference);
   }
 
   function wasPushed(x, y) {
@@ -67,15 +69,15 @@ function fill(event) {
     return (x <= canvas.width-1 && y <= canvas.height && x >= 0 && y >= 0);
   }
 
-  function getRedInData(x, y) { return canvas.width*(y-1)*4+x*4; }
-  function getGreenInData(x, y) { return canvas.width*(y-1)*4+x*4+1; }
-  function getBlueInData(x, y) { return canvas.width*(y-1)*4+x*4+2; }
-  function getAlphaInData(x, y) { return canvas.width*(y-1)*4+x*4+3; }
+  function getIndexOfRedInData(x, y) { return canvas.width*(y-1)*4+x*4; }
+  function getIndexOfGreenInData(x, y) { return canvas.width*(y-1)*4+x*4+1; }
+  function getIndexOfBlueInData(x, y) { return canvas.width*(y-1)*4+x*4+2; }
+  function getIndexOfAlphaInData(x, y) { return canvas.width*(y-1)*4+x*4+3; }
 
   function changePixel(x, y) {
-    resultImageData.data[getRedInData(x, y)] = curColor[0];
-    resultImageData.data[getGreenInData(x, y)] = curColor[1];
-    resultImageData.data[getBlueInData(x, y)] = curColor[2];
-    resultImageData.data[getAlphaInData(x, y)] = 255;
+    resultImageData.data[getIndexOfRedInData(x, y)] = curColor[0];
+    resultImageData.data[getIndexOfGreenInData(x, y)] = curColor[1];
+    resultImageData.data[getIndexOfBlueInData(x, y)] = curColor[2];
+    resultImageData.data[getIndexOfAlphaInData(x, y)] = 255;
   }
 }

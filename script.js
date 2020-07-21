@@ -6,6 +6,7 @@ let context = canvas.getContext("2d");
 let curColor = [0, 0, 0];
 let curCanvasColor = [255, 255, 255];
 let curToolSize = 5;
+let curAllowableColorDifference = 0;
 let curCords = [];
 let curState = 0;
 

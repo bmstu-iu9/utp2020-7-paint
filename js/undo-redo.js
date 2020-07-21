@@ -8,7 +8,8 @@ function rememberFilling(...cords) {
   curCords.push({
     id: 'Filling',
     cords: cords,
-    color: curColor
+    color: curColor,
+    allowableColorDifference: curAllowableColorDifference,
   });
   ++curState;
 }
@@ -85,6 +86,7 @@ function replayActions() {
   if (activeInstrument !== null) activeInstrument.delete();
   let activeToolSize = curToolSize;
   let activeColor = curColor;
+  let activeAllowableColorDifference = curAllowableColorDifference;
   for (let i = 0; i < curState; i++) {
     switch (curCords[i].id) {
       case 'Image':
@@ -101,6 +103,7 @@ function replayActions() {
   isReplaying = false;
   curToolSize = activeToolSize;
   curColor = activeColor;
+  curAllowableColorDifference = activeAllowableColorDifference;
   if (activeInstrument !== null) activeInstrument.init();
 }
 
@@ -117,6 +120,7 @@ function replayFilling(tool) {
     offsetY: cords[1]
   };
   curColor = tool.color;
+  curAllowableColorDifference = tool.allowableColorDifference;
   fill(e);
 }
 

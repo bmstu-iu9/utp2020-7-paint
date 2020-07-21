@@ -155,7 +155,7 @@ function drawLineSmoothBrush(e) {
 }
 
 
-let pointsCounter, prevPoints, firstSketch;
+let pointsCounter, prevPoints;
 
 function initSketchBrush() {
   curToolSize = 1;

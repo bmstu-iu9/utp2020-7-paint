@@ -155,7 +155,7 @@ function drawLineSmoothBrush(e) {
 }
 
 
-let pointsCounter, prevPoints, firstSketch;
+let pointsCounter, prevPoints;
 
 function initSketchBrush() {
   curToolSize = 1;
@@ -179,7 +179,7 @@ function startPointSketchBrush(e) {
   isDrawing = true;
   if (!isReplaying) rememberDrawingTool("SketchBrush");
 
-  context.lineWidth = Math.min(5, curToolSize);
+  context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
   oldY = e.offsetY;

@@ -51,7 +51,6 @@ function fill(event) {
   }
 
   context.putImageData(resultImageData, 0, 0);
-  
   function haveSameColor(x, y) {
     let thisRGBA = [
       originalImageData.data[getIndexOfRedInData(x, y)],

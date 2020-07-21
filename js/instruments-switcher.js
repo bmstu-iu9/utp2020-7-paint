@@ -1,7 +1,7 @@
 'use strict';
 
 const allIds = ['pencil', 'eraser', 'neonBrush', 'smoothBrush', 'sketchBrush',
-'filling', 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'eyedropper'];
+'filling', 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'eyedropper', 'straightLine'];
 
 let allInstruments = new Map();
 let activeInstrument = null;

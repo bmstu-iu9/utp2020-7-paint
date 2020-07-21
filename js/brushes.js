@@ -155,7 +155,13 @@ function drawLineSmoothBrush(e) {
 }
 
 
+let pointsCounter, prevPoints, firstSketch;
+
 function initSketchBrush() {
+  curToolSize = 1;
+  toolSizeRange.value = 1;
+  toolSizeText.value = `1px`;
+  toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointSketchBrush);
 }
 
@@ -165,21 +171,21 @@ function deleteSketchBrush() {
   canvas.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
   context.globalAlpha = "1";
+  toolSizeRange.max = 300;
 }
 
-let pointsCounter, prevPoints;
 
 function startPointSketchBrush(e) {
   isDrawing = true;
   if (!isReplaying) rememberDrawingTool("SketchBrush");
+
+  context.lineWidth = Math.min(5, curToolSize);
 
   oldX = e.offsetX;
   oldY = e.offsetY;
 
   context.strokeStyle = arrayToRgb(curColor);
   context.globalAlpha = "0.1";
-
-  context.lineWidth = Math.min(5, curToolSize);
 
   prevPoints = new Array(10);
   pointsCounter = 0;

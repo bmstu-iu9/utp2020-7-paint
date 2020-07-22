@@ -1,7 +1,9 @@
 'use strict'
 
 let maxLayerId = 0;
+let activeLayer;
 let layersField = document.getElementById('layersField');
+let layers = [];
 let addLayerTop = document.getElementById('addLayerTop');
 let addLayerBottom = document.getElementById('addLayerBottom');
 
@@ -12,6 +14,7 @@ function createLayerHtml(id) {
 
   let previewLayer = document.createElement('canvas');
   previewLayer.classList.add('preview');
+  previewLayer.id = 'preview' + id;
   newLayer.appendChild(previewLayer);
 
   return newLayer;
@@ -25,21 +28,52 @@ function createCanvasHtml(id) {
   return newCanvas;
 }
 
+function parseLayerId(str) {
+  switch (str.slice(0, 3)) {
+    case 'lay':
+      return parseInt(str.slice('layerDisplay'.length))
+      break;
+    case 'pre':
+      return parseInt(str.slice('preview'.length))
+      break;
+  }
+}
+
+function getLayerByDisplay(target) {
+  let id = parseLayerId(target);
+  console.log(id);
+  return layers[id];
+}
+
+function switchLayer(event) {
+  let layer = getLayerByDisplay(event.target.id);
+  console.log(event.target.id);
+  if (activeLayer.id === layer.id) return;
+  activeLayer.display.classList.remove('highlight');
+  layer.display.classList.add('highlight');
+  canvas = layer.canvas;
+  context = canvas.getContext('2d');
+  activeLayer = layer;
+}
+
 class Layer {
   constructor(caller) {
     if (caller == 'firstLayer') {
       this.id = 0;
       this.display = document.getElementById('layerDisplay0');
+      this.display.addEventListener('click', switchLayer);
       this.canvas = document.getElementById('layer0');
       this.preview = this.display.children[0];
       this.index = 50;
       this.canvas.style.zIndex = this.index;
       this.canvas.style.background = 'repeat url(\"img/background.png\")';
+      layers.push(this);
       return this;
     }
 
     this.id = ++maxLayerId;
     this.display = createLayerHtml(this.id);
+    this.display.addEventListener('click', switchLayer);
     this.canvas = createCanvasHtml(this.id);
     canvas = this.canvas;
     this.preview = this.display.children[0];
@@ -57,10 +91,13 @@ class Layer {
       bottomLayer.canvas.style.removeProperty('background');
       bottomLayer = this.display;
     }
+
+    layers.push(this);
   }
 }
 
 let firstLayer = new Layer('firstLayer');
+activeLayer = firstLayer;
 let topLayer = firstLayer;
 let bottomLayer = firstLayer;
 

@@ -97,6 +97,10 @@ body {
   height: 5%;
 }
 
+.layer.highlight {
+  border: solid 1px #FF7F50;
+}
+
 canvas.preview {
   background: repeat url("img/background.png");
   background-size: 10%;

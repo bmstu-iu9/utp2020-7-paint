@@ -11,14 +11,14 @@ function initRectangle() {
 
 function deleteRectangle() {
   canvas.removeEventListener("mousedown", startPointRectangle);
-  canvas.removeEventListener("mousemove", drawLineRectangle);
+  canvas.removeEventListener("mousemove", drawRectangle);
   canvas.removeEventListener("mouseup", endPointFigures);
   canvas.removeEventListener("mouseleave", endPointFigures);
 }
 
 function startPointRectangle(e) {
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("Rectangle");
+  if (!isReplaying) rememberDrawingTool("Rectangle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -30,15 +30,15 @@ function startPointRectangle(e) {
   oldX = e.offsetX;
   oldY = e.offsetY;
 
-  drawLineRectangle(e);
+  drawRectangle(e);
 
-  canvas.addEventListener("mousemove", drawLineRectangle);
+  canvas.addEventListener("mousemove", drawRectangle);
   canvas.addEventListener("mouseup", endPointFigures);
 }
 
-function drawLineRectangle(e) {
+function drawRectangle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -56,14 +56,14 @@ function initCircle() {
 
 function deleteCircle() {
   canvas.removeEventListener("mousedown", startPointCircle);
-  canvas.removeEventListener("mousemove", drawLineCircle);
+  canvas.removeEventListener("mousemove", drawCircle);
   canvas.removeEventListener("mouseup", endPointFigures);
   canvas.removeEventListener("mouseleave", endPointFigures);
 }
 
 function startPointCircle(e) {
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("Circle");
+  if (!isReplaying) rememberDrawingTool("Circle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -75,15 +75,15 @@ function startPointCircle(e) {
   centerX = e.offsetX;
   centerY = e.offsetY;
 
-  drawLineCircle(e);
+  drawCircle(e);
 
-  canvas.addEventListener("mousemove", drawLineCircle);
+  canvas.addEventListener("mousemove", drawCircle);
   canvas.addEventListener("mouseup", endPointFigures);
 }
 
-function drawLineCircle(e) {
+function drawCircle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   radius = Math.sqrt(Math.pow(e.offsetX - centerX, 2) + Math.pow(e.offsetY - centerY, 2));
 
@@ -102,14 +102,14 @@ function initEllipse() {
 
 function deleteEllipse() {
   canvas.removeEventListener("mousedown", startPointEllipse);
-  canvas.removeEventListener("mousemove", drawLineEllipse);
+  canvas.removeEventListener("mousemove", drawEllipse);
   canvas.removeEventListener("mouseup", endPointFigures);
   canvas.removeEventListener("mouseleave", endPointFigures);
 }
 
 function startPointEllipse(e) {
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("Ellipse");
+  if (!isReplaying) rememberDrawingTool("Ellipse", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -121,15 +121,15 @@ function startPointEllipse(e) {
   centerX = e.offsetX;
   centerY = e.offsetY;
 
-  drawLineEllipse(e);
+  drawEllipse(e);
 
-  canvas.addEventListener("mousemove", drawLineEllipse);
+  canvas.addEventListener("mousemove", drawEllipse);
   canvas.addEventListener("mouseup", endPointFigures);
 }
 
-function drawLineEllipse(e) {
+function drawEllipse(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -150,14 +150,14 @@ function initEqTriangle() {
 
 function deleteEqTriangle() {
   canvas.removeEventListener("mousedown", startPointEqTriangle);
-  canvas.removeEventListener("mousemove", drawLineEqTriangle);
+  canvas.removeEventListener("mousemove", drawEqTriangle);
   canvas.removeEventListener("mouseup", endPointFigures);
   canvas.removeEventListener("mouseleave", endPointFigures);
 }
 
 function startPointEqTriangle(e) {
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("EqTriangle");
+  if (!isReplaying) rememberDrawingTool("EqTriangle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -169,15 +169,15 @@ function startPointEqTriangle(e) {
   startX = e.offsetX;
   startY = e.offsetY;
 
-  drawLineEqTriangle(e);
+  drawEqTriangle(e);
 
-  canvas.addEventListener("mousemove", drawLineEqTriangle);
+  canvas.addEventListener("mousemove", drawEqTriangle);
   canvas.addEventListener("mouseup", endPointFigures);
 }
 
-function drawLineEqTriangle(e) {
+function drawEqTriangle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -197,14 +197,14 @@ function initRightTriangle() {
 
 function deleteRightTriangle() {
   canvas.removeEventListener("mousedown", startPointRightTriangle);
-  canvas.removeEventListener("mousemove", drawLineRightTriangle);
+  canvas.removeEventListener("mousemove", drawRightTriangle);
   canvas.removeEventListener("mouseup", endPointFigures);
   canvas.removeEventListener("mouseleave", endPointFigures);
 }
 
 function startPointRightTriangle(e) {
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("RightTriangle");
+  if (!isReplaying) rememberDrawingTool("RightTriangle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -216,15 +216,15 @@ function startPointRightTriangle(e) {
   startX = e.offsetX;
   startY = e.offsetY;
 
-  drawLineEqTriangle(e);
+  drawEqTriangle(e);
 
-  canvas.addEventListener("mousemove", drawLineRightTriangle);
+  canvas.addEventListener("mousemove", drawRightTriangle);
   canvas.addEventListener("mouseup", endPointFigures);
 }
 
-function drawLineRightTriangle(e) {
+function drawRightTriangle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 

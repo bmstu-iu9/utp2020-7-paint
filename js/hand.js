@@ -17,9 +17,9 @@ function startMoving(e) {
   canvas.style.cursor = 'grabbing';
   canvas.style.position = 'absolute';
 
-  let coords = getCoords(canvas);
-  let shiftX = e.pageX - coords.left;
-  let shiftY = e.pageY - coords.top;
+  let coords = getElementPosition(canvas);
+  let shiftX = e.pageX - coords.x;
+  let shiftY = e.pageY - coords.y;
 
   move(e);
 
@@ -36,12 +36,4 @@ function startMoving(e) {
 
   document.addEventListener("mousemove", move);
   canvas.addEventListener("mouseup", stopMoving);
-}
-
-function getCoords(elem) {
-  let box = elem.getBoundingClientRect();
-  return {
-    top: box.top + pageYOffset,
-    left: box.left + pageXOffset
-  }
 }

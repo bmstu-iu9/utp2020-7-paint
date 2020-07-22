@@ -41,13 +41,11 @@ function parseLayerId(str) {
 
 function getLayerByDisplay(target) {
   let id = parseLayerId(target);
-  console.log(id);
   return layers[id];
 }
 
 function switchLayer(event) {
   let layer = getLayerByDisplay(event.target.id);
-  console.log(event.target.id);
   if (activeLayer.id === layer.id) return;
   activeLayer.display.classList.remove('highlight');
   layer.display.classList.add('highlight');
@@ -75,6 +73,8 @@ class Layer {
     this.display = createLayerHtml(this.id);
     this.display.addEventListener('click', switchLayer);
     this.canvas = createCanvasHtml(this.id);
+    this.canvas.width = canvas.offsetWidth;
+    this.canvas.height = canvas.offsetHeight;
     canvas = this.canvas;
     this.preview = this.display.children[0];
 
@@ -82,14 +82,14 @@ class Layer {
       topLayer.display.before(this.display);
       this.index = topLayer.index + 1;
       this.canvas.style.zIndex = this.index;
-      topLayer = this.display;
+      topLayer = this;
     } else {
       bottomLayer.display.after(this.display);
       this.index = bottomLayer.index - 1;
       this.canvas.style.zIndex = this.index;
       this.canvas.style.background = 'repeat url(\"img/background.png\")';
       bottomLayer.canvas.style.removeProperty('background');
-      bottomLayer = this.display;
+      bottomLayer = this;
     }
 
     layers.push(this);

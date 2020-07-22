@@ -61,8 +61,7 @@ body {
   color: #786b59;
 }
 
-#mainCanvas {
-  background: repeat url("img/background.png");
+.mainCanvas {
   position: absolute;
   width: 1080px;
   height: 720px;
@@ -72,7 +71,7 @@ body {
   left: 0;
 }
 
-#mainCanvas.highlight {
+.mainCanvas.highlight {
   box-sizing: border-box;
   border: 5px dashed #bbbbbb;
   border-radius: 20px;

@@ -1,6 +1,6 @@
 'use strict'
 
-let canvas = document.getElementById("mainCanvas");
+let canvas = document.getElementById("layer0");
 let context = canvas.getContext("2d");
 
 let curColor = [0, 0, 0];

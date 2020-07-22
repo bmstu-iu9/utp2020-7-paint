@@ -23,13 +23,13 @@ function rememberImage(img) {
   ++curState;
 }
 
-function rememberDrawingTool(id) {
+function rememberDrawingTool(id, ...cords) {
   checkCurCords();
   curCords.push({
     id: id,
     color: curColor.slice(0),
     toolSize: curToolSize,
-    cords: []
+    cords: cords
   });
   ++curState;
 }
@@ -133,7 +133,7 @@ function replayDrawing(tool) {
   curToolSize = tool.toolSize;
   curColor = tool.color;
   window['startPoint' + tool.id](e);
-  let drawLine = window['drawLine' + tool.id];
+  let drawLine = window['draw' + tool.id];
   for (let j = 1; j < cords.length; j++) {
     e.offsetX = cords[j][0];
     e.offsetY = cords[j][1];

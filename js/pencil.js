@@ -6,7 +6,7 @@ function initPencil() {
 
 function deletePencil() {
   canvas.removeEventListener("mousedown", startPointPencil);
-  canvas.removeEventListener("mousemove", drawLinePencil);
+  canvas.removeEventListener("mousemove", drawPencil);
   canvas.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
 }
@@ -19,14 +19,14 @@ function startPointPencil(e) {
   context.lineCap = "round";
   context.strokeStyle = arrayToRgb(curColor);
 
-  drawLinePencil(e);
+  drawPencil(e);
 
-  canvas.addEventListener("mousemove", drawLinePencil);
+  canvas.addEventListener("mousemove", drawPencil);
   canvas.addEventListener("mouseup", endPoint);
   canvas.addEventListener("mouseleave", endPoint);
 }
 
-function drawLinePencil(e) {
+function drawPencil(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 

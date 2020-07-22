@@ -72,6 +72,43 @@ body {
   left: 0;
 }
 
+#mainCanvas.highlight {
+  box-sizing: border-box;
+  border: 5px dashed #bbbbbb;
+  border-radius: 20px;
+}
+
+#layersField {
+  position: absolute;
+  box-sizing: border-box;
+  top: 10%;
+  left: 90%;
+  width: 10%;
+  height: 90%;
+  background: #eeeeee;
+  border-left: 1px solid #cccccc;
+}
+
+.layer {
+  background: #fafafa;
+  position: relative;
+  margin-left: 5%;
+  margin-top: 5%;
+  width: 90%;
+  height: 5%;
+}
+
+canvas.preview {
+  background: repeat url("img/background.png");
+  background-size: 10%;
+  display: inline-block;
+  position: relative;
+  top: 10%;
+  left: 4%;
+  height: 80%;
+  width: 36%;
+}
+
 #colorIndicatorDynamic {
   box-sizing: border-box;
   position: absolute;
@@ -90,12 +127,6 @@ body {
   margin: 0;
   top: 20%;
   left: 0;
-}
-
-#mainCanvas.highlight {
-  box-sizing: border-box;
-  border: 5px dashed #bbbbbb;
-  border-radius: 20px;
 }
 
 #help {

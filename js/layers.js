@@ -34,7 +34,7 @@ function parseLayerId(str) {
       return parseInt(str.slice('layerDisplay'.length));
       break;
     case 'pre':
-      return parseInt(str.slice('preview'.length))
+      return parseInt(str.slice('preview'.length));
       break;
   }
 }

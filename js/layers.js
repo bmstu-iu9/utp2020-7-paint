@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let maxLayerId = 0;
 let activeLayer;

@@ -4,6 +4,8 @@ let eyedropperButton = document.getElementById('eyedropper');
 let eyedropperWindow = document.getElementById('eyedropperWindow');
 
 function initEyedropper() {
+  canvas.style.cursor = "url('img/cursors/eyedropper-cursor.png') 0 20, auto";
+
   canvas.addEventListener('mousemove', handleEyedropper);
   canvas.addEventListener('click', stopEyedropper);
   canvas.addEventListener('mouseenter', switchEyedropperWindow);
@@ -11,6 +13,8 @@ function initEyedropper() {
 }
 
 function deleteEyedropper() {
+  canvas.style.cursor = 'default';
+
   canvas.removeEventListener('mousemove', handleEyedropper);
   canvas.removeEventListener('click', stopEyedropper);
   canvas.removeEventListener('mouseenter', switchEyedropperWindow);

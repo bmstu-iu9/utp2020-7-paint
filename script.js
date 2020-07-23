@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let canvas = document.getElementById("layer0");
 let context = canvas.getContext("2d");

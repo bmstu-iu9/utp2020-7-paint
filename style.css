@@ -61,8 +61,7 @@ body {
   color: #786b59;
 }
 
-#mainCanvas {
-  background: repeat url("img/background.png");
+.mainCanvas {
   position: absolute;
   width: 1080px;
   height: 720px;
@@ -70,6 +69,51 @@ body {
   margin: 0;
   top: 10%;
   left: 0;
+}
+
+.mainCanvas.highlight {
+  box-sizing: border-box;
+  border: 5px dashed #bbbbbb;
+  border-radius: 20px;
+}
+
+#layersField {
+  position: absolute;
+  box-sizing: border-box;
+  top: 10%;
+  left: 90%;
+  width: 10%;
+  height: 90%;
+  background: #eeeeee;
+  border-left: 1px solid #cccccc;
+}
+
+.layer {
+  background: #fafafa;
+  position: relative;
+  margin-left: 5%;
+  margin-top: 5%;
+  width: 90%;
+  height: 5%;
+}
+
+.layer.highlight {
+  border: solid 1px #FF7F50;
+}
+
+.addLayer {
+  text-align: center;
+}
+
+canvas.preview {
+  background: repeat url("img/background.png");
+  background-size: 10%;
+  display: inline-block;
+  position: relative;
+  top: 10%;
+  left: 4%;
+  height: 80%;
+  width: 36%;
 }
 
 #colorIndicatorDynamic {
@@ -90,12 +134,6 @@ body {
   margin: 0;
   top: 20%;
   left: 0;
-}
-
-#mainCanvas.highlight {
-  box-sizing: border-box;
-  border: 5px dashed #bbbbbb;
-  border-radius: 20px;
 }
 
 #help {
@@ -119,7 +157,7 @@ body {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
-  z-index: 1;
+  z-index: 1000;
 }
 
 ul {
@@ -130,6 +168,7 @@ ul {
 .droplist {
   position: relative;
   display: inline-block;
+  z-index: 1000;
 }
 
 .dropbtn {
@@ -154,7 +193,7 @@ ul {
   background-color: #f1f1f1;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+  z-index: 1000;
 }
 
 .droplist:hover .droplist-content {
@@ -224,7 +263,7 @@ ul {
   height:30px;
   border-radius: 100%;
   border: 2px solid #000000;
-  z-index: 1;
+  z-index: 1000;
   position: absolute;
   box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }

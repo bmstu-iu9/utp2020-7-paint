@@ -113,10 +113,19 @@
   </div>
 </div>
 
-<canvas id="mainCanvas"></canvas>
+<canvas class="mainCanvas" id="layer0"></canvas>
+
+<div id="layersField">
+  <div class="layer addLayer" id="addLayerTop">add layer</div>
+  <div class="layer highlight" id="layerDisplay0">
+    <canvas class="preview" id="preview0"></canvas>
+  </div>
+  <div class="layer addLayer" id="addLayerBottom">add layer</div>
+</div>
 
 
 <script src="script.js"></script>
+<script src="js/layers.js"></script>
 <script src="js/drag-n-drop.js"></script>
 <script src="js/pencil.js"></script>
 <script src="js/brushes.js"></script>

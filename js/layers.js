@@ -31,7 +31,7 @@ function createCanvasHtml(id) {
 function parseLayerId(str) {
   switch (str.slice(0, 3)) {
     case 'lay':
-      return parseInt(str.slice('layerDisplay'.length))
+      return parseInt(str.slice('layerDisplay'.length));
       break;
     case 'pre':
       return parseInt(str.slice('preview'.length))

@@ -40,10 +40,10 @@ function handleEyedropper(event) {
   let color = getPixelColor(eventLocation.x, eventLocation.y);
   eyedropperWindow.style.background = arrayToRgb(color);
 
-  function moveWindow(x, y) {
-    eyedropperWindow.style.left = x + 10 + 'px';
-    eyedropperWindow.style.top = y + 40 + 'px';
+  function moveWindow() {
+    eyedropperWindow.style.left = event.pageX + 15 + 'px';
+    eyedropperWindow.style.top = event.pageY - 35 + 'px';
   }
 
-  moveWindow(eventLocation.x, eventLocation.y);
+  moveWindow();
 }

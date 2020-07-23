@@ -225,7 +225,8 @@ ul {
   border-radius: 100%;
   border: 2px solid #000000;
   z-index: 1;
-  position: fixed;
+  position: absolute;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }
 
 input[type='range']::-webkit-slider-runnable-track {

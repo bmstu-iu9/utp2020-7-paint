@@ -185,3 +185,12 @@ document.getElementById("help").addEventListener('click', (event) => {
   helpMenu.hidden = !helpMenu.hidden;
   event.currentTarget.classList.toggle("pressed");
 });
+
+function getIndexOfRedInData(x, y) { return canvas.width*(y-1)*4+x*4; }
+function getIndexOfGreenInData(x, y) { return canvas.width*(y-1)*4+x*4+1; }
+function getIndexOfBlueInData(x, y) { return canvas.width*(y-1)*4+x*4+2; }
+function getIndexOfAlphaInData(x, y) { return canvas.width*(y-1)*4+x*4+3; }
+  
+function areInCanvas(x, y) {
+  return (x <= canvas.width-1 && y <= canvas.height && x >= 0 && y >= 0);
+}

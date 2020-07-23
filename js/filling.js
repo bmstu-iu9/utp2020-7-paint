@@ -65,15 +65,6 @@ function fill(event) {
     return pushed[x][y];
   }
 
-  function areInCanvas(x, y) {
-    return (x <= canvas.width-1 && y <= canvas.height && x >= 0 && y >= 0);
-  }
-
-  function getIndexOfRedInData(x, y) { return canvas.width*(y-1)*4+x*4; }
-  function getIndexOfGreenInData(x, y) { return canvas.width*(y-1)*4+x*4+1; }
-  function getIndexOfBlueInData(x, y) { return canvas.width*(y-1)*4+x*4+2; }
-  function getIndexOfAlphaInData(x, y) { return canvas.width*(y-1)*4+x*4+3; }
-
   function changePixel(x, y) {
     resultImageData.data[getIndexOfRedInData(x, y)] = curColor[0];
     resultImageData.data[getIndexOfGreenInData(x, y)] = curColor[1];

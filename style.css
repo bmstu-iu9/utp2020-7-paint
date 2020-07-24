@@ -37,10 +37,12 @@ body {
   margin: 5px;
   width: 30px;
   height: 30px;
+  border-radius: 50%;
   float: left;
   border: none;
   background-size: cover;
   background-color: #f8f7f7;
+  outline: none; 
 }
 
 .toolBtn:hover {

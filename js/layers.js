@@ -47,10 +47,14 @@ function getLayerByDisplay(target) {
 function switchLayer(event) {
   let layer = getLayerByDisplay(event.target.id);
   if (activeLayer.id === layer.id) return;
+  activeLayer.canvas.style.pointerEvents = "none";
+  layer.canvas.style.pointerEvents = "auto";
   activeLayer.display.classList.remove('highlight');
   layer.display.classList.add('highlight');
+  activeInstrument && activeInstrument.delete();
   canvas = layer.canvas;
   context = canvas.getContext('2d');
+  activeInstrument && activeInstrument.init();
   activeLayer = layer;
 }
 
@@ -75,7 +79,18 @@ class Layer {
     this.canvas = createCanvasHtml(this.id);
     this.canvas.width = canvas.offsetWidth;
     this.canvas.height = canvas.offsetHeight;
+    
+    activeLayer.canvas.style.pointerEvents = "none";
+    this.canvas.style.pointerEvents = "auto";
+    activeLayer.display.classList.remove('highlight');
+    this.display.classList.add('highlight');
+    activeInstrument && activeInstrument.delete();
     canvas = this.canvas;
+    context = canvas.getContext('2d');
+    activeInstrument && activeInstrument.init();
+    activeLayer = this;
+    
+    
     this.preview = this.display.children[0];
 
     if (caller === 'addLayerTop') {

@@ -80,8 +80,16 @@ class Layer {
     this.canvas.width = canvas.offsetWidth;
     this.canvas.height = canvas.offsetHeight;
     
-    //canvas = this.canvas;
-    this.canvas.style.pointerEvents = "none";
+    activeLayer.canvas.style.pointerEvents = "none";
+    this.canvas.style.pointerEvents = "auto";
+    activeLayer.display.classList.remove('highlight');
+    this.display.classList.add('highlight');
+    activeInstrument && activeInstrument.delete();
+    canvas = this.canvas;
+    context = canvas.getContext('2d');
+    activeInstrument && activeInstrument.init();
+    activeLayer = this;
+    
     
     this.preview = this.display.children[0];
 

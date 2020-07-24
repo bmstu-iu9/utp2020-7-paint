@@ -10,8 +10,8 @@ let curAllowableColorDifference = 0;
 let curCords = [];
 let curState = 0;
 
-const defaultWidth = 1080;
-const defaultHeight = 720;
+const defaultWidth = 780;
+const defaultHeight = 400;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -180,8 +180,29 @@ borderColor.oninput = function () {
   }
 }
 
-document.getElementById("help").addEventListener('click', (event) => {
-  let helpMenu = document.getElementById("helpMenu");
-  helpMenu.hidden = !helpMenu.hidden;
+function hide_and_show (element) {
+  let menu = document.getElementById(element);
+  menu.hidden = !menu.hidden;
   event.currentTarget.classList.toggle("pressed");
+}
+
+document.getElementById("help").addEventListener('click', (event) => {
+  hide_and_show("helpMenu", event);
+});
+
+document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
+  hide_and_show("uploadImgMenu", event);
+});
+
+document.getElementById("basicBrush").addEventListener('click', (event) => {
+  hide_and_show("brushMenu", event);
+});
+
+
+document.getElementById("figure").addEventListener('click', (event) => {
+  hide_and_show("figureMenu", event);
+});
+
+document.getElementById("openPanel").addEventListener('click', (event) => {
+  hide_and_show("lefContainer", event);
 });

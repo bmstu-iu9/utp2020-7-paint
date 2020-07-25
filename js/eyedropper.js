@@ -49,7 +49,7 @@ function handleEyedropper(event) {
   let eventLocation = getEventLocation(this, event);
   let color = getPixelColor(eventLocation.x, eventLocation.y);
   if (color.every(elem => elem === 0)) {
-    eyedropperWindow.style.background = 'repeat url(\"img/background.png\"';
+    eyedropperWindow.style.background = 'url(\"img/background.png\")';
   } else eyedropperWindow.style.background = arrayToRgb(color);
 
   function moveWindow() {

@@ -37,6 +37,20 @@ function rememberDrawingTool(id, ...cords) {
   ++curState;
 }
 
+function rememberText(id) {
+  checkCurCords();
+  curCords.push({
+    id: id,
+    color: fontColor.value,
+    size: fontSize.value,
+    font: font.value,
+    deg: textDeg.value,
+    text: textToInsert,
+    layer: activeLayer.id
+  });
+  ++curState;
+}
+
 function checkCurCords() {
   let d = curCords.length - curState;
   if (d >= 1) curCords.splice(curState, d);
@@ -86,6 +100,9 @@ function replayActions(curCanvasId) {
         break;
       case 'Filling':
         replayFilling(curCords[i]);
+        break;
+      case 'Text':
+        replayTextInsertion(curCords[i]);
         break;
       default:
         replayDrawing(curCords[i]);
@@ -146,5 +163,22 @@ function replayDrawing(tool) {
   }
   isDrawing = false;
   context.beginPath();
+  window['delete' + tool.id]();
+}
+
+function replayTextInsertion(tool) {
+  let cords = tool.cords;
+  let e = {
+    offsetX: cords[0],
+    offsetY: cords[1]
+  };
+  fontSize.value = tool.size;
+  fontColor.value = tool.color;
+  font.value = tool.font;
+  textDeg.value = tool.deg;
+  textToInsert = tool.text;
+  saveImg();
+  window['startPoint' + tool.id](e);
+  isDrawing = false;
   window['delete' + tool.id]();
 }

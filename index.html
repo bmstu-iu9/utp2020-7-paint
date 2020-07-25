@@ -96,6 +96,7 @@
       </div>
     </div>
     <button title="Рука" class="toolBtn" id="hand"></button>
+    <button title="Вставить текст" class="toolBtn" id="text"></button>
   </div>
 
   <div class="droplist">
@@ -123,6 +124,29 @@
   <div class="layer addLayer" id="addLayerBottom">add layer</div>
 </div>
 
+<div id="textIndicator" contenteditable="true" hidden="true">Текст Alt + Enter</div>
+
+<div class="panel" id="textMenu" hidden="true">
+  <select id="fontSelector" class="selectorMenu" onchange="chooseTextFormat()">
+    <option value="serif">Font:</option>
+    <option value="arial"> Arial </option>
+    <option value="'courier new'"> Courier New </option>
+    <option value="'comic sans'"> Comic Sans </option>
+    <option value="fantasy"> Fantasy </option>
+    <option value="serif"> Serif </option>
+    <option value="sans-serif"> Sans-Serif </option>
+    <option value="monoplace"> Monospace </option>
+    <option value="'times new roman'"> Times New Roman </option>
+    <option value="verdana"> Verdana </option>
+  </select>
+  <label for="textSize">Text size:</label>
+  <input type="number" id="textSize" size="2" min="1" max="300" value="48" oninput="chooseTextFormat()">
+  <label for="textColor">Text color:</label>
+  <input type="color" size="2" id="textColor" oninput="chooseTextFormat()">
+  <label for="textAngle">Angle:</label>
+  <input type="number" id="textAngle" size="2" min="-360" max="360" value="0" oninput="chooseTextFormat()">
+  <button id="chooseTextFormat">OK</button>
+</div>
 
 <script src="script.js"></script>
 <script src="js/layers.js"></script>
@@ -136,6 +160,7 @@
 <script src="js/straight-line.js"></script>
 <script src="js/eyedropper.js"></script>
 <script src="js/hand.js"></script>
+<script src="js/text-insertion.js"></script>
 <script src="js/instruments-switcher.js"></script>
 <script src="js/tool-size.js"></script>
 <script src="js/color-difference.js"></script>

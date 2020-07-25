@@ -103,6 +103,17 @@ function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function clearAllLayers() {
+  let curCanvasId = activeLayer.id;
+  layers.forEach((layer) => {
+    canvas = layers[layer.id].canvas;
+    context = canvas.getContext('2d');
+    clearCanvas();
+  });
+  canvas = layers[curCanvasId].canvas;
+  context = canvas.getContext('2d');
+}
+
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
   curCords = [];

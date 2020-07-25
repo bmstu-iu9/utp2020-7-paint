@@ -31,14 +31,26 @@ function switchEyedropperWindow() {
 }
 
 function getPixelColor(x, y) {
-  let pixel = context.getImageData(x, y, 1, 1);
-  return pixel.data;
+  let curCanvasId = activeLayer.id;
+  let maxIndex = bottomLayer.index - 1, highestPixel = [0, 0, 0, 0], pixel;
+  layers.forEach(layer => {
+    canvas = layer.canvas;
+    pixel = canvas.getContext('2d').getImageData(x, y, 1, 1).data;
+    if (maxIndex < layer.index && pixel.some(elem => elem !== 0)) {
+      maxIndex = layer.index;
+      highestPixel = pixel;
+    }
+  });
+  canvas = layers[curCanvasId].canvas;
+  return highestPixel;
 }
 
 function handleEyedropper(event) {
   let eventLocation = getEventLocation(this, event);
   let color = getPixelColor(eventLocation.x, eventLocation.y);
-  eyedropperWindow.style.background = arrayToRgb(color);
+  if (color.every(elem => elem === 0)) {
+    eyedropperWindow.style.background = 'repeat url(\"img/background.png\"';
+  } else eyedropperWindow.style.background = arrayToRgb(color);
 
   function moveWindow() {
     eyedropperWindow.style.left = event.pageX + 15 + 'px';

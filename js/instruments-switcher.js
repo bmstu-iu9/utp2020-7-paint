@@ -14,6 +14,7 @@ class Instrument {
   constructor(id) {
     this.id = id;
     let upperId = firstToUpper(id);
+    console.log(upperId);
     this.init = window['init' + upperId];
     this.delete = window['delete' + upperId];
   }

@@ -79,7 +79,9 @@ class Layer {
     this.canvas = createCanvasHtml(this.id);
     this.canvas.width = canvas.offsetWidth;
     this.canvas.height = canvas.offsetHeight;
-    
+    this.canvas.style.left = canvas.style.left;
+    this.canvas.style.top = canvas.style.top;
+
     activeLayer.canvas.style.pointerEvents = "none";
     this.canvas.style.pointerEvents = "auto";
     activeLayer.display.classList.remove('highlight');
@@ -89,8 +91,8 @@ class Layer {
     context = canvas.getContext('2d');
     activeInstrument && activeInstrument.init();
     activeLayer = this;
-    
-    
+
+
     this.preview = this.display.children[0];
 
     if (caller === 'addLayerTop') {
@@ -106,7 +108,6 @@ class Layer {
       bottomLayer.canvas.style.removeProperty('background');
       bottomLayer = this;
     }
-
     layers.push(this);
   }
 }
@@ -118,6 +119,7 @@ let bottomLayer = firstLayer;
 
 function addLayerHandler(event) {
   let caller = event.target.id;
+  photoOfState.push([]);
 
   new Layer(caller);
 }

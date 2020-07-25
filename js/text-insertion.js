@@ -17,7 +17,7 @@ function chooseTextFormat() {
 function initText() {
   saveImg();
   pastedText.hidden = false;
-  pastedText.style.zIndex = activeLayer.index + 1 + '';
+  pastedText.style.zIndex = activeLayer.index + 1;
   document.addEventListener('keydown', pressForInsertion);
 
   function pressForInsertion() {

@@ -26,7 +26,7 @@ function initText() {
       dyOfText = pastedText.clientHeight;
       pastedText.hidden = true;
       textMenu.hidden = false;
-      textMenu.style.zIndex = activeLayer.index + 1 + '';
+      textMenu.style.zIndex = activeLayer.index + 1;
       textFormat.addEventListener("click", startPointText);
       textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
       chooseTextFormat();

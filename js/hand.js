@@ -26,8 +26,10 @@ function startMoving(e) {
   canvas.style.margin='0';
 
   function move(e) {
-    canvas.style.left = e.pageX - shiftX + 'px';
-    canvas.style.top = e.pageY - shiftY + 'px';
+    layers.forEach((layer) => {
+      layer.canvas.style.left = e.pageX - shiftX + 'px';
+      layer.canvas.style.top = e.pageY - shiftY + 'px';
+    })
   }
 
   function stopMoving() {

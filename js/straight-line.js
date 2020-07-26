@@ -1,19 +1,21 @@
 'use strict';
 
 function initStraightLine() {
-  canvas.addEventListener("mousedown", startStraightLine);
+  canvas.style.cursor = 'crosshair';
+  canvas.addEventListener("mousedown", startPointStraightLine);
 }
 
 function deleteStraightLine() {
-  canvas.removeEventListener("mousedown", startStraightLine);
+  canvas.style.cursor = 'default';
+  canvas.removeEventListener("mousedown", startPointStraightLine);
   canvas.removeEventListener("mousemove", drawStraightLine);
   canvas.removeEventListener("mouseup", endStraightLine);
   canvas.removeEventListener("mouseleave", endStraightLine);
 }
 
-function startStraightLine(e) {
+function startPointStraightLine(e) {
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("StraightLine");
+  if (!isReplaying) rememberDrawingTool("StraightLine", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -33,7 +35,7 @@ function startStraightLine(e) {
 
 function drawStraightLine(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -44,7 +46,7 @@ function drawStraightLine(e) {
   context.stroke();
 }
 
-function endStraightLine() {
+function endStraightLine(e) {
   isDrawing = false;
   context.beginPath();
 }

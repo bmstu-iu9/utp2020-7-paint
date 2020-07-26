@@ -23,7 +23,6 @@ function deletePencil() {
 
 function startPointPencil(e) {
   isDrawing = true;
-  //if (!isReplaying) rememberDrawingTool("Pencil");
  
   pencilParameters.oldX = Math.floor(e.offsetX);
   pencilParameters.oldY = Math.floor(e.offsetY);
@@ -38,7 +37,7 @@ function startPointPencil(e) {
 
 function drawLinePencil(e) {
   if (!isDrawing) return;
-  //if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+
   pencilParameters.newX = e.offsetX;
   pencilParameters.newY = e.offsetY; 
   
@@ -66,11 +65,6 @@ function drawPoint(x, y) {
   let delta = 1 - 2 * radius;
   let error = 0;
   while (y0 >= 0) {
-    //changePixel(x + x0, y - y0); //первая четверть
-    //changePixel(x - x0, y - y0); //вторая
-    //changePixel(x + x0, y + y0); //четвертая 
-    //changePixel(x - x0, y + y0); //третья
-
     for (let i = x - x0; i <= x + x0; i++) if (areInCanvas(i, y - y0)) changePixel(i, y - y0);
     for (let i = x - x0; i <= x + x0; i++) if (areInCanvas(i, y + y0)) changePixel(i, y + y0);
    
@@ -80,10 +74,10 @@ function drawPoint(x, y) {
       continue;
     }
     if ((delta > 0) && (error > 0)) {
-      delta += 1 - 2 * (--y0);
+      delta -= 1 + 2 * (--y0);
       continue;
     }
-    delta += 2 * (++x0 - y0--);
+    delta += 2 * (++x0 - --y0);
   }
   
   function changePixel(x, y) {

@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-let canvas = document.getElementById("mainCanvas");
+let canvas = document.getElementById("layer0");
 let context = canvas.getContext("2d");
 
 let curColor = [0, 0, 0];
@@ -10,8 +10,8 @@ let curAllowableColorDifference = 0;
 let curCords = [];
 let curState = 0;
 
-const defaultWidth = 1080;
-const defaultHeight = 720;
+const defaultWidth = 780;
+const defaultHeight = 400;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -103,6 +103,17 @@ function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function clearAllLayers() {
+  let curCanvasId = activeLayer.id;
+  layers.forEach((layer) => {
+    canvas = layers[layer.id].canvas;
+    context = canvas.getContext('2d');
+    clearCanvas();
+  });
+  canvas = layers[curCanvasId].canvas;
+  context = canvas.getContext('2d');
+}
+
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
   curCords = [];
@@ -180,10 +191,31 @@ borderColor.oninput = function () {
   }
 }
 
-document.getElementById("help").addEventListener('click', (event) => {
-  let helpMenu = document.getElementById("helpMenu");
-  helpMenu.hidden = !helpMenu.hidden;
+function hide_and_show (element) {
+  let menu = document.getElementById(element);
+  menu.hidden = !menu.hidden;
   event.currentTarget.classList.toggle("pressed");
+}
+
+document.getElementById("help").addEventListener('click', (event) => {
+  hide_and_show("helpMenu", event);
+});
+
+document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
+  hide_and_show("uploadImgMenu", event);
+});
+
+document.getElementById("basicBrush").addEventListener('click', (event) => {
+  hide_and_show("brushMenu", event);
+});
+
+
+document.getElementById("figure").addEventListener('click', (event) => {
+  hide_and_show("figureMenu", event);
+});
+
+document.getElementById("openPanel").addEventListener('click', (event) => {
+  hide_and_show("lefContainer", event);
 });
 
 function getIndexOfRedInData(x, y) { return canvas.width*(y-1)*4+x*4; }

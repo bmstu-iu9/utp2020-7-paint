@@ -16,7 +16,7 @@ function initEraser() {
 
 function deleteEraser() {
   canvas.removeEventListener("mousedown", startPointEraser);
-  canvas.removeEventListener("mousemove", drawLineEraser);
+  canvas.removeEventListener("mousemove", drawEraser);
   canvas.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
 }
@@ -31,12 +31,12 @@ function startPointEraser(e) {
   drawPointEraser(e.offsetX, e.offsetY);
   context.putImageData(eraserParameters.imageData, 0, 0);
 
-  canvas.addEventListener("mousemove", drawLineEraser);
+  canvas.addEventListener("mousemove", drawEraser);
   canvas.addEventListener("mouseup", endPoint);
   canvas.addEventListener("mouseleave", endPoint);
 }
 
-function drawLineEraser(e) {
+function drawEraser(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 

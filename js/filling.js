@@ -1,10 +1,12 @@
 'use strict';
 
 function initFilling() {
+  canvas.style.cursor = "url('img/cursors/filling-cursor.png') 0 25, auto";
   canvas.addEventListener("click", fill);
 }
 
 function deleteFilling() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("click", fill);
 }
 

@@ -23,11 +23,13 @@ function deletePencil() {
 
 function startPointPencil(e) {
   isDrawing = true;
- 
-  pencilParameters.oldX = Math.floor(e.offsetX);
-  pencilParameters.oldY = Math.floor(e.offsetY);
+  if (!isReplaying) rememberDrawingTool("Pencil");
+  pencilParameters.imageData = context.getImageData(0, 0, canvas.width, canvas.height);
   
-  drawPoint(e.offsetX, e.offsetY);
+  pencilParameters.oldX = e.offsetX;
+  pencilParameters.oldY = e.offsetY;
+  
+  drawPointPencil(e.offsetX, e.offsetY);
   context.putImageData(pencilParameters.imageData, 0, 0);
 
   canvas.addEventListener("mousemove", drawLinePencil);
@@ -37,7 +39,9 @@ function startPointPencil(e) {
 
 function drawLinePencil(e) {
   if (!isDrawing) return;
-
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+  
+  pencilParameters.imageData = context.getImageData(0, 0, canvas.width, canvas.height);
   pencilParameters.newX = e.offsetX;
   pencilParameters.newY = e.offsetY; 
   
@@ -50,7 +54,7 @@ function drawLinePencil(e) {
     pencilParameters.deltaX = pencilParameters.newX - pencilParameters.oldX;
     pencilParameters.deltaY = pencilParameters.newY - pencilParameters.oldX;
     
-    drawPoint(pencilParameters.newX, pencilParameters.newY);
+    drawPointPencil(pencilParameters.newX, pencilParameters.newY);
   }
   
   context.putImageData(pencilParameters.imageData, 0, 0);
@@ -58,7 +62,7 @@ function drawLinePencil(e) {
   pencilParameters.oldY = e.offsetY;
 }
 
-function drawPoint(x, y) {
+function drawPointPencil(x, y) {
   let radius = Math.floor(curToolSize / 2);
   let x0 = 0;
   let y0 = radius;

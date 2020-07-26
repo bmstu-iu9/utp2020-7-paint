@@ -12,18 +12,24 @@ let pencilParameters = {
 
 function initPencil() {
   canvas.addEventListener("mousedown", startPointPencil);
+  toolSizeRange.max = 50;
+  toolSizeRange.value = Math.min(curToolSize, 50);
+  toolSizeText.value = Math.min(curToolSize, 50) + 'px';
+  curToolSize = Math.min(curToolSize, 50);
 }
 
 function deletePencil() {
   canvas.removeEventListener("mousedown", startPointPencil);
-  canvas.removeEventListener("mousemove", drawLinePencil);
+  canvas.removeEventListener("mousemove", drawPencil);
   canvas.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
+  toolSizeRange.max = 300;
 }
 
 function startPointPencil(e) {
   isDrawing = true;
   if (!isReplaying) rememberDrawingTool("Pencil");
+
   pencilParameters.imageData = context.getImageData(0, 0, canvas.width, canvas.height);
   
   pencilParameters.oldX = e.offsetX;
@@ -32,12 +38,12 @@ function startPointPencil(e) {
   drawPointPencil(e.offsetX, e.offsetY);
   context.putImageData(pencilParameters.imageData, 0, 0);
 
-  canvas.addEventListener("mousemove", drawLinePencil);
+  canvas.addEventListener("mousemove", drawPencil);
   canvas.addEventListener("mouseup", endPoint);
   canvas.addEventListener("mouseleave", endPoint);
 }
 
-function drawLinePencil(e) {
+function drawPencil(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
   

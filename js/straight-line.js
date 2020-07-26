@@ -1,10 +1,12 @@
 'use strict';
 
 function initStraightLine() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointStraightLine);
 }
 
 function deleteStraightLine() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointStraightLine);
   canvas.removeEventListener("mousemove", drawStraightLine);
   canvas.removeEventListener("mouseup", endStraightLine);

@@ -1,34 +1,63 @@
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    top: 0;
-    left: 0;
+@import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+
+html {
+  height:100%;
 }
 
-#buttonsField {
-  box-sizing: border-box;
-  position: absolute;
+body {
   width: 100%;
-  height: 10%;
+  height: 100%;
   margin: 0;
   top: 0;
   left: 0;
-  background: #eeeeee;
-  border-bottom: 1px solid #cccccc;
+  background: #e5e6e7;
 }
 
-.panel {
+#topPanel {
+  box-sizing: border-box;
+  width: 100%;
+  height: 45px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  z-index: 1005;
+}
+
+#title {
+  font-family: 'Passion One', cursive;
+  font-size: 35px;
+  color: #ffdf2b;
+  margin-left: 10px;
+}
+
+#topContainer {
+  margin-left: auto;
+  display: flex;
+}
+
+#leftPanel {
+margin-left: 10px;
+width: 45px;
+height: 80%;
+background-color: #ffdf2b;
+position: relative;
+}
+
+#openPanel {
+  width: 100%;
   height: 100%;
-  width: 25%;
-  border-right: 1px solid #cccccc;
-  float: left;
-}
-
-.container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#lefContainer {
+  background-color: #ffdf2b;
+  padding-top: 20px;
+  width: 100%;
+  position: absolute;
+  margin: auto;
 }
 
 .toolBtn {
@@ -37,10 +66,11 @@ body {
   margin: 5px;
   width: 30px;
   height: 30px;
-  float: left;
+  border-radius: 50%;
   border: none;
   background-size: cover;
   background-color: #f8f7f7;
+  outline: none;
 }
 
 .toolBtn:hover {
@@ -53,22 +83,21 @@ body {
   border: solid 1px #FF7F50;
 }
 
-.description {
-  margin: 0;
-  padding: 0px;
-  clear: both;
-  text-align: center;
-  color: #786b59;
+.optionTool {
+  border-radius: 7%;
 }
 
 .mainCanvas {
   position: absolute;
-  width: 1080px;
-  height: 720px;
+  width: 780px;
+  height: 400px;
+  padding: 0;
+  margin: auto;
   border: 1px solid #000000;
-  margin: 0;
-  top: 10%;
+  top: 45px;
+  bottom: 0;
   left: 0;
+  right: 0;
 }
 
 .mainCanvas.highlight {
@@ -80,7 +109,7 @@ body {
 #layersField {
   position: absolute;
   box-sizing: border-box;
-  top: 10%;
+  top: 45px;
   left: 90%;
   width: 10%;
   height: 90%;
@@ -110,7 +139,7 @@ canvas.preview {
   background-size: 10%;
   display: inline-block;
   position: relative;
-  top: 10%;
+  top: 45px;
   left: 4%;
   height: 80%;
   width: 36%;
@@ -137,12 +166,12 @@ canvas.preview {
 }
 
 #help {
-  position: fixed;
-  right: 1%;
+  /* position: fixed; */
+  /* right: 1%; */
   border-radius: 50%;
-  padding: 20px;
+  /* padding: 20px; */
   font-size: 3px;
-  margin: 4px 2px;
+  /* margin: 4px 2px; */
   outline: none;
 }
 
@@ -150,6 +179,16 @@ canvas.preview {
   position: fixed;
   right: 3%;
   top: 8%;
+}
+
+.dropMenu {
+  position: fixed;
+  right: 3%;
+  top: 8%;
+}
+
+.leftPanelMenu {
+  float: right;
 }
 
 .menu {
@@ -171,22 +210,8 @@ ul {
   z-index: 1000;
 }
 
-.dropbtn {
-  width: 200px;
-  background-color: #ffe680;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
-.dropbtn {
-  background-color: #ffe680;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
 .droplist-content {
+  right: 5%;
   display: none;
   position: absolute;
   padding: 5px;
@@ -223,6 +248,19 @@ ul {
   padding: 0px;
   color: #786b59;
   font-size: 14px;
+}
+
+.leftPaneldrop {
+  position: relative;
+  display: inline-block;
+}
+
+.leftMenu {
+  position: relative;
+  z-index: 1000;
+  background-color: #159099;
+  min-width: 150px;
+  clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
 }
 
 .rangeAndText {

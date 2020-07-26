@@ -6,10 +6,12 @@ function endPointFigures() {
 }
 
 function initRectangle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointRectangle);
 }
 
 function deleteRectangle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointRectangle);
   canvas.removeEventListener("mousemove", drawRectangle);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -51,10 +53,12 @@ function drawRectangle(e) {
 let centerX, centerY, radius;
 
 function initCircle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointCircle);
 }
 
 function deleteCircle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointCircle);
   canvas.removeEventListener("mousemove", drawCircle);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -97,10 +101,12 @@ function drawCircle(e) {
 
 
 function initEllipse() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointEllipse);
 }
 
 function deleteEllipse() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointEllipse);
   canvas.removeEventListener("mousemove", drawEllipse);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -145,10 +151,12 @@ function drawEllipse(e) {
 let startX, startY;
 
 function initEqTriangle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointEqTriangle);
 }
 
 function deleteEqTriangle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointEqTriangle);
   canvas.removeEventListener("mousemove", drawEqTriangle);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -192,10 +200,12 @@ function drawEqTriangle(e) {
 
 
 function initRightTriangle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointRightTriangle);
 }
 
 function deleteRightTriangle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointRightTriangle);
   canvas.removeEventListener("mousemove", drawRightTriangle);
   canvas.removeEventListener("mouseup", endPointFigures);

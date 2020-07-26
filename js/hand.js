@@ -23,6 +23,8 @@ function startMoving(e) {
 
   move(e);
 
+  canvas.style.margin='0';
+
   function move(e) {
     layers.forEach((layer) => {
       layer.canvas.style.left = e.pageX - shiftX + 'px';

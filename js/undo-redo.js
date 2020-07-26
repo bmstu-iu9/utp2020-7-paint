@@ -2,52 +2,48 @@
 
 let isReplaying = false;
 let photoOfState = [[]];
+let rememberedTools = new Map();
+
+class Tool {
+  constructor(id, name, cords, img) {
+    this.id = id;
+    this.name = name;
+    this.layer = activeLayer.id;
+    this.replay = window['replay' + name];
+    this.color = curColor.slice(0);
+    this.toolSize = curToolSize;
+    this.cords = cords;
+    this.allowableColorDifference = curAllowableColorDifference;
+    this.img = img;
+    this.fontColor = fontColor.value;
+    this.fontSize = fontSize.value;
+    this.font = font.value;
+    this.textAngle = textAngle.value;
+    this.text = textToInsert;
+  }
+}
 
 function rememberFilling(...cords) {
   checkCurCords();
-  curCords.push({
-    id: 'Filling',
-    cords: cords,
-    color: curColor,
-    allowableColorDifference: curAllowableColorDifference,
-    layer: activeLayer.id
-  });
+  curCords.push(new Tool('Filling', 'Filling', cords));
   ++curState;
 }
 
 function rememberImage(img) {
   checkCurCords();
-  curCords.push({
-    id: 'Image',
-    img: img,
-    layer: activeLayer.id
-  });
+  curCords.push(new Tool('Image', 'Image', [], img));
   ++curState;
 }
 
 function rememberDrawingTool(id, ...cords) {
   checkCurCords();
-  curCords.push({
-    id: id,
-    color: curColor.slice(0),
-    toolSize: curToolSize,
-    cords: cords,
-    layer: activeLayer.id
-  });
+  curCords.push(new Tool(id, 'DrawingTool', cords));
   ++curState;
 }
 
-function rememberText(id) {
+function rememberText() {
   checkCurCords();
-  curCords.push({
-    id: id,
-    color: fontColor.value,
-    size: fontSize.value,
-    font: font.value,
-    deg: textDeg.value,
-    text: textToInsert,
-    layer: activeLayer.id
-  });
+  curCords.push(new Tool('Text', 'Text'));
   ++curState;
 }
 
@@ -93,20 +89,7 @@ function replayActions(curCanvasId) {
   for (let i = 0; i < curState; i++) {
     canvas = layers[curCords[i].layer].canvas;
     context = canvas.getContext('2d');
-    switch (curCords[i].id) {
-      case 'Image':
-        // TODO: change when the image upload will be modified
-        replayImage(curCords[i].img);
-        break;
-      case 'Filling':
-        replayFilling(curCords[i]);
-        break;
-      case 'Text':
-        replayTextInsertion(curCords[i]);
-        break;
-      default:
-        replayDrawing(curCords[i]);
-    }
+    curCords[i].replay();
   }
   isReplaying = false;
   canvas = layers[curCanvasId].canvas;
@@ -129,56 +112,57 @@ function insertPhotoAndReplay() {
   });
 }
 
-function replayImage(img) {
+function replayImage() {
+  let img = this.img;
   context.drawImage(img,
     0, 0, img.width, img.height,
     0, 0, canvas.width, canvas.height);
 }
 
-function replayFilling(tool) {
-  let cords = tool.cords;
+function replayFilling() {
+  let cords = this.cords;
   let e = {
     offsetX: cords[0],
     offsetY: cords[1]
   };
-  curColor = tool.color;
-  curAllowableColorDifference = tool.allowableColorDifference;
+  curColor = this.color;
+  curAllowableColorDifference = this.allowableColorDifference;
   fill(e);
 }
 
-function replayDrawing(tool) {
-  let cords = tool.cords;
+function replayDrawingTool() {
+  let cords = this.cords;
   let e = {
     offsetX: cords[0][0],
     offsetY: cords[0][1]
   };
-  curToolSize = tool.toolSize;
-  curColor = tool.color;
-  window['startPoint' + tool.id](e);
-  let drawLine = window['draw' + tool.id];
+  curToolSize = this.toolSize;
+  curColor = this.color;
+  window['startPoint' + this.id](e);
+  let draw = window['draw' + this.id];
   for (let j = 1; j < cords.length; j++) {
     e.offsetX = cords[j][0];
     e.offsetY = cords[j][1];
-    drawLine(e);
+    draw(e);
   }
   isDrawing = false;
   context.beginPath();
-  window['delete' + tool.id]();
+  window['delete' + this.id]();
 }
 
-function replayTextInsertion(tool) {
-  let cords = tool.cords;
+function replayText() {
+  let cords = this.cords;
   let e = {
     offsetX: cords[0],
     offsetY: cords[1]
   };
-  fontSize.value = tool.size;
-  fontColor.value = tool.color;
-  font.value = tool.font;
-  textDeg.value = tool.deg;
-  textToInsert = tool.text;
+  fontSize.value = this.fontSize;
+  fontColor.value = this.fontColor;
+  textAngle.value = this.textAngle;
+  font.value = this.font;
+  textToInsert = this.text;
   saveImg();
-  window['startPoint' + tool.id](e);
+  window['startPoint' + this.id](e);
   isDrawing = false;
-  window['delete' + tool.id]();
+  window['delete' + this.id]();
 }

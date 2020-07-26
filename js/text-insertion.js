@@ -1,14 +1,9 @@
 'use strict';
 
 let textToInsert, dxOfText, dyOfText;
+let textElements = ['textMenu', 'textFormat', 'fontSize', 'fontColor', 'textAngle', 'pastedText', 'font'];
 
-let textMenu = document.getElementById('textMenu');
-let pastedText = document.getElementById('textIndicator');
-let textFormat = document.getElementById('chooseTextFormat');
-let fontSize = document.getElementById('textSize');
-let fontColor = document.getElementById('textColor');
-let font = document.getElementById('fontSelector');
-let textDeg = document.getElementById('textAngle');
+textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);
 
 function chooseTextFormat() {
   writeText(canvas.width / 2 - dxOfText, canvas.height / 2 - dyOfText);
@@ -17,7 +12,6 @@ function chooseTextFormat() {
 function initText() {
   saveImg();
   pastedText.hidden = false;
-  pastedText.style.zIndex = activeLayer.index + 1;
   document.addEventListener('keydown', pressForInsertion);
 
   function pressForInsertion() {
@@ -26,7 +20,6 @@ function initText() {
       dyOfText = pastedText.clientHeight;
       pastedText.hidden = true;
       textMenu.hidden = false;
-      textMenu.style.zIndex = activeLayer.index + 1;
       textFormat.addEventListener("click", startPointText);
       textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
       chooseTextFormat();
@@ -49,14 +42,15 @@ function deleteText() {
 
   fontSize.value = '48';
   font.value = 'serif';
-  textDeg.value = 0;
-  context.fillStyle = fontColor.value = '#000000';
+  textAngle.value = 0;
+  fontColor.value = '#000000';
   pastedText.innerHTML = 'Текст Alt + Enter';
 }
 
 function writeText(x, y) {
   clearCanvas();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.save();
 
   function write(x, y) {
     context.font = fontSize.value + 'px ' + font.value;
@@ -65,22 +59,19 @@ function writeText(x, y) {
       context.fillText(textToInsert[i], x, y + i * del);
   }
 
-  if (!textDeg.value) {
+  if (!textAngle.value) {
     write(x, y);
   } else {
     let ox = canvas.width / 2, oy = canvas.height / 2;
-    context.save();
     context.translate(ox, oy);
-    context.rotate((Math.PI / 180) * textDeg.value);
+    context.rotate((Math.PI / 180) * textAngle.value);
     write(x - ox, y - oy);
-    context.translate(-ox, -oy);
-    context.restore();
   }
+  context.restore();
 }
 
 function stopInsertion() {
   isDrawing = false;
-  textFormat.removeEventListener("click", startPointText);
   document.getElementById('text').click();
 }
 
@@ -88,10 +79,11 @@ function startPointText(e) {
   isDrawing = true;
   textMenu.hidden = true;
   pastedText.hidden = true;
-  if (!isReplaying) rememberText('Text');
+  if (!isReplaying) rememberText();
 
   drawTextInsertion(e);
 
+  textFormat.removeEventListener("click", startPointText);
   canvas.addEventListener("mousemove", drawTextInsertion);
   canvas.addEventListener("click", stopInsertion);
 }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -124,10 +124,10 @@
   <div class="layer addLayer" id="addLayerBottom">add layer</div>
 </div>
 
-<div id="textIndicator" contenteditable="true" hidden="true">Текст Alt + Enter</div>
+<div id="pastedText" contenteditable="true" hidden="true">Текст Alt + Enter</div>
 
 <div class="panel" id="textMenu" hidden="true">
-  <select id="fontSelector" class="selectorMenu" onchange="chooseTextFormat()">
+  <select id="font" class="selectorMenu" onchange="chooseTextFormat()">
     <option value="serif">Font:</option>
     <option value="arial"> Arial </option>
     <option value="'courier new'"> Courier New </option>
@@ -139,14 +139,15 @@
     <option value="'times new roman'"> Times New Roman </option>
     <option value="verdana"> Verdana </option>
   </select>
-  <label for="textSize">Text size:</label>
-  <input type="number" id="textSize" size="2" min="1" max="300" value="48" oninput="chooseTextFormat()">
-  <label for="textColor">Text color:</label>
-  <input type="color" size="2" id="textColor" oninput="chooseTextFormat()">
+  <label for="fontSize">Text size:</label>
+  <input type="number" id="fontSize" size="2" min="1" max="300" value="48" oninput="chooseTextFormat()">
+  <label for="fontColor">Text color:</label>
+  <input type="color" size="2" id="fontColor" oninput="chooseTextFormat()">
   <label for="textAngle">Angle:</label>
   <input type="number" id="textAngle" size="2" min="-360" max="360" value="0" oninput="chooseTextFormat()">
-  <button id="chooseTextFormat">OK</button>
+  <button id="textFormat">OK</button>
 </div>
+
 
 <script src="script.js"></script>
 <script src="js/layers.js"></script>

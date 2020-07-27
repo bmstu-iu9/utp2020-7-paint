@@ -23,12 +23,13 @@ function startMoving(e) {
 
   move(e);
 
-  canvas.style.margin='0';
-
   function move(e) {
-    layers.forEach((layer) => {
-      layer.canvas.style.left = e.pageX - shiftX + 'px';
-      layer.canvas.style.top = e.pageY - shiftY + 'px';
+    let x = e.pageX, y = e.pageY;
+    layers.forEach(layer => {
+      let layerStyle = layer.canvas.style;
+      layerStyle.margin = '0';
+      layerStyle.left = x - shiftX + 'px';
+      layerStyle.top = y - shiftY + 'px';
     })
   }
 

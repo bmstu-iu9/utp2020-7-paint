@@ -65,6 +65,7 @@ function drawPointPencil(x, y) {
   function drawBresenhamCircle() {
     context.beginPath();
     context.lineWidth = 1;
+    context.strokeStyle = arrayToRgb(curColor);
     let x0 = 0;
     let y0 = radius;
     let delta = 1 - 2 * radius;

@@ -204,6 +204,11 @@ ul {
   padding: 0;
 }
 
+li:hover,
+option:checked {
+  background-color: #ffdf2b;
+}
+
 .droplist {
   position: relative;
   display: inline-block;

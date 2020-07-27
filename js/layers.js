@@ -81,6 +81,7 @@ class Layer {
     this.canvas.height = canvas.offsetHeight;
     this.canvas.style.left = canvas.style.left;
     this.canvas.style.top = canvas.style.top;
+    this.canvas.style.margin = canvas.style.margin;
 
     activeLayer.canvas.style.pointerEvents = "none";
     this.canvas.style.pointerEvents = "auto";

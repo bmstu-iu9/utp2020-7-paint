@@ -67,8 +67,9 @@ function arrayToRgb(color) {
 }
 
 document.getElementById("uploadImage").addEventListener('change', () => {
-  if (this.files && this.files[0]) {
-    handleImg(this.files[0]);
+  let target = event.target;
+  if (target.files && target.files[0]) {
+    handleImg(target.files[0]);
   }
 });
 
@@ -82,7 +83,7 @@ function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
   img.onload = function () {
-    canvas.getContext("2d").drawImage(img,
+    context.drawImage(img,
     0, 0,
     img.width, img.height,
     0, 0,
@@ -208,7 +209,6 @@ document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
 document.getElementById("basicBrush").addEventListener('click', (event) => {
   hide_and_show("brushMenu", event);
 });
-
 
 document.getElementById("figure").addEventListener('click', (event) => {
   hide_and_show("figureMenu", event);

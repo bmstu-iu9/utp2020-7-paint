@@ -90,7 +90,7 @@ function drawPointPencil(x, y) {
     
     function drawLine(fromX, toX, y) {
       context.moveTo(fromX, y + 0.5);
-      context.lineTo(toX, y + 0.5);
+      context.lineTo(toX + 1, y + 0.5);
     }       
   }
 }

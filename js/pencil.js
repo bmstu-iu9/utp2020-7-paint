@@ -8,7 +8,7 @@ let pencilParameters = {
   distance: 0,
   angle: 0,
   imageData: context.getImageData(0, 0, canvas.width, canvas.height),
-}
+};
 
 function initPencil() {
   canvas.addEventListener("mousedown", startPointPencil);
@@ -37,6 +37,8 @@ function startPointPencil(e) {
   
   drawPointPencil(e.offsetX, e.offsetY);
   context.putImageData(pencilParameters.imageData, 0, 0);
+  
+  drawPencil(e);
 
   canvas.addEventListener("mousemove", drawPencil);
   canvas.addEventListener("mouseup", endPoint);
@@ -51,14 +53,12 @@ function drawPencil(e) {
   pencilParameters.newX = e.offsetX;
   pencilParameters.newY = e.offsetY; 
   
-  pencilParameters.distance = Math.sqrt((e.offsetX - pencilParameters.oldX) ** 2 + (e.offsetY - pencilParameters.oldY) ** 2);
+  pencilParameters.distance = Math.sqrt(Math.pow(e.offsetX - pencilParameters.oldX, 2) + Math.pow(e.offsetY - pencilParameters.oldY, 2));
   pencilParameters.angle = Math.atan2(e.offsetX - pencilParameters.oldX, e.offsetY - pencilParameters.oldY);
   
   for (let i = 0; i < pencilParameters.distance; i++) {
     pencilParameters.newX = Math.floor(pencilParameters.oldX + i * Math.sin(pencilParameters.angle));
     pencilParameters.newY = Math.floor(pencilParameters.oldY + i * Math.cos(pencilParameters.angle));
-    pencilParameters.deltaX = pencilParameters.newX - pencilParameters.oldX;
-    pencilParameters.deltaY = pencilParameters.newY - pencilParameters.oldX;
     
     drawPointPencil(pencilParameters.newX, pencilParameters.newY);
   }
@@ -70,24 +70,36 @@ function drawPencil(e) {
 
 function drawPointPencil(x, y) {
   let radius = Math.floor(curToolSize / 2);
-  let x0 = 0;
-  let y0 = radius;
-  let delta = 1 - 2 * radius;
-  let error = 0;
-  while (y0 >= 0) {
-    for (let i = x - x0; i <= x + x0; i++) if (areInCanvas(i, y - y0)) changePixel(i, y - y0);
-    for (let i = x - x0; i <= x + x0; i++) if (areInCanvas(i, y + y0)) changePixel(i, y + y0);
-   
-    error = 2 * (delta + y0) - 1;
-    if ((delta < 0) && (error <= 0)) {
-      delta += 2 * (++x0) + 1;
-      continue;
+  drawBresenhamCircle();
+  
+  function drawBresenhamCircle() {
+    let x0 = 0;
+    let y0 = radius;
+    let delta = 1 - 2 * radius;
+    let error = 0;
+    while (y0 >= 0) {
+      drawLine(x - x0, x + x0, y - y0);
+      drawLine(x - x0, x + x0, y + y0);
+     
+      error = 2 * (delta + y0) - 1;
+      if ((delta < 0) && (error <= 0)) {
+        delta += 2 * (++x0) + 1;
+        continue;
+      }
+      if ((delta > 0) && (error > 0)) {
+        delta -= 1 + 2 * (--y0);
+        continue;
+      }
+      delta += 2 * (++x0 - --y0);
     }
-    if ((delta > 0) && (error > 0)) {
-      delta -= 1 + 2 * (--y0);
-      continue;
-    }
-    delta += 2 * (++x0 - --y0);
+    
+    function drawLine(fromX, toX, y) {
+      for (let i = fromX; i <= toX; i++) {
+        if (areInCanvas(i, y)) {
+          changePixel(i, y);
+        }
+      }
+    }       
   }
   
   function changePixel(x, y) {

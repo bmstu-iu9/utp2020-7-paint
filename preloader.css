@@ -56,10 +56,12 @@
     -webkit-animation-fill-mode: both;
     -moz-animation-fill-mode: both;
     -o-animation-fill-mode: both;
+    -ms-animation-fill-mode: both;
     animation: firstChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -webkit-animation: firstChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -moz-animation: firstChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -o-animation: firstChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+    -ms-animation: firstChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
 }
 
 .secondDot {
@@ -75,10 +77,12 @@
     -webkit-animation-fill-mode: both;
     -moz-animation-fill-mode: both;
     -o-animation-fill-mode: both;
+    -ms-animation-fill-mode: both;
     animation: secondChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -webkit-animation: secondChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -moz-animation: secondChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -o-animation: secondChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+    -ms-animation: secondChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
 }
 
 .thirdDot {
@@ -94,10 +98,12 @@
     -webkit-animation-fill-mode: both;
     -moz-animation-fill-mode: both;
     -o-animation-fill-mode: both;
+    -ms-animation-fill-mode: both;
     animation: thirdChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -webkit-animation: thirdChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -moz-animation: thirdChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
     -o-animation: thirdChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+    -ms-animation: thirdChangeScale 1s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
 }
 
 @keyframes firstChangeScale {
@@ -106,6 +112,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -113,6 +120,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -122,6 +130,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -129,6 +138,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -138,6 +148,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -145,6 +156,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -154,6 +166,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -161,6 +174,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -170,6 +184,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -177,6 +192,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -186,6 +202,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -193,6 +210,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -202,6 +220,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -209,6 +228,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -218,6 +238,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -225,6 +246,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -234,6 +256,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -241,6 +264,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -250,6 +274,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -257,6 +282,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -266,6 +292,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -273,6 +300,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -282,6 +310,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -289,6 +318,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -298,6 +328,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -305,6 +336,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -314,6 +346,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -321,6 +354,7 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }
 
@@ -330,6 +364,7 @@
         -webkit-transform: scale(0);
         -moz-transform: scale(0);
         -o-transform: scale(0);
+        -ms-transform: scale(0);
     }
 
     100% {
@@ -337,5 +372,6 @@
         -webkit-transform: scale(1);
         -moz-transform: scale(1);
         -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
 }

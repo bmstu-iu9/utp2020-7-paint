@@ -217,3 +217,23 @@ document.getElementById("figure").addEventListener('click', (event) => {
 document.getElementById("openPanel").addEventListener('click', (event) => {
   hide_and_show("lefContainer", event);
 });
+
+function getIndexOfRedInData(x, y) { 
+  return canvas.width * (y - 1) * 4 + x * 4; 
+}
+
+function getIndexOfGreenInData(x, y) { 
+  return canvas.width * (y - 1) * 4 + x * 4 + 1; 
+}
+
+function getIndexOfBlueInData(x, y) { 
+  return canvas.width * (y - 1) * 4 + x * 4 + 2; 
+}
+
+function getIndexOfAlphaInData(x, y) { 
+  return canvas.width * (y - 1) * 4 + x * 4 + 3; 
+}
+  
+function areInCanvas(x, y) {
+  return (x <= canvas.width - 1 && y <= canvas.height && x >= 0 && y >= 0);
+}

@@ -14,34 +14,26 @@
       <img src="img/leftPanel.png"></img>
     </div>
     <div id="lefContainer" hidden="true">
-      <button title="Карандаш" class="toolBtn" id="pencil" style="background-image: url(img/pencil-icon.svg)">
+      <button title="Карандаш" class="toolBtn" id="pencil" style="background-image: url(img/tools/pencil.svg)">
       </button>
       <div class="leftPaneldrop" style="display: inline-block">
-        <button title="Кисть" class="toolBtn" id="basicBrush" style="background-image: url(img/brush-icon.svg)">
+        <button title="Меню кистей" class="toolBtn" id="brush" style="background-image: url(img/tools/all_brushes.svg)">
         </button>
         <div class="leftMenu" id="brushMenu" hidden="true">
-          <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/neonBrush-icon.svg)">
+          <button title="Базовая Кисть" class="toolBtn optionTool" id="basicBrush" style="background-image: url(img/tools/basic_brush.svg)">
           </button>
-          <button title="Мягкая Кисть" class="toolBtn optionTool" id="smoothBrush" style="background-image: url(img/smoothBrush-icon.svg)">
+          <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/tools/neon_brush.svg)">
           </button>
-          <button title="Скетч Кисть" class="toolBtn optionTool" id="sketchBrush" style="background-image: url(img/sketchBrush-icon.svg)">
+          <button title="Мягкая Кисть" class="toolBtn optionTool" id="smoothBrush" style="background-image: url(img/tools/smooth_brush.svg)">
+          </button>
+          <button title="Скетч Кисть" class="toolBtn optionTool" id="sketchBrush" style="background-image: url(img/tools/sketch_brush.svg)">
           </button>
         </div>
       </div>
-      <div class="leftPaneldrop">
-        <button title="Настройки инструмента" class="toolBtn" id="toolSettings">
-        </button>
-        <div class="leftMenu" id="toolSettingsMenu" hidden="true" style="min-width: 175px;">
-          <div class="rangeAndText">
-            <input type="range" id="toolSizeRange" min="1" max="300">
-            <input type="text" id="toolSizeText">
-          </div>
-        </div>
-      </div>
-      <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/eraser-icon.svg)">
+      <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
       </button>
       <div class="leftPaneldrop">
-        <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/fill-icon.svg)">
+        <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
         </button>
         <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
           <div class="rangeAndText">
@@ -51,49 +43,59 @@
         </div>
       </div>
       <div class="leftPaneldrop">
-        <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/figure-icon.svg)">
+        <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/tools/all_figures.svg)">
         </button>
         <div class="leftMenu" id="figureMenu" hidden="true" style="min-width: 250px;">
-          <button title="Круг" class="toolBtn" id="circle">
+          <button title="Круг" class="toolBtn" id="circle" style="background-image: url(img/tools/circle.svg)">
           </button>
-          <button title="Эллипс" class="toolBtn" id="ellipse">
+          <button title="Эллипс" class="toolBtn" id="ellipse" style="background-image: url(img/tools/ellipse.svg)">
           </button>
-          <button title="Прямоугольник" class="toolBtn" id="rectangle">
+          <button title="Прямоугольник" class="toolBtn" id="rectangle" style="background-image: url(img/tools/rectangle.svg)">
           </button>
-          <button title="Треугольник" class="toolBtn" id="eqTriangle">
+          <button title="Треугольник" class="toolBtn" id="eqTriangle" style="background-image: url(img/tools/triangle.svg)">
           </button>
-          <button title="Прямоугольный треугольник" class="toolBtn" id="rightTriangle">
+          <button title="Прямоугольный треугольник" class="toolBtn" id="rightTriangle" style="background-image: url(img/tools/triangle_90.svg)">
           </button>
         </div>
       </div>
-      <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/straightLine-icon.svg)">
+      <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/tools/line.svg)">
       </button>
       <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
-      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/eyedropper-icon.svg)">
+      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
       </button>
       <button id="eyedropperWindow" hidden="true"></button>
+      <div class="leftPaneldrop">
+        <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
+        </button>
+        <div class="leftMenu" id="toolSettingsMenu" hidden="true" style="min-width: 175px;">
+          <div class="rangeAndText">
+            <input type="range" id="toolSizeRange" min="1" max="300">
+            <input type="text" id="toolSizeText">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <span id="title">IMAGO</span>
   <div id="topContainer">
-    <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/undo-icon.svg)"></button>
-    <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/redo-icon.svg)"></button>
-    <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/clear-icon.svg)"></button>
+    <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
+    <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
+    <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/tools/clear.svg)"></button>
     <a id="download" download="image.png">
-      <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/save-icon.svg)">
+      <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/tools/download.svg)">
       </button>
     </a>
     <div class="droplist">
-      <button title="Загрузить изображение" class="toolBtn dropBtn" id="uploadImgBtn" style="background-image: url(img/uploadImg-icon.svg)">
+      <button title="Загрузить изображение" class="toolBtn dropBtn" id="uploadImgBtn" style="background-image: url(img/tools/photo.svg)">
         <div class="menu dropMenu" id="uploadImgMenu" hidden="true">
           <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
         </div>
       </button>
     </div>
-    <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/hand-icon.svg)"></button>
-    <button title="Зум" class="toolBtn" id="zoom" style="background-image: url(img/zoom-icon.svg)"></button>
+    <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
+    <button title="Зум" class="toolBtn" id="zoom" style="background-image: url(img/tools/zoom.svg)"></button>
     <div class="droplist">
-      <button class="toolBtn" id="settings" style="background-image: url(img/settings-icon.svg)"></button>
+      <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
       <div class="droplist-content">
         <p>При изменении параметров изображение не сохраняется</p>
         <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
@@ -115,9 +117,9 @@
         </div>
       </div>
     </div>
-    <button title="" class="toolBtn" style="background-image: url(img/lamp-icon.svg)"></button>
+    <button title="" class="toolBtn" style="background-image: url(img/tools/theme.svg)"></button>
     <div class="droplist">
-      <button title="Горячие клавиши" class="toolBtn" id="help" style="background-image: url(img/help-icon.png)"></button>
+      <button title="Горячие клавиши" class="toolBtn" id="help" style="background-image: url(img/tools/info.svg)"></button>
       <div class="menu" id="helpMenu" hidden="true">
         <ul>
           <li>Alt + c — очистить холст</li>

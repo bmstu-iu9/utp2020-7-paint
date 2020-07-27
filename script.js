@@ -205,7 +205,7 @@ document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
   hide_and_show("uploadImgMenu", event);
 });
 
-document.getElementById("basicBrush").addEventListener('click', (event) => {
+document.getElementById("brush").addEventListener('click', (event) => {
   hide_and_show("brushMenu", event);
 });
 

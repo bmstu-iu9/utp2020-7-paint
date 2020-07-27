@@ -28,10 +28,28 @@
           </button>
         </div>
       </div>
+      <div class="leftPaneldrop">
+        <button title="Настройки инструмента" class="toolBtn" id="toolSettings">
+        </button>
+        <div class="leftMenu" id="toolSettingsMenu" hidden="true" style="min-width: 175px;">
+          <div class="rangeAndText">
+            <input type="range" id="toolSizeRange" min="1" max="300">
+            <input type="text" id="toolSizeText">
+          </div>
+        </div>
+      </div>
       <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/eraser-icon.svg)">
       </button>
-      <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/fill-icon.svg)">
-      </button>
+      <div class="leftPaneldrop">
+        <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/fill-icon.svg)">
+        </button>
+        <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
+          <div class="rangeAndText">
+            <input type="range" id="colorDifferenceRange" min="0" max="100">
+            <input type="text" id="colorDifferenceText">
+          </div>
+        </div>
+      </div>
       <div class="leftPaneldrop">
         <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/figure-icon.svg)">
         </button>
@@ -51,14 +69,6 @@
       <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/straightLine-icon.svg)">
       </button>
       <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
-      <div class="rangeAndText">
-        <input type="range" id="toolSizeRange" min="1" max="300">
-        <input type="text" id="toolSizeText">
-      </div>
-      <div class="rangeAndText">
-        <input type="range" id="colorDifferenceRange" min="0" max="100">
-        <input type="text" id="colorDifferenceText">
-      </div>
       <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/eyedropper-icon.svg)">
       </button>
       <button id="eyedropperWindow" hidden="true"></button>

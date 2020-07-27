@@ -217,3 +217,11 @@ document.getElementById("figure").addEventListener('click', (event) => {
 document.getElementById("openPanel").addEventListener('click', (event) => {
   hide_and_show("lefContainer", event);
 });
+
+document.getElementById("filling").addEventListener('click', (event) => {
+  hide_and_show("fillMenu", event);
+});
+
+document.getElementById("toolSettings").addEventListener('click', (event) => {
+  hide_and_show("toolSettingsMenu", event);
+});

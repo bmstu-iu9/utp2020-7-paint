@@ -37,5 +37,5 @@ function fadeOutFunction(el) {
 window.onload = function () {
   setTimeout(function () {
     fadeOutFunction(preloaderStart);
-  }, 1000);
+  }, 2000);
 }

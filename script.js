@@ -215,7 +215,6 @@ document.getElementById("openPanel").addEventListener('click', (event) => {
   hide_and_show("lefContainer", event);
 });
 
-<<<<<<< HEAD
 document.getElementById("filling").addEventListener('click', (event) => {
   hide_and_show("fillMenu", event);
 });
@@ -223,7 +222,7 @@ document.getElementById("filling").addEventListener('click', (event) => {
 document.getElementById("toolSettings").addEventListener('click', (event) => {
   hide_and_show("toolSettingsMenu", event);
 });
-=======
+
 function getIndexOfRedInData(x, y) {
   return canvas.width * (y - 1) * 4 + x * 4;
 }
@@ -243,4 +242,3 @@ function getIndexOfAlphaInData(x, y) {
 function areInCanvas(x, y) {
   return (x <= canvas.width - 1 && y <= canvas.height && x >= 0 && y >= 0);
 }
->>>>>>> master

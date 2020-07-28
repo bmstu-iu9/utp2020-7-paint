@@ -82,14 +82,9 @@ function handleImg(img) {
 function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
-  img.onload = function () {
-    context.drawImage(img,
-    0, 0,
-    img.width, img.height,
-    0, 0,
-    canvas.width, canvas.height);
+  img.onload = () => {
+    insertImg(img);
   }
-  rememberImage(img);
 }
 
 let downloadBtn = document.getElementById("download");
@@ -107,7 +102,7 @@ function clearCanvas() {
 function clearAllLayers() {
   let curCanvasId = activeLayer.id;
   layers.forEach((layer) => {
-    canvas = layers[layer.id].canvas;
+    canvas = layer.canvas;
     context = canvas.getContext('2d');
     clearCanvas();
   });
@@ -119,7 +114,7 @@ document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
   curCords = [];
   curState = 0;
-  photoOfState = [];
+  photoOfState = [[]];
 });
 
 addEventListener('keydown', (event) => {
@@ -218,22 +213,22 @@ document.getElementById("openPanel").addEventListener('click', (event) => {
   hide_and_show("lefContainer", event);
 });
 
-function getIndexOfRedInData(x, y) { 
-  return canvas.width * (y - 1) * 4 + x * 4; 
+function getIndexOfRedInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4;
 }
 
-function getIndexOfGreenInData(x, y) { 
-  return canvas.width * (y - 1) * 4 + x * 4 + 1; 
+function getIndexOfGreenInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 1;
 }
 
-function getIndexOfBlueInData(x, y) { 
-  return canvas.width * (y - 1) * 4 + x * 4 + 2; 
+function getIndexOfBlueInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 2;
 }
 
-function getIndexOfAlphaInData(x, y) { 
-  return canvas.width * (y - 1) * 4 + x * 4 + 3; 
+function getIndexOfAlphaInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 3;
 }
-  
+
 function areInCanvas(x, y) {
   return (x <= canvas.width - 1 && y <= canvas.height && x >= 0 && y >= 0);
 }

@@ -44,6 +44,8 @@ function drawStraightLine(e) {
   context.moveTo (oldX, oldY);
   context.lineTo (e.offsetX, e.offsetY);
   context.stroke();
+  
+  changePreview();
 }
 
 function endStraightLine(e) {

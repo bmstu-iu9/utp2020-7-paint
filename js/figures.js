@@ -47,6 +47,8 @@ function drawRectangle(e) {
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.strokeRect(oldX, oldY, e.offsetX - oldX, e.offsetY - oldY);
+  
+  changePreview();
 }
 
 
@@ -97,6 +99,8 @@ function drawCircle(e) {
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
   context.stroke();
+  
+  changePreview();
 }
 
 
@@ -145,6 +149,8 @@ function drawEllipse(e) {
   context.bezierCurveTo(centerX, centerY, e.offsetX, centerY, e.offsetX, centerY + (e.offsetY - centerY) / 2);
   context.bezierCurveTo(e.offsetX, e.offsetY, centerX, e.offsetY, centerX, centerY + (e.offsetY - centerY) / 2);
   context.stroke();
+  
+  changePreview();
 }
 
 
@@ -196,6 +202,8 @@ function drawEqTriangle(e) {
   context.lineTo(startX + (startX - e.offsetX), e.offsetY);
   context.lineTo(startX, startY);
   context.stroke();
+  
+  changePreview();
 }
 
 
@@ -245,4 +253,6 @@ function drawRightTriangle(e) {
   context.lineTo(startX, e.offsetY);
   context.lineTo(startX, startY);
   context.stroke();
+  
+  changePreview();
 }

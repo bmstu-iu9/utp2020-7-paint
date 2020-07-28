@@ -56,6 +56,8 @@ function drawPixelEraser(e) {
 
   pixelEraserParameters.oldX = e.offsetX;
   pixelEraserParameters.oldY = e.offsetY;
+  
+  changePreview();
 }
 
 function drawPointPixelEraser(x, y) {

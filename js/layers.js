@@ -17,6 +17,18 @@ function createLayerHtml(id) {
   previewLayer.id = 'preview' + id;
   newLayer.appendChild(previewLayer);
 
+  let hideBtn = document.createElement('button');
+  hideBtn.classList.add('layerBtn');
+  hideBtn.id = 'hideLayer' + id;
+  hideBtn.title = 'Скрыть';
+  newLayer.appendChild(hideBtn);
+
+  let lockBtn = document.createElement('button');
+  lockBtn.classList.add('layerBtn');
+  lockBtn.id = 'lockLayer' + id;
+  lockBtn.title = 'Заблокировать'
+  newLayer.appendChild(lockBtn);
+
   return newLayer;
 }
 
@@ -133,7 +145,3 @@ function changePreview() {
   previewContext.clearRect(0, 0, activeLayer.preview.width, activeLayer.preview.height);
   previewContext.drawImage(canvas, 0, 0, activeLayer.preview.width, activeLayer.preview.height);
 }
-
-
-
-

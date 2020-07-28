@@ -99,6 +99,11 @@ body {
   border: solid 1px #FF7F50;
 }
 
+.layerBtn {
+  width: 20%;
+  height: 40%;
+}
+
 .optionTool {
   border-radius: 7%;
 }

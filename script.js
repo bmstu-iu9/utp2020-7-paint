@@ -102,6 +102,7 @@ downloadBtn.addEventListener('click', () => {
 
 function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
+  changePreview();
 }
 
 function clearAllLayers() {
@@ -159,6 +160,7 @@ changeCanvasWidth.oninput = function () {
     canvas.style.width = defaultWidth + 'px';
     document.getElementById("curWidth").innerHTML = defaultWidth + "";
   }
+  changePreview();
 }
 
 changeCanvasHeight.oninput = function () {
@@ -172,6 +174,7 @@ changeCanvasHeight.oninput = function () {
     canvas.style.height = defaultHeight + 'px';
     document.getElementById("curHeight").innerHTML = defaultHeight + "";
   }
+  changePreview();
 }
 
 borderWidth.oninput = function () {

@@ -53,9 +53,11 @@ function drawPencil(e) {
     
     drawPointPencil(pencilParameters.newX, pencilParameters.newY);
   }
-
+  
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
+  
+  changePreview();
 }
 
 function drawPointPencil(x, y) {

@@ -9,74 +9,6 @@
 </head>
 <body>
 <div id="topPanel">
-  <div id="leftPanel">
-    <div id="openPanel">
-      <img src="img/leftPanel.png"></img>
-    </div>
-    <div id="lefContainer" hidden="true">
-      <button title="Карандаш" class="toolBtn" id="pencil" style="background-image: url(img/tools/pencil.svg)">
-      </button>
-      <div class="leftPaneldrop" style="display: inline-block">
-        <button title="Меню кистей" class="toolBtn" id="brush" style="background-image: url(img/tools/all_brushes.svg)">
-        </button>
-        <div class="leftMenu" id="brushMenu" hidden="true">
-          <button title="Базовая Кисть" class="toolBtn optionTool" id="basicBrush" style="background-image: url(img/tools/basic_brush.svg)">
-          </button>
-          <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/tools/neon_brush.svg)">
-          </button>
-          <button title="Мягкая Кисть" class="toolBtn optionTool" id="smoothBrush" style="background-image: url(img/tools/smooth_brush.svg)">
-          </button>
-          <button title="Скетч Кисть" class="toolBtn optionTool" id="sketchBrush" style="background-image: url(img/tools/sketch_brush.svg)">
-          </button>
-        </div>
-      </div>
-      <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
-      </button>
-      <div class="leftPaneldrop">
-        <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
-        </button>
-        <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
-          <div class="rangeAndText">
-            <input type="range" id="colorDifferenceRange" min="0" max="100">
-            <input type="text" id="colorDifferenceText">
-          </div>
-        </div>
-      </div>
-      <div class="leftPaneldrop">
-        <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/tools/all_figures.svg)">
-        </button>
-        <div class="leftMenu" id="figureMenu" hidden="true" style="min-width: 250px;">
-          <button title="Круг" class="toolBtn" id="circle" style="background-image: url(img/tools/circle.svg)">
-          </button>
-          <button title="Эллипс" class="toolBtn" id="ellipse" style="background-image: url(img/tools/ellipse.svg)">
-          </button>
-          <button title="Прямоугольник" class="toolBtn" id="rectangle" style="background-image: url(img/tools/rectangle.svg)">
-          </button>
-          <button title="Треугольник" class="toolBtn" id="eqTriangle" style="background-image: url(img/tools/triangle.svg)">
-          </button>
-          <button title="Прямоугольный треугольник" class="toolBtn" id="rightTriangle" style="background-image: url(img/tools/triangle_90.svg)">
-          </button>
-        </div>
-      </div>
-      <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/tools/line.svg)">
-      </button>
-      <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
-      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
-      </button>
-      <button id="eyedropperWindow" hidden="true"></button>
-      <button title="Вставить текст" class="toolBtn" id="text"></button>
-      <div class="leftPaneldrop">
-        <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
-        </button>
-        <div class="leftMenu" id="toolSettingsMenu" hidden="true" style="min-width: 175px;">
-          <div class="rangeAndText">
-            <input type="range" id="toolSizeRange" min="1" max="300">
-            <input type="text" id="toolSizeText">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <span id="title">IMAGO</span>
   <div id="topContainer">
     <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
@@ -130,6 +62,75 @@
           <li>Alt + y — вернуть</li>
           <li>Alt + z — отменить</li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="leftPanel">
+  <div id="openPanel">
+    <img src="img/leftPanel.png"></img>
+  </div>
+  <div id="lefContainer" hidden="true">
+    <button title="Карандаш" class="toolBtn" id="pencil" style="background-image: url(img/tools/pencil.svg)">
+    </button>
+    <div class="leftPaneldrop" style="display: inline-block">
+      <button title="Меню кистей" class="toolBtn" id="brush" style="background-image: url(img/tools/all_brushes.svg)">
+      </button>
+      <div class="leftMenu" id="brushMenu" hidden="true">
+        <button title="Базовая Кисть" class="toolBtn optionTool" id="basicBrush" style="background-image: url(img/tools/basic_brush.svg)">
+        </button>
+        <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/tools/neon_brush.svg)">
+        </button>
+        <button title="Мягкая Кисть" class="toolBtn optionTool" id="smoothBrush" style="background-image: url(img/tools/smooth_brush.svg)">
+        </button>
+        <button title="Скетч Кисть" class="toolBtn optionTool" id="sketchBrush" style="background-image: url(img/tools/sketch_brush.svg)">
+        </button>
+      </div>
+    </div>
+    <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
+    </button>
+    <div class="leftPaneldrop">
+      <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
+      </button>
+      <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
+        <div class="rangeAndText">
+          <input type="range" id="colorDifferenceRange" min="0" max="100">
+          <input type="text" id="colorDifferenceText">
+        </div>
+      </div>
+    </div>
+    <div class="leftPaneldrop">
+      <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/tools/all_figures.svg)">
+      </button>
+      <div class="leftMenu" id="figureMenu" hidden="true" style="min-width: 250px;">
+        <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/tools/line.svg)">
+        </button>
+        <button title="Круг" class="toolBtn" id="circle" style="background-image: url(img/tools/circle.svg)">
+        </button>
+        <button title="Эллипс" class="toolBtn" id="ellipse" style="background-image: url(img/tools/ellipse.svg)">
+        </button>
+        <button title="Прямоугольник" class="toolBtn" id="rectangle" style="background-image: url(img/tools/rectangle.svg)">
+        </button>
+        <button title="Треугольник" class="toolBtn" id="eqTriangle" style="background-image: url(img/tools/triangle.svg)">
+        </button>
+        <button title="Прямоугольный треугольник" class="toolBtn" id="rightTriangle" style="background-image: url(img/tools/triangle_90.svg)">
+        </button>
+      </div>
+    </div>
+    <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
+    <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
+    </button>
+    <button id="eyedropperWindow" hidden="true"></button>
+    <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
+    <div class="leftPaneldrop">
+      <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
+      </button>
+      <div class="leftMenu" id="toolSettingsMenu" hidden="true" style="min-width: 175px;">
+        <div class="rangeAndText">
+          <input type="range" id="toolSizeRange" min="1" max="300">
+          <input type="text" id="toolSizeText">
+        </div>
       </div>
     </div>
   </div>

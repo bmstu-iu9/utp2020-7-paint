@@ -65,6 +65,8 @@ function drawPointPixelEraser(x, y) {
   function drawBresenhamCircle() {
     context.beginPath();
     context.lineWidth = 1;
+    context.lineJoin = "miter";
+    context.lineCap = "butt";
     context.globalCompositeOperation = "destination-out";
     let x0 = 0;
     let y0 = radius;

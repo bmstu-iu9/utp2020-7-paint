@@ -189,30 +189,38 @@ borderColor.oninput = function () {
   }
 }
 
-function hide_and_show (element) {
+function hideAndShow (element) {
   let menu = document.getElementById(element);
   menu.hidden = !menu.hidden;
   event.currentTarget.classList.toggle("pressed");
 }
 
 document.getElementById("help").addEventListener('click', (event) => {
-  hide_and_show("helpMenu", event);
+  hideAndShow("helpMenu", event);
 });
 
 document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
-  hide_and_show("uploadImgMenu", event);
+  hideAndShow("uploadImgMenu", event);
 });
 
-document.getElementById("basicBrush").addEventListener('click', (event) => {
-  hide_and_show("brushMenu", event);
+document.getElementById("brush").addEventListener('click', (event) => {
+  hideAndShow("brushMenu", event);
 });
 
 document.getElementById("figure").addEventListener('click', (event) => {
-  hide_and_show("figureMenu", event);
+  hideAndShow("figureMenu", event);
 });
 
 document.getElementById("openPanel").addEventListener('click', (event) => {
-  hide_and_show("lefContainer", event);
+  hideAndShow("lefContainer", event);
+});
+
+document.getElementById("filling").addEventListener('click', (event) => {
+  hideAndShow("fillMenu", event);
+});
+
+document.getElementById("toolSettings").addEventListener('click', (event) => {
+  hideAndShow("toolSettingsMenu", event);
 });
 
 function getIndexOfRedInData(x, y) {

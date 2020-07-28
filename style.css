@@ -16,7 +16,7 @@ body {
 #topPanel {
   box-sizing: border-box;
   width: 100%;
-  height: 45px;
+  height: 50px;
   background-color: #ffffff;
   display: flex;
   align-items: center;
@@ -28,7 +28,7 @@ body {
   font-family: 'Passion One', cursive;
   font-size: 35px;
   color: #ffdf2b;
-  margin-left: 10px;
+  margin-left: 70px;
 }
 
 #topContainer {
@@ -37,16 +37,32 @@ body {
 }
 
 #leftPanel {
-margin-left: 10px;
-width: 45px;
-height: 80%;
-background-color: #ffdf2b;
-position: relative;
+  position: relative;
+  left: 10px;
+  padding-bottom: 20px;
+  width: 50px;
+  background-color: #ffdf2b;
+  z-index: 1006;
+  /* text-align: center; */
+}
+
+#leftPanel:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-bottom: 13px solid #e5e6e7;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
 }
 
 #openPanel {
   width: 100%;
   height: 100%;
+  padding-top: 10px;
+  z-index: 1007;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +72,7 @@ position: relative;
   background-color: #ffdf2b;
   padding-top: 20px;
   width: 100%;
-  position: absolute;
+  /* position: absolute; */
   margin: auto;
 }
 
@@ -64,8 +80,8 @@ position: relative;
   display: inline-block;
   padding: 0px;
   margin: 5px;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: none;
   background-size: cover;
@@ -109,7 +125,7 @@ position: relative;
 #layersField {
   position: absolute;
   box-sizing: border-box;
-  top: 45px;
+  top: 50px;
   left: 90%;
   width: 10%;
   height: 90%;
@@ -279,26 +295,48 @@ option:checked {
 .rangeAndText input[type='text'] {
   padding: 0px 2px 0px 2px;
   margin: 0px;
-  height: 100%;
+  height: 20px;
   width: 30%;
   background: #FFFFFF;
+  border-radius: 5px;
   border: none;
   font-family: 'Times New Roman';
   font-size: 17px;
   text-align: center;
-
   -webkit-appearance: none;
   outline:none;
 }
 
 .rangeAndText input[type='range'] {
-  height: 100%;
-  margin: 0px;
-  width: 70%;
-  border: none;
-  border-right: 1px solid darkgray;
   -webkit-appearance: none;
-  overflow: hidden;
+  width: 70%;
+  height: 5px;
+  border-radius: 5px;
+  background: #ffffff;
+  background-size: cover;
+  outline: none;
+  margin-right: 5px;
+  -webkit-transition: .2s;
+}
+
+.rangeAndText input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #24A4FF;
+  cursor: pointer;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.5);
+}
+
+.rangeAndText input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #24A4FF;
+  cursor: pointer;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }
 
 #eyedropperWindow {
@@ -389,80 +427,4 @@ option:checked {
   right: -5px;
   bottom: -5px;
   cursor: nwse-resize;
-}
-
-input[type='range']::-webkit-slider-runnable-track {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  margin: 0px;
-  box-shadow: none;
-  background: white;
-  border: none;
-}
-
-input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  border: none;
-  height: 100%;
-  width: 1px;
-  border: none;
-  background: lightgrey;
-  cursor: pointer;
-  box-shadow: -80px 0 0 80px lightgrey;
-}
-
-input[type=range]:focus {
-  outline: none;
-}
-
-input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  margin: 0px;
-  box-shadow: none;
-  background: white;
-  border: none;
-}
-
-input[type=range]::-moz-range-thumb {
-  border: none;
-  height: 100%;
-  width: 1px;
-  border: none;
-  background: lightgrey;
-  cursor: pointer;
-}
-
-input[type=range]::-moz-range-progress {
-  background-color: lightgrey;
-  height: 100%;
-}
-
-input[type=range]::-ms-track {
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  margin: 0px;
-  box-shadow: none;
-  background: white;
-  border: none;
-}
-
-input[type=range]::-ms-thumb {
-  border: none;
-  height: 100%;
-  width: 1px;
-  border: none;
-  background: lightgrey;
-  cursor: pointer;
-}
-
-input[type=range]::-ms-fill-lower {
-  background: #3071A9;
-  border: 1px solid #000000;
-  border-radius: 0px;
-  box-shadow: 0px 0px 0px lightgrey;
 }

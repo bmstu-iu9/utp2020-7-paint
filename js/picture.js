@@ -69,70 +69,68 @@ function makeResizablePhoto() {
   let resizers = document.querySelectorAll('.resizer');
   let originalWidth, originalHeight, originalX, originalY;
   let originalMouseX, originalMouseY, minSize = 20;
-  if (img) {
-    for (let i = 0; i < resizers.length; i++) {
-      let currentResizer = resizers[i];
-      currentResizer.addEventListener('mousedown', function(e) {
-        e.preventDefault();
-        originalWidth = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
-        originalHeight = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
-        originalX = element.getBoundingClientRect().left;
-        originalY = element.getBoundingClientRect().top;
-        originalMouseX = e.pageX;
-        originalMouseY = e.pageY;
-        document.addEventListener('mousemove', resize);
-        document.addEventListener('mouseup', stopResize);
-      });
+  for (let i = 0; i < resizers.length; i++) {
+    let currentResizer = resizers[i];
+    currentResizer.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      originalWidth = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
+      originalHeight = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
+      originalX = element.getBoundingClientRect().left;
+      originalY = element.getBoundingClientRect().top;
+      originalMouseX = e.pageX;
+      originalMouseY = e.pageY;
+      document.addEventListener('mousemove', resize);
+      document.addEventListener('mouseup', stopResize);
+    });
 
-      function resize(e) {
-        isResizing = true;
-        if (currentResizer.classList.contains('bottom-right')) {
-          let width = originalWidth + (e.pageX - originalMouseX);
-          let height = originalHeight + (e.pageY - originalMouseY);
-          if (width > minSize) {
-            img.style.width  = element.style.width = width + 'px';
-          }
-          if (height > minSize) {
-            img.style.height = element.style.height = height + 'px';
-          }
-        } else if (currentResizer.classList.contains('bottom-left')) {
-          let height = originalHeight + (e.pageY - originalMouseY);
-          let width = originalWidth - (e.pageX - originalMouseX);
-          if (height > minSize) {
-            img.style.height = element.style.height = height + 'px';
-          }
-          if (width > minSize) {
-            img.style.width = element.style.width = width + 'px';
-            img.style.left = element.style.left = originalX + (e.pageX - originalMouseX) + 'px';
-          }
-        } else if (currentResizer.classList.contains('top-right')) {
-          let width = originalWidth + (e.pageX - originalMouseX);
-          let height = originalHeight - (e.pageY - originalMouseY);
-          if (width > minSize) {
-            img.style.width = element.style.width = width + 'px';
-          }
-          if (height > minSize) {
-            img.style.height = element.style.height = height + 'px';
-            img.style.top = element.style.top = originalY + (e.pageY - originalMouseY) + 'px';
-          }
-        } else {
-          let width = originalWidth - (e.pageX - originalMouseX);
-          let height = originalHeight - (e.pageY - originalMouseY);
-          if (width > minSize) {
-            img.style.width = element.style.width = width + 'px';
-            img.style.left = element.style.left = originalX + (e.pageX - originalMouseX) + 'px';
-          }
-          if (height > minSize) {
-            img.style.height = element.style.height = height + 'px';
-            img.style.top = element.style.top = originalY + (e.pageY - originalMouseY) + 'px';
-          }
+    function resize(e) {
+      isResizing = true;
+      if (currentResizer.classList.contains('bottom-right')) {
+        let width = originalWidth + (e.pageX - originalMouseX);
+        let height = originalHeight + (e.pageY - originalMouseY);
+        if (width > minSize) {
+          img.style.width = element.style.width = width + 'px';
+        }
+        if (height > minSize) {
+          img.style.height = element.style.height = height + 'px';
+        }
+      } else if (currentResizer.classList.contains('bottom-left')) {
+        let height = originalHeight + (e.pageY - originalMouseY);
+        let width = originalWidth - (e.pageX - originalMouseX);
+        if (height > minSize) {
+          img.style.height = element.style.height = height + 'px';
+        }
+        if (width > minSize) {
+          img.style.width = element.style.width = width + 'px';
+          img.style.left = element.style.left = originalX + (e.pageX - originalMouseX) + 'px';
+        }
+      } else if (currentResizer.classList.contains('top-right')) {
+        let width = originalWidth + (e.pageX - originalMouseX);
+        let height = originalHeight - (e.pageY - originalMouseY);
+        if (width > minSize) {
+          img.style.width = element.style.width = width + 'px';
+        }
+        if (height > minSize) {
+          img.style.height = element.style.height = height + 'px';
+          img.style.top = element.style.top = originalY + (e.pageY - originalMouseY) + 'px';
+        }
+      } else {
+        let width = originalWidth - (e.pageX - originalMouseX);
+        let height = originalHeight - (e.pageY - originalMouseY);
+        if (width > minSize) {
+          img.style.width = element.style.width = width + 'px';
+          img.style.left = element.style.left = originalX + (e.pageX - originalMouseX) + 'px';
+        }
+        if (height > minSize) {
+          img.style.height = element.style.height = height + 'px';
+          img.style.top = element.style.top = originalY + (e.pageY - originalMouseY) + 'px';
         }
       }
+    }
 
-      function stopResize() {
-        isResizing = false;
-        document.removeEventListener('mousemove', resize);
-      }
+    function stopResize() {
+      isResizing = false;
+      document.removeEventListener('mousemove', resize);
     }
   }
 }

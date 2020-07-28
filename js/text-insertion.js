@@ -68,6 +68,8 @@ function writeText(x, y) {
     write(x - ox, y - oy);
   }
   context.restore();
+  
+  changePreview();
 }
 
 function stopInsertion() {

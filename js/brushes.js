@@ -63,6 +63,8 @@ function drawBasicBrush(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  
+  changePreview();
 }
 
 
@@ -104,6 +106,8 @@ function drawNeonBrush(e) {
   context.stroke();
   context.beginPath();
   context.moveTo(e.offsetX, e.offsetY);
+  
+  changePreview();
 }
 
 
@@ -162,6 +166,8 @@ function drawSmoothBrush(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  
+  changePreview();
 }
 
 
@@ -234,4 +240,6 @@ function drawSketchBrush(e) {
   oldY = e.offsetY;
 
   prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
+  
+  changePreview();
 }

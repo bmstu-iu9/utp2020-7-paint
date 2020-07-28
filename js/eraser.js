@@ -64,4 +64,6 @@ function drawEraser(e) {
 
   eraserParameters.oldX = e.offsetX;
   eraserParameters.oldY = e.offsetY;
+  
+  changePreview();
 }

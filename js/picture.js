@@ -18,6 +18,8 @@ function insertImg(img) {
       rememberImage(img, dx, dy, dWidth, dHeight);
       context.drawImage(img, 0, 0, img.width, img.height, dx, dy, dWidth, dHeight);
       document.removeEventListener('keydown', pressForInsertion);
+      
+      changePreview();
     }
   }
 

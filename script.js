@@ -196,7 +196,7 @@ function hideAndShow (element) {
 }
 
 document.getElementById("help").addEventListener('click', (event) => {
-  ("helpMenu", event);
+  hideAndShow("helpMenu", event);
 });
 
 document.getElementById("uploadImgBtn").addEventListener('click', (event) => {

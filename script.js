@@ -18,6 +18,7 @@ canvas.height = canvas.offsetHeight;
 
 let memCanvas = document.createElement('canvas');
 let memContext = memCanvas.getContext('2d');
+let uploadImage = document.getElementById("uploadImage");
 
 function saveImg() {
   memCanvas.width = canvas.width;
@@ -66,11 +67,12 @@ function arrayToRgb(color) {
   return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
 }
 
-document.getElementById("uploadImage").addEventListener('change', () => {
+uploadImage.addEventListener('change', () => {
   let target = event.target;
   if (target.files && target.files[0]) {
     handleImg(target.files[0]);
   }
+  uploadImage.value = null;
 });
 
 function handleImg(img) {
@@ -131,7 +133,7 @@ addEventListener('keydown', (event) => {
         downloadBtn.click();
         break;
       case 'u':
-        document.getElementById("uploadImage").click();
+        uploadImage.click();
         break;
       case 'y':
         document.getElementById("redo").click();

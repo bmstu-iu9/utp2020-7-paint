@@ -1,6 +1,6 @@
-'use strict'ж
+'use strict';
 
-let inter = 100;
+let count = 0, inter = 100;
 
 function initCage() {
   canvas.addEventListener("mousedown", startPointCage);

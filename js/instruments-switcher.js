@@ -2,7 +2,7 @@
 
 const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush', 'sketchBrush',
 'filling', 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'eyedropper',
-'straightLine', 'hand', 'text', 'cage'];
+'straightLine', 'hand', 'text', 'cage', 'horizontal', 'vertical', 'diagonal'];
 
 let allInstruments = new Map();
 let activeInstrument = null;

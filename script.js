@@ -214,6 +214,10 @@ document.getElementById("figure").addEventListener('click', (event) => {
   hideAndShow("figureMenu", event);
 });
 
+document.getElementById("marking").addEventListener('click', (event) => {
+  hideAndShow("markingMenu", event);
+});
+
 document.getElementById("openPanel").addEventListener('click', (event) => {
   hideAndShow("lefContainer", event);
 });

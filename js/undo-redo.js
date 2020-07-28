@@ -2,7 +2,6 @@
 
 let isReplaying = false;
 let photoOfState = [[]];
-let rememberedTools = new Map();
 
 class Tool {
   constructor(id, name, cords, img) {
@@ -29,9 +28,9 @@ function rememberFilling(...cords) {
   ++curState;
 }
 
-function rememberImage(img) {
+function rememberImage(img, ...cords) {
   checkCurCords();
-  curCords.push(new Tool('Image', 'Image', [], img));
+  curCords.push(new Tool('Image', 'Image', cords, img));
   ++curState;
 }
 
@@ -113,10 +112,8 @@ function insertPhotoAndReplay() {
 }
 
 function replayImage() {
-  let img = this.img;
-  context.drawImage(img,
-    0, 0, img.width, img.height,
-    0, 0, canvas.width, canvas.height);
+  let img = this.img, cords = this.cords;
+  context.drawImage(img, 0, 0, img.width, img.height, ...cords);
 }
 
 function replayFilling() {

@@ -10,14 +10,15 @@ let curAllowableColorDifference = 0;
 let curCords = [];
 let curState = 0;
 
-const defaultWidth = 1080;
-const defaultHeight = 720;
+const defaultWidth = 780;
+const defaultHeight = 400;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
 let memCanvas = document.createElement('canvas');
 let memContext = memCanvas.getContext('2d');
+let uploadImage = document.getElementById("uploadImage");
 
 function saveImg() {
   memCanvas.width = canvas.width;
@@ -66,10 +67,12 @@ function arrayToRgb(color) {
   return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
 }
 
-document.getElementById("uploadImage").addEventListener('change', () => {
-  if (this.files && this.files[0]) {
-    handleImg(this.files[0]);
+uploadImage.addEventListener('change', () => {
+  let target = event.target;
+  if (target.files && target.files[0]) {
+    handleImg(target.files[0]);
   }
+  uploadImage.value = null;
 });
 
 function handleImg(img) {
@@ -81,14 +84,9 @@ function handleImg(img) {
 function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
-  img.onload = function () {
-    canvas.getContext("2d").drawImage(img,
-    0, 0,
-    img.width, img.height,
-    0, 0,
-    canvas.width, canvas.height);
+  img.onload = () => {
+    insertImg(img);
   }
-  rememberImage(img);
 }
 
 let downloadBtn = document.getElementById("download");
@@ -101,13 +99,25 @@ downloadBtn.addEventListener('click', () => {
 
 function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
+  changePreview();
+}
+
+function clearAllLayers() {
+  let curCanvasId = activeLayer.id;
+  layers.forEach((layer) => {
+    canvas = layer.canvas;
+    context = canvas.getContext('2d');
+    clearCanvas();
+  });
+  canvas = layers[curCanvasId].canvas;
+  context = canvas.getContext('2d');
 }
 
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
   curCords = [];
   curState = 0;
-  photoOfState = [];
+  photoOfState = [[]];
 });
 
 addEventListener('keydown', (event) => {
@@ -124,7 +134,7 @@ addEventListener('keydown', (event) => {
         downloadBtn.click();
         break;
       case 'u':
-        document.getElementById("uploadImage").click();
+        uploadImage.click();
         break;
       case 'y':
         document.getElementById("redo").click();
@@ -147,6 +157,7 @@ changeCanvasWidth.oninput = function () {
     canvas.style.width = defaultWidth + 'px';
     document.getElementById("curWidth").innerHTML = defaultWidth + "";
   }
+  changePreview();
 }
 
 changeCanvasHeight.oninput = function () {
@@ -160,6 +171,7 @@ changeCanvasHeight.oninput = function () {
     canvas.style.height = defaultHeight + 'px';
     document.getElementById("curHeight").innerHTML = defaultHeight + "";
   }
+  changePreview();
 }
 
 borderWidth.oninput = function () {
@@ -180,8 +192,56 @@ borderColor.oninput = function () {
   }
 }
 
-document.getElementById("help").addEventListener('click', (event) => {
-  let helpMenu = document.getElementById("helpMenu");
-  helpMenu.hidden = !helpMenu.hidden;
+function hideAndShow (element) {
+  let menu = document.getElementById(element);
+  menu.hidden = !menu.hidden;
   event.currentTarget.classList.toggle("pressed");
+}
+
+document.getElementById("help").addEventListener('click', (event) => {
+  hideAndShow("helpMenu", event);
 });
+
+document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
+  hideAndShow("uploadImgMenu", event);
+});
+
+document.getElementById("brush").addEventListener('click', (event) => {
+  hideAndShow("brushMenu", event);
+});
+
+document.getElementById("figure").addEventListener('click', (event) => {
+  hideAndShow("figureMenu", event);
+});
+
+document.getElementById("openPanel").addEventListener('click', (event) => {
+  hideAndShow("lefContainer", event);
+});
+
+document.getElementById("filling").addEventListener('click', (event) => {
+  hideAndShow("fillMenu", event);
+});
+
+document.getElementById("toolSettings").addEventListener('click', (event) => {
+  hideAndShow("toolSettingsMenu", event);
+});
+
+function getIndexOfRedInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4;
+}
+
+function getIndexOfGreenInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 1;
+}
+
+function getIndexOfBlueInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 2;
+}
+
+function getIndexOfAlphaInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 3;
+}
+
+function areInCanvas(x, y) {
+  return (x <= canvas.width - 1 && y <= canvas.height && x >= 0 && y >= 0);
+}

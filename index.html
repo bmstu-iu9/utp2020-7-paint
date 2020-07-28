@@ -2,14 +2,20 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Paint</title>
+<title>Imago</title>
 <link rel="stylesheet" href="style.css"></link>
+<link rel="stylesheet" href="preloader.css"></link>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon"></link>
 </head>
 <body>
-<div id="buttonsField">
-  <div class="panel">
-    <div class="container">
-      <button title="Карандаш" class="toolBtn" id="pencil" style="background-image: url(img/pencil-icon.png)">
+<div id="topPanel">
+  <span id="title">IMAGO</span>
+  <div id="topContainer">
+    <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
+    <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
+    <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/tools/clear.svg)"></button>
+    <a id="download" download="image.png">
+      <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/tools/download.svg)">
       </button>
       <button title="Кисть" class="toolBtn" id="basicBrush" style="background-image: url(img/brush-icon.png)">
       </button>
@@ -60,24 +66,14 @@
       </button>
       <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/eyedropper-icon.png)">
       </button>
-      <button id="eyedropperWindow" hidden="true"></button>
     </div>
-    <p class="description">Другие функции</p>
-  </div>
-
-  <div class="panel">
-    <div class="container">
-      <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
-    </div>
-    <p class="description">Загрузка изображения</p>
-  </div>
-
-  <div class="panel" style="width:20%">
+    <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
+    <button title="Зум" class="toolBtn" id="zoom" style="background-image: url(img/tools/zoom.svg)"></button>
     <div class="droplist">
-      <button class="dropbtn">Параметры холста</button>
+      <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
       <div class="droplist-content">
         <p>При изменении параметров изображение не сохраняется</p>
-        <p>Текущие параметры: <span id="curWidth">1080</span>x<span id="curHeight">720</span></p>
+        <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
         <div class="field">
           <label>Высота холста:</label>
           <input type="number" size="1" id="changeCanvasHeight" min="50" max ="1000">
@@ -98,18 +94,73 @@
     </div>
     <button title="Рука" class="toolBtn" id="hand"></button>
   </div>
+</div>
 
-  <div class="droplist">
-    <button title="Горячие клавиши" class="toolBtn" id="help" style="background-image: url(img/help-icon.png)"></button>
-    <div class="menu" id="helpMenu" hidden="true">
-      <ul>
-        <li>Alt + c — очистить холст</li>
-        <li>Alt + p — выбрать цвет</li>
-        <li>Alt + s — сохранить</li>
-        <li>Alt + u — загрузить фото</li>
-        <li>Alt + y — вернуть</li>
-        <li>Alt + z — отменить</li>
-      </ul>
+<div id="leftPanel">
+  <div id="openPanel">
+    <img src="img/leftPanel.png"></img>
+  </div>
+  <div id="lefContainer" hidden="true">
+    <button title="Карандаш" class="toolBtn" id="pencil" style="background-image: url(img/tools/pencil.svg)">
+    </button>
+    <div class="leftPaneldrop" style="display: inline-block">
+      <button title="Меню кистей" class="toolBtn" id="brush" style="background-image: url(img/tools/all_brushes.svg)">
+      </button>
+      <div class="leftMenu" id="brushMenu" hidden="true">
+        <button title="Базовая Кисть" class="toolBtn optionTool" id="basicBrush" style="background-image: url(img/tools/basic_brush.svg)">
+        </button>
+        <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/tools/neon_brush.svg)">
+        </button>
+        <button title="Мягкая Кисть" class="toolBtn optionTool" id="smoothBrush" style="background-image: url(img/tools/smooth_brush.svg)">
+        </button>
+        <button title="Скетч Кисть" class="toolBtn optionTool" id="sketchBrush" style="background-image: url(img/tools/sketch_brush.svg)">
+        </button>
+      </div>
+    </div>
+    <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
+    </button>
+    <div class="leftPaneldrop">
+      <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
+      </button>
+      <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
+        <div class="rangeAndText">
+          <input type="range" id="colorDifferenceRange" min="0" max="100">
+          <input type="text" id="colorDifferenceText">
+        </div>
+      </div>
+    </div>
+    <div class="leftPaneldrop">
+      <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/tools/all_figures.svg)">
+      </button>
+      <div class="leftMenu" id="figureMenu" hidden="true" style="min-width: 250px;">
+        <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/tools/line.svg)">
+        </button>
+        <button title="Круг" class="toolBtn" id="circle" style="background-image: url(img/tools/circle.svg)">
+        </button>
+        <button title="Эллипс" class="toolBtn" id="ellipse" style="background-image: url(img/tools/ellipse.svg)">
+        </button>
+        <button title="Прямоугольник" class="toolBtn" id="rectangle" style="background-image: url(img/tools/rectangle.svg)">
+        </button>
+        <button title="Треугольник" class="toolBtn" id="eqTriangle" style="background-image: url(img/tools/triangle.svg)">
+        </button>
+        <button title="Прямоугольный треугольник" class="toolBtn" id="rightTriangle" style="background-image: url(img/tools/triangle_90.svg)">
+        </button>
+      </div>
+    </div>
+    <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
+    <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
+    </button>
+    <button id="eyedropperWindow" hidden="true"></button>
+    <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
+    <div class="leftPaneldrop">
+      <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
+      </button>
+      <div class="leftMenu" id="toolSettingsMenu" hidden="true" style="min-width: 175px;">
+        <div class="rangeAndText">
+          <input type="range" id="toolSizeRange" min="1" max="300">
+          <input type="text" id="toolSizeText">
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -124,7 +175,40 @@
   <div class="layer addLayer" id="addLayerBottom">add layer</div>
 </div>
 
+<div id="pastedText" contenteditable="true" hidden="true">Текст Alt + Enter</div>
 
+<div class="panel" id="textMenu" hidden="true">
+  <select id="font" class="selectorMenu" onchange="chooseTextFormat()">
+    <option value="serif">Font:</option>
+    <option value="arial"> Arial </option>
+    <option value="'courier new'"> Courier New </option>
+    <option value="'comic sans'"> Comic Sans </option>
+    <option value="fantasy"> Fantasy </option>
+    <option value="serif"> Serif </option>
+    <option value="sans-serif"> Sans-Serif </option>
+    <option value="monoplace"> Monospace </option>
+    <option value="'times new roman'"> Times New Roman </option>
+    <option value="verdana"> Verdana </option>
+  </select>
+  <label for="fontSize">Text size:</label>
+  <input type="number" id="fontSize" size="2" min="1" max="300" value="48" oninput="chooseTextFormat()">
+  <label for="fontColor">Text color:</label>
+  <input type="color" size="2" id="fontColor" oninput="chooseTextFormat()">
+  <label for="textAngle">Angle:</label>
+  <input type="number" id="textAngle" size="2" min="-360" max="360" value="0" oninput="chooseTextFormat()">
+  <button id="textFormat">OK</button>
+</div>
+
+<div class="resizable" id="photoResizer" hidden="true">
+  <div class="resizers" id="photoInsertion">
+    <div class="resizer top-left"></div>
+    <div class="resizer top-right"></div>
+    <div class="resizer bottom-left"></div>
+    <div class="resizer bottom-right"></div>
+  </div>
+</div>
+
+<script src="preloader.js"></script>
 <script src="script.js"></script>
 <script src="js/layers.js"></script>
 <script src="js/drag-n-drop.js"></script>

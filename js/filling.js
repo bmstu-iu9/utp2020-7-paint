@@ -1,10 +1,12 @@
 'use strict';
 
 function initFilling() {
+  canvas.style.cursor = "url('img/cursors/filling-cursor.png') 0 25, auto";
   canvas.addEventListener("click", fill);
 }
 
 function deleteFilling() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("click", fill);
 }
 
@@ -51,6 +53,9 @@ function fill(event) {
   }
 
   context.putImageData(resultImageData, 0, 0);
+  
+  changePreview();
+  
   function haveSameColor(x, y) {
     let thisRGBA = [
       originalImageData.data[getIndexOfRedInData(x, y)],
@@ -64,15 +69,6 @@ function fill(event) {
   function wasPushed(x, y) {
     return pushed[x][y];
   }
-
-  function areInCanvas(x, y) {
-    return (x <= canvas.width-1 && y <= canvas.height && x >= 0 && y >= 0);
-  }
-
-  function getIndexOfRedInData(x, y) { return canvas.width*(y-1)*4+x*4; }
-  function getIndexOfGreenInData(x, y) { return canvas.width*(y-1)*4+x*4+1; }
-  function getIndexOfBlueInData(x, y) { return canvas.width*(y-1)*4+x*4+2; }
-  function getIndexOfAlphaInData(x, y) { return canvas.width*(y-1)*4+x*4+3; }
 
   function changePixel(x, y) {
     resultImageData.data[getIndexOfRedInData(x, y)] = curColor[0];

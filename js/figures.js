@@ -6,10 +6,12 @@ function endPointFigures() {
 }
 
 function initRectangle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointRectangle);
 }
 
 function deleteRectangle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointRectangle);
   canvas.removeEventListener("mousemove", drawRectangle);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -45,16 +47,20 @@ function drawRectangle(e) {
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.strokeRect(oldX, oldY, e.offsetX - oldX, e.offsetY - oldY);
+  
+  changePreview();
 }
 
 
 let centerX, centerY, radius;
 
 function initCircle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointCircle);
 }
 
 function deleteCircle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointCircle);
   canvas.removeEventListener("mousemove", drawCircle);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -93,14 +99,18 @@ function drawCircle(e) {
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
   context.stroke();
+  
+  changePreview();
 }
 
 
 function initEllipse() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointEllipse);
 }
 
 function deleteEllipse() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointEllipse);
   canvas.removeEventListener("mousemove", drawEllipse);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -139,16 +149,20 @@ function drawEllipse(e) {
   context.bezierCurveTo(centerX, centerY, e.offsetX, centerY, e.offsetX, centerY + (e.offsetY - centerY) / 2);
   context.bezierCurveTo(e.offsetX, e.offsetY, centerX, e.offsetY, centerX, centerY + (e.offsetY - centerY) / 2);
   context.stroke();
+  
+  changePreview();
 }
 
 
 let startX, startY;
 
 function initEqTriangle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointEqTriangle);
 }
 
 function deleteEqTriangle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointEqTriangle);
   canvas.removeEventListener("mousemove", drawEqTriangle);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -188,14 +202,18 @@ function drawEqTriangle(e) {
   context.lineTo(startX + (startX - e.offsetX), e.offsetY);
   context.lineTo(startX, startY);
   context.stroke();
+  
+  changePreview();
 }
 
 
 function initRightTriangle() {
+  canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointRightTriangle);
 }
 
 function deleteRightTriangle() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointRightTriangle);
   canvas.removeEventListener("mousemove", drawRightTriangle);
   canvas.removeEventListener("mouseup", endPointFigures);
@@ -235,4 +253,6 @@ function drawRightTriangle(e) {
   context.lineTo(startX, e.offsetY);
   context.lineTo(startX, startY);
   context.stroke();
+  
+  changePreview();
 }

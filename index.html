@@ -17,54 +17,12 @@
     <a id="download" download="image.png">
       <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/tools/download.svg)">
       </button>
-      <button title="Кисть" class="toolBtn" id="basicBrush" style="background-image: url(img/brush-icon.png)">
-      </button>
-      <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/eraser-icon.png)">
-      </button>
-      <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/fill-icon.png)">
-      </button>
-      <button title="Прямоугольник" class="toolBtn" id="rectangle">
-      </button>
-      <button title="Круг" class="toolBtn" id="circle">
-      </button>
-      <button title="Эллипс" class="toolBtn" id="ellipse">
-      </button>
-      <button title="Прямая линия" class="toolBtn" id="straightLine">
-      </button>
-      <button title="Клетка" class="toolBtn" id="cage">С</button>
-      <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
-      <a id="download" download="image.png">
-        <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/save-icon.png)">
-        </button>
-      </a>
-      <button title="Очистить" class="toolBtn" id="clear"></button>
-      <button title="Отменить" class="toolBtn" id="undo"></button>
-      <button title="Вернуть" class="toolBtn" id="redo"></button>
-    </div>
-    <p class="description">Инструменты</p>
-  </div>
-
-  <div class="panel">
-    <div class="container">
-      <div class="rangeAndText">
-        <input type="range" id="toolSizeRange" min="1" max="300">
-        <input type="text" id="toolSizeText">
-      </div>
-      <div class="rangeAndText">
-        <input type="range" id="colorDifferenceRange" min="0" max="100">
-        <input type="text" id="colorDifferenceText">
-      </div>
-      <button title="Неоновая Кисть" class="toolBtn" id="neonBrush">
-      </button>
-      <button title="Мягкая Кисть" class="toolBtn" id="smoothBrush">
-      </button>
-      <button title="Скетч Кисть" class="toolBtn" id="sketchBrush">
-      </button>
-      <button title="Треугольник" class="toolBtn" id="eqTriangle">
-      </button>
-      <button title="Прямоугольный треугольник" class="toolBtn" id="rightTriangle">
-      </button>
-      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/eyedropper-icon.png)">
+    </a>
+    <div class="droplist">
+      <button title="Загрузить изображение" class="toolBtn dropBtn" id="uploadImgBtn" style="background-image: url(img/tools/photo.svg)">
+        <div class="menu dropMenu" id="uploadImgMenu" hidden="true">
+          <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
+        </div>
       </button>
     </div>
     <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
@@ -92,7 +50,20 @@
         </div>
       </div>
     </div>
-    <button title="Рука" class="toolBtn" id="hand"></button>
+    <button title="" class="toolBtn" style="background-image: url(img/tools/theme.svg)"></button>
+    <div class="droplist">
+      <button title="Горячие клавиши" class="toolBtn" id="help" style="background-image: url(img/tools/info.svg)"></button>
+      <div class="menu" id="helpMenu" hidden="true">
+        <ul>
+          <li>Alt + c — очистить холст</li>
+          <li>Alt + p — выбрать цвет</li>
+          <li>Alt + s — сохранить</li>
+          <li>Alt + u — загрузить фото</li>
+          <li>Alt + y — вернуть</li>
+          <li>Alt + z — отменить</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -221,6 +192,8 @@
 <script src="js/straight-line.js"></script>
 <script src="js/eyedropper.js"></script>
 <script src="js/hand.js"></script>
+<script src="js/text-insertion.js"></script>
+<script src="js/picture.js"></script>
 <script src="js/marking.js"></script>
 <script src="js/instruments-switcher.js"></script>
 <script src="js/tool-size.js"></script>

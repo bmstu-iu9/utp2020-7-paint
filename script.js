@@ -18,6 +18,7 @@ canvas.height = canvas.offsetHeight;
 
 let memCanvas = document.createElement('canvas');
 let memContext = memCanvas.getContext('2d');
+let uploadImage = document.getElementById("uploadImage");
 
 function saveImg() {
   memCanvas.width = canvas.width;
@@ -66,10 +67,12 @@ function arrayToRgb(color) {
   return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
 }
 
-document.getElementById("uploadImage").addEventListener('change', () => {
-  if (this.files && this.files[0]) {
-    handleImg(this.files[0]);
+uploadImage.addEventListener('change', () => {
+  let target = event.target;
+  if (target.files && target.files[0]) {
+    handleImg(target.files[0]);
   }
+  uploadImage.value = null;
 });
 
 function handleImg(img) {
@@ -81,14 +84,9 @@ function handleImg(img) {
 function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
-  img.onload = function () {
-    canvas.getContext("2d").drawImage(img,
-    0, 0,
-    img.width, img.height,
-    0, 0,
-    canvas.width, canvas.height);
+  img.onload = () => {
+    insertImg(img);
   }
-  rememberImage(img);
 }
 
 let downloadBtn = document.getElementById("download");
@@ -106,7 +104,7 @@ function clearCanvas() {
 function clearAllLayers() {
   let curCanvasId = activeLayer.id;
   layers.forEach((layer) => {
-    canvas = layers[layer.id].canvas;
+    canvas = layer.canvas;
     context = canvas.getContext('2d');
     clearCanvas();
   });
@@ -118,7 +116,7 @@ document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
   curCords = [];
   curState = 0;
-  photoOfState = [];
+  photoOfState = [[]];
 });
 
 addEventListener('keydown', (event) => {
@@ -135,7 +133,7 @@ addEventListener('keydown', (event) => {
         downloadBtn.click();
         break;
       case 'u':
-        document.getElementById("uploadImage").click();
+        uploadImage.click();
         break;
       case 'y':
         document.getElementById("redo").click();
@@ -209,7 +207,6 @@ document.getElementById("brush").addEventListener('click', (event) => {
   hide_and_show("brushMenu", event);
 });
 
-
 document.getElementById("figure").addEventListener('click', (event) => {
   hide_and_show("figureMenu", event);
 });
@@ -218,6 +215,7 @@ document.getElementById("openPanel").addEventListener('click', (event) => {
   hide_and_show("lefContainer", event);
 });
 
+<<<<<<< HEAD
 document.getElementById("filling").addEventListener('click', (event) => {
   hide_and_show("fillMenu", event);
 });
@@ -225,3 +223,24 @@ document.getElementById("filling").addEventListener('click', (event) => {
 document.getElementById("toolSettings").addEventListener('click', (event) => {
   hide_and_show("toolSettingsMenu", event);
 });
+=======
+function getIndexOfRedInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4;
+}
+
+function getIndexOfGreenInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 1;
+}
+
+function getIndexOfBlueInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 2;
+}
+
+function getIndexOfAlphaInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 3;
+}
+
+function areInCanvas(x, y) {
+  return (x <= canvas.width - 1 && y <= canvas.height && x >= 0 && y >= 0);
+}
+>>>>>>> master

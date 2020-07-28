@@ -204,6 +204,11 @@ ul {
   padding: 0;
 }
 
+li:hover,
+option:checked {
+  background-color: #ffdf2b;
+}
+
 .droplist {
   position: relative;
   display: inline-block;
@@ -359,4 +364,127 @@ ul {
   transform: translate(-50%, -50%);
   overflow: auto;
   z-index: 1000;
+}
+
+#photoForInsertion {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.resizable {
+  background: transponent;
+  position: absolute;
+}
+
+.resizable .resizers{
+  width: 100%;
+  height: 100%;
+  border: 3px dashed #bbbbbb;
+  box-sizing: border-box;
+}
+
+.resizable .resizers .resizer{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #bbbbbb;
+  position: absolute;
+}
+
+.resizable .resizers .resizer.top-left {
+  left: -5px;
+  top: -5px;
+  cursor: nwse-resize;
+}
+.resizable .resizers .resizer.top-right {
+  right: -5px;
+  top: -5px;
+  cursor: nesw-resize;
+}
+.resizable .resizers .resizer.bottom-left {
+  left: -5px;
+  bottom: -5px;
+  cursor: nesw-resize;
+}
+.resizable .resizers .resizer.bottom-right {
+  right: -5px;
+  bottom: -5px;
+  cursor: nwse-resize;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0px;
+  box-shadow: none;
+  background: white;
+  border: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 100%;
+  width: 1px;
+  border: none;
+  background: lightgrey;
+  cursor: pointer;
+  box-shadow: -80px 0 0 80px lightgrey;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0px;
+  box-shadow: none;
+  background: white;
+  border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+  border: none;
+  height: 100%;
+  width: 1px;
+  border: none;
+  background: lightgrey;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-progress {
+  background-color: lightgrey;
+  height: 100%;
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0px;
+  box-shadow: none;
+  background: white;
+  border: none;
+}
+
+input[type=range]::-ms-thumb {
+  border: none;
+  height: 100%;
+  width: 1px;
+  border: none;
+  background: lightgrey;
+  cursor: pointer;
+}
+
+input[type=range]::-ms-fill-lower {
+  background: #3071A9;
+  border: 1px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px lightgrey;
 }

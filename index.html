@@ -64,6 +64,7 @@
       <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
       </button>
       <button id="eyedropperWindow" hidden="true"></button>
+      <button title="Вставить текст" class="toolBtn" id="text"></button>
       <div class="leftPaneldrop">
         <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
         </button>
@@ -168,6 +169,14 @@
   <button id="textFormat">OK</button>
 </div>
 
+<div class="resizable" id="photoResizer" hidden="true">
+  <div class="resizers" id="photoInsertion">
+    <div class="resizer top-left"></div>
+    <div class="resizer top-right"></div>
+    <div class="resizer bottom-left"></div>
+    <div class="resizer bottom-right"></div>
+  </div>
+</div>
 
 <script src="preloader.js"></script>
 <script src="script.js"></script>
@@ -183,6 +192,7 @@
 <script src="js/eyedropper.js"></script>
 <script src="js/hand.js"></script>
 <script src="js/text-insertion.js"></script>
+<script src="js/picture.js"></script>
 <script src="js/instruments-switcher.js"></script>
 <script src="js/tool-size.js"></script>
 <script src="js/color-difference.js"></script>

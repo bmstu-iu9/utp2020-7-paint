@@ -70,6 +70,7 @@ class Layer {
       this.canvas.style.zIndex = this.index;
       this.canvas.style.background = 'repeat url(\"img/background.png\")';
       layers.push(this);
+      photoOfState.push([this.canvas.toDataURL()]);
       return this;
     }
 
@@ -92,6 +93,11 @@ class Layer {
     context = canvas.getContext('2d');
     activeInstrument && activeInstrument.init();
     activeLayer = this;
+    let imgOfCanvas = canvas.toDataURL();
+    if (photoOfState[0].length == 2) {
+      photoOfState.push([imgOfCanvas, imgOfCanvas]);
+    } else photoOfState.push([imgOfCanvas]);
+
 
 
     this.preview = this.display.children[0];
@@ -120,7 +126,6 @@ let bottomLayer = firstLayer;
 
 function addLayerHandler(event) {
   let caller = event.target.id;
-  photoOfState.push([]);
 
   new Layer(caller);
 }
@@ -133,7 +138,3 @@ function changePreview() {
   previewContext.clearRect(0, 0, activeLayer.preview.width, activeLayer.preview.height);
   previewContext.drawImage(canvas, 0, 0, activeLayer.preview.width, activeLayer.preview.height);
 }
-
-
-
-

@@ -1,7 +1,6 @@
 'use strict';
 
 let isReplaying = false;
-let photoOfState = [[]];
 
 class Tool {
   constructor(id, name, cords, img) {

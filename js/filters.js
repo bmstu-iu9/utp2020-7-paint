@@ -10,9 +10,6 @@ sepiaFilterButton.onclick = () => { applyFilter("sepia"); }
 let blackWhiteFilterButton = document.getElementById("black-white");
 blackWhiteFilterButton.onclick = () => { applyFilter("black-white"); }
 
-let contrastFilterButton = document.getElementById("contrast");
-contrastFilterButton.onclick = applyContrastFilter;
-
 function applyFilter(filterName) {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   for (let i = 0; i < canvas.width; i++) {
@@ -33,7 +30,7 @@ function applyFilter(filterName) {
       curImageData.data[getIndexOfGreenInData(x, y)] = 255 - green;
       curImageData.data[getIndexOfBlueInData(x, y)] = 255 - blue;
     } else if (filterName === "grey-scale") {
-      let grey = 0.2126 * curImageData.data[getIndexOfRedInData(x, y)] + 0.7152 * curImageData.data[getIndexOfGreenInData(x, y)] + 0.0722 * curImageData.data[getIndexOfBlueInData(x, y)];
+      let grey = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
       curImageData.data[getIndexOfRedInData(x, y)] = grey;
       curImageData.data[getIndexOfGreenInData(x, y)] = grey;
       curImageData.data[getIndexOfBlueInData(x, y)] = grey;
@@ -42,7 +39,7 @@ function applyFilter(filterName) {
       curImageData.data[getIndexOfGreenInData(x, y)] = red * 0.349 + green * 0.686 + blue * 0.168;
       curImageData.data[getIndexOfBlueInData(x, y)] = red * 0.272 + green * 0.534 + blue * 0.131;
     } else if (filterName === "black-white") {
-      let threshold = 255 / 1 / 2 * 3;
+      let threshold = 255 / 2 * 3;
       if (red + green + blue > threshold) {
         curImageData.data[getIndexOfRedInData(x, y)] = 255;
         curImageData.data[getIndexOfGreenInData(x, y)] = 255;
@@ -55,6 +52,70 @@ function applyFilter(filterName) {
     } 
   }  
 }
+
+let contrastCoef = 0;
+let contrast = document.getElementById("contrast");
+
+contrast.value = 0;
+
+let isClicked = true;
+
+contrast.oninput = () => {
+  if (isClicked) saveImg();
+  isClicked = false;
+  contrastCoef = contrast.value;
+  context.drawImage(memCanvas, 0, 0);
+  applyContrastFilter();
+}
+
+contrast.onchange = () => { 
+  isClicked = true;
+}
+
+function applyContrastFilter() {
+  let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  
+  let average = 0;
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
+      let red = curImageData.data[getIndexOfRedInData(i, j)];
+      let green = curImageData.data[getIndexOfGreenInData(i, j)];
+      let blue = curImageData.data[getIndexOfBlueInData(i, j)];
+      average += (red * 0.299 + green * 0.587 + blue * 0.114) / (canvas.width * canvas.height);      
+    }
+  }
+  
+  let changedPalette = [];
+  for (let i = 0; i <= 255; i++) {
+    changedPalette[i] = average + contrastCoef * (i - average);
+    if (changedPalette[i] < 0) changedPalette[i] = 0;
+    else if (changedPalette[i] > 255) changedPalette[i] = 255;
+  }
+
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
+      let red = curImageData.data[getIndexOfRedInData(i, j)];
+      let green = curImageData.data[getIndexOfGreenInData(i, j)];
+      let blue = curImageData.data[getIndexOfBlueInData(i, j)];
+    
+      curImageData.data[getIndexOfRedInData(i, j)] = changedPalette[red];
+      curImageData.data[getIndexOfGreenInData(i, j)] = changedPalette[green];
+      curImageData.data[getIndexOfBlueInData(i, j)] = changedPalette[blue];
+    }
+  }
+
+  context.putImageData(curImageData, 0, 0);
+  changePreview();
+}
+
+
+
+
+
+
+
+
+
 
 
 

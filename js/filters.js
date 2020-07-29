@@ -10,6 +10,9 @@ sepiaFilterButton.onclick = () => { applyFilter("sepia"); }
 let blackWhiteFilterButton = document.getElementById("black-white");
 blackWhiteFilterButton.onclick = () => { applyFilter("black-white"); }
 
+let coloredFilterButton = document.getElementById("colored");
+coloredFilterButton.onclick = () => { applyFilter("colored"); }
+
 function applyFilter(filterName) {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   for (let i = 0; i < canvas.width; i++) {
@@ -24,7 +27,7 @@ function applyFilter(filterName) {
     let red = curImageData.data[getIndexOfRedInData(x, y)];
     let green = curImageData.data[getIndexOfGreenInData(x, y)];
     let blue = curImageData.data[getIndexOfBlueInData(x, y)];
-  
+
     if (filterName === "negative") {
       curImageData.data[getIndexOfRedInData(x, y)] = 255 - red;
       curImageData.data[getIndexOfGreenInData(x, y)] = 255 - green;
@@ -49,8 +52,13 @@ function applyFilter(filterName) {
         curImageData.data[getIndexOfGreenInData(x, y)] = 0;
         curImageData.data[getIndexOfBlueInData(x, y)] = 0;
       }
-    } 
-  }  
+    }
+    else if (filterName === "colored") {
+      curImageData.data[getIndexOfRedInData(x, y)] = 1.6914 * red - 0.6094 * green - 0.082 * blue;
+      curImageData.data[getIndexOfGreenInData(x, y)] = -0.3086 * red + 1.3906 * green - 0.082 * blue;
+      curImageData.data[getIndexOfBlueInData(x, y)] = -0.3086 * red - 0.6094 * green + 1.918 * blue;
+    }
+  }
 }
 
 let contrastCoef = 0;
@@ -68,24 +76,24 @@ contrast.oninput = () => {
   applyContrastFilter();
 }
 
-contrast.onchange = () => { 
+contrast.onchange = () => {
   isClicked = true;
   contrast.value = 1;
 }
 
 function applyContrastFilter() {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  
+
   let average = 0;
   for (let i = 0; i < canvas.width; i++) {
     for (let j = 0; j < canvas.height; j++) {
       let red = curImageData.data[getIndexOfRedInData(i, j)];
       let green = curImageData.data[getIndexOfGreenInData(i, j)];
       let blue = curImageData.data[getIndexOfBlueInData(i, j)];
-      average += (red * 0.299 + green * 0.587 + blue * 0.114) / (canvas.width * canvas.height);      
+      average += (red * 0.299 + green * 0.587 + blue * 0.114) / (canvas.width * canvas.height);
     }
   }
-  
+
   let changedPalette = [];
   for (let i = 0; i <= 255; i++) {
     changedPalette[i] = average + contrastCoef * (i - average);
@@ -98,7 +106,7 @@ function applyContrastFilter() {
       let red = curImageData.data[getIndexOfRedInData(i, j)];
       let green = curImageData.data[getIndexOfGreenInData(i, j)];
       let blue = curImageData.data[getIndexOfBlueInData(i, j)];
-    
+
       curImageData.data[getIndexOfRedInData(i, j)] = changedPalette[red];
       curImageData.data[getIndexOfGreenInData(i, j)] = changedPalette[green];
       curImageData.data[getIndexOfBlueInData(i, j)] = changedPalette[blue];
@@ -109,16 +117,42 @@ function applyContrastFilter() {
   changePreview();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+function convolute(weights) {
+  let width = canvas.width;
+  let height = canvas.height;
+  let coeff = 1.9;
+  let x, sx, sy, red, green, blue, dstOff, srcOff, wt, cx, cy, scy, scx,
+  katet = Math.round(Math.sqrt(weights.length)),
+  half = (katet * 0.5) | 0,
+  dstData = context.createImageData(width, height),
+  dstBuff = dstData.data,
+  srcBuff = context.getImageData(0, 0, width, height).data;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      sy = y;
+      sx = x;
+      dstOff = (y * width + x) * 4;
+      red = 0;
+      green = 0;
+      blue = 0;
+      for (cy = 0; cy < katet; cy++) {
+        for (cx = 0; cx < katet; cx++) {
+          scy = sy + cy - half;
+          scx = sx + cx - half;
+          if (scy >= 0 && scy < height && scx >= 0 && scx < width) {
+            srcOff = (scy * width + scx) * 4;
+            wt = weights[cy * katet + cx];
+            red += srcBuff[srcOff] * wt;
+            green += srcBuff[srcOff + 1] * wt;
+            blue += srcBuff[srcOff + 2] * wt;
+          }
+        }
+      }
+      dstBuff[dstOff] = red * coeff + srcBuff[dstOff] * (1 - coeff);
+      dstBuff[dstOff + 1] = green * coeff + srcBuff[dstOff + 1] * (1 - coeff);
+      dstBuff[dstOff + 2] = blue * coeff + srcBuff[dstOff + 2] * (1 - coeff);
+      dstBuff[dstOff + 3] = srcBuff[dstOff + 3];
+    }
+  }
+  context.putImageData(dstData, 0, 0);
+}

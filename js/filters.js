@@ -56,7 +56,7 @@ function applyFilter(filterName) {
 let contrastCoef = 0;
 let contrast = document.getElementById("contrast");
 
-contrast.value = 0;
+contrast.value = 1;
 
 let isClicked = true;
 
@@ -70,6 +70,7 @@ contrast.oninput = () => {
 
 contrast.onchange = () => { 
   isClicked = true;
+  contrast.value = 1;
 }
 
 function applyContrastFilter() {

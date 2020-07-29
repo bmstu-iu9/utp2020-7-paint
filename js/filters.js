@@ -115,3 +115,43 @@ function applyContrastFilter() {
   context.putImageData(curImageData, 0, 0);
   changePreview();
 }
+
+function convolute(weights) {
+  let width = canvas.width;
+  let height = canvas.height;
+  let coeff = 1.9;
+  let x, sx, sy, red, green, blue, dstOff, srcOff, wt, cx, cy, scy, scx,
+  katet = Math.round(Math.sqrt(weights.length)),
+  half = (katet * 0.5) | 0,
+  dstData = context.createImageData(width, height),
+  dstBuff = dstData.data,
+  srcBuff = context.getImageData(0, 0, width, height).data;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      sy = y;
+      sx = x;
+      dstOff = (y * width + x) * 4;
+      red = 0;
+      green = 0;
+      blue = 0;
+      for (cy = 0; cy < katet; cy++) {
+        for (cx = 0; cx < katet; cx++) {
+          scy = sy + cy - half;
+          scx = sx + cx - half;
+          if (scy >= 0 && scy < height && scx >= 0 && scx < width) {
+            srcOff = (scy * width + scx) * 4;
+            wt = weights[cy * katet + cx];
+            red += srcBuff[srcOff] * wt;
+            green += srcBuff[srcOff + 1] * wt;
+            blue += srcBuff[srcOff + 2] * wt;
+          }
+        }
+      }
+      dstBuff[dstOff] = red * coeff + srcBuff[dstOff] * (1 - coeff);
+      dstBuff[dstOff + 1] = green * coeff + srcBuff[dstOff + 1] * (1 - coeff);
+      dstBuff[dstOff + 2] = blue * coeff + srcBuff[dstOff + 2] * (1 - coeff);
+      dstBuff[dstOff + 3] = srcBuff[dstOff + 3];
+    }
+  }
+  context.putImageData(dstData, 0, 0);
+}

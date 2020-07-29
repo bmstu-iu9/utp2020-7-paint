@@ -1,9 +1,12 @@
 'use strict';
 
-let colorInput = document.querySelector('#color');
+let colorInput = document.getElementById('colorPalette');
+let colorBtn = document.getElementById('colorBtn');
 
 colorInput.addEventListener('input', () => {
-  curColor = hexToRgb(colorInput.value);
+  let color = colorInput.value;
+  curColor = hexToRgb(color);
+  colorBtn.style.background = color;
 });
 
 function hexToRgb(hex) {

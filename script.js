@@ -226,6 +226,10 @@ document.getElementById("toolSettings").addEventListener('click', (event) => {
   hideAndShow("toolSettingsMenu", event);
 });
 
+document.getElementById("openLayersBtn").addEventListener('click', (event) => {
+  document.getElementById("layersField").classList.toggle("layersFieldActive");
+});
+
 function getIndexOfRedInData(x, y) {
   return canvas.width * (y - 1) * 4 + x * 4;
 }

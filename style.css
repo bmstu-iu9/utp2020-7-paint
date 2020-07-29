@@ -122,15 +122,32 @@ body {
   border-radius: 20px;
 }
 
-#layersField {
-  position: absolute;
+.layersFieldClosed {
+  position: fixed;
   box-sizing: border-box;
   top: 50px;
-  left: 90%;
+  right: 0;
   width: 10%;
   height: 90%;
   background: #eeeeee;
   border-left: 1px solid #cccccc;
+  transition: 0.5s;
+  transform: translateX(100%);
+}
+
+.layersFieldActive {
+  transform: translateX(0%);
+}
+
+#openLayersBtn {
+  position: absolute;
+  top: 50%;
+  left: -40px;
+  background-color: #ffdf2b;
+  width: 40px;
+  height: 70px;
+  margin: -35px 0 0 0;
+  clip-path: polygon(100% 0%, 50% 50%, 100% 100%);
 }
 
 .layer {

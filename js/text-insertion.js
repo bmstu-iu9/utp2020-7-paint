@@ -6,7 +6,7 @@ let textElements = ['textMenu', 'textFormat', 'fontSize', 'fontColor', 'textAngl
 textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);
 
 function chooseTextFormat() {
-  writeText(canvas.width / 2 - dxOfText, canvas.height / 2 - dyOfText);
+  writeText(canvas.width / 2 - dxOfText, (canvas.height - dyOfText) / 2);
 }
 
 function initText() {
@@ -16,8 +16,8 @@ function initText() {
 
   function pressForInsertion() {
     if (event.code == 'Enter' && event.altKey) {
-      dxOfText = pastedText.clientWidth;
-      dyOfText = pastedText.clientHeight;
+      dxOfText = pastedText.offsetWidth;
+      dyOfText = pastedText.offsetHeight;
       pastedText.hidden = true;
       textMenu.hidden = false;
       textFormat.addEventListener("click", startPointText);
@@ -68,7 +68,7 @@ function writeText(x, y) {
     write(x - ox, y - oy);
   }
   context.restore();
-  
+
   changePreview();
 }
 

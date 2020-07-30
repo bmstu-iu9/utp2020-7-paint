@@ -29,6 +29,7 @@ function initText() {
 }
 
 function deleteText() {
+  canvas.style.cursor = 'default';
   pastedText.hidden = true;
 
   if (!textMenu.hidden) {
@@ -68,7 +69,7 @@ function writeText(x, y) {
     write(x - ox, y - oy);
   }
   context.restore();
-  
+
   changePreview();
 }
 
@@ -91,6 +92,7 @@ function startPointText(e) {
 }
 
 function drawTextInsertion(e) {
+  canvas.style.cursor = 'crosshair';
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords = [e.offsetX, e.offsetY];
 

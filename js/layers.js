@@ -4,6 +4,7 @@ let maxLayerId = 0;
 let activeLayer;
 let layersField = document.getElementById('layersField');
 let layers = [];
+let allCanvases = [backCanvas];
 let addLayerTop = document.getElementById('addLayerTop');
 let addLayerBottom = document.getElementById('addLayerBottom');
 
@@ -29,7 +30,6 @@ function createLayerHtml(id) {
   lockBtn.title = 'Заблокировать'
   newLayer.appendChild(lockBtn);
 
-  console.log(newLayer);
   return newLayer;
 }
 
@@ -67,13 +67,13 @@ function parseLayerBtnId(str) {
 
 function getLayerByDisplay(target) {
   let id = parseLayerId(target);
-  if (id) return layers[id];
+  if (id !== null) return layers[id];
   return null;
 }
 
 function getLayerByBtn(target) {
   let id = parseLayerBtnId(target);
-  if (id) return layers[id];
+  if (id !== null) return layers[id];
   return null;
 }
 
@@ -101,7 +101,6 @@ class Layer {
 
       this.canvas = document.getElementById('layer0');
       this.canvas.style.zIndex = this.index;
-      this.canvas.style.background = 'repeat url(\"img/background.png\")';
 
       this.hide = document.getElementById('hideLayer0');
       this.hide.addEventListener('click', hideLayerHandler);
@@ -112,6 +111,7 @@ class Layer {
 
       this.index = 50;
       layers.push(this);
+      allCanvases.push(this.canvas);
       return this;
     }
 
@@ -135,14 +135,15 @@ class Layer {
     activeInstrument && activeInstrument.init();
     activeLayer = this;
 
-    this.preview = document.getElementById('preview' + this.id);
-    this.hide = document.getElementById('hideLayer' + this.id);
-    console.log('hideLayer' + this.id);
-    this.hide.addEventListener('click', hideLayerHandler);
+
+    this.preview = this.display.children['preview' + this.id];
+    this.hide = this.display.children['hideLayer' + this.id];
     this.hidden = false;
-    this.lock = document.getElementById('lockLayer' + this.id);
-    this.lock.addEventListener('click', lockLayerHandler);
+    this.lock = this.display.children['lockLayer' + this.id];
     this.locked = false;
+
+    this.hide.addEventListener('click', hideLayerHandler);
+    this.lock.addEventListener('click', lockLayerHandler);
 
     if (caller === 'addLayerTop') {
       topLayer.display.before(this.display);
@@ -153,10 +154,10 @@ class Layer {
       bottomLayer.display.after(this.display);
       this.index = bottomLayer.index - 1;
       this.canvas.style.zIndex = this.index;
-      this.canvas.style.background = 'repeat url(\"img/background.png\")';
-      bottomLayer.canvas.style.removeProperty('background');
       bottomLayer = this;
     }
+
+    allCanvases.push(this.canvas);
     layers.push(this);
   }
 }
@@ -187,6 +188,7 @@ function hideLayerHandler(event) {
   if (!layer) return;
   if (layer.hidden) {
     layer.hidden = false;
+
     layer.canvas.style.visibility = 'visible';
     layer.hideBtn.title = 'Скрыть';
   } else {

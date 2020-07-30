@@ -43,7 +43,6 @@ function startPointStamp(e) {
 
   function start() {
     context.fillStyle = pattern;
-    context.lineWidth = 0.1;
     context.beginPath();
     context.arc(oldX, oldY, curToolSize / 2, 0, Math.PI * 2, false);
     context.fill();

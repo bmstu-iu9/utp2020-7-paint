@@ -357,8 +357,8 @@ option:checked {
 }
 
 #eyedropperWindow {
-  width:30px;
-  height:30px;
+  width: 30px;
+  height: 30px;
   border-radius: 100%;
   border: 2px solid #000000;
   z-index: 1000;

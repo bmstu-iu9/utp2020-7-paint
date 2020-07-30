@@ -46,8 +46,8 @@ function parseLayerId(str) {
     case 'lay':
       return parseInt(str.slice('layerDisplay'.length));
       break;
-    case 'loc':
-      return parseInt(str.slice('lockLayer'.length));
+    case 'pre':
+      return parseInt(str.slice('preview'.length));
       break;
   }
   return null;
@@ -58,8 +58,8 @@ function parseLayerBtnId(str) {
     case 'hid':
       return parseInt(str.slice('hideLayer'.length));
       break;
-    case 'pre':
-      return parseInt(str.slice('preview'.length));
+    case 'loc':
+      return parseInt(str.slice('lockLayer'.length));
       break;
   }
   return null;
@@ -87,7 +87,7 @@ function switchLayer(event) {
   activeInstrument && activeInstrument.delete();
   canvas = layer.canvas;
   context = canvas.getContext('2d');
-  activeInstrument && activeInstrument.init();
+  activeInstrument && layer.locked && activeInstrument.init();
   activeLayer = layer;
 }
 
@@ -102,12 +102,13 @@ class Layer {
       this.canvas = document.getElementById('layer0');
       this.canvas.style.zIndex = this.index;
 
-      this.hide = document.getElementById('hideLayer0');
-      this.hide.addEventListener('click', hideLayerHandler);
+      this.hideBtn = document.getElementById('hideLayer0');
       this.hidden = false;
-      this.lock = document.getElementById('lockLayer0');
-      this.lock.addEventListener('click', lockLayerHandler);
+      this.lockBtn = document.getElementById('lockLayer0');
       this.locked = false;
+
+      this.lockBtn.addEventListener('click', lockLayerHandler);
+      this.hideBtn.addEventListener('click', hideLayerHandler);
 
       this.index = 50;
       layers.push(this);
@@ -135,15 +136,14 @@ class Layer {
     activeInstrument && activeInstrument.init();
     activeLayer = this;
 
-
     this.preview = this.display.children['preview' + this.id];
-    this.hide = this.display.children['hideLayer' + this.id];
+    this.hideBtn = this.display.children['hideLayer' + this.id];
     this.hidden = false;
-    this.lock = this.display.children['lockLayer' + this.id];
+    this.lockBtn = this.display.children['lockLayer' + this.id];
     this.locked = false;
 
-    this.hide.addEventListener('click', hideLayerHandler);
-    this.lock.addEventListener('click', lockLayerHandler);
+    this.hideBtn.addEventListener('click', hideLayerHandler);
+    this.lockBtn.addEventListener('click', lockLayerHandler);
 
     if (caller === 'addLayerTop') {
       topLayer.display.before(this.display);
@@ -186,9 +186,9 @@ function changePreview() {
 function hideLayerHandler(event) {
   let layer = getLayerByBtn(event.target.id);
   if (!layer) return;
+
   if (layer.hidden) {
     layer.hidden = false;
-
     layer.canvas.style.visibility = 'visible';
     layer.hideBtn.title = 'Скрыть';
   } else {
@@ -201,4 +201,17 @@ function hideLayerHandler(event) {
 function lockLayerHandler(event) {
   let layer = getLayerByBtn(event.target.id);
   if (!layer) return;
+
+  console.log(layer.locked);
+  if (layer.lосked) {
+    console.log('actually true');
+    layer.locked = false;
+    activeInstrument && activeInstrument.init();
+    layer.lockBtn.title = 'Заблокировать';
+  } else {
+    console.log('actually false');
+    layer.locked = true;
+    activeInstrument && activeInstrument.delete();
+    layer.lockBtn.title = 'Разблокировать';
+  }
 }

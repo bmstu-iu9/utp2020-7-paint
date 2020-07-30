@@ -26,6 +26,7 @@ function stopEyedropper(event) {
   let color = getPixelColor(eventLocation.x, eventLocation.y);
   curColor = color;
   colorInput.value = "#" + rgbToHex(color);
+  document.getElementById("colorBtn").style.background = arrayToRgb(color);
   switchEyedropperWindow();
   eyedropperButton.click();
 }

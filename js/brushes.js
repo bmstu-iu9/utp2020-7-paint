@@ -63,7 +63,7 @@ function drawBasicBrush(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
-  
+
   changePreview();
 }
 
@@ -106,16 +106,18 @@ function drawNeonBrush(e) {
   context.stroke();
   context.beginPath();
   context.moveTo(e.offsetX, e.offsetY);
-  
+
   changePreview();
 }
 
 
 function initSmoothBrush() {
+  //canvas.style.cursor = "url('img/cursors/spray.png') 0 25, auto";
   canvas.addEventListener("mousedown", startPointSmoothBrush);
 }
 
 function deleteSmoothBrush() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointSmoothBrush);
   canvas.removeEventListener("mousemove", drawSmoothBrush);
   canvas.removeEventListener("mouseup", endPoint);
@@ -166,7 +168,7 @@ function drawSmoothBrush(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
-  
+
   changePreview();
 }
 
@@ -174,19 +176,23 @@ function drawSmoothBrush(e) {
 let pointsCounter, prevPoints;
 
 function initSketchBrush() {
+  canvas.style.cursor = "url('img/cursors/sketch-cursor.png') 0 25, auto";
   curToolSize = 1;
   toolSizeRange.value = 1;
-  toolSizeText.value = `1px`;
+  toolSizeText.value = '1px';
   toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointSketchBrush);
 }
 
 function deleteSketchBrush() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointSketchBrush);
   canvas.removeEventListener("mousemove", drawSketchBrush);
   canvas.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
-  context.globalAlpha = "1";
+  toolSizeRange.value = 5;
+  toolSizeText.value = '5px';
+  context.globalAlpha = '1';
   toolSizeRange.max = 300;
 }
 
@@ -240,6 +246,6 @@ function drawSketchBrush(e) {
   oldY = e.offsetY;
 
   prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
-  
+
   changePreview();
 }

@@ -58,7 +58,7 @@ function handleEyedropper(event) {
 
   function moveWindow() {
     eyedropperWindow.style.left = event.pageX + 15 + 'px';
-    eyedropperWindow.style.top = event.pageY - 90 + 'px';
+    eyedropperWindow.style.top = event.pageY - 40 + 'px';
   }
 
   moveWindow();

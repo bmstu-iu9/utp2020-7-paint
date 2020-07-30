@@ -161,6 +161,19 @@ canvas.preview {
   width: 36%;
 }
 
+#marking_canvas {
+  position: absolute;
+  width: 780px;
+  height: 400px;
+  padding: 0;
+  margin: auto;
+  top: 45px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
 #colorIndicatorDynamic {
   box-sizing: border-box;
   position: absolute;

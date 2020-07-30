@@ -1,6 +1,14 @@
 'use strict';
 
+let shift;
 let interval = 100;
+let inclination_angle = 45;
+
+let markingCanvas = document.getElementById('marking_canvas');
+let markingContext = markingCanvas.getContext('2d');
+
+markingCanvas.width = canvas.width;
+markingCanvas.height = canvas.height;
 
 function initCage() {
   startPointCage();
@@ -15,60 +23,63 @@ function initHorizontal() {
 }
 
 function deleteCage() {
-  cage.addEventListener("mousedown", deleteMarking);
+  //cage.addEventListener("mousedown", deleteMarking);
 }
 
 function deleteVertical() {
-  vertical.addEventListener("mousedown", deleteMarking);
+  //vertical.addEventListener("mousedown", deleteMarking);
 }
 
 function deleteHorizontal() {
-  horizontal.addEventListener("mousedown", deleteMarking);
+  //horizontal.addEventListener("mousedown", deleteMarking);
 }
 
 function startPointCage(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = curToolSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  markingContext.lineCap = "round";
+  markingContext.lineJoin = "round";
+  markingContext.lineWidth = curToolSize;
+  markingContext.strokeStyle = arrayToRgb(curColor);
 
   for (let x = 0.5; x < canvas.height; x += interval) {
-    context.moveTo(0, x);
-    context.lineTo(canvas.width, x);
+    markingContext.moveTo(0, x);
+    markingContext.lineTo(canvas.width, x);
   }
   for (let x = 0.5; x < canvas.width; x += interval) {
-    context.moveTo(x, 0);
-    context.lineTo(x, canvas.height);
+    markingContext.moveTo(x, 0);
+    markingContext.lineTo(x, canvas.height);
   }
-  context.stroke();
+  markingContext.stroke();
+  cage.removeEventListener("mousedown", deleteMarking);
 }
 
 function startPointVertical(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = curToolSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  markingContext.lineCap = "round";
+  markingContext.lineJoin = "round";
+  markingContext.lineWidth = curToolSize;
+  markingContext.strokeStyle = arrayToRgb(curColor);
 
   for (let x = 0.5; x < canvas.width; x += interval) {
-    context.moveTo(x, 0);
-    context.lineTo(x, canvas.height);
+    markingContext.moveTo(x, 0);
+    markingContext.lineTo(x, canvas.height);
   }
-  context.stroke();
+  markingContext.stroke();
+  vertical.removeEventListener("mousedown", deleteMarking);
 }
 
 function startPointHorizontal(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = curToolSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  markingContext.lineCap = "round";
+  markingContext.lineJoin = "round";
+  markingContext.lineWidth = curToolSize;
+  markingContext.strokeStyle = arrayToRgb(curColor);
 
   for (let x = 0.5; x < canvas.height; x += interval) {
-    context.moveTo(0, x);
-    context.lineTo(canvas.width, x);
+    markingContext.moveTo(0, x);
+    markingContext.lineTo(canvas.width, x);
   }
-  context.stroke();
+  markingContext.stroke();
+  horizontal.addEventListener("mousedown", deleteMarking);
 }
 
 function deleteMarking() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  markingContext.clearRect(0, 0, canvas.width, canvas.height);
 }

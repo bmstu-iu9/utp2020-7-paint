@@ -96,7 +96,7 @@ body {
 .toolBtn.pressed,
 #help:hover,
 #help.pressed {
-  border: solid 1px #FF7F50;
+  border: solid 1px #ff7f50;
 }
 
 .layerBtn {
@@ -170,7 +170,7 @@ body {
 }
 
 .layer.highlight {
-  border: solid 1px #FF7F50;
+  border: solid 1px #ff7f50;
 }
 
 .addLayer {
@@ -324,7 +324,7 @@ option:checked {
   margin: 0px;
   height: 20px;
   width: 30%;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 5px;
   border: none;
   font-family: 'Times New Roman';
@@ -352,7 +352,7 @@ option:checked {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #24A4FF;
+  background: #24a4ff;
   cursor: pointer;
   box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }
@@ -361,7 +361,7 @@ option:checked {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #24A4FF;
+  background: #24a4ff;
   cursor: pointer;
   box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }

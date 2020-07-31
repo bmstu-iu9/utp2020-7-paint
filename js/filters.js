@@ -1,19 +1,28 @@
 let negativeFilterButton = document.getElementById("negative");
-negativeFilterButton.onclick = () => { applyFilter("negative"); }
+negativeFilterButton.onclick = () => { applySimpleFilter("negative"); }
 
 let greyScaleFilterButton = document.getElementById("grey-scale");
-greyScaleFilterButton.onclick = () => { applyFilter("grey-scale"); }
+greyScaleFilterButton.onclick = () => { applySimpleFilter("grey-scale"); }
 
 let sepiaFilterButton = document.getElementById("sepia");
-sepiaFilterButton.onclick = () => { applyFilter("sepia"); }
+sepiaFilterButton.onclick = () => { applySimpleFilter("sepia"); }
 
 let blackWhiteFilterButton = document.getElementById("black-white");
-blackWhiteFilterButton.onclick = () => { applyFilter("black-white"); }
+blackWhiteFilterButton.onclick = () => { applySimpleFilter("black-white"); }
+
+let binarizationFilterButton = document.getElementById("binarization");
+binarizationFilterButton.onclick = () => { applySimpleFilter("binarization"); }
 
 let coloredFilterButton = document.getElementById("colored");
-coloredFilterButton.onclick = () => { applyFilter("colored"); }
+coloredFilterButton.onclick = () => { applySimpleFilter("colored"); }
 
-function applyFilter(filterName) {
+let embossFilterButton = document.getElementById("emboss");
+embossFilterButton.onclick = () => { 
+  applyConvolutionMatrixFilter([-2, -1, 0, -1, 1, 1, 0, 1, 2], 1); 
+  changePreview();
+}
+
+function applySimpleFilter(filterName) {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   for (let i = 0; i < canvas.width; i++) {
     for (let j = 0; j < canvas.height; j++) {
@@ -52,48 +61,59 @@ function applyFilter(filterName) {
         curImageData.data[getIndexOfGreenInData(x, y)] = 0;
         curImageData.data[getIndexOfBlueInData(x, y)] = 0;
       }
-    }
-    else if (filterName === "colored") {
+    } else if (filterName === "colored") {
       curImageData.data[getIndexOfRedInData(x, y)] = 1.6914 * red - 0.6094 * green - 0.082 * blue;
       curImageData.data[getIndexOfGreenInData(x, y)] = -0.3086 * red + 1.3906 * green - 0.082 * blue;
       curImageData.data[getIndexOfBlueInData(x, y)] = -0.3086 * red - 0.6094 * green + 1.918 * blue;
-    }
+    } else if (filterName === "binarization") {
+      curImageData.data[getIndexOfRedInData(x, y)] = 255 * Math.floor(red/128);
+      curImageData.data[getIndexOfGreenInData(x, y)] = 255 * Math.floor(green/128);
+      curImageData.data[getIndexOfBlueInData(x, y)] = 255 * Math.floor(blue/128);
+    } 
   }
 }
 
-let contrastCoef = 0;
-let contrast = document.getElementById("contrast");
-
-contrast.value = 1;
-
 let isClicked = true;
 
-contrast.oninput = () => {
+contrast.value = 1;
+let contrastRange = document.getElementById("contrast");
+
+contrastRange.oninput = () => {
   if (isClicked) saveImg();
   isClicked = false;
-  contrastCoef = contrast.value;
   context.drawImage(memCanvas, 0, 0);
-  applyContrastFilter();
+  applyContrastFilter(contrast.value);
 }
 
-contrast.onchange = () => {
+contrastRange.onchange = () => {
   isClicked = true;
   contrast.value = 1;
+  changePreview();
 }
 
-function applyContrastFilter() {
+function applyContrastFilter(contrastCoef) {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
   let average = 0;
+  let countOfPixels = canvas.width * canvas.height;
   for (let i = 0; i < canvas.width; i++) {
     for (let j = 0; j < canvas.height; j++) {
       let red = curImageData.data[getIndexOfRedInData(i, j)];
       let green = curImageData.data[getIndexOfGreenInData(i, j)];
       let blue = curImageData.data[getIndexOfBlueInData(i, j)];
-      average += (red * 0.299 + green * 0.587 + blue * 0.114) / (canvas.width * canvas.height);
+      let alpha =  curImageData.data[getIndexOfAlphaInData(i, j)];
+      red = ((1 - alpha/255) * 255) + (alpha/255 * red);
+      green = ((1 - alpha/255) * 255) + (alpha/255 * green);
+      blue = ((1 - alpha/255) * 255) + (alpha/255 * blue);
+      if (alpha == 0) { 
+        countOfPixels--; 
+      } else {
+        average += (red * 0.299 + green * 0.587 + blue * 0.114);
+      }
     }
   }
 
+  average /= countOfPixels;
   let changedPalette = [];
   for (let i = 0; i <= 255; i++) {
     changedPalette[i] = average + contrastCoef * (i - average);
@@ -117,10 +137,9 @@ function applyContrastFilter() {
   changePreview();
 }
 
-function convolute(weights) {
+function applyConvolutionMatrixFilter(weights, coeff) {
   let width = canvas.width;
   let height = canvas.height;
-  let coeff = 1.9;
   let x, sx, sy, red, green, blue, dstOff, srcOff, wt, cx, cy, scy, scx,
   katet = Math.round(Math.sqrt(weights.length)),
   half = (katet * 0.5) | 0,

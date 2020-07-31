@@ -10,12 +10,14 @@
 <body>
 <div id="topPanel">
   <span id="title">IMAGO</span>
-  <button id="negative"></button>
-  <button id="grey-scale"></button>
-  <button id="sepia"></button>
-  <button id="black-white"></button>
+  <button title="negative" id="negative"></button>
+  <button title="grey-scale" id="grey-scale"></button>
+  <button title="sepia" id="sepia"></button>
+  <button title="black-white" id="black-white"></button>
+  <button title="binarization" id="binarization"></button>
   <button title="colored" id="colored"></button>
-  <input type="range" id="contrast" min="-10" max="10"></input>
+  <button title="emboss" id="emboss"></button>
+  <input type="range" id="contrast" min="0" max="2" step="0.01"></input>
   <div id="topContainer">
     <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
     <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>

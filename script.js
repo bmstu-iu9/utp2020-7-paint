@@ -161,14 +161,13 @@ let changeCanvasWidth = document.getElementById("changeCanvasWidth");
 let changeBorderWidth = document.getElementById("borderWidth");
 
 changeCanvasWidth.oninput = function () {
-  let width = changeCanvasWidth.value;
+  let width = document.getElementById("changeCanvasWidth").value;
   if (width && width >= 50 && width <= 1400) {
-    canvas.style.width = width + 'px';
-    canvas.setAttribute('width', width + 'px');
+    allCanvases.forEach((canvas) => {
+      canvas.style.width = width + 'px';
+    });
     document.getElementById("curWidth").innerHTML = width + "";
   } else {
-    changeCanvasWidth.style.background = "#ffd4d4";
-    changeCanvasWidth.value = defaultWidth;
     canvas.setAttribute('width', defaultWidth + 'px');
     canvas.style.width = defaultWidth + 'px';
     document.getElementById("curWidth").innerHTML = defaultWidth + "";
@@ -177,14 +176,15 @@ changeCanvasWidth.oninput = function () {
 }
 
 changeCanvasHeight.oninput = function () {
-  let height = changeCanvasHeight.value;
+  let height = document.getElementById("changeCanvasHeight").value;
   if (height && height >= 50 && height <= 1000) {
-    canvas.style.height = height + 'px';
-    canvas.setAttribute('height', height + 'px');
+
+    allCanvases.forEach((canvas) => {
+      canvas.style.height = height + 'px';
+    });
+
     document.getElementById("curHeight").innerHTML = height + "";
   } else {
-    changeCanvasHeight.style.background = "#ffd4d4";
-    changeCanvasHeight.value = defaultHeight;
     canvas.setAttribute('height', defaultHeight + 'px');
     canvas.style.height = defaultHeight + 'px';
     document.getElementById("curHeight").innerHTML = defaultHeight + "";
@@ -193,14 +193,10 @@ changeCanvasHeight.oninput = function () {
 }
 
 borderWidth.oninput = function () {
-  let width = changeBorderWidth.value;
-  if (checkPxInput(width) &&
-     (parseInt(width) <= changeBorderWidth.max) &&
-     (parseInt(width) >= changeBorderWidth.min)) {
-    canvas.style.borderWidth = width + 'px';
+  let width = document.getElementById("borderWidth").value;
+  if (width && width >= 1 && width <= 30) {
+    backCanvas.style.borderWidth = width + 'px';
   } else {
-    document.getElementById("borderWidth").style.background = "#ffd4d4";
-    document.getElementById("borderWidth").value = 1;
     canvas.style.borderWidth = 1 + 'px';
   }
 }
@@ -213,7 +209,6 @@ borderColor.oninput = function () {
     canvas.style.borderColor = '#000000';
   }
 }
-
 function checkPxInput(str) {
   const regExp = new RegExp(`^\\d+(px|)$`, 'i');
   return regExp.test(str);

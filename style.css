@@ -132,7 +132,7 @@ body {
   background: repeat url("img/background.png");
 }
 
-#layersField {
+.layersFieldClosed {
   position: absolute;
   box-sizing: border-box;
   top: 50px;

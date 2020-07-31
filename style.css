@@ -133,7 +133,7 @@ body {
 }
 
 .layersFieldClosed {
-  position: absolute;
+  position: fixed;
   box-sizing: border-box;
   top: 50px;
   right: 0;

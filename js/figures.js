@@ -1,10 +1,5 @@
 'use strict';
 
-function endPointFigures() {
-  isDrawing = false;
-  context.beginPath();
-}
-
 function initRectangle() {
   canvas.style.cursor = 'crosshair';
   canvas.addEventListener("mousedown", startPointRectangle);
@@ -13,13 +8,16 @@ function initRectangle() {
 function deleteRectangle() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointRectangle);
-  canvas.removeEventListener("mousemove", drawRectangle);
-  canvas.removeEventListener("mouseup", endPointFigures);
-  canvas.removeEventListener("mouseleave", endPointFigures);
+  document.removeEventListener("mousemove", drawRectangle);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointRectangle(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Rectangle", [e.offsetX, e.offsetY]);
 
   saveImg();
@@ -31,23 +29,35 @@ function startPointRectangle(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   drawRectangle(e);
 
-  canvas.addEventListener("mousemove", drawRectangle);
-  canvas.addEventListener("mouseup", endPointFigures);
+  document.addEventListener("mousemove", drawRectangle);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawRectangle(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
-  context.strokeRect(oldX, oldY, e.offsetX - oldX, e.offsetY - oldY);
-  
+  context.strokeRect(oldX, oldY, curX - oldX, curY - oldY);
+
   changePreview();
 }
 
@@ -62,13 +72,16 @@ function initCircle() {
 function deleteCircle() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointCircle);
-  canvas.removeEventListener("mousemove", drawCircle);
-  canvas.removeEventListener("mouseup", endPointFigures);
-  canvas.removeEventListener("mouseleave", endPointFigures);
+  document.removeEventListener("mousemove", drawCircle);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointCircle(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Circle", [e.offsetX, e.offsetY]);
 
   saveImg();
@@ -80,18 +93,30 @@ function startPointCircle(e) {
 
   centerX = e.offsetX;
   centerY = e.offsetY;
+  deltaX = e.pageX - centerX;
+  deltaY = e.pageY - centerY;
 
   drawCircle(e);
 
-  canvas.addEventListener("mousemove", drawCircle);
-  canvas.addEventListener("mouseup", endPointFigures);
+  document.addEventListener("mousemove", drawCircle);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawCircle(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
-  radius = Math.sqrt(Math.pow(e.offsetX - centerX, 2) + Math.pow(e.offsetY - centerY, 2));
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  radius = Math.sqrt(Math.pow(curX - centerX, 2) + Math.pow(curY - centerY, 2));
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -99,7 +124,7 @@ function drawCircle(e) {
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
   context.stroke();
-  
+
   changePreview();
 }
 
@@ -112,13 +137,16 @@ function initEllipse() {
 function deleteEllipse() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointEllipse);
-  canvas.removeEventListener("mousemove", drawEllipse);
-  canvas.removeEventListener("mouseup", endPointFigures);
-  canvas.removeEventListener("mouseleave", endPointFigures);
+  document.removeEventListener("mousemove", drawEllipse);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointEllipse(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Ellipse", [e.offsetX, e.offsetY]);
 
   saveImg();
@@ -130,29 +158,40 @@ function startPointEllipse(e) {
 
   centerX = e.offsetX;
   centerY = e.offsetY;
+  deltaX = e.pageX - centerX;
+  deltaY = e.pageY - centerY;
 
   drawEllipse(e);
 
-  canvas.addEventListener("mousemove", drawEllipse);
-  canvas.addEventListener("mouseup", endPointFigures);
+  document.addEventListener("mousemove", drawEllipse);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawEllipse(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
-  context.moveTo(centerX, centerY + (e.offsetY - centerY) / 2);
-  context.bezierCurveTo(centerX, centerY, e.offsetX, centerY, e.offsetX, centerY + (e.offsetY - centerY) / 2);
-  context.bezierCurveTo(e.offsetX, e.offsetY, centerX, e.offsetY, centerX, centerY + (e.offsetY - centerY) / 2);
+  context.moveTo(centerX, centerY + (curY - centerY) / 2);
+  context.bezierCurveTo(centerX, centerY, curX, centerY, curX, centerY + (curY - centerY) / 2);
+  context.bezierCurveTo(curX, curY, centerX, curY, centerX, centerY + (curY - centerY) / 2);
   context.stroke();
-  
+
   changePreview();
 }
-
 
 let startX, startY;
 
@@ -164,13 +203,16 @@ function initEqTriangle() {
 function deleteEqTriangle() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointEqTriangle);
-  canvas.removeEventListener("mousemove", drawEqTriangle);
-  canvas.removeEventListener("mouseup", endPointFigures);
-  canvas.removeEventListener("mouseleave", endPointFigures);
+  document.removeEventListener("mousemove", drawEqTriangle);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointEqTriangle(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("EqTriangle", [e.offsetX, e.offsetY]);
 
   saveImg();
@@ -182,27 +224,39 @@ function startPointEqTriangle(e) {
 
   startX = e.offsetX;
   startY = e.offsetY;
+  deltaX = e.pageX - startX;
+  deltaY = e.pageY - startY;
 
   drawEqTriangle(e);
 
-  canvas.addEventListener("mousemove", drawEqTriangle);
-  canvas.addEventListener("mouseup", endPointFigures);
+  document.addEventListener("mousemove", drawEqTriangle);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawEqTriangle(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.moveTo(startX, startY);
-  context.lineTo(e.offsetX, e.offsetY);
-  context.lineTo(startX + (startX - e.offsetX), e.offsetY);
+  context.lineTo(curX, curY);
+  context.lineTo(startX + (startX - curX), curY);
   context.lineTo(startX, startY);
   context.stroke();
-  
+
   changePreview();
 }
 
@@ -215,13 +269,16 @@ function initRightTriangle() {
 function deleteRightTriangle() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointRightTriangle);
-  canvas.removeEventListener("mousemove", drawRightTriangle);
-  canvas.removeEventListener("mouseup", endPointFigures);
-  canvas.removeEventListener("mouseleave", endPointFigures);
+  document.removeEventListener("mousemove", drawRightTriangle);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointRightTriangle(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("RightTriangle", [e.offsetX, e.offsetY]);
 
   saveImg();
@@ -233,26 +290,38 @@ function startPointRightTriangle(e) {
 
   startX = e.offsetX;
   startY = e.offsetY;
+  deltaX = e.pageX - startX;
+  deltaY = e.pageY - startY;
 
   drawEqTriangle(e);
 
-  canvas.addEventListener("mousemove", drawRightTriangle);
-  canvas.addEventListener("mouseup", endPointFigures);
+  document.addEventListener("mousemove", drawRightTriangle);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawRightTriangle(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.moveTo(startX, startY);
-  context.lineTo(e.offsetX, e.offsetY);
-  context.lineTo(startX, e.offsetY);
+  context.lineTo(curX, curY);
+  context.lineTo(startX, curY);
   context.lineTo(startX, startY);
   context.stroke();
-  
+
   changePreview();
 }

@@ -1,5 +1,8 @@
 'use strict';
 
+let isOnCanvas = false;
+let curX, curY, deltaX, deltaY;
+
 let pencilParameters = {
   oldX: 0,
   oldY: 0,
@@ -9,61 +12,88 @@ let pencilParameters = {
   angle: 0,
 };
 
+function endPoint() {
+  isDrawing = false;
+  context.beginPath();
+}
+
+function exitPoint() {
+  isOnCanvas = false;
+}
+
+function returnPoint() {
+  isOnCanvas = true;
+}
+
 function initPencil() {
   canvas.addEventListener("mousedown", startPointPencil);
 }
 
 function deletePencil() {
   canvas.removeEventListener("mousedown", startPointPencil);
-  canvas.removeEventListener("mousemove", drawPencil);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawPencil);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointPencil(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Pencil");
 
-  
+
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
-  
+  deltaX = e.pageX - e.offsetX;
+  deltaY = e.pageY - e.offsetY;
+
   drawPointPencil(e.offsetX, e.offsetY);
-  
+
   drawPencil(e);
 
-  canvas.addEventListener("mousemove", drawPencil);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawPencil);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawPencil(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
-  
-  pencilParameters.newX = e.offsetX;
-  pencilParameters.newY = e.offsetY; 
-  
-  pencilParameters.distance = Math.sqrt(Math.pow(e.offsetX - pencilParameters.oldX, 2) + Math.pow(e.offsetY - pencilParameters.oldY, 2));
-  pencilParameters.angle = Math.atan2(e.offsetX - pencilParameters.oldX, e.offsetY - pencilParameters.oldY);
-  
+
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  pencilParameters.newX = e.curX;
+  pencilParameters.newY = e.curY;
+
+  pencilParameters.distance = Math.sqrt(Math.pow(curX - pencilParameters.oldX, 2) + Math.pow(curY - pencilParameters.oldY, 2));
+  pencilParameters.angle = Math.atan2(curX - pencilParameters.oldX, curY - pencilParameters.oldY);
+
   for (let i = 0; i < pencilParameters.distance; i++) {
     pencilParameters.newX = Math.floor(pencilParameters.oldX + i * Math.sin(pencilParameters.angle));
     pencilParameters.newY = Math.floor(pencilParameters.oldY + i * Math.cos(pencilParameters.angle));
-    
+
     drawPointPencil(pencilParameters.newX, pencilParameters.newY);
   }
-  
-  pencilParameters.oldX = e.offsetX;
-  pencilParameters.oldY = e.offsetY;
-  
+
+  pencilParameters.oldX = curX;
+  pencilParameters.oldY = curY;
+
   changePreview();
 }
 
 function drawPointPencil(x, y) {
   let radius = Math.floor(curToolSize / 2);
   drawBresenhamCircle();
-  
+
   function drawBresenhamCircle() {
     context.beginPath();
     context.lineJoin = "miter";
@@ -77,7 +107,7 @@ function drawPointPencil(x, y) {
     while (y0 >= 0) {
       drawLine(x - x0, x + x0, y - y0);
       drawLine(x - x0, x + x0, y + y0);
-     
+
       error = 2 * (delta + y0) - 1;
       if ((delta < 0) && (error <= 0)) {
         delta += 2 * (++x0) + 1;
@@ -89,12 +119,12 @@ function drawPointPencil(x, y) {
       }
       delta += 2 * (++x0 - --y0);
     }
-    
+
     context.stroke();
-    
+
     function drawLine(fromX, toX, y) {
       context.moveTo(fromX, y + 0.5);
       context.lineTo(toX + 1, y + 0.5);
-    }       
+    }
   }
 }

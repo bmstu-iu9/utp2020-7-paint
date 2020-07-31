@@ -99,6 +99,11 @@ body {
   border: solid 1px #FF7F50;
 }
 
+.layerBtn {
+  width: 20%;
+  height: 40%;
+}
+
 .optionTool {
   border-radius: 7%;
 }
@@ -109,7 +114,6 @@ body {
   height: 400px;
   padding: 0;
   margin: auto;
-  border: 1px solid #000000;
   top: 45px;
   bottom: 0;
   left: 0;
@@ -122,8 +126,14 @@ body {
   border-radius: 20px;
 }
 
-.layersFieldClosed {
-  position: fixed;
+#backCanvas {
+  z-index: -1000;
+  border: 1px solid #000000;
+  background: repeat url("img/background.png");
+}
+
+#layersField {
+  position: absolute;
   box-sizing: border-box;
   top: 50px;
   right: 0;
@@ -380,7 +390,7 @@ option:checked {
   top: 95%;
   left: 50%;
   transform: translate(-50%, -50%);
-  overflow: auto;
+  overflow-y: hidden;
   z-index: 1000;
 }
 

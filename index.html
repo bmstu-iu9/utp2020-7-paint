@@ -93,6 +93,12 @@
     <div class="leftPaneldrop">
       <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
       </button>
+      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 1px solid black">
+        <input type="color" id="colorPalette" style="opacity: 0">
+      </button>
+      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
+      </button>
+      <button id="eyedropperWindow" hidden="true"></button>
       <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
         <div class="rangeAndText">
           <input type="range" id="colorDifferenceRange" min="0" max="100">
@@ -120,10 +126,6 @@
     </div>
     <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
     </button>
-    <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
-    <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
-    </button>
-    <button id="eyedropperWindow" hidden="true"></button>
     <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
     <div class="leftPaneldrop">
       <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
@@ -138,6 +140,7 @@
   </div>
 </div>
 
+<canvas class="mainCanvas" id="backCanvas"></canvas>
 <canvas class="mainCanvas" id="layer0"></canvas>
 
 <div id="layersField" class="layersFieldClosed">
@@ -145,6 +148,8 @@
   <div class="layer addLayer" id="addLayerTop">add layer</div>
   <div class="layer highlight" id="layerDisplay0">
     <canvas class="preview" id="preview0"></canvas>
+    <button title="Скрыть" class="layerBtn" id="hideLayer0"></button>
+    <button title="Заблокировать" class="layerBtn" id="lockLayer0"></button>
   </div>
   <div class="layer addLayer" id="addLayerBottom">add layer</div>
 </div>
@@ -157,7 +162,7 @@
     <option value="arial"> Arial </option>
     <option value="'courier new'"> Courier New </option>
     <option value="'comic sans'"> Comic Sans </option>
-    <option value="fantasy"> Fantasy </option>
+    <option value="cursive"> Cursive </option>
     <option value="serif"> Serif </option>
     <option value="sans-serif"> Sans-Serif </option>
     <option value="monoplace"> Monospace </option>
@@ -165,7 +170,7 @@
     <option value="verdana"> Verdana </option>
   </select>
   <label for="fontSize">Text size:</label>
-  <input type="number" id="fontSize" size="2" min="1" max="300" value="48" oninput="chooseTextFormat()">
+  <input type="number" id="fontSize" size="2" min="1" max="300" value="20" oninput="chooseTextFormat()">
   <label for="fontColor">Text color:</label>
   <input type="color" size="2" id="fontColor" oninput="chooseTextFormat()">
   <label for="textAngle">Angle:</label>

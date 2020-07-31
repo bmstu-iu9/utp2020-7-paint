@@ -1,15 +1,32 @@
-'use strict'
+'use strict';
 
-let canvas = document.getElementById("mainCanvas");
+let backCanvas = document.getElementById("backCanvas");
+let canvas = document.getElementById("layer0");
 let context = canvas.getContext("2d");
 
 let curColor = [0, 0, 0];
 let curCanvasColor = [255, 255, 255];
 let curToolSize = 5;
+let curAllowableColorDifference = 0;
+let curCords = [];
+let curState = 0;
+let photoOfState = [];
+
+const defaultWidth = 780;
+const defaultHeight = 400;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
+let memCanvas = document.createElement('canvas');
+let memContext = memCanvas.getContext('2d');
+let uploadImage = document.getElementById("uploadImage");
+
+function saveImg() {
+  memCanvas.width = canvas.width;
+  memCanvas.height = canvas.height;
+  memContext.drawImage(canvas, 0, 0);
+}
 
 function getElementPosition(element) {
   let curLeft = 0, curTop = 0;
@@ -52,10 +69,12 @@ function arrayToRgb(color) {
   return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
 }
 
-document.getElementById("uploadImage").addEventListener('change', () => {
-  if (this.files && this.files[0]) {
-    handleImg(this.files[0]);
+uploadImage.addEventListener('change', () => {
+  let target = event.target;
+  if (target.files && target.files[0]) {
+    handleImg(target.files[0]);
   }
+  uploadImage.value = null;
 });
 
 function handleImg(img) {
@@ -67,12 +86,8 @@ function handleImg(img) {
 function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
-  img.onload = function () {
-    canvas.getContext("2d").drawImage(img,
-    0, 0,
-    img.width, img.height,
-    0, 0,
-    canvas.width, canvas.height);
+  img.onload = () => {
+    insertImg(img);
   }
 }
 
@@ -80,12 +95,39 @@ let downloadBtn = document.getElementById("download");
 
 downloadBtn.addEventListener('click', () => {
   let img = canvas.toDataURL("image/png")
-                  .replace("image/png", "image/octet-stream");
+    .replace("image/png", "image/octet-stream");
   downloadBtn.setAttribute("href", img);
 });
 
-document.getElementById("clear").addEventListener('click', () => {
+function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
+  changePreview();
+}
+
+function clearAllLayers() {
+  let curCanvasId = activeLayer.id;
+  layers.forEach((layer) => {
+    canvas = layer.canvas;
+    context = canvas.getContext('2d');
+    clearCanvas();
+  });
+  canvas = layers[curCanvasId].canvas;
+  context = canvas.getContext('2d');
+}
+
+document.getElementById("clear").addEventListener('click', () => {
+  clearCanvas();
+  let id = activeLayer.id, imgOfCanvas = canvas.toDataURL();
+  let count = curState;
+  curCords = curCords.filter((elem, i) => {
+    if (elem.layer == id) {
+      if (i < curState) --count;
+      return false;
+    }
+    return true;
+  });
+  curState = count;
+  photoOfState[id] = (photoOfState[0].length == 2) ? [imgOfCanvas, imgOfCanvas] : [imgOfCanvas];
 });
 
 addEventListener('keydown', (event) => {
@@ -102,51 +144,49 @@ addEventListener('keydown', (event) => {
         downloadBtn.click();
         break;
       case 'u':
-        document.getElementById("uploadImage").click();
+        uploadImage.click();
+        break;
+      case 'y':
+        document.getElementById("redo").click();
+        break;
+      case 'z':
+        document.getElementById("undo").click();
         break;
     }
   }
 });
 
-//memory-canvas for saving image
-let memCanvas = document.createElement('canvas');
-let memCtx = memCanvas.getContext('2d');
-
-function saveImg() {
-  memCanvas.width = canvas.width;
-  memCanvas.height = canvas.height;
-  memCtx.drawImage(canvas, 0, 0);
-}
-
 changeCanvasWidth.oninput = function () {
   let width = document.getElementById("changeCanvasWidth").value;
-  if (width) {
-    saveImg();
+  if (width && width >= 50 && width <= 1400) {
     canvas.style.width = width + 'px';
     canvas.setAttribute('width', width + 'px');
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+    document.getElementById("curWidth").innerHTML = width + "";
   } else {
-    canvas.setAttribute('width', '1080');
-    canvas.style.width = 1080 + 'px';
+    canvas.setAttribute('width', defaultWidth + 'px');
+    canvas.style.width = defaultWidth + 'px';
+    document.getElementById("curWidth").innerHTML = defaultWidth + "";
   }
+  changePreview();
 }
 
 changeCanvasHeight.oninput = function () {
   let height = document.getElementById("changeCanvasHeight").value;
-  if (height) {
-    saveImg();
+  if (height && height >= 50 && height <= 1000) {
     canvas.style.height = height + 'px';
     canvas.setAttribute('height', height + 'px');
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+    document.getElementById("curHeight").innerHTML = height + "";
   } else {
-    canvas.setAttribute('height', '720');
-    canvas.style.height = 720 + 'px';
+    canvas.setAttribute('height', defaultHeight + 'px');
+    canvas.style.height = defaultHeight + 'px';
+    document.getElementById("curHeight").innerHTML = defaultHeight + "";
   }
+  changePreview();
 }
 
 borderWidth.oninput = function () {
   let width = document.getElementById("borderWidth").value;
-  if (width) {
+  if (width && width >= 1 && width <= 30) {
     canvas.style.borderWidth = width + 'px';
   } else {
     canvas.style.borderWidth = 1 + 'px';
@@ -162,8 +202,56 @@ borderColor.oninput = function () {
   }
 }
 
-document.getElementById("help").addEventListener('click', (event) => {
-  let helpMenu = document.getElementById("helpMenu");
-  helpMenu.hidden = !helpMenu.hidden;
+function hideAndShow (element) {
+  let menu = document.getElementById(element);
+  menu.hidden = !menu.hidden;
   event.currentTarget.classList.toggle("pressed");
+}
+
+document.getElementById("help").addEventListener('click', (event) => {
+  hideAndShow("helpMenu", event);
 });
+
+document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
+  hideAndShow("uploadImgMenu", event);
+});
+
+document.getElementById("brush").addEventListener('click', (event) => {
+  hideAndShow("brushMenu", event);
+});
+
+document.getElementById("figure").addEventListener('click', (event) => {
+  hideAndShow("figureMenu", event);
+});
+
+document.getElementById("openPanel").addEventListener('click', (event) => {
+  hideAndShow("lefContainer", event);
+});
+
+document.getElementById("filling").addEventListener('click', (event) => {
+  hideAndShow("fillMenu", event);
+});
+
+document.getElementById("toolSettings").addEventListener('click', (event) => {
+  hideAndShow("toolSettingsMenu", event);
+});
+
+function getIndexOfRedInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4;
+}
+
+function getIndexOfGreenInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 1;
+}
+
+function getIndexOfBlueInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 2;
+}
+
+function getIndexOfAlphaInData(x, y) {
+  return canvas.width * (y - 1) * 4 + x * 4 + 3;
+}
+
+function areInCanvas(x, y) {
+  return (x <= canvas.width - 1 && y <= canvas.height && x >= 0 && y >= 0);
+}

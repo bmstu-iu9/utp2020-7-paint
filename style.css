@@ -132,8 +132,8 @@ body {
   background: repeat url("img/background.png");
 }
 
-#layersFieldClosed {
-  position: absolute;
+.layersFieldClosed {
+  position: fixed;
   box-sizing: border-box;
   top: 50px;
   right: 0;

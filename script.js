@@ -1,5 +1,6 @@
 'use strict';
 
+let backCanvas = document.getElementById("backCanvas");
 let canvas = document.getElementById("layer0");
 let context = canvas.getContext("2d");
 
@@ -9,6 +10,7 @@ let curToolSize = 5;
 let curAllowableColorDifference = 0;
 let curCords = [];
 let curState = 0;
+let photoOfState = [];
 
 const defaultWidth = 780;
 const defaultHeight = 400;
@@ -115,9 +117,17 @@ function clearAllLayers() {
 
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
-  curCords = [];
-  curState = 0;
-  photoOfState = [[]];
+  let id = activeLayer.id, imgOfCanvas = canvas.toDataURL();
+  let count = curState;
+  curCords = curCords.filter((elem, i) => {
+    if (elem.layer == id) {
+      if (i < curState) --count;
+      return false;
+    }
+    return true;
+  });
+  curState = count;
+  photoOfState[id] = (photoOfState[0].length == 2) ? [imgOfCanvas, imgOfCanvas] : [imgOfCanvas];
 });
 
 addEventListener('keydown', (event) => {

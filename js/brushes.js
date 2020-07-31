@@ -1,13 +1,6 @@
 'use strict';
 
 let isDrawing = false;
-
-function endPoint() {
-  isDrawing = false;
-  context.beginPath();
-}
-
-
 let oldX, oldY, newX, newY, distance, angle;
 
 function initBasicBrush() {
@@ -16,17 +9,22 @@ function initBasicBrush() {
 
 function deleteBasicBrush() {
   canvas.removeEventListener("mousedown", startPointBasicBrush);
-  canvas.removeEventListener("mousemove", drawBasicBrush);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawBasicBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointBasicBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("BasicBrush");
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   context.lineWidth = 0.1;
   context.fillStyle = arrayToRgb(curColor);
@@ -40,17 +38,26 @@ function startPointBasicBrush(e) {
 
   drawBasicBrush(e);
 
-  canvas.addEventListener("mousemove", drawBasicBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawBasicBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawBasicBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  distance = Math.sqrt(Math.pow(e.offsetX - oldX, 2) + Math.pow(e.offsetY - oldY, 2))
-  angle = Math.atan2(e.offsetX - oldX, e.offsetY - oldY);
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
+  angle = Math.atan2(curX - oldX, curY - oldY);
 
   for (let i = 0; i < distance; i++) {
     newX = oldX + i * Math.sin(angle);
@@ -61,8 +68,8 @@ function drawBasicBrush(e) {
     context.stroke();
   }
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
+  oldX = curX;
+  oldY = curY;
 
   changePreview();
 }
@@ -74,14 +81,16 @@ function initNeonBrush() {
 
 function deleteNeonBrush() {
   canvas.removeEventListener("mousedown", startPointNeonBrush);
-  canvas.removeEventListener("mousemove", drawNeonBrush);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawNeonBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
   context.shadowBlur = 0;
 }
 
 function startPointNeonBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("NeonBrush");
 
   context.lineWidth = curToolSize;
@@ -91,21 +100,37 @@ function startPointNeonBrush(e) {
   context.shadowBlur = curToolSize;
   context.shadowColor = arrayToRgb(curColor)
 
+  deltaX = e.pageX - e.offsetX;
+  deltaY = e.pageY - e.offsetY;
+
   drawNeonBrush(e);
 
-  canvas.addEventListener("mousemove", drawNeonBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawNeonBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawNeonBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  context.lineTo(e.offsetX, e.offsetY);
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  context.lineTo(curX, curY);
   context.stroke();
   context.beginPath();
+<<<<<<< HEAD
   context.moveTo(e.offsetX, e.offsetY);
+=======
+  context.moveTo(curX, curY);
+>>>>>>> master
 
   changePreview();
 }
@@ -119,18 +144,22 @@ function initSmoothBrush() {
 function deleteSmoothBrush() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointSmoothBrush);
-  canvas.removeEventListener("mousemove", drawSmoothBrush);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawSmoothBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
   context.globalAlpha = "1";
 }
 
 function startPointSmoothBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("SmoothBrush");
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   context.lineWidth = 0.1;
   context.globalAlpha = "0.01";
@@ -145,17 +174,26 @@ function startPointSmoothBrush(e) {
 
   drawSmoothBrush(e);
 
-  canvas.addEventListener("mousemove", drawSmoothBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawSmoothBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawSmoothBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  distance = Math.sqrt(Math.pow(e.offsetX - oldX, 2) + Math.pow(e.offsetY - oldY, 2))
-  angle = Math.atan2(e.offsetX - oldX, e.offsetY - oldY);
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
+  angle = Math.atan2(curX - oldX, curY - oldY);
 
   for (let i = 0; i < distance; i++) {
     newX = oldX + i * Math.sin(angle);
@@ -166,8 +204,13 @@ function drawSmoothBrush(e) {
     context.stroke();
   }
 
+<<<<<<< HEAD
   oldX = e.offsetX;
   oldY = e.offsetY;
+=======
+  oldX = curX;
+  oldY = curY;
+>>>>>>> master
 
   changePreview();
 }
@@ -187,24 +230,35 @@ function initSketchBrush() {
 function deleteSketchBrush() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointSketchBrush);
+<<<<<<< HEAD
   canvas.removeEventListener("mousemove", drawSketchBrush);
   canvas.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
   toolSizeRange.value = 5;
   toolSizeText.value = '5px';
   context.globalAlpha = '1';
+=======
+  document.removeEventListener("mousemove", drawSketchBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  context.globalAlpha = "1";
+>>>>>>> master
   toolSizeRange.max = 300;
 }
 
 
 function startPointSketchBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("SketchBrush");
 
   context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   context.strokeStyle = arrayToRgb(curColor);
   context.globalAlpha = "0.1";
@@ -215,14 +269,23 @@ function startPointSketchBrush(e) {
 
   drawSketchBrush(e);
 
-  canvas.addEventListener("mousemove", drawSketchBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawSketchBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawSketchBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
 
   pointsCounter = pointsCounter + 1;
 
@@ -230,22 +293,27 @@ function drawSketchBrush(e) {
 
   context.beginPath();
   context.moveTo(oldX, oldY);
-  context.lineTo(e.offsetX, e.offsetY);
+  context.lineTo(curX, curY);
 
   if (prevPoints[pointsCounter]) {
     newX = prevPoints[pointsCounter][0];
     newY = prevPoints[pointsCounter][1];
 
     context.moveTo(newX, newY);
-    context.lineTo(e.offsetX, e.offsetY);
+    context.lineTo(curX, curY);
   }
 
   context.stroke();
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
+  oldX = curX;
+  oldY = curY;
 
+  prevPoints[pointsCounter] = [curX, curY];
+
+<<<<<<< HEAD
   prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
 
+=======
+>>>>>>> master
   changePreview();
 }

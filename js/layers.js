@@ -191,10 +191,12 @@ function hideLayerHandler(event) {
     layer.hidden = false;
     layer.canvas.style.visibility = 'visible';
     layer.hideBtn.title = 'Скрыть';
+    layer.hideBtn.classList.remove('pressed'); // TODO: create this class
   } else {
     layer.hidden = true;
     layer.canvas.style.visibility = 'hidden';
     layer.hideBtn.title = 'Показать';
+    layer.hideBtn.classList.add('pressed');
   }
 }
 
@@ -202,16 +204,18 @@ function lockLayerHandler(event) {
   let layer = getLayerByBtn(event.target.id);
   if (!layer) return;
 
-  console.log(layer.locked);
-  if (layer.lосked) {
-    console.log('actually true');
+  let cond = layer.locked;
+  if (cond) {
     layer.locked = false;
     activeInstrument && activeInstrument.init();
     layer.lockBtn.title = 'Заблокировать';
+    layer.lockBtn.classList.remove('pressed');
+    layer.display.classList.remove('locked');
   } else {
-    console.log('actually false');
     layer.locked = true;
     activeInstrument && activeInstrument.delete();
     layer.lockBtn.title = 'Разблокировать';
+    layer.lockBtn.classList.add('pressed');
+    layer.display.classList.add('locked');
   }
 }

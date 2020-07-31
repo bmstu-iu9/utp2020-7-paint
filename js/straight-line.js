@@ -15,6 +15,7 @@ function deleteStraightLine() {
 }
 
 function startPointStraightLine(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("StraightLine", [e.offsetX, e.offsetY]);
@@ -45,7 +46,7 @@ function drawStraightLine(e) {
 
   curX = e.offsetX;
   curY = e.offsetY;
-  
+
   if (!isOnCanvas) {
     curX -= deltaX;
     curY -= deltaY;

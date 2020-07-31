@@ -6,7 +6,7 @@ let textElements = ['textMenu', 'textFormat', 'fontSize', 'fontColor', 'textAngl
 textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);
 
 function chooseTextFormat() {
-  writeText(canvas.width / 2 - dxOfText, (canvas.height - dyOfText) / 2);
+  writeText(canvas.width / 2, canvas.height / 2);
 }
 
 function initText() {
@@ -16,8 +16,8 @@ function initText() {
 
   function pressForInsertion() {
     if (event.code == 'Enter' && event.altKey) {
-      dxOfText = pastedText.offsetWidth;
-      dyOfText = pastedText.offsetHeight;
+      dxOfText = pastedText.getBoundingClientRect().width;
+      dyOfText = pastedText.getBoundingClientRect().height;
       pastedText.hidden = true;
       textMenu.hidden = false;
       textFormat.addEventListener("click", startPointText);
@@ -38,9 +38,9 @@ function deleteText() {
   }
 
   canvas.removeEventListener("mousemove", drawTextInsertion);
-  canvas.removeEventListener("click", stopInsertion);
+  document.removeEventListener("mouseup", stopInsertion);
 
-  fontSize.value = '48';
+  fontSize.value = '20';
   font.value = 'serif';
   textAngle.value = 0;
   fontColor.value = '#000000';
@@ -59,13 +59,14 @@ function writeText(x, y) {
       context.fillText(textToInsert[i], x, y + i * del);
   }
 
-  if (!textAngle.value) {
-    write(x, y);
+  let k = fontSize.value / 20;
+
+  if (textAngle.value == 0) {
+    write(x - dxOfText * k / 2, y - dyOfText / 2);
   } else {
-    let ox = canvas.width / 2, oy = canvas.height / 2;
-    context.translate(ox, oy);
+    context.translate(x, y);
     context.rotate((Math.PI / 180) * textAngle.value);
-    write(x - ox, y - oy);
+    write(-dxOfText * k / 2, -dyOfText / 2);
   }
   context.restore();
 
@@ -87,7 +88,7 @@ function startPointText(e) {
 
   textFormat.removeEventListener("click", startPointText);
   canvas.addEventListener("mousemove", drawTextInsertion);
-  canvas.addEventListener("click", stopInsertion);
+  document.addEventListener("mouseup", stopInsertion);
 }
 
 function drawTextInsertion(e) {

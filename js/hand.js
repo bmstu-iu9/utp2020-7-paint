@@ -25,8 +25,8 @@ function startMoving(e) {
 
   function move(e) {
     let x = e.pageX, y = e.pageY;
-    layers.forEach(layer => {
-      let layerStyle = layer.canvas.style;
+    allCanvases.forEach(layer => {
+      let layerStyle = layer.style;
       layerStyle.margin = '0';
       layerStyle.left = x - shiftX + 'px';
       layerStyle.top = y - shiftY + 'px';

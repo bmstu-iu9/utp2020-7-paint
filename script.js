@@ -1,5 +1,6 @@
 'use strict';
 
+let backCanvas = document.getElementById("backCanvas");
 let canvas = document.getElementById("layer0");
 let context = canvas.getContext("2d");
 

@@ -38,6 +38,7 @@ function deletePencil() {
 }
 
 function startPointPencil(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Pencil");
@@ -64,7 +65,7 @@ function drawPencil(e) {
 
   curX = e.offsetX;
   curY = e.offsetY;
-  
+
   if (!isOnCanvas) {
     curX -= deltaX;
     curY -= deltaY;

@@ -16,6 +16,7 @@ function deleteBasicBrush() {
 }
 
 function startPointBasicBrush(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("BasicBrush");
@@ -87,6 +88,7 @@ function deleteNeonBrush() {
 }
 
 function startPointNeonBrush(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("NeonBrush");
@@ -143,6 +145,7 @@ function deleteSmoothBrush() {
 }
 
 function startPointSmoothBrush(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("SmoothBrush");
@@ -223,6 +226,7 @@ function deleteSketchBrush() {
 
 
 function startPointSketchBrush(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("SketchBrush");
@@ -255,7 +259,7 @@ function drawSketchBrush(e) {
 
   curX = e.offsetX;
   curY = e.offsetY;
-  
+
   if (!isOnCanvas) {
     curX -= deltaX;
     curY -= deltaY;

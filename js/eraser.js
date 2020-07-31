@@ -23,6 +23,7 @@ function deleteEraser() {
 }
 
 function startPointEraser(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Eraser");
@@ -57,7 +58,7 @@ function drawEraser(e) {
 
   curX = e.offsetX;
   curY = e.offsetY;
-  
+
   if (!isOnCanvas) {
     curX -= deltaX;
     curY -= deltaY;

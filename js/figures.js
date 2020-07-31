@@ -15,6 +15,7 @@ function deleteRectangle() {
 }
 
 function startPointRectangle(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Rectangle", [e.offsetX, e.offsetY]);
@@ -78,6 +79,7 @@ function deleteCircle() {
 }
 
 function startPointCircle(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Circle", [e.offsetX, e.offsetY]);
@@ -142,6 +144,7 @@ function deleteEllipse() {
 }
 
 function startPointEllipse(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Ellipse", [e.offsetX, e.offsetY]);
@@ -207,6 +210,7 @@ function deleteEqTriangle() {
 }
 
 function startPointEqTriangle(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("EqTriangle", [e.offsetX, e.offsetY]);
@@ -272,6 +276,7 @@ function deleteRightTriangle() {
 }
 
 function startPointRightTriangle(e) {
+  e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("RightTriangle", [e.offsetX, e.offsetY]);
@@ -302,7 +307,7 @@ function drawRightTriangle(e) {
 
   curX = e.offsetX;
   curY = e.offsetY;
-  
+
   if (!isOnCanvas) {
     curX -= deltaX;
     curY -= deltaY;

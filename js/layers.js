@@ -113,6 +113,7 @@ class Layer {
       this.index = 50;
       layers.push(this);
       allCanvases.push(this.canvas);
+      photoOfState.push([this.canvas.toDataURL()]);
       return this;
     }
 
@@ -135,6 +136,11 @@ class Layer {
     context = canvas.getContext('2d');
     activeInstrument && activeInstrument.init();
     activeLayer = this;
+    let imgOfCanvas = canvas.toDataURL();
+    if (photoOfState[0].length == 2) {
+      photoOfState.push([imgOfCanvas, imgOfCanvas]);
+    } else photoOfState.push([imgOfCanvas]);
+
 
     this.preview = this.display.children['preview' + this.id];
     this.hideBtn = this.display.children['hideLayer' + this.id];
@@ -169,7 +175,6 @@ let bottomLayer = firstLayer;
 
 function addLayerHandler(event) {
   let caller = event.target.id;
-  photoOfState.push([]);
 
   new Layer(caller);
 }

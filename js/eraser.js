@@ -49,7 +49,7 @@ function drawEraser(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-    context.globalCompositeOperation = "destination-out";
+  context.globalCompositeOperation = "destination-out";
   eraserParameters.distance = Math.sqrt(Math.pow(e.offsetX - eraserParameters.oldX, 2) + Math.pow(e.offsetY - eraserParameters.oldY, 2));
   eraserParameters.angle = Math.atan2(e.offsetX - eraserParameters.oldX, e.offsetY - eraserParameters.oldY);
 

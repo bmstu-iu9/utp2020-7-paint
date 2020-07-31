@@ -175,3 +175,43 @@ function applyConvolutionMatrixFilter(weights, coeff) {
   }
   context.putImageData(dstData, 0, 0);
 }
+
+let horizontalReflectionFilterButton = document.getElementById("horizontal-reflection");
+horizontalReflectionFilterButton.onclick = () => { applyHorizontalReflection(); }
+
+let verticalReflectionFilterButton = document.getElementById("vertical-reflection");
+verticalReflectionFilterButton.onclick = () => { applyVerticalReflection(); }
+
+function applyHorizontalReflection() {
+  let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  let resultImageData = new ImageData(canvas.width, canvas.height);
+
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
+      resultImageData.data[getIndexOfRedInData(i, j)] = curImageData.data[getIndexOfRedInData(i, canvas.height - 1 - j)];
+      resultImageData.data[getIndexOfGreenInData(i, j)] = curImageData.data[getIndexOfGreenInData(i, canvas.height - 1 - j)];
+      resultImageData.data[getIndexOfBlueInData(i, j)] = curImageData.data[getIndexOfBlueInData(i, canvas.height - 1 - j)];
+      resultImageData.data[getIndexOfAlphaInData(i, j)] = curImageData.data[getIndexOfAlphaInData(i, canvas.height - 1 - j)];
+    }
+  }
+
+  context.putImageData(resultImageData, 0, 0);
+  changePreview();
+}
+
+function applyVerticalReflection() {
+  let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  let resultImageData = new ImageData(canvas.width, canvas.height);
+
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
+      resultImageData.data[getIndexOfRedInData(i, j)] = curImageData.data[getIndexOfRedInData(canvas.width - 1 - i, j)];
+      resultImageData.data[getIndexOfGreenInData(i, j)] = curImageData.data[getIndexOfGreenInData(canvas.width - 1 - i, j)];
+      resultImageData.data[getIndexOfBlueInData(i, j)] = curImageData.data[getIndexOfBlueInData(canvas.width - 1 - i, j)];
+      resultImageData.data[getIndexOfAlphaInData(i, j)] = curImageData.data[getIndexOfAlphaInData(canvas.width - 1 - i, j)];
+    }
+  }
+  
+  context.putImageData(resultImageData, 0, 0);
+  changePreview();
+}

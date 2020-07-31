@@ -87,7 +87,8 @@ function switchLayer(event) {
   activeInstrument && activeInstrument.delete();
   canvas = layer.canvas;
   context = canvas.getContext('2d');
-  activeInstrument && layer.locked && activeInstrument.init();
+
+  activeInstrument && !layer.locked && activeInstrument.init();
   activeLayer = layer;
 }
 

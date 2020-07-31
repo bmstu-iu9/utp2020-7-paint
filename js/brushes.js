@@ -126,11 +126,7 @@ function drawNeonBrush(e) {
   context.lineTo(curX, curY);
   context.stroke();
   context.beginPath();
-<<<<<<< HEAD
-  context.moveTo(e.offsetX, e.offsetY);
-=======
   context.moveTo(curX, curY);
->>>>>>> master
 
   changePreview();
 }
@@ -204,13 +200,8 @@ function drawSmoothBrush(e) {
     context.stroke();
   }
 
-<<<<<<< HEAD
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-=======
   oldX = curX;
   oldY = curY;
->>>>>>> master
 
   changePreview();
 }
@@ -230,19 +221,13 @@ function initSketchBrush() {
 function deleteSketchBrush() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointSketchBrush);
-<<<<<<< HEAD
-  canvas.removeEventListener("mousemove", drawSketchBrush);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
-  toolSizeRange.value = 5;
-  toolSizeText.value = '5px';
-  context.globalAlpha = '1';
-=======
   document.removeEventListener("mousemove", drawSketchBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
   context.globalAlpha = "1";
->>>>>>> master
+  curToolSize = 5;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
   toolSizeRange.max = 300;
 }
 
@@ -309,11 +294,5 @@ function drawSketchBrush(e) {
   oldY = curY;
 
   prevPoints[pointsCounter] = [curX, curY];
-
-<<<<<<< HEAD
-  prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
-
-=======
->>>>>>> master
   changePreview();
 }

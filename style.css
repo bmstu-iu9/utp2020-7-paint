@@ -126,10 +126,6 @@ body {
   border-radius: 20px;
 }
 
-<<<<<<< HEAD
-.layersFieldClosed {
-  position: fixed;
-=======
 #backCanvas {
   z-index: -1000;
   border: 1px solid #000000;
@@ -138,7 +134,6 @@ body {
 
 #layersField {
   position: absolute;
->>>>>>> master
   box-sizing: border-box;
   top: 50px;
   right: 0;

@@ -209,7 +209,7 @@ let pointsCounter, prevPoints;
 function initSketchBrush() {
   curToolSize = 1;
   toolSizeRange.value = 1;
-  toolSizeText.value = `1px`;
+  toolSizeText.value = '1px';
   toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointSketchBrush);
 }
@@ -264,7 +264,7 @@ function drawSketchBrush(e) {
     curY -= deltaY;
   }
 
-  pointsCounter = pointsCounter + 1;
+  pointsCounter++;
 
   if (pointsCounter == 10) pointsCounter = 0;
 
@@ -294,7 +294,7 @@ function drawSketchBrush(e) {
 function initPatternBrush() {
   curToolSize = 1;
   toolSizeRange.value = 1;
-  toolSizeText.value = `1nx`;
+  toolSizeText.value = '1px';
   toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointPatternBrush);
 }
@@ -373,7 +373,7 @@ function drawPatternBrush(e) {
   oldX = curX;
   oldY = curY;
 
-  pointsCounter = pointsCounter + 1;
+  pointsCounter++;
 
   changePreview();
 }
@@ -382,7 +382,7 @@ function drawPatternBrush(e) {
 function initFurBrush() {
   curToolSize = 1;
   toolSizeRange.value = 1;
-  toolSizeText.value = `1nx`;
+  toolSizeText.value = '1px';
   toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointFurBrush);
 }
@@ -461,7 +461,7 @@ function drawFurBrush(e) {
   oldX = curX;
   oldY = curY;
 
-  pointsCounter = pointsCounter + 1;
+  pointsCounter++;
 
   changePreview();
 }
@@ -470,7 +470,7 @@ function drawFurBrush(e) {
 function initRectangleBrush() {
   curToolSize = 1;
   toolSizeRange.value = 1;
-  toolSizeText.value = `1nx`;
+  toolSizeText.value = '1px';
   toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointRectangleBrush);
 }
@@ -545,7 +545,7 @@ function drawRectangleBrush(e) {
 function initCircleBrush() {
   curToolSize = 1;
   toolSizeRange.value = 1;
-  toolSizeText.value = `1nx`;
+  toolSizeText.value = '1px';
   toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointCircleBrush);
 }

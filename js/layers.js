@@ -101,6 +101,8 @@ class Layer {
       this.preview = document.getElementById('preview0');
 
       this.canvas = document.getElementById('layer0');
+      
+      this.index = 50;
       this.canvas.style.zIndex = this.index;
 
       this.hideBtn = document.getElementById('hideLayer0');
@@ -111,7 +113,6 @@ class Layer {
       this.lockBtn.addEventListener('click', lockLayerHandler);
       this.hideBtn.addEventListener('click', hideLayerHandler);
 
-      this.index = 50;
       layers.push(this);
       allCanvases.push(this.canvas);
       photoOfState.push([this.canvas.toDataURL()]);

@@ -397,6 +397,9 @@ function deleteFurBrush() {
   canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
   toolSizeRange.max = 300;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
+  curToolSize = 5;
 }
 
 function startPointFurBrush(e) {

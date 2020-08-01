@@ -224,7 +224,6 @@ function deleteSketchBrush() {
   toolSizeRange.max = 300;
 }
 
-
 function startPointSketchBrush(e) {
   isDrawing = true;
   isOnCanvas = true;

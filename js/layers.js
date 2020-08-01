@@ -37,6 +37,10 @@ function createCanvasHtml(id) {
   let newCanvas = document.createElement('canvas');
   newCanvas.classList.add('mainCanvas');
   newCanvas.id = 'layer' + id;
+  newCanvas.style.width = curCanvasWidth + 'px';
+  newCanvas.setAttribute('width', curCanvasWidth + 'px');
+  newCanvas.style.height = curCanvasHeight + 'px';
+  newCanvas.setAttribute('height', curCanvasHeight + 'px');
   bottomLayer.canvas.after(newCanvas);
   return newCanvas;
 }
@@ -121,8 +125,6 @@ class Layer {
     this.display = createLayerHtml(this.id);
     this.display.addEventListener('click', switchLayer);
     this.canvas = createCanvasHtml(this.id);
-    this.canvas.width = canvas.offsetWidth;
-    this.canvas.height = canvas.offsetHeight;
     this.canvas.style.left = canvas.style.left;
     this.canvas.style.top = canvas.style.top;
     this.canvas.style.margin = canvas.style.margin;

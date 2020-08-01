@@ -145,7 +145,7 @@ body {
   transform: translateX(100%);
 }
 
-#layersFieldActive {
+.layersFieldActive {
   transform: translateX(0%);
 }
 

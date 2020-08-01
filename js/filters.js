@@ -173,6 +173,24 @@ function applyBrightnessFilter(brightnessCoef) {
   changePreview();
 }
 
+let isClickedBlur = true;
+blur.value = 0;
+let blurRange = document.getElementById("blur");
+
+blurRange.oninput = () => {
+  if (isClickedBlur) saveImg();
+  isClickedBlur = false;
+  context.drawImage(memCanvas, 0, 0);
+  applyConvolutionMatrixFilter([1/16, 1/8, 1/16, 1/8, 1/4, 1/8, 1/16, 1/8, 1/16], blurRange.value);
+  changePreview();
+}
+
+blurRange.onchange = () => {
+  isClickedBlur = true;
+  blurRange.value = 0;
+  changePreview();
+}
+
 function applyConvolutionMatrixFilter(weights, coeff) {
   let width = canvas.width;
   let height = canvas.height;

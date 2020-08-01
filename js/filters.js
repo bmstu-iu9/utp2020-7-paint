@@ -215,3 +215,33 @@ function applyVerticalReflection() {
   context.putImageData(resultImageData, 0, 0);
   changePreview();
 }
+
+let medianFilterButton = document.getElementById("median");
+medianFilterButton.onclick = () => { applyMedianFilter(2); }
+
+function applyMedianFilter(radius) {
+  let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  let resultImageData = curImageData;
+  let storonaKvadrata = 2 * radius + 1;
+  
+  for (let k = 0; k < 3; k++) {
+    for (let i = 0; i < canvas.width; i++) {
+      for (let j = 0; j < canvas.height; j++) {
+
+        let array = [];
+        for (let l = i - radius; l <= i + radius; l++) {
+          for (let m = j - radius; m <= j + radius; m++) {
+            if (areInCanvas(l, m)) array.push(curImageData.data[getIndexOfRedInData(l, m) + k]);
+          }
+        }
+          
+        array.sort((a, b) => a - b);
+
+        let mediam = array[Math.floor(array.length/2)];
+        resultImageData.data[getIndexOfRedInData(i ,j) + k] = mediam;
+      }
+    }
+  }
+  context.putImageData(resultImageData, 0, 0);
+}
+

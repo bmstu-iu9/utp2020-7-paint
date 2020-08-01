@@ -17,8 +17,8 @@ let coloredFilterButton = document.getElementById("colored");
 coloredFilterButton.onclick = () => { applySimpleFilter("colored"); }
 
 let embossFilterButton = document.getElementById("emboss");
-embossFilterButton.onclick = () => { 
-  applyConvolutionMatrixFilter([-2, -1, 0, -1, 1, 1, 0, 1, 2], 1); 
+embossFilterButton.onclick = () => {
+  applyConvolutionMatrixFilter([-2, -1, 0, -1, 1, 1, 0, 1, 2], 1);
   changePreview();
 }
 
@@ -69,7 +69,7 @@ function applySimpleFilter(filterName) {
       curImageData.data[getIndexOfRedInData(x, y)] = 255 * Math.floor(red/128);
       curImageData.data[getIndexOfGreenInData(x, y)] = 255 * Math.floor(green/128);
       curImageData.data[getIndexOfBlueInData(x, y)] = 255 * Math.floor(blue/128);
-    } 
+    }
   }
 }
 
@@ -105,8 +105,8 @@ function applyContrastFilter(contrastCoef) {
       red = ((1 - alpha/255) * 255) + (alpha/255 * red);
       green = ((1 - alpha/255) * 255) + (alpha/255 * green);
       blue = ((1 - alpha/255) * 255) + (alpha/255 * blue);
-      if (alpha == 0) { 
-        countOfPixels--; 
+      if (alpha == 0) {
+        countOfPixels--;
       } else {
         average += (red * 0.299 + green * 0.587 + blue * 0.114);
       }
@@ -130,6 +130,42 @@ function applyContrastFilter(contrastCoef) {
       curImageData.data[getIndexOfRedInData(i, j)] = changedPalette[red];
       curImageData.data[getIndexOfGreenInData(i, j)] = changedPalette[green];
       curImageData.data[getIndexOfBlueInData(i, j)] = changedPalette[blue];
+    }
+  }
+
+  context.putImageData(curImageData, 0, 0);
+  changePreview();
+}
+
+let isClickedBrightness = true;
+brightness.value = 0;
+let brightnessRange = document.getElementById("brightness");
+
+brightnessRange.oninput = () => {
+  if (isClickedBrightness) saveImg();
+  isClickedBrightness = false;
+  context.drawImage(memCanvas, 0, 0);
+  applyBrightnessFilter(brightness.value);
+}
+
+brightnessRange.onchange = () => {
+  isClickedBrightness = true;
+  brightness.value = 1;
+  changePreview();
+}
+
+function applyBrightnessFilter(brightnessCoef) {
+  let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  let adjustment = 10*brightnessCoef;
+
+  for (let i = 0; i < canvas.width; i++) {
+    for (let j = 0; j < canvas.height; j++) {
+      let red = curImageData.data[getIndexOfRedInData(i, j)];
+      let green = curImageData.data[getIndexOfGreenInData(i, j)];
+      let blue = curImageData.data[getIndexOfBlueInData(i, j)];
+      curImageData.data[getIndexOfRedInData(i, j)] = red + adjustment;
+      curImageData.data[getIndexOfGreenInData(i, j)] = green + adjustment;
+      curImageData.data[getIndexOfBlueInData(i, j)] = blue + adjustment;
     }
   }
 
@@ -211,7 +247,7 @@ function applyVerticalReflection() {
       resultImageData.data[getIndexOfAlphaInData(i, j)] = curImageData.data[getIndexOfAlphaInData(canvas.width - 1 - i, j)];
     }
   }
-  
+
   context.putImageData(resultImageData, 0, 0);
   changePreview();
 }
@@ -223,7 +259,7 @@ function applyMedianFilter(radius) {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   let resultImageData = curImageData;
   let storonaKvadrata = 2 * radius + 1;
-  
+
   for (let k = 0; k < 3; k++) {
     for (let i = 0; i < canvas.width; i++) {
       for (let j = 0; j < canvas.height; j++) {
@@ -234,7 +270,7 @@ function applyMedianFilter(radius) {
             if (areInCanvas(l, m)) array.push(curImageData.data[getIndexOfRedInData(l, m) + k]);
           }
         }
-          
+
         array.sort((a, b) => a - b);
 
         let mediam = array[Math.floor(array.length/2)];
@@ -244,4 +280,3 @@ function applyMedianFilter(radius) {
   }
   context.putImageData(resultImageData, 0, 0);
 }
-

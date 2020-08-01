@@ -166,6 +166,7 @@ changeCanvasWidth.oninput = function () {
     allCanvases.forEach((canvas) => {
       canvas.style.width = width + 'px';
     });
+    clearAllLayers();
     document.getElementById("curWidth").innerHTML = width + "";
   } else {
     canvas.setAttribute('width', defaultWidth + 'px');
@@ -178,14 +179,12 @@ changeCanvasWidth.oninput = function () {
 changeCanvasHeight.oninput = function () {
   let height = document.getElementById("changeCanvasHeight").value;
   if (height && height >= 50 && height <= 1000) {
-
     allCanvases.forEach((canvas) => {
       canvas.style.height = height + 'px';
     });
-
+    clearAllLayers();
     document.getElementById("curHeight").innerHTML = height + "";
   } else {
-    canvas.setAttribute('height', defaultHeight + 'px');
     canvas.style.height = defaultHeight + 'px';
     document.getElementById("curHeight").innerHTML = defaultHeight + "";
   }
@@ -194,7 +193,7 @@ changeCanvasHeight.oninput = function () {
 
 borderWidth.oninput = function () {
   let width = document.getElementById("borderWidth").value;
-  if (width && width >= 1 && width <= 30) {
+  if (width && width >= 0 && width <= 30) {
     backCanvas.style.borderWidth = width + 'px';
   } else {
     canvas.style.borderWidth = 1 + 'px';

@@ -484,6 +484,9 @@ function deleteRectangleBrush() {
   canvas.removeEventListener("mouseleave", endPoint);
   canvas.removeEventListener("mouseenter", returnPoint);
   toolSizeRange.max = 300;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
+  curToolSize = 5;
 }
 
 function startPointRectangleBrush(e) {

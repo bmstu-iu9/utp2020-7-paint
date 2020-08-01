@@ -84,6 +84,7 @@ function deleteNeonBrush() {
   document.removeEventListener("mousemove", drawNeonBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.shadowBlur = 0;
 }
 
@@ -141,6 +142,7 @@ function deleteSmoothBrush() {
   document.removeEventListener("mousemove", drawSmoothBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
 }
 
@@ -210,7 +212,7 @@ let pointsCounter, prevPoints;
 function initSketchBrush() {
   curToolSize = 1;
   toolSizeRange.value = 1;
-  toolSizeText.value = `1px`;
+  toolSizeText.value = '1px';
   toolSizeRange.max = 5;
   canvas.addEventListener("mousedown", startPointSketchBrush);
 }
@@ -220,10 +222,10 @@ function deleteSketchBrush() {
   document.removeEventListener("mousemove", drawSketchBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
   toolSizeRange.max = 300;
 }
-
 
 function startPointSketchBrush(e) {
   e.preventDefault();
@@ -265,7 +267,7 @@ function drawSketchBrush(e) {
     curY -= deltaY;
   }
 
-  pointsCounter = pointsCounter + 1;
+  pointsCounter++;
 
   if (pointsCounter == 10) pointsCounter = 0;
 
@@ -287,6 +289,338 @@ function drawSketchBrush(e) {
   oldY = curY;
 
   prevPoints[pointsCounter] = [curX, curY];
+
+  changePreview();
+}
+
+
+function initPatternBrush() {
+  curToolSize = 1;
+  toolSizeRange.value = 1;
+  toolSizeText.value = '1px';
+  toolSizeRange.max = 5;
+  canvas.addEventListener("mousedown", startPointPatternBrush);
+}
+
+function deletePatternBrush() {
+  canvas.removeEventListener("mousedown", startPointPatternBrush);
+  document.removeEventListener("mousemove", drawPatternBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", endPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
+  context.globalAlpha = "1";
+  toolSizeRange.max = 300;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
+  curToolSize = 5;
+}
+
+function startPointPatternBrush(e) {
+  e.preventDefault();
+  isDrawing = true;
+  isOnCanvas = true;
+  if (!isReplaying) rememberDrawingTool("PatternBrush");
+
+  context.lineWidth = curToolSize;
+  context.globalAlpha = "0.1";
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
+
+  context.strokeStyle = arrayToRgb(curColor);
+
+  prevPoints = new Array();
+  pointsCounter = 0;
+
+  drawPatternBrush(e);
+
+  document.addEventListener("mousemove", drawPatternBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
+}
+
+function drawPatternBrush(e) {
+  let dx, dy, d;
+
+  if (!isDrawing) return;
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  prevPoints[pointsCounter] = [curX, curY];
+
+  context.beginPath();
+  context.moveTo(oldX, oldY);
+  context.lineTo(curX, curY);
+  context.stroke();
+
+  for (let i = 0; i < prevPoints.length; i++) {
+    dx = prevPoints[i][0] - prevPoints[pointsCounter][0];
+    dy = prevPoints[i][1] - prevPoints[pointsCounter][1];
+    d = Math.pow(dx, 2) + Math.pow(dy, 2);
+
+    if (d < 1000) {
+      context.beginPath();
+      context.moveTo(prevPoints[pointsCounter][0] + (dx * 0.2), prevPoints[pointsCounter][1] + (dy * 0.2));
+      context.lineTo(prevPoints[i][0] - (dx * 0.2), prevPoints[i][1] - (dy * 0.2));
+      context.stroke();
+    }
+  }
+
+  oldX = curX;
+  oldY = curY;
+
+  pointsCounter++;
+
+  changePreview();
+}
+
+
+function initFurBrush() {
+  curToolSize = 1;
+  toolSizeRange.value = 1;
+  toolSizeText.value = '1px';
+  toolSizeRange.max = 5;
+  canvas.addEventListener("mousedown", startPointFurBrush);
+}
+
+function deleteFurBrush() {
+  canvas.removeEventListener("mousedown", startPointFurBrush);
+  document.removeEventListener("mousemove", drawFurBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", endPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
+  context.globalAlpha = "1";
+  toolSizeRange.max = 300;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
+  curToolSize = 5;
+}
+
+function startPointFurBrush(e) {
+  e.preventDefault();
+  isDrawing = true;
+  isOnCanvas = true;
+  if (!isReplaying) rememberDrawingTool("FurBrush");
+
+  context.lineWidth = curToolSize;
+  context.globalAlpha = "0.1";
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
+
+  context.strokeStyle = arrayToRgb(curColor);
+
+  prevPoints = new Array();
+  pointsCounter = 0;
+
+  drawFurBrush(e);
+
+  document.addEventListener("mousemove", drawFurBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
+}
+
+function drawFurBrush(e) {
+  let dx, dy, d;
+
+  if (!isDrawing) return;
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  prevPoints[pointsCounter] = [curX, curY];
+
+  context.beginPath();
+  context.moveTo(oldX, oldY);
+  context.lineTo(curX, curY);
+  context.stroke();
+
+  for (let i = 0; i < prevPoints.length; i++) {
+    dx = prevPoints[i][0] - prevPoints[pointsCounter][0];
+    dy = prevPoints[i][1] - prevPoints[pointsCounter][1];
+    d = Math.pow(dx, 2) + Math.pow(dy, 2);
+
+    if (d < 4000) {
+      context.beginPath();
+      context.moveTo(curX + (dx * 0.3), curY + (dy * 0.3));
+      context.lineTo(curX - (dx * 0.3), curY - (dy * 0.3));
+      context.stroke();
+    }
+  }
+
+  oldX = curX;
+  oldY = curY;
+
+  pointsCounter++;
+
+  changePreview();
+}
+
+
+function initRectangleBrush() {
+  curToolSize = 1;
+  toolSizeRange.value = 1;
+  toolSizeText.value = '1px';
+  toolSizeRange.max = 5;
+  canvas.addEventListener("mousedown", startPointRectangleBrush);
+}
+
+function deleteRectangleBrush() {
+  canvas.removeEventListener("mousedown", startPointRectangleBrush);
+  document.removeEventListener("mousemove", drawRectangleBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", endPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
+  toolSizeRange.max = 300;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
+  curToolSize = 5;
+}
+
+function startPointRectangleBrush(e) {
+  e.preventDefault();
+  isDrawing = true;
+  isOnCanvas = true;
+  if (!isReplaying) rememberDrawingTool("RectangleBrush");
+
+  context.lineWidth = curToolSize;
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
+
+  context.strokeStyle = arrayToRgb(curColor);
+
+  drawRectangleBrush(e);
+
+  document.addEventListener("mousemove", drawRectangleBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
+}
+
+function drawRectangleBrush(e) {
+  let dx, dy, nx, ny, angle;
+
+  if (!isDrawing) return;
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  dx = curX - oldX;
+  dy = curY - oldY;
+  angle = 1.5;
+  nx = Math.cos(angle) * dx - Math.sin(angle) * dy;
+  ny = Math.sin(angle) * dx + Math.cos(angle) * dy;
+
+  context.beginPath();
+  context.moveTo(oldX - nx, oldY - ny);
+  context.lineTo(oldX + nx, oldY + ny);
+  context.lineTo(curX + nx, curY + ny);
+  context.lineTo(curX - nx, curY - ny);
+  context.lineTo(oldX - nx, oldY - ny);
+  context.stroke();
+
+  oldX = curX;
+  oldY = curY;
+
+  changePreview();
+}
+
+
+function initCircleBrush() {
+  curToolSize = 1;
+  toolSizeRange.value = 1;
+  toolSizeText.value = '1px';
+  toolSizeRange.max = 5;
+  canvas.addEventListener("mousedown", startPointCircleBrush);
+}
+
+function deleteCircleBrush() {
+  canvas.removeEventListener("mousedown", startPointCircleBrush);
+  document.removeEventListener("mousemove", drawCircleBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
+  toolSizeRange.max = 300;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
+  curToolSize = 5;
+}
+
+function startPointCircleBrush(e) {
+  e.preventDefault();
+  isDrawing = true;
+  isOnCanvas = true;
+  if (!isReplaying) rememberDrawingTool("CircleBrush");
+
+  context.lineWidth = curToolSize;
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
+
+  context.strokeStyle = arrayToRgb(curColor);
+
+  drawCircleBrush(e);
+
+  document.addEventListener("mousemove", drawCircleBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
+}
+
+function drawCircleBrush(e) {
+  let dx, dy, d;
+
+  if (!isDrawing) return;
+  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
+
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  dx = curX - oldX;
+  dy = curY - oldY;
+  d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+  context.beginPath();
+  context.arc(curX, curY, d, 0, Math.PI * 2, true);
+  context.stroke();
+
+  oldX = curX;
+  oldY = curY;
 
   changePreview();
 }

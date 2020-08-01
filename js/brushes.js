@@ -83,6 +83,7 @@ function deleteNeonBrush() {
   document.removeEventListener("mousemove", drawNeonBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.shadowBlur = 0;
 }
 
@@ -139,6 +140,7 @@ function deleteSmoothBrush() {
   document.removeEventListener("mousemove", drawSmoothBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
 }
 
@@ -217,6 +219,7 @@ function deleteSketchBrush() {
   document.removeEventListener("mousemove", drawSketchBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
   toolSizeRange.max = 300;
 }
@@ -255,7 +258,7 @@ function drawSketchBrush(e) {
 
   curX = e.offsetX;
   curY = e.offsetY;
-  
+
   if (!isOnCanvas) {
     curX -= deltaX;
     curY -= deltaY;
@@ -298,15 +301,18 @@ function initPatternBrush() {
 
 function deletePatternBrush() {
   canvas.removeEventListener("mousedown", startPointPatternBrush);
-  canvas.removeEventListener("mousemove", drawPatternBrush);
-  canvas.removeEventListener("mouseup", endPoint);
+  document.removeEventListener("mousemove", drawPatternBrush);
+  document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
   toolSizeRange.max = 300;
 }
 
 function startPointPatternBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("PatternBrush");
 
   context.lineWidth = curToolSize;
@@ -314,6 +320,8 @@ function startPointPatternBrush(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   context.strokeStyle = arrayToRgb(curColor);
 
@@ -322,9 +330,10 @@ function startPointPatternBrush(e) {
 
   drawPatternBrush(e);
 
-  canvas.addEventListener("mousemove", drawPatternBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawPatternBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawPatternBrush(e) {
@@ -333,11 +342,19 @@ function drawPatternBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  prevPoints[pointsCounter] = [curX, curY];
 
   context.beginPath();
   context.moveTo(oldX, oldY);
-  context.lineTo(e.offsetX, e.offsetY);
+  context.lineTo(curX, curY);
   context.stroke();
 
   for (let i = 0; i < prevPoints.length; i++) {
@@ -353,8 +370,8 @@ function drawPatternBrush(e) {
     }
   }
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
+  oldX = curX;
+  oldY = curY;
 
   pointsCounter = pointsCounter + 1;
 
@@ -372,15 +389,18 @@ function initFurBrush() {
 
 function deleteFurBrush() {
   canvas.removeEventListener("mousedown", startPointFurBrush);
-  canvas.removeEventListener("mousemove", drawFurBrush);
-  canvas.removeEventListener("mouseup", endPoint);
+  document.removeEventListener("mousemove", drawFurBrush);
+  document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
   toolSizeRange.max = 300;
 }
 
 function startPointFurBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("FurBrush");
 
   context.lineWidth = curToolSize;
@@ -388,6 +408,8 @@ function startPointFurBrush(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   context.strokeStyle = arrayToRgb(curColor);
 
@@ -396,9 +418,10 @@ function startPointFurBrush(e) {
 
   drawFurBrush(e);
 
-  canvas.addEventListener("mousemove", drawFurBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawFurBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawFurBrush(e) {
@@ -407,11 +430,19 @@ function drawFurBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  prevPoints[pointsCounter] = [curX, curY];
 
   context.beginPath();
   context.moveTo(oldX, oldY);
-  context.lineTo(e.offsetX, e.offsetY);
+  context.lineTo(curX, curY);
   context.stroke();
 
   for (let i = 0; i < prevPoints.length; i++) {
@@ -421,14 +452,14 @@ function drawFurBrush(e) {
 
     if (d < 4000) {
       context.beginPath();
-      context.moveTo(e.offsetX + (dx * 0.3), e.offsetY + (dy * 0.3));
-      context.lineTo(e.offsetX - (dx * 0.3), e.offsetY - (dy * 0.3));
+      context.moveTo(curX + (dx * 0.3), curY + (dy * 0.3));
+      context.lineTo(curX - (dx * 0.3), curY - (dy * 0.3));
       context.stroke();
     }
   }
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
+  oldX = curX;
+  oldY = curY;
 
   pointsCounter = pointsCounter + 1;
 
@@ -446,28 +477,34 @@ function initRectangleBrush() {
 
 function deleteRectangleBrush() {
   canvas.removeEventListener("mousedown", startPointRectangleBrush);
-  canvas.removeEventListener("mousemove", drawRectangleBrush);
-  canvas.removeEventListener("mouseup", endPoint);
+  document.removeEventListener("mousemove", drawRectangleBrush);
+  document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", endPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   toolSizeRange.max = 300;
 }
 
 function startPointRectangleBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("RectangleBrush");
 
   context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   context.strokeStyle = arrayToRgb(curColor);
 
   drawRectangleBrush(e);
 
-  canvas.addEventListener("mousemove", drawRectangleBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawRectangleBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawRectangleBrush(e) {
@@ -476,8 +513,16 @@ function drawRectangleBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  dx = e.offsetX - oldX;
-  dy = e.offsetY - oldY;
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  dx = curX - oldX;
+  dy = curY - oldY;
   angle = 1.5;
   nx = Math.cos(angle) * dx - Math.sin(angle) * dy;
   ny = Math.sin(angle) * dx + Math.cos(angle) * dy;
@@ -485,13 +530,13 @@ function drawRectangleBrush(e) {
   context.beginPath();
   context.moveTo(oldX - nx, oldY - ny);
   context.lineTo(oldX + nx, oldY + ny);
-  context.lineTo(e.offsetX + nx, e.offsetY + ny);
-  context.lineTo(e.offsetX - nx, e.offsetY - ny);
+  context.lineTo(curX + nx, curY + ny);
+  context.lineTo(curX - nx, curY - ny);
   context.lineTo(oldX - nx, oldY - ny);
   context.stroke();
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
+  oldX = curX;
+  oldY = curY;
 
   changePreview();
 }
@@ -507,28 +552,34 @@ function initCircleBrush() {
 
 function deleteCircleBrush() {
   canvas.removeEventListener("mousedown", startPointCircleBrush);
-  canvas.removeEventListener("mousemove", drawCircleBrush);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawCircleBrush);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   toolSizeRange.max = 300;
 }
 
 function startPointCircleBrush(e) {
+  e.preventDefault();
   isDrawing = true;
+  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("CircleBrush");
 
   context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   context.strokeStyle = arrayToRgb(curColor);
 
   drawCircleBrush(e);
 
-  canvas.addEventListener("mousemove", drawCircleBrush);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawCircleBrush);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawCircleBrush(e) {
@@ -537,16 +588,24 @@ function drawCircleBrush(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  dx = e.offsetX - oldX;
-  dy = e.offsetY - oldY;
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  dx = curX - oldX;
+  dy = curY - oldY;
   d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
   context.beginPath();
-  context.arc(e.offsetX, e.offsetY, d, 0, Math.PI * 2, true);
+  context.arc(curX, curY, d, 0, Math.PI * 2, true);
   context.stroke();
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
+  oldX = curX;
+  oldY = curY;
 
   changePreview();
 }

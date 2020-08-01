@@ -94,7 +94,14 @@ function drawUploaded(e) {
 let downloadBtn = document.getElementById("download");
 
 downloadBtn.addEventListener('click', () => {
-  let img = canvas.toDataURL("image/png")
+  let resultCanvas = document.createElement('canvas');
+  resultCanvas.width = canvas.width;
+  resultCanvas.height = canvas.height;
+  let resultContext = resultCanvas.getContext("2d");
+  for (let i = layersField.children.length - 2; i >= 1; i--) {
+    resultContext.drawImage(document.getElementById("layer" + parseLayerId(layersField.children[i].id)), 0, 0);
+  }
+  let img = resultCanvas.toDataURL("image/png")
     .replace("image/png", "image/octet-stream");
   downloadBtn.setAttribute("href", img);
 });

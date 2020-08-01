@@ -73,22 +73,26 @@ function applySimpleFilter(filterName) {
   }
 }
 
-let isClicked = true;
+let isClickedContrast = true;
 
 contrast.value = 1;
 let contrastRange = document.getElementById("contrast");
 
 contrastRange.oninput = () => {
-  if (isClicked) saveImg();
-  isClicked = false;
+  if (isClickedContrast) saveImg();
+  isClickedContrast = false;
   context.drawImage(memCanvas, 0, 0);
   applyContrastFilter(contrast.value);
 }
 
 contrastRange.onchange = () => {
-  isClicked = true;
+  isClickedContrast = true;
   contrast.value = 1;
   changePreview();
+}
+
+contrastRange.onmouseup = () => {
+  isClickedContrast = true;
 }
 
 function applyContrastFilter(contrastCoef) {
@@ -150,8 +154,12 @@ brightnessRange.oninput = () => {
 
 brightnessRange.onchange = () => {
   isClickedBrightness = true;
-  brightness.value = 1;
+  brightness.value = 0;
   changePreview();
+}
+
+brightnessRange.onmouseup = () => {
+  isClickedBrightness = true;
 }
 
 function applyBrightnessFilter(brightnessCoef) {
@@ -189,6 +197,10 @@ blurRange.onchange = () => {
   isClickedBlur = true;
   blurRange.value = 0;
   changePreview();
+}
+
+blurRange.onmouseup = () => {
+  isClickedBlur = true;
 }
 
 function applyConvolutionMatrixFilter(weights, coeff) {

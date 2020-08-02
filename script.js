@@ -390,7 +390,7 @@ document.getElementById("toolSettings").addEventListener('click', (event) => {
 });
 
 document.getElementById("openLayersBtn").addEventListener('click', (event) => {
-  document.getElementById("layersField").classList.toggle("layersFieldActive");
+  document.getElementById("layersField").classList.toggle("layersFieldClosed");
 });
 
 function getIndexOfRedInData(x, y) {

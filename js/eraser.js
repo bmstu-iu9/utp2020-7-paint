@@ -61,6 +61,8 @@ function drawEraser(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
+  context.globalCompositeOperation = "destination-out";
+  
   curX = e.offsetX;
   curY = e.offsetY;
 
@@ -84,5 +86,6 @@ function drawEraser(e) {
   eraserParameters.oldX = curX;
   eraserParameters.oldY = curY;
 
+  context.globalCompositeOperation = "source-over";
   changePreview();
 }

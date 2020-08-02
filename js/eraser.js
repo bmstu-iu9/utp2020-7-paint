@@ -17,15 +17,12 @@ function deleteEraser() {
   canvas.removeEventListener("mousedown", startPointEraser);
   document.removeEventListener("mousemove", drawEraser);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalCompositeOperation = "source-over";
 }
 
 function startPointEraser(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Eraser");
 
   eraserParameters.oldX = e.offsetX;
@@ -48,21 +45,14 @@ function startPointEraser(e) {
 
   document.addEventListener("mousemove", drawEraser);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawEraser(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   eraserParameters.distance = Math.sqrt(Math.pow(curX - eraserParameters.oldX, 2) + Math.pow(curY - eraserParameters.oldY, 2));
   eraserParameters.angle = Math.atan2(curX - eraserParameters.oldX, curY - eraserParameters.oldY);

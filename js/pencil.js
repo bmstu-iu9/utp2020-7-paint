@@ -1,6 +1,5 @@
 'use strict';
 
-let isOnCanvas = false;
 let curX, curY, deltaX, deltaY;
 
 let pencilParameters = {
@@ -17,14 +16,6 @@ function endPoint() {
   context.beginPath();
 }
 
-function exitPoint() {
-  isOnCanvas = false;
-}
-
-function returnPoint() {
-  isOnCanvas = true;
-}
-
 function initPencil() {
   canvas.addEventListener("mousedown", startPointPencil);
 }
@@ -33,14 +24,11 @@ function deletePencil() {
   canvas.removeEventListener("mousedown", startPointPencil);
   document.removeEventListener("mousemove", drawPencil);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointPencil(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Pencil");
 
 
@@ -55,21 +43,14 @@ function startPointPencil(e) {
 
   document.addEventListener("mousemove", drawPencil);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawPencil(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   pencilParameters.newX = e.curX;
   pencilParameters.newY = e.curY;

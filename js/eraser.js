@@ -62,7 +62,7 @@ function drawEraser(e) {
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   context.globalCompositeOperation = "destination-out";
-  
+
   curX = e.offsetX;
   curY = e.offsetY;
 

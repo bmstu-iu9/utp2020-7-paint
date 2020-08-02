@@ -101,7 +101,7 @@ class Layer {
       this.preview = document.getElementById('preview0');
 
       this.canvas = document.getElementById('layer0');
-      
+
       this.index = 50;
       this.canvas.style.zIndex = this.index;
 
@@ -115,7 +115,8 @@ class Layer {
 
       layers.push(this);
       allCanvases.push(this.canvas);
-      photoOfState.push([this.canvas.toDataURL()]);
+      photoOfState.layers.set(0, []);
+      ++photoOfState.length;
       return this;
     }
 
@@ -138,10 +139,6 @@ class Layer {
     context = canvas.getContext('2d');
     activeInstrument && activeInstrument.init();
     activeLayer = this;
-    let imgOfCanvas = canvas.toDataURL();
-    if (photoOfState[0].length == 2) {
-      photoOfState.push([imgOfCanvas, imgOfCanvas]);
-    } else photoOfState.push([imgOfCanvas]);
 
 
     this.preview = this.display.children['preview' + this.id];
@@ -167,6 +164,7 @@ class Layer {
 
     allCanvases.push(this.canvas);
     layers.push(this);
+    photoOfState.layers.set(this.id, []);
   }
 }
 

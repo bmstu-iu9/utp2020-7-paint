@@ -18,7 +18,6 @@ function startPointRectangle(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("Rectangle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -42,7 +41,6 @@ function startPointRectangle(e) {
 
 function drawRectangle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -82,7 +80,6 @@ function startPointCircle(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("Circle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -106,7 +103,6 @@ function startPointCircle(e) {
 
 function drawCircle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -147,7 +143,6 @@ function startPointEllipse(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("Ellipse", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -171,7 +166,6 @@ function startPointEllipse(e) {
 
 function drawEllipse(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -213,7 +207,6 @@ function startPointEqTriangle(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("EqTriangle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -237,7 +230,6 @@ function startPointEqTriangle(e) {
 
 function drawEqTriangle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -279,7 +271,6 @@ function startPointRightTriangle(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("RightTriangle", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -303,7 +294,6 @@ function startPointRightTriangle(e) {
 
 function drawRightTriangle(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   curX = e.offsetX;
   curY = e.offsetY;

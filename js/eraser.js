@@ -26,13 +26,13 @@ function startPointEraser(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("Eraser");
 
   eraserParameters.oldX = e.offsetX;
   eraserParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;
   deltaY = e.pageY - e.offsetY;
 
+  context.save();
   context.globalCompositeOperation = "destination-out";
   context.lineWidth = 0.1;
   context.fillStyle = arrayToRgb(curColor);
@@ -54,7 +54,6 @@ function startPointEraser(e) {
 
 function drawEraser(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;

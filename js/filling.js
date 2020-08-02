@@ -14,8 +14,6 @@ function fill(event) {
   let originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   let resultImageData = originalImageData;
 
-  if (!isReplaying) rememberFilling(event.offsetX, event.offsetY);
-
   let startRGBA = [
     originalImageData.data[getIndexOfRedInData(event.offsetX, event.offsetY)],
     originalImageData.data[getIndexOfGreenInData(event.offsetX, event.offsetY)],
@@ -53,9 +51,10 @@ function fill(event) {
   }
 
   context.putImageData(resultImageData, 0, 0);
-  
+
   changePreview();
-  
+  rememberState(); 
+
   function haveSameColor(x, y) {
     let thisRGBA = [
       originalImageData.data[getIndexOfRedInData(x, y)],

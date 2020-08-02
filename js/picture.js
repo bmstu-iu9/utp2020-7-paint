@@ -15,11 +15,11 @@ function insertImg(img) {
       let dWidth = photoResizer.offsetWidth, dHeight = photoResizer.offsetHeight;
 
       photoResizer.hidden = true;
-      rememberImage(img, dx, dy, dWidth, dHeight);
       context.drawImage(img, 0, 0, img.width, img.height, dx, dy, dWidth, dHeight);
       document.removeEventListener('keydown', pressForInsertion);
-      
+
       changePreview();
+      rememberState(); 
     }
   }
 

@@ -19,13 +19,13 @@ function startPointBasicBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("BasicBrush");
 
   oldX = e.offsetX;
   oldY = e.offsetY;
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
+  context.save();
   context.lineWidth = 0.1;
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
@@ -46,7 +46,6 @@ function startPointBasicBrush(e) {
 
 function drawBasicBrush(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -92,8 +91,8 @@ function startPointNeonBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("NeonBrush");
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -114,7 +113,6 @@ function startPointNeonBrush(e) {
 
 function drawNeonBrush(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -150,13 +148,13 @@ function startPointSmoothBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("SmoothBrush");
 
   oldX = e.offsetX;
   oldY = e.offsetY;
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
+  context.save();
   context.lineWidth = 0.1;
   context.globalAlpha = "0.01";
   context.fillStyle = arrayToRgb(curColor);
@@ -178,7 +176,6 @@ function startPointSmoothBrush(e) {
 
 function drawSmoothBrush(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -231,7 +228,6 @@ function startPointSketchBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("SketchBrush");
 
   context.lineWidth = curToolSize;
 
@@ -240,6 +236,7 @@ function startPointSketchBrush(e) {
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
+  context.save();
   context.strokeStyle = arrayToRgb(curColor);
   context.globalAlpha = "0.1";
 
@@ -257,7 +254,6 @@ function startPointSketchBrush(e) {
 
 function drawSketchBrush(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -319,8 +315,8 @@ function startPointPatternBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("PatternBrush");
 
+  context.save();
   context.lineWidth = curToolSize;
   context.globalAlpha = "0.1";
 
@@ -346,7 +342,6 @@ function drawPatternBrush(e) {
   let dx, dy, d;
 
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -410,8 +405,8 @@ function startPointFurBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("FurBrush");
 
+  context.save();
   context.lineWidth = curToolSize;
   context.globalAlpha = "0.1";
 
@@ -437,7 +432,6 @@ function drawFurBrush(e) {
   let dx, dy, d;
 
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -500,8 +494,8 @@ function startPointRectangleBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("RectangleBrush");
 
+  context.save();
   context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
@@ -523,7 +517,6 @@ function drawRectangleBrush(e) {
   let dx, dy, nx, ny, angle;
 
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;
@@ -578,8 +571,8 @@ function startPointCircleBrush(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("CircleBrush");
 
+  context.save();
   context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
@@ -601,7 +594,6 @@ function drawCircleBrush(e) {
   let dx, dy, d;
 
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;

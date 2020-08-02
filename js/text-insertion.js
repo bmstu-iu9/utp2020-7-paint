@@ -75,6 +75,7 @@ function writeText(x, y) {
 
 function stopInsertion() {
   isDrawing = false;
+  rememberState();
   document.getElementById('text').click();
 }
 
@@ -82,7 +83,6 @@ function startPointText(e) {
   isDrawing = true;
   textMenu.hidden = true;
   pastedText.hidden = true;
-  if (!isReplaying) rememberText();
 
   drawTextInsertion(e);
 
@@ -93,7 +93,6 @@ function startPointText(e) {
 
 function drawTextInsertion(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords = [e.offsetX, e.offsetY];
 
   writeText(e.offsetX,  e.offsetY);
 }

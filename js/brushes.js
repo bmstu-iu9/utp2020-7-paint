@@ -4,6 +4,7 @@ let isDrawing = false;
 let oldX, oldY, newX, newY, distance, angle;
 
 function initBasicBrush() {
+  canvas.addEventListener('mousemove', setCursor);
   canvas.addEventListener("mousedown", startPointBasicBrush);
 }
 
@@ -483,6 +484,7 @@ function drawFurBrush(e) {
 
 
 function initRectangleBrush() {
+  canvas.style.cursor = "url('img/cursors/rectangle-cursor.png') 7 7, auto";
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
@@ -491,6 +493,7 @@ function initRectangleBrush() {
 }
 
 function deleteRectangleBrush() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointRectangleBrush);
   document.removeEventListener("mousemove", drawRectangleBrush);
   document.removeEventListener("mouseup", endPoint);
@@ -561,6 +564,7 @@ function drawRectangleBrush(e) {
 
 
 function initCircleBrush() {
+  canvas.style.cursor = "url('img/cursors/circle-cursor.png') 7 7, auto";
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
@@ -569,6 +573,7 @@ function initCircleBrush() {
 }
 
 function deleteCircleBrush() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointCircleBrush);
   document.removeEventListener("mousemove", drawCircleBrush);
   document.removeEventListener("mouseup", endPoint);

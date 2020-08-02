@@ -22,6 +22,17 @@ embossFilterButton.onclick = () => {
   changePreview();
 }
 
+let blurFilterButton = document.getElementById("blur");
+blurFilterButton.onclick = () => {
+  applyConvolutionMatrixFilter(
+    [1/256, 4/256, 6/256, 4/256, 1/256,
+    4/256, 16/256, 24/256, 16/256, 4/256,
+    6/256, 24/256, 36/256, 24/256, 6/256,
+    4/256, 16/256, 24/256, 16/256, 4/256,
+    1/256, 4/256, 6/256, 4/256, 1/256], 1);
+  changePreview();
+}
+
 function applySimpleFilter(filterName) {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   for (let i = 0; i < canvas.width; i++) {
@@ -181,28 +192,6 @@ function applyBrightnessFilter(brightnessCoef) {
   changePreview();
 }
 
-let isClickedBlur = true;
-blur.value = 0;
-let blurRange = document.getElementById("blur");
-
-blurRange.oninput = () => {
-  if (isClickedBlur) saveImg();
-  isClickedBlur = false;
-  context.drawImage(memCanvas, 0, 0);
-  applyConvolutionMatrixFilter([1/16, 1/8, 1/16, 1/8, 1/4, 1/8, 1/16, 1/8, 1/16], blurRange.value);
-  changePreview();
-}
-
-blurRange.onchange = () => {
-  isClickedBlur = true;
-  blurRange.value = 0;
-  changePreview();
-}
-
-blurRange.onmouseup = () => {
-  isClickedBlur = true;
-}
-
 function applyConvolutionMatrixFilter(weights, coeff) {
   let width = canvas.width;
   let height = canvas.height;
@@ -283,7 +272,7 @@ function applyVerticalReflection() {
 }
 
 let medianFilterButton = document.getElementById("median");
-medianFilterButton.onclick = () => { applyMedianFilter(2); }
+medianFilterButton.onclick = () => { applyMedianFilter(1); }
 
 function applyMedianFilter(radius) {
   let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);

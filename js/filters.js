@@ -192,6 +192,33 @@ function applyBrightnessFilter(brightnessCoef) {
   changePreview();
 }
 
+let isClickedSharp = true;
+sharp.value = 0;
+let sharpRange = document.getElementById("sharp");
+
+sharpRange.oninput = () => {
+  if (isClickedSharp) saveImg();
+  isClickedSharp = false;
+  context.drawImage(memCanvas, 0, 0);
+  applyConvolutionMatrixFilter(
+    [-1/256, -4/256, -6/256, -4/256, -1/256,
+    -4/256, -16/256, -24/256, -16/256, -4/256,
+    -6/256, -24/256, 476/256, -24/256, -6/256,
+    -4/256, -16/256, -24/256, -16/256, -4/256,
+    -1/256, -4/256, -6/256, -4/256, -1/256], sharpRange.value);
+  changePreview();
+}
+
+sharpRange.onchange = () => {
+  isClickedSharp = true;
+  sharpRange.value = 0;
+  changePreview();
+}
+
+sharpRange.onmouseup = () => {
+  isClickedSharp = true;
+}
+
 function applyConvolutionMatrixFilter(weights, coeff) {
   let width = canvas.width;
   let height = canvas.height;

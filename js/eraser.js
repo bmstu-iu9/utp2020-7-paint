@@ -10,16 +10,21 @@ let eraserParameters = {
 };
 
 function initEraser() {
+  canvas.style.cursor = "url('img/cursors/eraser_cursor.png') 0 25, auto";
+
   canvas.addEventListener("mousedown", startPointEraser);
 }
 
 function deleteEraser() {
+  canvas.style.cursor = 'default';
+
+  context.globalCompositeOperation = "source-over";
+
   canvas.removeEventListener("mousedown", startPointEraser);
   document.removeEventListener("mousemove", drawEraser);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
   canvas.removeEventListener("mouseenter", returnPoint);
-  context.globalCompositeOperation = "source-over";
 }
 
 function startPointEraser(e) {

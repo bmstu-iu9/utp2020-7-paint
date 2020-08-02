@@ -132,7 +132,7 @@ body {
   background: repeat url("img/background.png");
 }
 
-.layersFieldClosed {
+.layersFieldActive {
   position: fixed;
   box-sizing: border-box;
   top: 50px;
@@ -142,11 +142,11 @@ body {
   background: #eeeeee;
   border-left: 1px solid #cccccc;
   transition: 0.5s;
-  transform: translateX(100%);
+  transform: translateX(0%);
 }
 
-.layersFieldActive {
-  transform: translateX(0%);
+.layersFieldClosed {
+  transform: translateX(100%);
 }
 
 #openLayersBtn {

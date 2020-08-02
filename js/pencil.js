@@ -26,10 +26,14 @@ function returnPoint() {
 }
 
 function initPencil() {
+  canvas.style.cursor = "url('img/cursors/pencil_cursor.png') 0 25, auto";
+
   canvas.addEventListener("mousedown", startPointPencil);
 }
 
 function deletePencil() {
+  canvas.style.cursor = 'default';
+
   canvas.removeEventListener("mousedown", startPointPencil);
   document.removeEventListener("mousemove", drawPencil);
   document.removeEventListener("mouseup", endPoint);

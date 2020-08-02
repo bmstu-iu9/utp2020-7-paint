@@ -16,6 +16,9 @@ binarizationFilterButton.onclick = () => { applySimpleFilter("binarization"); }
 let coloredFilterButton = document.getElementById("colored");
 coloredFilterButton.onclick = () => { applySimpleFilter("colored"); }
 
+let sobelFilterButton = document.getElementById("sobel");
+sobelFilterButton.onclick = applySobelFilter;
+
 let embossFilterButton = document.getElementById("emboss");
 embossFilterButton.onclick = () => {
   applyConvolutionMatrixFilter([-2, -1, 0, -1, 1, 1, 0, 1, 2], 1);
@@ -217,6 +220,61 @@ sharpRange.onchange = () => {
 
 sharpRange.onmouseup = () => {
   isClickedSharp = true;
+}
+
+function applySobelFilter() {
+  applySimpleFilter("grey-scale");
+  let srcBuff = context.getImageData(0, 0, canvas.width, canvas.height).data;
+  let horizontal = convolute([-1, -2, -1, 0, 0, 0, 1, 2 , 1], srcBuff);
+  let vertical = convolute([-1, 0, 1, -2, 0, 2, -1, 0 , 1], srcBuff);
+  let finalImg = context.createImageData(canvas.width, canvas.height);
+  for (let i = 0; i < finalImg.data.length; i += 4) {
+     let v = Math.abs(vertical.data[i]);
+     resImage.data[i] = v;
+     let h = Math.abs(horizontal.data[i]);
+     finalImg.data[i+1] = h;
+     finalImg.data[i+2] = (v + h)/4;
+     finalImg.data[i+3] = 255;
+   }
+   context.putImageData(finalImg, 0, 0);
+}
+
+function convolute(weights, srcBuff) {
+  let width = canvas.width;
+  let height = canvas.height;
+  let x, sx, sy, red, green, blue, dstOff, srcOff, wt, cx, cy, scy, scx,
+  katet = Math.round(Math.sqrt(weights.length)),
+  half = (katet * 0.5) | 0,
+  dstData = context.createImageData(width, height),
+  dstBuff = dstData.data;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      sy = y;
+      sx = x;
+      dstOff = (y * width + x) * 4;
+      red = 0;
+      green = 0;
+      blue = 0;
+      for (cy = 0; cy < katet; cy++) {
+        for (cx = 0; cx < katet; cx++) {
+          scy = sy + cy - half;
+          scx = sx + cx - half;
+          if (scy > 0 && scy < height && scx > 0 && scx < width) {
+            srcOff = (scy * width + scx) * 4;
+            wt = weights[cy * katet + cx];
+            red += srcBuff[srcOff] * wt;
+            green += srcBuff[srcOff + 1] * wt;
+            blue += srcBuff[srcOff + 2] * wt;
+          }
+        }
+      }
+      dstBuff[dstOff] = red;
+      dstBuff[dstOff + 1] = green;
+      dstBuff[dstOff + 2] = blue;
+      dstBuff[dstOff + 3] = srcBuff[dstOff + 3];
+    }
+  }
+  return dstData;
 }
 
 function applyConvolutionMatrixFilter(weights, coeff) {

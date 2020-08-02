@@ -126,7 +126,21 @@ function clearAllLayers() {
 
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
-  photoOfState.layers.get(activeLayer.id).splice(0, photoOfState.length);
+  let count = 0, k = 0, curId = activeLayer.id;
+  let photo = photoOfState.layers.get(curId);
+  for (let i = 1, last = photo[0]; i < photo.length; i++) {
+    if (photo[i] != last) {
+        photoOfState.layers.forEach((state, id) => {
+          if (id != curId) state.splice(i - k, 1);
+        });
+        ++k;
+        if (i <= curState) ++count;
+    }
+    last = photo[i];
+  }
+  photoOfState.length -= k;
+  curState -= count;
+  photo.splice(0, photo.length);
 });
 
 addEventListener('keydown', (event) => {

@@ -19,16 +19,12 @@ function rememberState() {
 function checkCurLength() {
   let d = photoOfState.length - curState;
   if (d > 1) {
-    photoOfState.layers.forEach((value, key) => {
-      value.splice(curState + 1, d - 1);
-    });
-    photoOfState.length -= (d - 1);
+    photoOfState.layers.forEach(value => value.splice(curState + 1, d - 1));
+    photoOfState.length -= d - 1;
   }
 
   if (photoOfState.length > 20) {
-    photoOfState.layers.forEach((value, key) => {
-      value.shift();
-    });
+    photoOfState.layers.forEach(value => value.shift());
     --curState;
     --photoOfState.length;
   }

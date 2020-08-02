@@ -394,21 +394,21 @@ document.getElementById("openLayersBtn").addEventListener('click', (event) => {
 });
 
 function getIndexOfRedInData(x, y) {
-  return canvas.width * (y - 1) * 4 + x * 4;
+  return canvas.width * y * 4 + x * 4;
 }
 
 function getIndexOfGreenInData(x, y) {
-  return canvas.width * (y - 1) * 4 + x * 4 + 1;
+  return canvas.width * y * 4 + x * 4 + 1;
 }
 
 function getIndexOfBlueInData(x, y) {
-  return canvas.width * (y - 1) * 4 + x * 4 + 2;
+  return canvas.width * y * 4 + x * 4 + 2;
 }
 
 function getIndexOfAlphaInData(x, y) {
-  return canvas.width * (y - 1) * 4 + x * 4 + 3;
+  return canvas.width * y * 4 + x * 4 + 3;
 }
 
 function areInCanvas(x, y) {
-  return (x <= canvas.width - 1 && y <= canvas.height && x >= 0 && y >= 0);
+  return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
 }

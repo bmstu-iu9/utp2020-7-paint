@@ -26,6 +26,7 @@ function stopEyedropper(event) {
   let color = getPixelColor(eventLocation.x, eventLocation.y);
   curColor = color;
   colorInput.value = "#" + rgbToHex(color);
+  document.getElementById("colorBtn").style.background = arrayToRgb(color);
   switchEyedropperWindow();
   eyedropperButton.click();
 }
@@ -56,10 +57,10 @@ function handleEyedropper(event) {
     eyedropperWindow.style.background = 'url(\"img/background.png\")';
   } else eyedropperWindow.style.background = arrayToRgb(color);
 
-  function moveWindow() {
-    eyedropperWindow.style.left = event.pageX + 15 + 'px';
-    eyedropperWindow.style.top = event.pageY - 90 + 'px';
+  function moveWindow(x, y) {
+    eyedropperWindow.style.left = x + 230 + 'px';
+    eyedropperWindow.style.top = y - 20 + 'px';
   }
 
-  moveWindow();
+  moveWindow(eventLocation.x, eventLocation.y);
 }

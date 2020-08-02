@@ -134,10 +134,12 @@ function drawNeonBrush(e) {
 
 
 function initSmoothBrush() {
+  //canvas.style.cursor = "url('img/cursors/spray.png') 0 25, auto";
   canvas.addEventListener("mousedown", startPointSmoothBrush);
 }
 
 function deleteSmoothBrush() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointSmoothBrush);
   document.removeEventListener("mousemove", drawSmoothBrush);
   document.removeEventListener("mouseup", endPoint);
@@ -210,6 +212,7 @@ function drawSmoothBrush(e) {
 let pointsCounter, prevPoints;
 
 function initSketchBrush() {
+  canvas.style.cursor = "url('img/cursors/sketch-cursor.png') 0 25, auto";
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
@@ -218,12 +221,16 @@ function initSketchBrush() {
 }
 
 function deleteSketchBrush() {
+  canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointSketchBrush);
   document.removeEventListener("mousemove", drawSketchBrush);
   document.removeEventListener("mouseup", endPoint);
   canvas.removeEventListener("mouseleave", exitPoint);
   canvas.removeEventListener("mouseenter", returnPoint);
   context.globalAlpha = "1";
+  curToolSize = 5;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
   toolSizeRange.max = 300;
 }
 
@@ -289,7 +296,6 @@ function drawSketchBrush(e) {
   oldY = curY;
 
   prevPoints[pointsCounter] = [curX, curY];
-
   changePreview();
 }
 

@@ -4,16 +4,20 @@ let backCanvas = document.getElementById("backCanvas");
 let canvas = document.getElementById("layer0");
 let context = canvas.getContext("2d");
 
+const defaultWidth = 780;
+const defaultHeight = 400;
+const defaultBorder = 1;
+
 let curColor = [0, 0, 0];
 let curCanvasColor = [255, 255, 255];
+let curCanvasHeight = defaultHeight;
+let curCanvasWidth = defaultWidth;
+let curCanvasBorder = defaultBorder;
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
 let curCords = [];
 let curState = 0;
 let photoOfState = [];
-
-const defaultWidth = 780;
-const defaultHeight = 400;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -163,40 +167,175 @@ addEventListener('keydown', (event) => {
   }
 });
 
+let changeCanvasHeight = document.getElementById("changeCanvasHeight");
+let changeCanvasWidth = document.getElementById("changeCanvasWidth");
+let changeBorderWidth = document.getElementById("borderWidth");
+
+changeCanvasHeight.value = defaultHeight + 'px';
+changeCanvasWidth.value = defaultWidth + 'px';
+changeBorderWidth.value = defaultBorder + 'px';
+
 changeCanvasWidth.oninput = function () {
-  let width = document.getElementById("changeCanvasWidth").value;
-  if (width && width >= 50 && width <= 1400) {
-    canvas.style.width = width + 'px';
-    canvas.setAttribute('width', width + 'px');
-    document.getElementById("curWidth").innerHTML = width + "";
+  addEventListener('keydown', setWidth);
+
+  let width = changeCanvasWidth.value;
+
+  if (checkPxInput(width) &&
+     (parseInt(width) >= changeCanvasWidth.min) &&
+     (parseInt(width) <= changeCanvasWidth.max)) {
+    curCanvasWidth = parseInt(width);
+
+    clearAllLayers();
+
+    changeCanvasWidth.style.background = "#ffffff";
+    allCanvases.forEach((canvas) => {
+      canvas.style.width = curCanvasWidth + 'px';
+      canvas.setAttribute('width', curCanvasWidth + 'px');
+    });
+    document.getElementById("curWidth").innerHTML = curCanvasWidth + "";
   } else {
-    canvas.setAttribute('width', defaultWidth + 'px');
-    canvas.style.width = defaultWidth + 'px';
-    document.getElementById("curWidth").innerHTML = defaultWidth + "";
+    curCanvasWidth = getWidth(width);
+    changeCanvasWidth.style.background = "#ffd4d4";
   }
+
   changePreview();
+
+  function getWidth(str) {
+    if (!checkPxInput(str))
+      return defaultWidth;
+
+    if (parseInt(str) > changeCanvasWidth.max)
+      return changeCanvasWidth.max;
+
+    if (parseInt(str) < changeCanvasWidth.min)
+      return changeCanvasWidth.min;
+
+    return defaultWidth;
+  }
+
+  function setWidth(event) {
+    if(event.key === 'Enter') {
+      let actualWidth = curCanvasWidth;
+
+      clearAllLayers();
+
+      allCanvases.forEach((canvas) => {
+        canvas.style.width = actualWidth + 'px';
+        canvas.setAttribute('width', actualWidth + 'px');
+      });
+
+      changeCanvasWidth.value = actualWidth + 'px';
+      document.getElementById("curWidth").innerHTML = actualWidth + "";
+      changeCanvasWidth.style.background = "#ffffff";
+      removeEventListener('keydown', setWidth);
+    }
+  }
 }
 
 changeCanvasHeight.oninput = function () {
-  let height = document.getElementById("changeCanvasHeight").value;
-  if (height && height >= 50 && height <= 1000) {
-    canvas.style.height = height + 'px';
-    canvas.setAttribute('height', height + 'px');
-    document.getElementById("curHeight").innerHTML = height + "";
+  addEventListener('keydown', setHeight);
+
+  let height = changeCanvasHeight.value;
+
+  if (checkPxInput(height) &&
+     (parseInt(height) >= changeCanvasHeight.min) &&
+     (parseInt(height) <= changeCanvasHeight.max)) {
+    curCanvasHeight = parseInt(height);
+
+    clearAllLayers();
+
+    allCanvases.forEach((canvas) => {
+      canvas.style.height = curCanvasHeight + 'px';
+      canvas.setAttribute('height', curCanvasHeight + 'px');
+    });
+
+
+    document.getElementById("curHeight").innerHTML = curCanvasHeight + "";
+    changeCanvasHeight.style.background = "#ffffff";
+    changeCanvasHeight.value = curCanvasHeight;
   } else {
-    canvas.setAttribute('height', defaultHeight + 'px');
-    canvas.style.height = defaultHeight + 'px';
-    document.getElementById("curHeight").innerHTML = defaultHeight + "";
+    curCanvasHeight = getHeight(height);
+    changeCanvasHeight.style.background = "#ffd4d4";
   }
-  changePreview();
+
+ changePreview();
+
+
+  function getHeight(str) {
+   if (!checkPxInput(str))
+    return defaultHeight;
+
+   if (parseInt(str) > changeCanvasHeight.max)
+    return changeCanvasHeight.max;
+
+   if (parseInt(str) < changeCanvasHeight.min)
+    return changeCanvasHeight.min;
+
+   return defaultHeight;
+  }
+
+  function setHeight(event) {
+    if(event.key === 'Enter') {
+      let actualHeight = curCanvasHeight;
+
+      clearAllLayers();
+
+      allCanvases.forEach((canvas) => {
+        canvas.style.height = actualHeight + 'px';
+        canvas.setAttribute('height', actualHeight + 'px');
+      });
+
+      changeCanvasHeight.value = actualHeight + 'px';
+      document.getElementById("curHeight").innerHTML = actualHeight + "";
+      changeCanvasHeight.style.background = "#ffffff";
+
+      removeEventListener('keydown', setHeight);
+    }
+  }
 }
 
 borderWidth.oninput = function () {
-  let width = document.getElementById("borderWidth").value;
-  if (width && width >= 1 && width <= 30) {
-    canvas.style.borderWidth = width + 'px';
+  addEventListener('keydown', setBorder);
+
+  let border = changeBorderWidth.value;
+
+  if (checkPxInput(border) &&
+     (parseInt(border) >= 0) &&
+     (parseInt(border) <= 30)) {
+    curCanvasBorder = parseInt(border);
+    backCanvas.style.borderWidth = border + 'px';
+    changeBorderWidth.style.background = "#ffffff";
   } else {
-    canvas.style.borderWidth = 1 + 'px';
+    curCanvasBorder = getBorder(border);
+    changeBorderWidth.style.background = "#ffd4d4";
+    backCanvas.style.borderWidth = curCanvasBorder;
+  }
+
+  function getBorder(str) {
+
+    if (!checkPxInput(str))
+      return defaultBorder;
+
+    if (parseInt(str) > changeBorderWidth.max)
+      return changeBorderWidth.max;
+
+    if (parseInt(str) < changeBorderWidth.min)
+      return changeBorderWidth.min;
+
+    return defaultBorder;
+  }
+
+  function setBorder(event) {
+    if(event.key === 'Enter') {
+      let actualBorder = curCanvasBorder;
+
+      changeBorderWidth.value = actualBorder + 'px';
+      changeBorderWidth.style.background = "#ffffff";
+      backCanvas.style.borderWidth = actualBorder + 'px';
+
+      removeEventListener('keydown', setBorder);
+    }
+
   }
 }
 
@@ -209,7 +348,14 @@ borderColor.oninput = function () {
   }
 }
 
-function hideAndShow (element) {
+function checkPxInput(str) {
+  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return regExp.test(str);
+}
+
+
+
+function hideAndShow(element) {
   let menu = document.getElementById(element);
   menu.hidden = !menu.hidden;
   event.currentTarget.classList.toggle("pressed");
@@ -241,6 +387,10 @@ document.getElementById("filling").addEventListener('click', (event) => {
 
 document.getElementById("toolSettings").addEventListener('click', (event) => {
   hideAndShow("toolSettingsMenu", event);
+});
+
+document.getElementById("openLayersBtn").addEventListener('click', (event) => {
+  document.getElementById("layersField").classList.toggle("layersFieldActive");
 });
 
 function getIndexOfRedInData(x, y) {

@@ -23,19 +23,24 @@ function createLayerHtml(id) {
   previewLayer.id = 'preview' + id;
   previewDiv.appendChild(previewLayer);
 
+  let btnContainer = document.createElement('div');
+  btnContainer.classList.add('layerBtncontainer');
+  btnContainer.id = 'btnContainer' + id;
+  newLayer.appendChild(btnContainer);
+
   let hideBtn = document.createElement('button');
   hideBtn.classList.add('layerBtn');
   hideBtn.classList.add('visibleLayer');
   hideBtn.id = 'hideLayer' + id;
   hideBtn.title = 'Скрыть';
-  newLayer.appendChild(hideBtn);
+  btnContainer.appendChild(hideBtn);
 
   let lockBtn = document.createElement('button');
   lockBtn.classList.add('layerBtn');
   lockBtn.classList.add('unlockedLayer');
   lockBtn.id = 'lockLayer' + id;
   lockBtn.title = 'Заблокировать'
-  newLayer.appendChild(lockBtn);
+  btnContainer.appendChild(lockBtn);
 
   return newLayer;
 }
@@ -59,6 +64,9 @@ function parseLayerId(str) {
       break;
     case 'previewDiv':
       return parseInt(str.slice('previewDiv'.length));
+      break;
+    case 'btnContainer':
+      return parseInt(str.slice('btnContainer'.length));
       break;
     case 'pre':
       return parseInt(str.slice('preview'.length));
@@ -159,9 +167,9 @@ class Layer {
 
 
     this.preview = this.display.children['previewDiv' + this.id].children['preview' + this.id];
-    this.hideBtn = this.display.children['hideLayer' + this.id];
+    this.hideBtn = this.display.children['btnContainer' + this.id].children['hideLayer' + this.id];
     this.hidden = false;
-    this.lockBtn = this.display.children['lockLayer' + this.id];
+    this.lockBtn = this.display.children['btnContainer' + this.id].children['lockLayer' + this.id];
     this.locked = false;
 
     changePreviewSize(this.preview);

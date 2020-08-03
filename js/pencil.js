@@ -13,7 +13,11 @@ let pencilParameters = {
 };
 
 function endPoint() {
-  isDrawing = false;
+  context.restore();
+  if (isDrawing) {
+    rememberState();
+    isDrawing = false;
+  }
   context.beginPath();
 }
 
@@ -41,9 +45,8 @@ function startPointPencil(e) {
   e.preventDefault();
   isDrawing = true;
   isOnCanvas = true;
-  if (!isReplaying) rememberDrawingTool("Pencil");
 
-
+  context.save();
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;
@@ -61,7 +64,6 @@ function startPointPencil(e) {
 
 function drawPencil(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
   curX = e.offsetX;
   curY = e.offsetY;

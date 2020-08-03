@@ -15,9 +15,11 @@ let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
-let curCords = [];
 let curState = 0;
-let photoOfState = [];
+let photoOfState = {
+  length: 0,
+  layers: new Map()
+};
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -132,18 +134,26 @@ function clearAllLayers() {
 
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
-  let id = activeLayer.id, imgOfCanvas = canvas.toDataURL();
-  let count = curState;
-  curCords = curCords.filter((elem, i) => {
-    if (elem.layer == id) {
-      if (i < curState) --count;
-      return false;
-    }
-    return true;
-  });
-  curState = count;
-  photoOfState[id] = (photoOfState[0].length == 2) ? [imgOfCanvas, imgOfCanvas] : [imgOfCanvas];
+  rememberState();
 });
+
+function clearLayerHistory() {
+  let count = 0, k = 0, curId = activeLayer.id;
+  let photo = photoOfState.layers.get(curId);
+  for (let i = 1, last = photo[0]; i < photo.length; i++) {
+    if (photo[i] != last) {
+        photoOfState.layers.forEach((state, id) => {
+          if (id != curId) state.splice(i - k, 1);
+        });
+        ++k;
+        if (i <= curState) ++count;
+    }
+    last = photo[i];
+  }
+  photoOfState.length -= k;
+  curState -= count;
+  photo.splice(0, photo.length);
+}
 
 addEventListener('keydown', (event) => {
   if (event.altKey) {

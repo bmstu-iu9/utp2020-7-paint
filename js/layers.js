@@ -145,6 +145,7 @@ class Layer {
       activeInstrument && activeInstrument.init();
       activeLayer = this;
     }
+    
     this.locked = false;
     this.hidden = false;
 

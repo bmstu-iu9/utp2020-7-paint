@@ -120,16 +120,14 @@ body {
   right: 0;
 }
 
-.mainCanvas.highlight {
-  box-sizing: border-box;
-  border: 5px dashed #bbbbbb;
-  border-radius: 20px;
-}
-
 #backCanvas {
   z-index: -1000;
   border: 1px solid #000000;
   background: repeat url("img/background.png");
+}
+
+#backCanvas.highlight {
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
 }
 
 .layersFieldClosed {

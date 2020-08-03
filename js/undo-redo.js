@@ -35,11 +35,10 @@ document.getElementById('undo').addEventListener('click', () => {
     --curState;
     clearAllLayers();
     photoOfState.layers.forEach((value, key) => {
-      let layer = layers[key].canvas;
+      let layer = layers.get(key).canvas;
       let ctx = layer.getContext('2d');
       if (value[curState]) {
         ctx.drawImage(value[curState], 0, 0, layer.width, layer.height);
-        ctx.beginPath();
       }
     })
     changePreview();
@@ -51,7 +50,7 @@ document.getElementById('redo').addEventListener('click', () => {
     ++curState;
     clearAllLayers();
     photoOfState.layers.forEach((value, key) => {
-      let layer = layers[key].canvas;
+      let layer = layers.get(key).canvas;
       let ctx = layer.getContext('2d');
       if (value[curState]) {
         ctx.drawImage(value[curState], 0, 0, layer.width, layer.height);

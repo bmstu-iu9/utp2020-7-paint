@@ -18,11 +18,11 @@ function preventDefaults(e) {
 });
 
 function highlight(e) {
-  canvas.classList.add('highlight');
+  backCanvas.classList.add('highlight');
 }
 
 function unhighlight(e) {
-  canvas.classList.remove('highlight');
+  backCanvas.classList.remove('highlight');
 }
 
 canvas.addEventListener('drop', handleDrop, false)

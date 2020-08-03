@@ -126,6 +126,10 @@ function clearAllLayers() {
 
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
+  rememberState();
+});
+
+function clearLayerHistory() {
   let count = 0, k = 0, curId = activeLayer.id;
   let photo = photoOfState.layers.get(curId);
   for (let i = 1, last = photo[0]; i < photo.length; i++) {
@@ -141,7 +145,7 @@ document.getElementById("clear").addEventListener('click', () => {
   photoOfState.length -= k;
   curState -= count;
   photo.splice(0, photo.length);
-});
+}
 
 addEventListener('keydown', (event) => {
   if (event.altKey) {

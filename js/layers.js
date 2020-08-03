@@ -116,6 +116,7 @@ function getOldestLayer() {
 class Layer {
   constructor(caller) {
     this.id = ++maxLayerId;
+
     if (caller == 'firstLayer') {
       this.display = document.getElementById('layerDisplay0');
       this.preview = document.getElementById('preview0');
@@ -145,7 +146,7 @@ class Layer {
       activeInstrument && activeInstrument.init();
       activeLayer = this;
     }
-    
+
     this.locked = false;
     this.hidden = false;
 
@@ -174,7 +175,7 @@ class Layer {
   }
 
   delete() {
-    if (layers.length === 1) return;
+    if (layers.size === 1) return;
 
     layers.delete(this.id);
     let pos = 0;
@@ -266,6 +267,6 @@ function lockLayerHandler(event) {
 function deleteLayerHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('deleteLayer'.length));
-  console.log(id);
+
   layers.get(id).delete();
 }

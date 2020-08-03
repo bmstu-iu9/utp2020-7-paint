@@ -8,6 +8,9 @@ const defaultWidth = 780;
 const defaultHeight = 400;
 const defaultBorder = 1;
 
+let maxPreviewHeight = document.getElementById("previewDiv0").clientHeight;
+let maxPreviewWidth = document.getElementById("previewDiv0").clientWidth;
+
 let curColor = [0, 0, 0];
 let curCanvasColor = [255, 255, 255];
 let curCanvasHeight = defaultHeight;
@@ -21,6 +24,7 @@ let photoOfState = [];
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
+//changePreviewSize(document.getElementById("preview0"));
 
 let memCanvas = document.createElement('canvas');
 let memContext = memCanvas.getContext('2d');
@@ -184,13 +188,15 @@ changeCanvasWidth.oninput = function () {
      (parseInt(width) >= changeCanvasWidth.min) &&
      (parseInt(width) <= changeCanvasWidth.max)) {
     curCanvasWidth = parseInt(width);
-
     clearAllLayers();
 
     changeCanvasWidth.style.background = "#ffffff";
     allCanvases.forEach((canvas) => {
       canvas.style.width = curCanvasWidth + 'px';
       canvas.setAttribute('width', curCanvasWidth + 'px');
+    });
+    layers.forEach((layer) => {
+      changePreviewSize(layer.preview);
     });
     document.getElementById("curWidth").innerHTML = curCanvasWidth + "";
   } else {
@@ -223,7 +229,7 @@ changeCanvasWidth.oninput = function () {
         canvas.style.width = actualWidth + 'px';
         canvas.setAttribute('width', actualWidth + 'px');
       });
-
+    
       changeCanvasWidth.value = actualWidth + 'px';
       document.getElementById("curWidth").innerHTML = actualWidth + "";
       changeCanvasWidth.style.background = "#ffffff";
@@ -248,7 +254,9 @@ changeCanvasHeight.oninput = function () {
       canvas.style.height = curCanvasHeight + 'px';
       canvas.setAttribute('height', curCanvasHeight + 'px');
     });
-
+    layers.forEach((layer) => {
+      changePreviewSize(layer.preview);
+    });
 
     document.getElementById("curHeight").innerHTML = curCanvasHeight + "";
     changeCanvasHeight.style.background = "#ffffff";
@@ -283,7 +291,7 @@ changeCanvasHeight.oninput = function () {
       allCanvases.forEach((canvas) => {
         canvas.style.height = actualHeight + 'px';
         canvas.setAttribute('height', actualHeight + 'px');
-      });
+      });      
 
       changeCanvasHeight.value = actualHeight + 'px';
       document.getElementById("curHeight").innerHTML = actualHeight + "";
@@ -411,4 +419,14 @@ function getIndexOfAlphaInData(x, y) {
 
 function areInCanvas(x, y) {
   return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
+}
+
+function changePreviewSize(preview) {
+  if (curCanvasHeight > curCanvasWidth) {
+    preview.style.height = maxPreviewHeight + 'px';
+    preview.style.width = curCanvasWidth * (parseInt(preview.style.height) / curCanvasHeight) + 'px';
+  } else {
+    preview.style.width = maxPreviewWidth + 'px';
+    preview.style.height = curCanvasHeight * (parseInt(preview.style.width) / curCanvasWidth) + 'px';
+  }
 }

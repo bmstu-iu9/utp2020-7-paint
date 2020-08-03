@@ -8,15 +8,22 @@ let allCanvases = [backCanvas];
 let addLayerTop = document.getElementById('addLayerTop');
 let addLayerBottom = document.getElementById('addLayerBottom');
 
+
+
 function createLayerHtml(id) {
   let newLayer = document.createElement('div');
   newLayer.classList.add('layer');
   newLayer.id = 'layerDisplay' + id;
-
+  
+  let previewDiv = document.createElement('div');
+  previewDiv.classList.add('previewWindow');
+  previewDiv.id = 'previewDiv' + id;
+  newLayer.appendChild(previewDiv);
+  
   let previewLayer = document.createElement('canvas');
   previewLayer.classList.add('preview');
   previewLayer.id = 'preview' + id;
-  newLayer.appendChild(previewLayer);
+  previewDiv.appendChild(previewLayer);
 
   let hideBtn = document.createElement('button');
   hideBtn.classList.add('layerBtn');
@@ -49,6 +56,9 @@ function parseLayerId(str) {
   switch (str.slice(0, 3)) {
     case 'lay':
       return parseInt(str.slice('layerDisplay'.length));
+      break;
+    case 'previewDiv':
+      return parseInt(str.slice('previewDiv'.length));
       break;
     case 'pre':
       return parseInt(str.slice('preview'.length));
@@ -108,6 +118,7 @@ class Layer {
       
       this.index = 50;
       this.canvas.style.zIndex = this.index;
+      changePreviewSize(this.preview);
 
       this.hideBtn = document.getElementById('hideLayer0');
       this.hidden = false;
@@ -135,6 +146,7 @@ class Layer {
     this.canvas.style.pointerEvents = "auto";
     activeLayer.display.classList.remove('highlight');
     this.display.classList.add('highlight');
+
     activeInstrument && activeInstrument.delete();
     canvas = this.canvas;
     context = canvas.getContext('2d');
@@ -146,11 +158,13 @@ class Layer {
     } else photoOfState.push([imgOfCanvas]);
 
 
-    this.preview = this.display.children['preview' + this.id];
+    this.preview = this.display.children['previewDiv' + this.id].children['preview' + this.id];
     this.hideBtn = this.display.children['hideLayer' + this.id];
     this.hidden = false;
     this.lockBtn = this.display.children['lockLayer' + this.id];
     this.locked = false;
+
+    changePreviewSize(this.preview);
 
     this.hideBtn.addEventListener('click', hideLayerHandler);
     this.lockBtn.addEventListener('click', lockLayerHandler);

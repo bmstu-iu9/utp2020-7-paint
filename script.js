@@ -104,13 +104,13 @@ downloadBtn.addEventListener('click', () => {
   resultCanvas.width = canvas.width;
   resultCanvas.height = canvas.height;
   let resultContext = resultCanvas.getContext("2d");
-  
+
   for (let i = layersField.children.length - 1; i >= 0; i--) {
     if (parseLayerId(layersField.children[i].id) != null) {
       resultContext.drawImage(document.getElementById("layer" + parseLayerId(layersField.children[i].id)), 0, 0);
     }
   }
-  
+
   let img = resultCanvas.toDataURL("image/png")
     .replace("image/png", "image/octet-stream");
   downloadBtn.setAttribute("href", img);
@@ -128,7 +128,7 @@ function clearAllLayers() {
     context = canvas.getContext('2d');
     clearCanvas();
   });
-  canvas = layers[curCanvasId].canvas;
+  canvas = layers.get(curCanvasId).canvas;
   context = canvas.getContext('2d');
 }
 

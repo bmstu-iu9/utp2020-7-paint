@@ -46,7 +46,7 @@ function getPixelColor(x, y) {
       highestPixel = pixel;
     }
   });
-  canvas = layers[curCanvasId].canvas;
+  canvas = layers.get(curCanvasId).canvas;
   return highestPixel;
 }
 

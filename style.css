@@ -166,7 +166,9 @@ body {
   margin-left: 5%;
   margin-top: 5%;
   width: 90%;
-  height: 5%;
+  height: 30px;
+  display: flex;
+  align-items: center;
 }
 
 .layer.highlight {
@@ -177,15 +179,21 @@ body {
   text-align: center;
 }
 
+.previewWindow {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid black;
+  float: left;
+  margin-left: 2px;
+}
+
 canvas.preview {
   background: repeat url("img/background.png");
   background-size: 10%;
   display: inline-block;
   position: relative;
-  top: 45px;
-  left: 4%;
-  height: 80%;
-  width: 36%;
+  height: 100%;
+  width: 100%;
 }
 
 #colorIndicatorDynamic {

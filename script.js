@@ -57,6 +57,10 @@ function getEventLocation(element, event) {
   };
 }
 
+document.getElementById("colorBtn").onclick = function choosing() {
+  colorInput.click();
+  colorInput.focus();
+}
 
 function rgbToHex(rgb) {
   let r = rgb[0], g = rgb[1], b = rgb[2];

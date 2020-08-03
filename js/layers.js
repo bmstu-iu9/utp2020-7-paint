@@ -8,8 +8,6 @@ let allCanvases = [backCanvas];
 let addLayerTop = document.getElementById('addLayerTop');
 let addLayerBottom = document.getElementById('addLayerBottom');
 
-
-
 function createLayerHtml(id) {
   let newLayer = document.createElement('div');
   newLayer.classList.add('layer');

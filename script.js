@@ -24,7 +24,6 @@ let photoOfState = [];
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
-//changePreviewSize(document.getElementById("preview0"));
 
 let memCanvas = document.createElement('canvas');
 let memContext = memCanvas.getContext('2d');
@@ -229,7 +228,7 @@ changeCanvasWidth.oninput = function () {
         canvas.style.width = actualWidth + 'px';
         canvas.setAttribute('width', actualWidth + 'px');
       });
-    
+
       changeCanvasWidth.value = actualWidth + 'px';
       document.getElementById("curWidth").innerHTML = actualWidth + "";
       changeCanvasWidth.style.background = "#ffffff";
@@ -291,7 +290,7 @@ changeCanvasHeight.oninput = function () {
       allCanvases.forEach((canvas) => {
         canvas.style.height = actualHeight + 'px';
         canvas.setAttribute('height', actualHeight + 'px');
-      });      
+      });
 
       changeCanvasHeight.value = actualHeight + 'px';
       document.getElementById("curHeight").innerHTML = actualHeight + "";

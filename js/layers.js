@@ -12,12 +12,12 @@ function createLayerHtml(id) {
   let newLayer = document.createElement('div');
   newLayer.classList.add('layer');
   newLayer.id = 'layerDisplay' + id;
-  
+
   let previewDiv = document.createElement('div');
   previewDiv.classList.add('previewWindow');
   previewDiv.id = 'previewDiv' + id;
   newLayer.appendChild(previewDiv);
-  
+
   let previewLayer = document.createElement('canvas');
   previewLayer.classList.add('preview');
   previewLayer.id = 'preview' + id;
@@ -25,12 +25,14 @@ function createLayerHtml(id) {
 
   let hideBtn = document.createElement('button');
   hideBtn.classList.add('layerBtn');
+  hideBtn.classList.add('visibleLayer');
   hideBtn.id = 'hideLayer' + id;
   hideBtn.title = 'Скрыть';
   newLayer.appendChild(hideBtn);
 
   let lockBtn = document.createElement('button');
   lockBtn.classList.add('layerBtn');
+  lockBtn.classList.add('unlockedLayer');
   lockBtn.id = 'lockLayer' + id;
   lockBtn.title = 'Заблокировать'
   newLayer.appendChild(lockBtn);
@@ -113,7 +115,7 @@ class Layer {
       this.preview = document.getElementById('preview0');
 
       this.canvas = document.getElementById('layer0');
-      
+
       this.index = 50;
       this.canvas.style.zIndex = this.index;
       changePreviewSize(this.preview);
@@ -208,6 +210,8 @@ function hideLayerHandler(event) {
   let layer = getLayerByBtn(event.target.id);
   if (!layer) return;
 
+  layer.hideBtn.classList.toggle('hiddenLayer');
+
   if (layer.hidden) {
     layer.hidden = false;
     layer.canvas.style.visibility = 'visible';
@@ -224,6 +228,8 @@ function hideLayerHandler(event) {
 function lockLayerHandler(event) {
   let layer = getLayerByBtn(event.target.id);
   if (!layer) return;
+
+  layer.lockBtn.classList.toggle('lockedLayer');
 
   let cond = layer.locked;
   if (cond) {

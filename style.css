@@ -179,6 +179,38 @@ body {
   text-align: center;
 }
 
+.container {
+  position: absolute;
+  right: 5px;
+  height: 20px;
+}
+
+.visibleLayer {
+  width: 20px;
+  height: 20px;
+  background-color: green;
+  border: none;
+  margin-right: 5px;
+  outline: none;
+}
+
+.hiddenLayer{
+  background-color: red;
+}
+
+.unlockedLayer {
+  width: 20px;
+  height: 20px;
+  background-color: green;
+  border: none;
+  float: right;
+  outline: none;
+}
+
+.lockedLayer {
+  background-color: red;
+}
+
 .previewWindow {
   width: 20px;
   height: 20px;

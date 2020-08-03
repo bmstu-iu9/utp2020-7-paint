@@ -269,4 +269,5 @@ function deleteLayerHandler(event) {
   let id = parseInt(caller.slice('deleteLayer'.length));
 
   layers.get(id).delete();
+  clearLayerHistory(id);
 }

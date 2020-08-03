@@ -137,13 +137,13 @@ document.getElementById("clear").addEventListener('click', () => {
   rememberState();
 });
 
-function clearLayerHistory() {
-  let count = 0, k = 0, curId = activeLayer.id;
-  let photo = photoOfState.layers.get(curId);
+function clearLayerHistory(id) {
+  let count = 0, k = 0;
+  let photo = photoOfState.layers.get(id);
   for (let i = 1, last = photo[0]; i < photo.length; i++) {
     if (photo[i] != last) {
-        photoOfState.layers.forEach((state, id) => {
-          if (id != curId) state.splice(i - k, 1);
+        photoOfState.layers.forEach((state, idOfState) => {
+          if (id != idOfState) state.splice(i - k, 1);
         });
         ++k;
         if (i <= curState) ++count;
@@ -152,7 +152,7 @@ function clearLayerHistory() {
   }
   photoOfState.length -= k;
   curState -= count;
-  photo.splice(0, photo.length);
+  photoOfState.layers.delete(id);
 }
 
 addEventListener('keydown', (event) => {

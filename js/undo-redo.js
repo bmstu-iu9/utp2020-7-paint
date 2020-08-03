@@ -39,7 +39,6 @@ document.getElementById('undo').addEventListener('click', () => {
       let ctx = layer.getContext('2d');
       if (value[curState]) {
         ctx.drawImage(value[curState], 0, 0, layer.width, layer.height);
-        ctx.beginPath();
       }
     })
     changePreview();

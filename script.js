@@ -428,4 +428,6 @@ function changePreviewSize(preview) {
     preview.style.width = maxPreviewWidth + 'px';
     preview.style.height = curCanvasHeight * (parseInt(preview.style.width) / curCanvasWidth) + 'px';
   }
+  preview.setAttribute('width', preview.style.width);
+  preview.setAttribute('height', preview.style.height);
 }

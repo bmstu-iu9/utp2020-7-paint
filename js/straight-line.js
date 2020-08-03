@@ -15,7 +15,6 @@ function deleteStraightLine() {
 function startPointStraightLine(e) {
   e.preventDefault();
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("StraightLine", [e.offsetX, e.offsetY]);
 
   saveImg();
 
@@ -37,7 +36,6 @@ function startPointStraightLine(e) {
 
 function drawStraightLine(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
 
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;

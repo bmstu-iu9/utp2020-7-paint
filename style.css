@@ -96,7 +96,7 @@ body {
 .toolBtn.pressed,
 #help:hover,
 #help.pressed {
-  border: solid 1px #FF7F50;
+  border: solid 1px #ff7f50;
 }
 
 .layerBtn {
@@ -120,27 +120,42 @@ body {
   right: 0;
 }
 
-.mainCanvas.highlight {
-  box-sizing: border-box;
-  border: 5px dashed #bbbbbb;
-  border-radius: 20px;
-}
-
 #backCanvas {
   z-index: -1000;
   border: 1px solid #000000;
   background: repeat url("img/background.png");
 }
 
-#layersField {
-  position: absolute;
+#backCanvas.highlight {
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+
+.layersFieldClosed {
+  position: fixed;
   box-sizing: border-box;
   top: 50px;
-  left: 90%;
+  right: 0;
   width: 10%;
   height: 90%;
   background: #eeeeee;
   border-left: 1px solid #cccccc;
+  transition: 0.5s;
+  transform: translateX(100%);
+}
+
+.layersFieldActive {
+  transform: translateX(0%);
+}
+
+#openLayersBtn {
+  position: absolute;
+  top: 50%;
+  left: -40px;
+  background-color: #ffdf2b;
+  width: 40px;
+  height: 70px;
+  margin: -35px 0 0 0;
+  clip-path: polygon(100% 0%, 50% 50%, 100% 100%);
 }
 
 .layer {
@@ -153,7 +168,7 @@ body {
 }
 
 .layer.highlight {
-  border: solid 1px #FF7F50;
+  border: solid 1px #ff7f50;
 }
 
 .addLayer {
@@ -247,7 +262,7 @@ option:checked {
   position: absolute;
   padding: 5px;
   background-color: #f1f1f1;
-  min-width: 160px;
+  min-width: 170px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1000;
 }
@@ -307,7 +322,7 @@ option:checked {
   margin: 0px;
   height: 20px;
   width: 30%;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 5px;
   border: none;
   font-family: 'Times New Roman';
@@ -335,7 +350,7 @@ option:checked {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #24A4FF;
+  background: #24a4ff;
   cursor: pointer;
   box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }
@@ -344,14 +359,14 @@ option:checked {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #24A4FF;
+  background: #24a4ff;
   cursor: pointer;
   box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }
 
 #eyedropperWindow {
-  width:30px;
-  height:30px;
+  width: 30px;
+  height: 30px;
   border-radius: 100%;
   border: 2px solid #000000;
   z-index: 1000;

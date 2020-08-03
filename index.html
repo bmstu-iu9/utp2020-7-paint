@@ -31,18 +31,19 @@
       <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
       <div class="droplist-content">
         <p>При изменении параметров изображение не сохраняется</p>
+        <p>Нажмите Enter для установки параметров</p>
         <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
         <div class="field">
           <label>Высота холста:</label>
-          <input type="number" size="1" id="changeCanvasHeight" min="50" max ="1000">
+          <input type="text" size="1" id="changeCanvasHeight" min="50" max ="800">
         </div>
         <div class="field">
           <label>Ширина холста:</label>
-          <input type="number" size="1" id="changeCanvasWidth" min="50" max="1400">
+          <input type="text" size="1" id="changeCanvasWidth" min="50" max="1400">
         </div>
         <div class="field">
           <label>Ширина рамки:</label>
-          <input type="number" size="1" id="borderWidth" min="1" max="30">
+          <input type="text" size="1" id="borderWidth" min="0" max="30">
         </div>
         <div class="field">
           <label>Цвет рамки:</label>
@@ -101,6 +102,12 @@
     <div class="leftPaneldrop">
       <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
       </button>
+      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 1px solid black">
+        <input type="color" id="colorPalette" style="opacity: 0">
+      </button>
+      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
+      </button>
+      <button id="eyedropperWindow" hidden="true"></button>
       <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
         <div class="rangeAndText">
           <input type="range" id="colorDifferenceRange" min="0" max="100">
@@ -128,10 +135,6 @@
     </div>
     <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
     </button>
-    <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
-    <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
-    </button>
-    <button id="eyedropperWindow" hidden="true"></button>
     <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
     <div class="leftPaneldrop">
       <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
@@ -149,12 +152,14 @@
 <canvas class="mainCanvas" id="backCanvas"></canvas>
 <canvas class="mainCanvas" id="layer0"></canvas>
 
-<div id="layersField">
+<div id="layersField" class="layersFieldClosed">
+  <div id="openLayersBtn"></div>
   <div class="layer addLayer" id="addLayerTop">add layer</div>
   <div class="layer highlight" id="layerDisplay0">
     <canvas class="preview" id="preview0"></canvas>
     <button title="Скрыть" class="layerBtn" id="hideLayer0"></button>
     <button title="Заблокировать" class="layerBtn" id="lockLayer0"></button>
+    <button title="Удалить" class="layerBtn" id="deleteLayer0"></button>
   </div>
   <div class="layer addLayer" id="addLayerBottom">add layer</div>
 </div>

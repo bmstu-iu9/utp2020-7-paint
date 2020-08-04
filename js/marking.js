@@ -16,19 +16,33 @@ function initHorizontal() {
   startPointHorizontal();
 }
 
-/*
+function initDiagonal() {
+  startPointDiagonal();
+}
+
+function initDoubleDiagonal() {
+  startPointDoubleDiagonal();
+}
+
 function deleteCage() {
-  cage.removeEventListener("mousedown", deleteMarking);
+  cage.removeEventListener("mousedown", startPointCage);
 }
 
 function deleteVertical() {
-  vertical.removeEventListener("mousedown", deleteMarking);
+  vertical.removeEventListener("mousedown", startPointVertical);
 }
 
 function deleteHorizontal() {
-  horizontal.removeEventListener("mousedown", deleteMarking);
+  horizontal.removeEventListener("mousedown", startPointHorizontal);
 }
-*/
+
+function deleteDiagonal() {
+  diagonal.removeEventListener("mousedown", startPointDiagonal);
+}
+
+function deleteDoubleDiagonal() {
+  doubleDiagonal.removeEventListener("mousedown", startPointDoubleDiagonal);
+}
 
 function startPointCage(e) {
   context.lineCap = "round";
@@ -45,6 +59,7 @@ function startPointCage(e) {
     context.lineTo(x, canvas.height);
   }
   context.stroke();
+  //changePreview();
 }
 
 function startPointVertical(e) {
@@ -58,6 +73,7 @@ function startPointVertical(e) {
     context.lineTo(x, canvas.height);
   }
   context.stroke();
+  //changePreview();
 }
 
 function startPointHorizontal(e) {
@@ -71,8 +87,41 @@ function startPointHorizontal(e) {
     context.lineTo(canvas.width, x);
   }
   context.stroke();
+  //changePreview();
 }
 
-/*function deleteMarking() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-}*/
+function startPointDiagonal(e) {
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.lineWidth = curToolSize;
+  context.strokeStyle = arrayToRgb(curColor);
+  shift = canvas.height/Math.tan(inclination_angle);
+
+  for (let x = 0.5 - shift; x < canvas.width; x += interval) {
+    context.moveTo(x, 0);
+    context.lineTo(x + shift, canvas.height);
+  }
+  markingContext.stroke();
+  //changePreview();
+}
+
+function startPointDoubleDiagonal(e) {
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.lineWidth = curToolSize;
+  context.strokeStyle = arrayToRgb(curColor);
+  shift = canvas.height/Math.tan(inclination_angle);
+
+  for (let x = 0.5 - shift; x < canvas.width; x += interval) {
+    context.moveTo(x, 0);
+    context.lineTo(x + shift, canvas.height);
+  }
+
+  shift = -canvas.height/Math.tan(inclination_angle);
+  for (let x = 0.5; x < canvas.width - shift; x += interval) {
+    context.moveTo(x, 0);
+    context.lineTo(x + shift, canvas.height);
+  }
+  context.stroke();
+  //changePreview();
+}

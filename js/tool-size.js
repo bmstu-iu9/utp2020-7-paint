@@ -96,6 +96,6 @@ function checkSizeToolInput(str) {
 function checkMarkingToolInput(str) {
   const regExp = new RegExp(`^\\d+(px|)$`, 'i');
   return (regExp.test(str)) &&
-         (parseInt(str) <= toolMarkingText.max) &&
+         (parseInt(str) <= toolMarkingRange.max) &&
          (parseInt(str) >= toolMarkingRange.min);
 }

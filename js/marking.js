@@ -1,7 +1,6 @@
 'use strict';
 
-let shift;
-let interval = 100;
+let shift, initial_offset;
 let inclination_angle = 45;
 
 function initCage() {
@@ -49,12 +48,13 @@ function startPointCage(e) {
   context.lineJoin = "round";
   context.lineWidth = curToolSize;
   context.strokeStyle = arrayToRgb(curColor);
+  correctInitialOffset();
 
-  for (let x = 0.5; x < canvas.height; x += interval) {
+  for (let x = initial_offset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
-  for (let x = 0.5; x < canvas.width; x += interval) {
+  for (let x = initial_offset; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
   }
@@ -67,8 +67,9 @@ function startPointVertical(e) {
   context.lineJoin = "round";
   context.lineWidth = curToolSize;
   context.strokeStyle = arrayToRgb(curColor);
+  correctInitialOffset();
 
-  for (let x = 0.5; x < canvas.width; x += interval) {
+  for (let x = initial_offset; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
   }
@@ -81,8 +82,9 @@ function startPointHorizontal(e) {
   context.lineJoin = "round";
   context.lineWidth = curToolSize;
   context.strokeStyle = arrayToRgb(curColor);
+  correctInitialOffset();
 
-  for (let x = 0.5; x < canvas.height; x += interval) {
+  for (let x = initial_offset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
@@ -95,9 +97,11 @@ function startPointDiagonal(e) {
   context.lineJoin = "round";
   context.lineWidth = curToolSize;
   context.strokeStyle = arrayToRgb(curColor);
+  correctInitialOffset();
+
   shift = canvas.height/Math.tan(inclination_angle);
 
-  for (let x = 0.5 - shift; x < canvas.width; x += interval) {
+  for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x + shift, canvas.height);
   }
@@ -110,18 +114,29 @@ function startPointDoubleDiagonal(e) {
   context.lineJoin = "round";
   context.lineWidth = curToolSize;
   context.strokeStyle = arrayToRgb(curColor);
+  correctInitialOffset();
+
   shift = canvas.height/Math.tan(inclination_angle);
 
-  for (let x = 0.5 - shift; x < canvas.width; x += interval) {
+  for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x + shift, canvas.height);
   }
 
   shift = -canvas.height/Math.tan(inclination_angle);
-  for (let x = 0.5; x < canvas.width - shift; x += interval) {
+  for (let x = initial_offset; x < canvas.width - shift; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x + shift, canvas.height);
   }
   context.stroke();
   //changePreview();
+}
+
+function correctInitialOffset() {
+  if (curToolSize >= 5) {
+    initial_offset = 0.5;
+  }
+  if (curToolSize < 5) {
+    initial_offset = -0.5;
+  }
 }

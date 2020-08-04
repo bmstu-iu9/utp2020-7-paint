@@ -20,6 +20,7 @@ let photoOfState = {
   length: 0,
   layers: new Map()
 };
+let markingInterval = 100;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;

@@ -43,9 +43,59 @@ toolSizeText.onchange = () => {
   }
 }
 
+let toolMarkingRange = document.getElementById("toolMarkingRange");
+let toolMarkingText = document.getElementById("toolMarkingText");
+
+toolMarkingRange.value = markingInterval;
+toolMarkingText.value = `${markingInterval}px`;
+
+let defaultMarking = markingInterval;
+
+toolMarkingRange.oninput = () => {
+  toolMarkingText.value = toolMarkingRange.value + 'px';
+  toolMarkingText.style.background = "white";
+}
+
+toolMarkingRange.onchange = () => { markingInterval = toolMarkingRange.value; }
+
+toolMarkingText.oninput = () => {
+  if (checkMarkingToolInput(toolMarkingText.value)) {
+    toolMarkingText.style.background = "white";
+    toolMarkingRange.value = parseInt(toolMarkingText.value);
+    markingInterval = parseInt(toolMarkingText.value);
+  } else {
+    toolMarkingText.style.background = "#ffd4d4";
+    markingInterval = getToolMarking(toolMarkingText, toolMarkingRange);
+  }
+
+  function getToolMarking(toolMarkingText, toolMarkingRange) {
+    if (parseInt(toolMarkingText.value) > toolMarkingRange.max) { return toolMarkingRange.max; }
+    if (parseInt(toolMarkingText.value) < toolMarkingRange.min) { return toolMarkingRange.min; }
+    return defaultMarking;
+  }
+}
+
+toolMarkingText.onchange = () => {
+  if (checkMarkingToolInput(toolMarkingText.value)) {
+    toolMarkingText.value = parseInt(toolMarkingText.value) + 'px';
+    toolMarkingRange.value = parseInt(toolMarkingText.value);
+  } else {
+    toolMarkingRange.value = markingInterval;
+    toolMarkingText.value = markingInterval + 'px';
+    toolMarkingText.style.background = "white";
+  }
+}
+
 function checkSizeToolInput(str) {
   const regExp = new RegExp(`^\\d+(px|)$`, 'i');
   return (regExp.test(str)) &&
          (parseInt(str) <= toolSizeRange.max) &&
          (parseInt(str) >= toolSizeRange.min);
+}
+
+function checkMarkingToolInput(str) {
+  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return (regExp.test(str)) &&
+         (parseInt(str) <= toolMarkingText.max) &&
+         (parseInt(str) >= toolMarkingRange.min);
 }

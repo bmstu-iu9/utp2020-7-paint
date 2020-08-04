@@ -18,6 +18,7 @@ function startPointRectangle(e) {
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -70,6 +71,7 @@ function startPointCircle(e) {
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -123,6 +125,7 @@ function startPointEllipse(e) {
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -177,6 +180,7 @@ function startPointEqTriangle(e) {
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -231,6 +235,7 @@ function startPointRightTriangle(e) {
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";

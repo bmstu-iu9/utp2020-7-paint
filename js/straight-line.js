@@ -18,6 +18,7 @@ function startPointStraightLine(e) {
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";

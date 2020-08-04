@@ -37,7 +37,7 @@ body {
 }
 
 #leftPanel {
-  position: relative;
+  position: fixed;
   left: 10px;
   padding-bottom: 20px;
   width: 50px;
@@ -136,7 +136,7 @@ body {
   top: 50px;
   right: 0;
   width: 10%;
-  height: 90%;
+  height: 100%;
   background: #eeeeee;
   border-left: 1px solid #cccccc;
   transition: 0.5s;
@@ -149,13 +149,13 @@ body {
 
 #openLayersBtn {
   position: absolute;
-  top: 50%;
-  left: -40px;
+  z-index: 1000;
+  width: 60px;
+  height: 50px;
+  bottom: 70px;
+  left: -60px;
   background-color: #ffdf2b;
-  width: 40px;
-  height: 70px;
-  margin: -35px 0 0 0;
-  clip-path: polygon(100% 0%, 50% 50%, 100% 100%);
+  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
 }
 
 .layer {

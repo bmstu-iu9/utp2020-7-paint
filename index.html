@@ -133,7 +133,8 @@
         </button>
       </div>
     </div>
-    <input title="Выбрать цвет" type="color" class="toolBtn" id="color">
+    <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
+    </button>
     <div class="leftPaneldrop">
       <button title="Узоры" class="toolBtn" id="marking" style="background: green">
       </button>
@@ -146,8 +147,6 @@
         </button>
       </div>
     </div>
-    <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
-    </button>
     <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
     <div class="leftPaneldrop">
       <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
@@ -165,9 +164,8 @@
 <canvas class="mainCanvas" id="backCanvas"></canvas>
 <canvas class="mainCanvas" id="layer0"></canvas>
 
-<canvas id="marking_canvas"></canvas>
-
-<div id="layersField">
+<div id="layersField" class="layersFieldClosed">
+  <div id="openLayersBtn"></div>
   <div class="layer addLayer" id="addLayerTop">add layer</div>
   <div class="layer highlight" id="layerDisplay0">
     <canvas class="preview" id="preview0"></canvas>
@@ -226,6 +224,7 @@
 <script src="js/hand.js"></script>
 <script src="js/text-insertion.js"></script>
 <script src="js/picture.js"></script>
+<script src="js/stamp.js"></script>
 <script src="js/marking.js"></script>
 <script src="js/instruments-switcher.js"></script>
 <script src="js/tool-size.js"></script>

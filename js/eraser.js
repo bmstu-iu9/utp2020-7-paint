@@ -50,20 +50,10 @@ function startPointEraser(e) {
 function drawEraser(e) {
   if (!isDrawing) return;
 
-<<<<<<< HEAD
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
-=======
+
   context.globalCompositeOperation = "destination-out";
-
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
->>>>>>> master
 
   eraserParameters.distance = Math.sqrt(Math.pow(curX - eraserParameters.oldX, 2) + Math.pow(curY - eraserParameters.oldY, 2));
   eraserParameters.angle = Math.atan2(curX - eraserParameters.oldX, curY - eraserParameters.oldY);

@@ -370,7 +370,7 @@ option:checked {
   border-radius: 100%;
   border: 2px solid #000000;
   z-index: 1000;
-  position: absolute;
+  position: fixed;
   box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }
 

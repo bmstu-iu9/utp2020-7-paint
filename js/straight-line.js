@@ -8,14 +8,16 @@ function initStraightLine() {
 function deleteStraightLine() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointStraightLine);
-  canvas.removeEventListener("mousemove", drawStraightLine);
-  canvas.removeEventListener("mouseup", endStraightLine);
-  canvas.removeEventListener("mouseleave", endStraightLine);
+  document.removeEventListener("mousemove", drawStraightLine);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointStraightLine(e) {
+  e.preventDefault();
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("StraightLine", [e.offsetX, e.offsetY]);
+  isOnCanvas = true;
 
   saveImg();
 
@@ -26,29 +28,35 @@ function startPointStraightLine(e) {
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   drawStraightLine(e);
 
-  canvas.addEventListener("mousemove", drawStraightLine);
-  canvas.addEventListener("mouseup", endStraightLine);
+  document.addEventListener("mousemove", drawStraightLine);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawStraightLine(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords[1] = [e.offsetX, e.offsetY];
+
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   context.beginPath();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.moveTo (oldX, oldY);
-  context.lineTo (e.offsetX, e.offsetY);
+  context.lineTo (curX, curY);
   context.stroke();
-  
-  changePreview();
-}
 
-function endStraightLine(e) {
-  isDrawing = false;
-  context.beginPath();
+  changePreview();
 }

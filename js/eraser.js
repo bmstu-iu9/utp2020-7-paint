@@ -3,9 +3,9 @@
 let eraserParameters = {
   oldX: 0,
   oldY: 0,
-  newX: 0, 
-  newY: 0, 
-  distance: 0, 
+  newX: 0,
+  newY: 0,
+  distance: 0,
   angle: 0,
 };
 
@@ -15,19 +15,24 @@ function initEraser() {
 
 function deleteEraser() {
   canvas.removeEventListener("mousedown", startPointEraser);
-  canvas.removeEventListener("mousemove", drawEraser);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawEraser);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   context.globalCompositeOperation = "source-over";
 }
 
 function startPointEraser(e) {
+  e.preventDefault();
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("Eraser");
-  
+  isOnCanvas = true;
+
   eraserParameters.oldX = e.offsetX;
   eraserParameters.oldY = e.offsetY;
+  deltaX = e.pageX - e.offsetX;
+  deltaY = e.pageY - e.offsetY;
 
+  context.save();
   context.globalCompositeOperation = "destination-out";
   context.lineWidth = 0.1;
   context.fillStyle = arrayToRgb(curColor);
@@ -40,18 +45,28 @@ function startPointEraser(e) {
   context.closePath();
 
   drawEraser(e);
-  
-  canvas.addEventListener("mousemove", drawEraser);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+
+  document.addEventListener("mousemove", drawEraser);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawEraser(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  eraserParameters.distance = Math.sqrt(Math.pow(e.offsetX - eraserParameters.oldX, 2) + Math.pow(e.offsetY - eraserParameters.oldY, 2));
-  eraserParameters.angle = Math.atan2(e.offsetX - eraserParameters.oldX, e.offsetY - eraserParameters.oldY);
+  context.globalCompositeOperation = "destination-out";
+  
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  eraserParameters.distance = Math.sqrt(Math.pow(curX - eraserParameters.oldX, 2) + Math.pow(curY - eraserParameters.oldY, 2));
+  eraserParameters.angle = Math.atan2(curX - eraserParameters.oldX, curY - eraserParameters.oldY);
 
   for (let i = 0; i < eraserParameters.distance; i++) {
     eraserParameters.newX = eraserParameters.oldX + i * Math.sin(eraserParameters.angle);
@@ -62,8 +77,9 @@ function drawEraser(e) {
     context.stroke();
   }
 
-  eraserParameters.oldX = e.offsetX;
-  eraserParameters.oldY = e.offsetY;
-  
+  eraserParameters.oldX = curX;
+  eraserParameters.oldY = curY;
+
+  context.globalCompositeOperation = "source-over";
   changePreview();
 }

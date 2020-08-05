@@ -396,7 +396,7 @@ document.getElementById("figure").addEventListener('click', (event) => {
 });
 
 document.getElementById("openPanel").addEventListener('click', (event) => {
-  hideAndShow("lefContainer", event);
+  hideAndShow("leftContainer", event);
 });
 
 document.getElementById("filling").addEventListener('click', (event) => {

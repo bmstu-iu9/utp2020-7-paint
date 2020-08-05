@@ -163,7 +163,7 @@ class Layer {
     this.hidden = false;
 
     changePreviewSize(this.preview);
-    
+
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);
     this.lockBtn.addEventListener('click', lockLayerHandler);
@@ -323,7 +323,7 @@ function swapBottomHandler(event) {
   let curLayer = layers.get(id);
 
   layers.forEach((layer) => {
-    if (layer.index < curLayer.index && layer.index > closestBotpLayer.index) {
+    if (layer.index < curLayer.index && layer.index > closestBotLayer.index) {
       closestBotLayer = layer;
     }
   });

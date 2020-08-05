@@ -201,12 +201,43 @@ body {
   height: 20px;
   background-color: green;
   border: none;
-  float: right;
   outline: none;
 }
 
 .lockedLayer {
   background-color: red;
+}
+
+.layerOptions {
+  right: 2%;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 60px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.droplist:hover .layerOptions {
+  display: block;
+}
+
+.layerOptions button {
+  width: 100%;
+  font-size: 12px;
+  border: none;
+  outline: none;
+}
+
+.layerOptions button:hover {
+  background-color: #b6b6b6;
+}
+
+.layerOptionsBtn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  outline: none;
 }
 
 .previewWindow {
@@ -309,10 +340,6 @@ option:checked {
 
 .droplist:hover .droplist-content {
   display: block;
-}
-
-.droplist:hover .dropbtn {
-  background-color: #ffeb99;
 }
 
 .field {

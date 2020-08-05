@@ -365,8 +365,8 @@ borderColor.oninput = function () {
 }
 
 function checkPxInputRange(str, min, max) {
-  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return  regExp.test(str) &&
+  const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return  pxInputRegExp.test(str) &&
          (parseInt(str) >= min) &&
          (parseInt(str) <= max);
 }

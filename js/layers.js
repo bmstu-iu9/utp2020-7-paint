@@ -60,7 +60,7 @@ function createCanvasHtml(id) {
   newCanvas.style.left = canvas.style.left;
   newCanvas.style.top = canvas.style.top;
   newCanvas.style.margin = canvas.style.margin;
-  bottomLayer.canvas.after(newCanvas);
+  getOldestLayer().canvas.after(newCanvas);
   return newCanvas;
 }
 
@@ -140,12 +140,19 @@ class Layer {
       this.hideBtn = document.getElementById('hideLayer0');
       this.lockBtn = document.getElementById('lockLayer0');
       this.deleteBtn = document.getElementById('deleteLayer0');
+      this.addTopBtn = document.getElementById('addLayerTop0');
+      this.addBottomBtn = document.getElementById('addLayerBottom0');
+      this.swapTopBtn = document.getElementById('swapTop0');
+      this.swapBottomBtn = document.getElementById('swapBottom0');
     } else {
       this.display = createLayerHtml(this.id);
       this.canvas = createCanvasHtml(this.id);
-      this.preview = this.display.children['previewDiv' + this.id].children['preview' + this.id];
-      this.hideBtn = this.display.children['btnContainer' + this.id].children['hideLayer' + this.id];
-      this.lockBtn = this.display.children['btnContainer' + this.id].children['lockLayer' + this.id];
+      this.preview = this.display.children['previewDiv' + this.id]
+                                 .children['preview' + this.id];
+      this.hideBtn = this.display.children['btnContainer' + this.id]
+                                 .children['hideLayer' + this.id];
+      this.lockBtn = this.display.children['btnContainer' + this.id]
+                                 .children['lockLayer' + this.id];
       this.deleteBtn = this.display.children['deleteLayer' + this.id];
 
       activeLayer.canvas.style.pointerEvents = "none";
@@ -168,6 +175,10 @@ class Layer {
     this.hideBtn.addEventListener('click', hideLayerHandler);
     this.lockBtn.addEventListener('click', lockLayerHandler);
     this.deleteBtn.addEventListener('click', deleteLayerHandler);
+    this.addTopBtn.addEventListener('click', addLayerTopHandler);
+    this.addBottomBtn.addEventListener('click', addLayerBottomHandler);
+    this.swapTopBtn.addEventListener('click', swapTopHandler);
+    this.swapBottomBtn.addEventListener('click', swapBottomHandler);
 
     if (caller === 'addLayerTop') {
       let callerLayer = layers.get(callerId);

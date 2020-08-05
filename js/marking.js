@@ -2,32 +2,41 @@
 
 let shift, initial_offset;
 
+let back = document.getElementById('patternForCanvas');
+let ctx = back.getContext('2d');
+
 function initCage() {
+  showBackground();
   startPointCage();
 }
 
 function initVertical() {
+  showBackground();
   startPointVertical();
 }
 
 function initHorizontal() {
+  showBackground();
   startPointHorizontal();
 }
 
 function initDiagonal() {
+  showBackground();
   startPointDiagonal();
 }
 
 function initDoubleDiagonal() {
+  showBackground();
   startPointDoubleDiagonal();
 }
 
 function initWavy() {
+  showBackground();
   startPointWavy();
 }
 
 function deleteCage() {
-  cage.removeEventListener("mousedown", startPointCage);
+  canvas.removeEventListener("mousedown", showBackground);
 }
 
 function deleteVertical() {
@@ -50,125 +59,131 @@ function deleteWavy() {
   wavy.removeEventListener("mousedown", startPointWavy);
 }
 
-function startPointCage(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = markingSize;
-  context.strokeStyle = arrayToRgb(curColor);
+function startPointCage() {
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = markingSize;
+  ctx.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
   for (let x = initial_offset; x < canvas.height; x += markingInterval) {
-    context.moveTo(0, x);
-    context.lineTo(canvas.width, x);
+    ctx.moveTo(0, x);
+    ctx.lineTo(canvas.width, x);
   }
   for (let x = initial_offset; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x, canvas.height);
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, canvas.height);
   }
-  context.stroke();
+  ctx.stroke();
+  changeButton();
 
-  rememberState();
-  changePreview();
+  //rememberState();
+  //changePreview();
 }
 
 function startPointVertical(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = markingSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = markingSize;
+  ctx.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
   for (let x = initial_offset; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x, canvas.height);
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, canvas.height);
   }
-  context.stroke();
+  ctx.stroke();
+  changeButton();
 
-  rememberState();
-  changePreview();
+  //rememberState();
+  //changePreview();
 }
 
 function startPointHorizontal(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = markingSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = markingSize;
+  ctx.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
   for (let x = initial_offset; x < canvas.height; x += markingInterval) {
-    context.moveTo(0, x);
-    context.lineTo(canvas.width, x);
+    ctx.moveTo(0, x);
+    ctx.lineTo(canvas.width, x);
   }
-  context.stroke();
+  ctx.stroke();
+  changeButton();
 
-  rememberState();
-  changePreview();
+  //rememberState();
+  //changePreview();
 }
 
 function startPointDiagonal(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = markingSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = markingSize;
+  ctx.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
   shift = canvas.height/Math.tan(inclinationAngle);
 
   for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x + shift, canvas.height);
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x + shift, canvas.height);
   }
-  markingContext.stroke();
+  ctx.stroke();
+  changeButton();
 
-  rememberState();
-  changePreview();
+  //rememberState();
+  //changePreview();
 }
 
 function startPointDoubleDiagonal(e) {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = markingSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = markingSize;
+  ctx.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
   shift = canvas.height/Math.tan(inclinationAngle);
 
   for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x + shift, canvas.height);
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x + shift, canvas.height);
   }
 
   shift = -canvas.height/Math.tan(inclinationAngle);
   for (let x = initial_offset; x < canvas.width - shift; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x + shift, canvas.height);
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x + shift, canvas.height);
   }
-  context.stroke();
+  ctx.stroke();
+  changeButton();
 
-  rememberState();
-  changePreview();
+  //rememberState();
+  //changePreview();
 }
 
 function startPointWavy(e) {
   context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = markingSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  ctx.lineJoin = "round";
+  ctx.lineWidth = markingSize;
+  ctx.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
   let cx = 0;
-  for (let cy = inclinationAngle + initial_offset; cy < canvas.height + inclinationAngle; cy += markingInterval) {
-    context.moveTo(cx, cy);
+  for (let cy = initial_offset + inclinationAngle; cy < canvas.height + inclinationAngle; cy += markingInterval) {
+    ctx.moveTo(cx, cy);
     for (let i = 1; i < canvas.width; i++) {
       let x = 3 * i;
       let y = inclinationAngle * Math.sin(6 * i / 180 * Math.PI);
-      context.lineTo(cx + x, cy + y);
+      ctx.lineTo(cx + x, cy + y);
     }
   }
-  context.stroke();
+  ctx.stroke();
+  changeButton();
 
-  rememberState();
-  changePreview();
+  //rememberState();
+  //changePreview();
 }
 
 function correctInitialOffset() {
@@ -177,5 +192,28 @@ function correctInitialOffset() {
   }
   if (markingSize < 5) {
     initial_offset = -0.5;
+  }
+}
+
+function changeButton() {
+  cage.addEventListener("mousedown", deleteMarking);
+  vertical.addEventListener("mousedown", deleteMarking);
+  horizontal.addEventListener("mousedown", deleteMarking);
+  diagonal.addEventListener("mousedown", deleteMarking);
+  doubleDiagonal.addEventListener("mousedown", deleteMarking);
+  wavy.addEventListener("mousedown", deleteMarking);
+}
+
+
+function deleteMarking() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //back.style.opacity = 0;
+}
+
+function showBackground() {
+  if (back.style.opacity) {
+    back.style.opacity = 0;
+  } else {
+    back.style.opacity = 1;
   }
 }

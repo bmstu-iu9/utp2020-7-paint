@@ -1,12 +1,10 @@
 'use strict';
 
 let maxLayerId = -1;
-let activeLayer, topLayer, bottomLayer;
+let activeLayer;
 let layersField = document.getElementById('layersField');
 let layers = new Map();
 let allCanvases = [backCanvas];
-let addLayerTop = document.getElementById('addLayerTop');
-let addLayerBottom = document.getElementById('addLayerBottom');
 
 function createLayerHtml(id) {
   let newLayer = document.createElement('div');
@@ -110,7 +108,7 @@ function getOldestLayer() {
 }
 
 class Layer {
-  constructor(caller) {
+  constructor(caller, callerId) {
     this.id = ++maxLayerId;
 
     if (caller == 'firstLayer') {
@@ -152,16 +150,28 @@ class Layer {
     this.deleteBtn.addEventListener('click', deleteLayerHandler);
 
     if (caller === 'addLayerTop') {
-      topLayer.display.before(this.display);
-      this.index = topLayer.index + 1;
+      let callerLayer = layers.get(callerId);
+      layers.forEach((layer) => {
+        if (layer.index > callerLayer.index) {
+          ++layer.index;
+          layer.canvas.style.zIndex = this.index;
+        }
+      });
+      callerLayer.display.before(this.display);
+      this.index = callerLayer.index + 1;
       this.canvas.style.zIndex = this.index;
-      topLayer = this;
     }
     if (caller === 'addLayerBottom') {
-      bottomLayer.display.after(this.display);
-      this.index = bottomLayer.index - 1;
+      let callerLayer = layers.get(callerId);
+      layers.forEach((layer) => {
+        if (layer.index < callerLayer.index) {
+          --layer.index;
+          layer.canvas.style.zIndex = this.index;
+        }
+      });
+      callerLayer.display.after(this.display);
+      this.index = callerLayer.index - 1;
       this.canvas.style.zIndex = this.index;
-      bottomLayer = this;
     }
 
     layers.set(this.id, this);
@@ -178,22 +188,6 @@ class Layer {
     while (allCanvases[pos].id != this.canvas.id) ++pos;
     allCanvases.splice(pos, 1);
 
-    if (bottomLayer.id === this.id) {
-      bottomLayer = getOldestLayer();
-      layers.forEach((layer) => {
-        if (bottomLayer.index > layer.index)
-          bottomLayer = layer;
-      });
-    }
-
-    if (topLayer.id === this.id) {
-      topLayer = getOldestLayer();
-      layers.forEach((layer) => {
-        if (topLayer.index < layer.index)
-          topLayer = layer;
-      });
-    }
-
     if (activeLayer.id === this.id) {
       setUpLayer(getOldestLayer());
     }
@@ -205,17 +199,6 @@ class Layer {
 
 let firstLayer = new Layer('firstLayer');
 activeLayer = firstLayer;
-topLayer = firstLayer;
-bottomLayer = firstLayer;
-
-function addLayerHandler(event) {
-  let caller = event.target.id;
-
-  new Layer(caller);
-}
-
-addLayerTop.addEventListener('click', addLayerHandler);
-addLayerBottom.addEventListener('click', addLayerHandler);
 
 function changePreview() {
   let previewContext = activeLayer.preview.getContext('2d');
@@ -263,7 +246,63 @@ function lockLayerHandler(event) {
 function deleteLayerHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('deleteLayer'.length));
+  if (id === NaN) return;
 
   layers.get(id).delete();
   clearLayerHistory(id);
+}
+
+function addLayerTopHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('addLayerTop'.length));
+
+  if (id !== NaN) new Layer('addLayerTop', id);
+}
+
+function addLayerBottomHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('addLayerBottom'.length));
+
+  if (id !== NaN) new Layer('addLayerBottom', id);
+}
+
+function swapIndexes(layer1, layer2) {
+  let temp = layer1.index;
+  layer1.index = layer2.index;
+  layer2.index = temp;
+
+  layer1.canvas.style.zIndex = layer1.index;
+  layer2.canvas.style.zIndex = layer2.index;
+}
+
+function swapTopHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('swapTop'.length));
+  if (id === NaN) return;
+  let closestTopLayer = getOldestLayer();
+  let curLayer = layers.get(id);
+
+  layers.forEach((layer) => {
+    if (layer.index > curLayer.index && layer.index < closestTopLayer.index) {
+      closestTopLayer = layer;
+    }
+  });
+
+  swapIndexes(closestTopLayer, curLayer);
+}
+
+function swapBottomHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('swapBottom'.length));
+  if (id === NaN) return;
+  let closestBotLayer = getOldestLayer();
+  let curLayer = layers.get(id);
+
+  layers.forEach((layer) => {
+    if (layer.index < curLayer.index && layer.index > closestBotpLayer.index) {
+      closestBotLayer = layer;
+    }
+  });
+
+  swapIndexes(closestBotLayer, curLayer);
 }

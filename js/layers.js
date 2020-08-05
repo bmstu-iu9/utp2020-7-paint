@@ -58,10 +58,8 @@ function parseLayerId(str) {
   switch (str.slice(0, 3)) {
     case 'lay':
       return parseInt(str.slice('layerDisplay'.length));
-      break;
     case 'pre':
       return parseInt(str.slice('preview'.length));
-      break;
   }
   return null;
 }
@@ -70,10 +68,8 @@ function parseLayerBtnId(str) {
   switch (str.slice(0, 3)) {
     case 'hid':
       return parseInt(str.slice('hideLayer'.length));
-      break;
     case 'loc':
       return parseInt(str.slice('lockLayer'.length));
-      break;
   }
   return null;
 }

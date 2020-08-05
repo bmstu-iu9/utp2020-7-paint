@@ -21,6 +21,8 @@ let photoOfState = {
   layers: new Map()
 };
 let markingInterval = 100;
+let inclinationAngle = 45;
+let markingSize = 1;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;

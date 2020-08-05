@@ -1,7 +1,6 @@
 'use strict';
 
 let shift, initial_offset;
-let inclination_angle = 45;
 
 function initCage() {
   startPointCage();
@@ -21,6 +20,10 @@ function initDiagonal() {
 
 function initDoubleDiagonal() {
   startPointDoubleDiagonal();
+}
+
+function initWavy() {
+  startPointWavy();
 }
 
 function deleteCage() {
@@ -43,10 +46,14 @@ function deleteDoubleDiagonal() {
   doubleDiagonal.removeEventListener("mousedown", startPointDoubleDiagonal);
 }
 
+function deleteWavy() {
+  wavy.removeEventListener("mousedown", startPointWavy);
+}
+
 function startPointCage(e) {
   context.lineCap = "round";
   context.lineJoin = "round";
-  context.lineWidth = curToolSize;
+  context.lineWidth = markingSize;
   context.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
@@ -59,13 +66,15 @@ function startPointCage(e) {
     context.lineTo(x, canvas.height);
   }
   context.stroke();
-  //changePreview();
+
+  rememberState();
+  changePreview();
 }
 
 function startPointVertical(e) {
   context.lineCap = "round";
   context.lineJoin = "round";
-  context.lineWidth = curToolSize;
+  context.lineWidth = markingSize;
   context.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
@@ -74,13 +83,15 @@ function startPointVertical(e) {
     context.lineTo(x, canvas.height);
   }
   context.stroke();
-  //changePreview();
+
+  rememberState();
+  changePreview();
 }
 
 function startPointHorizontal(e) {
   context.lineCap = "round";
   context.lineJoin = "round";
-  context.lineWidth = curToolSize;
+  context.lineWidth = markingSize;
   context.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
@@ -89,54 +100,82 @@ function startPointHorizontal(e) {
     context.lineTo(canvas.width, x);
   }
   context.stroke();
-  //changePreview();
+
+  rememberState();
+  changePreview();
 }
 
 function startPointDiagonal(e) {
   context.lineCap = "round";
   context.lineJoin = "round";
-  context.lineWidth = curToolSize;
+  context.lineWidth = markingSize;
   context.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
-  shift = canvas.height/Math.tan(inclination_angle);
+  shift = canvas.height/Math.tan(inclinationAngle);
 
   for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x + shift, canvas.height);
   }
   markingContext.stroke();
-  //changePreview();
+
+  rememberState();
+  changePreview();
 }
 
 function startPointDoubleDiagonal(e) {
   context.lineCap = "round";
   context.lineJoin = "round";
-  context.lineWidth = curToolSize;
+  context.lineWidth = markingSize;
   context.strokeStyle = arrayToRgb(curColor);
   correctInitialOffset();
 
-  shift = canvas.height/Math.tan(inclination_angle);
+  shift = canvas.height/Math.tan(inclinationAngle);
 
   for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x + shift, canvas.height);
   }
 
-  shift = -canvas.height/Math.tan(inclination_angle);
+  shift = -canvas.height/Math.tan(inclinationAngle);
   for (let x = initial_offset; x < canvas.width - shift; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x + shift, canvas.height);
   }
   context.stroke();
-  //changePreview();
+
+  rememberState();
+  changePreview();
+}
+
+function startPointWavy(e) {
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.lineWidth = markingSize;
+  context.strokeStyle = arrayToRgb(curColor);
+  correctInitialOffset();
+
+  let cx = 0;
+  for (let cy = inclinationAngle + initial_offset; cy < canvas.height + inclinationAngle; cy += markingInterval) {
+    context.moveTo(cx, cy);
+    for (let i = 1; i < canvas.width; i++) {
+      let x = 3 * i;
+      let y = inclinationAngle * Math.sin(6 * i / 180 * Math.PI);
+      context.lineTo(cx + x, cy + y);
+    }
+  }
+  context.stroke();
+
+  rememberState();
+  changePreview();
 }
 
 function correctInitialOffset() {
-  if (curToolSize >= 5) {
+  if (markingSize >= 5) {
     initial_offset = 0.5;
   }
-  if (curToolSize < 5) {
+  if (markingSize < 5) {
     initial_offset = -0.5;
   }
 }

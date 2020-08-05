@@ -139,9 +139,20 @@
       <button title="Узоры" class="toolBtn" id="marking" style="background: green">
       </button>
       <div class="leftMenu" id="markingMenu" hidden="true" style="min-width: 250px;">
+        <p>Толщина линий разметки: </p>
+        <div class="rangeAndText">
+          <input type="range" id="toolMarkingSizeRange" min="1" max="100">
+          <input type="text" id="toolMarkingSizeText">
+        </div>
+        <p>Ширина разметки: </p>
         <div class="rangeAndText">
           <input type="range" id="toolMarkingRange" min="10" max="1080">
           <input type="text" id="toolMarkingText">
+        </div>
+        <p>Угол наклона разметки (диагональной и волнистой): </p>
+        <div class="rangeAndText">
+          <input type="range" id="toolAngleRange" min="0" max="360">
+          <input type="text" id="toolAngleText">
         </div>
         <button title="Клетка" class="toolBtn" id="cage">
         </button>
@@ -152,6 +163,8 @@
         <button title="Диагональная разметка" class="toolBtn" id="diagonal">
         </button>
         <button title="Двойная диагональная разметка" class="toolBtn" id="doubleDiagonal">
+        </button>
+        <button title="Волнистая разметка" class="toolBtn" id="wavy">
         </button>
       </div>
     </div>

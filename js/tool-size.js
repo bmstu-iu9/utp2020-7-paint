@@ -86,6 +86,96 @@ toolMarkingText.onchange = () => {
   }
 }
 
+let toolAngleRange = document.getElementById("toolAngleRange");
+let toolAngleText = document.getElementById("toolAngleText");
+
+toolAngleRange.value = inclinationAngle;
+toolAngleText.value = `${inclinationAngle}px`;
+
+let defaultAngle = inclinationAngle;
+
+toolAngleRange.oninput = () => {
+  toolAngleText.value = toolAngleRange.value + 'px';
+  toolAngleText.style.background = "white";
+}
+
+toolAngleRange.onchange = () => { inclinationAngle = toolAngleRange.value; }
+
+toolAngleText.oninput = () => {
+  if (checkAngleToolInput(toolAngleText.value)) {
+    toolAngleText.style.background = "white";
+    toolAngleRange.value = parseInt(toolAngleText.value);
+    inclinationAngle = parseInt(toolAngleText.value);
+  } else {
+    toolAngleText.style.background = "#ffd4d4";
+    inclinationAngle = getToolAngle(toolAngleText, toolAngleRange);
+  }
+
+  function getToolAngle(toolAngleText, toolAngleRange) {
+    if (parseInt(toolAngleText.value) > toolAngleRange.max) { return toolAngleRange.max; }
+    if (parseInt(toolAngleText.value) < toolAngleRange.min) { return toolAngleRange.min; }
+    return defaultAngle;
+  }
+}
+
+toolAngleText.onchange = () => {
+  if (checkAngleToolInput(toolAngleText.value)) {
+    toolAngleText.value = parseInt(toolAngleText.value) + 'px';
+    toolAngleRange.value = parseInt(toolAngleText.value);
+  } else {
+    toolAngleRange.value = inclinationAngle;
+    toolAngleText.value = inclinationAngle + 'px';
+    toolAngleText.style.background = "white";
+  }
+}
+
+//
+
+let toolMarkingSizeRange = document.getElementById("toolMarkingSizeRange");
+let toolMarkingSizeText = document.getElementById("toolMarkingSizeText");
+
+toolMarkingSizeRange.value = markingSize;
+toolMarkingSizeText.value = `${markingSize}px`;
+
+let defaultMarkingSize = markingSize;
+
+toolMarkingSizeRange.oninput = () => {
+  toolMarkingSizeText.value = toolMarkingSizeRange.value + 'px';
+  toolMarkingSizeText.style.background = "white";
+}
+
+toolMarkingSizeRange.onchange = () => { markingSize = toolMarkingSizeRange.value; }
+
+toolMarkingSizeText.oninput = () => {
+  if (checkMarkingSizeToolInput(toolMarkingSizeText.value)) {
+    toolMarkingSizeText.style.background = "white";
+    toolMarkingSizeRange.value = parseInt(toolMarkingSizeText.value);
+    markingSize = parseInt(toolMarkingSizeText.value);
+  } else {
+    toolMarkingSizeText.style.background = "#ffd4d4";
+    markingSize = getToolAngle(toolMarkingSizeText, toolMarkingSizeRange);
+  }
+
+  function getToolMarkingSize(toolMarkingSizeText, toolMarkingSizeRange) {
+    if (parseInt(toolMarkingSizeText.value) > toolMarkingSizeRange.max) { return toolMarkingSizeRange.max; }
+    if (parseInt(toolMarkingSizeText.value) < toolMarkingSizeRange.min) { return toolMarkingSizeRange.min; }
+    return defaultMarkingSize;
+  }
+}
+
+toolMarkingSizeText.onchange = () => {
+  if (checkMarkingSizeToolInput(toolMarkingSizeText.value)) {
+    toolMarkingSizeText.value = parseInt(toolMarkingSizeText.value) + 'px';
+    toolMarkingSizeRange.value = parseInt(toolMarkingSizeText.value);
+  } else {
+    toolMarkingSizeRange.value = markingSize;
+    toolMarkingSizeText.value = markingSize + 'px';
+    toolMarkingSizeText.style.background = "white";
+  }
+}
+
+//
+
 function checkSizeToolInput(str) {
   const regExp = new RegExp(`^\\d+(px|)$`, 'i');
   return (regExp.test(str)) &&
@@ -98,4 +188,18 @@ function checkMarkingToolInput(str) {
   return (regExp.test(str)) &&
          (parseInt(str) <= toolMarkingRange.max) &&
          (parseInt(str) >= toolMarkingRange.min);
+}
+
+function checkAngleToolInput(str) {
+  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return (regExp.test(str)) &&
+         (parseInt(str) <= toolAngleRange.max) &&
+         (parseInt(str) >= toolAngleRange.min);
+}
+
+function checkMarkingSizeToolInput(str) {
+  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return (regExp.test(str)) &&
+         (parseInt(str) <= toolMarkingSizeRange.max) &&
+         (parseInt(str) >= toolMarkingSizeRange.min);
 }

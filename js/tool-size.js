@@ -21,7 +21,7 @@ toolSizeText.oninput = () => {
   let maxTS = toolSizeRange.max;
   let minTS = toolSizeRange.min;
 
-  if (checkPxInputRange(toolSize, minTS, maxTS)) {
+  if (checkPxInput(toolSize, minTS, maxTS)) {
     toolSizeText.style.background = "white";
     toolSizeRange.value = parseInt(toolSize);
     curToolSize = parseInt(toolSizeText.value);
@@ -43,7 +43,7 @@ toolSizeText.onchange = () => {
   let maxTS = toolSizeText.max;
   let minTS = toolSizeText.min;
 
-  if (checkPxInputRange(toolSize, minTS, maxTS)) {
+  if (checkPxInput(toolSize, minTS, maxTS)) {
     toolSizeText.value = parseInt(toolSize) + 'px';
     toolSizeRange.value = parseInt(toolSize);
   } else {

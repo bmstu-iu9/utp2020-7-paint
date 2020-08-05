@@ -196,7 +196,7 @@ changeCanvasWidth.oninput = function () {
   let maxW = changeCanvasWidth.max;
   let minW = changeCanvasWidth.min;
 
-  if (checkPxInputRange(width, minW, maxW)) {
+  if (checkPxInput(width, minW, maxW)) {
     curCanvasWidth = parseInt(width);
 
     clearAllLayers();
@@ -254,7 +254,7 @@ changeCanvasHeight.oninput = function () {
   let maxH = changeCanvasHeight.max;
   let minH = changeCanvasHeight.min;
 
-  if (checkPxInputRange(height, minH, maxH)) {
+  if (checkPxInput(height, minH, maxH)) {
     curCanvasHeight = parseInt(height);
 
     clearAllLayers();
@@ -317,7 +317,7 @@ changeBorderWidth.oninput = function () {
   let maxB = changeBorderWidth.max;
   let minB = changeBorderWidth.min;
 
-  if (checkPxInputRange(border, minB, maxB)) {
+  if (checkPxInput(border, minB, maxB)) {
     curCanvasBorder = parseInt(border);
     backCanvas.style.borderWidth = border + 'px';
     changeBorderWidth.style.background = "#ffffff";
@@ -364,7 +364,7 @@ borderColor.oninput = function () {
   }
 }
 
-function checkPxInputRange(str, min, max) {
+function checkPxInput(str, min, max) {
   const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
   return  pxInputRegExp.test(str) &&
          (parseInt(str) >= min) &&

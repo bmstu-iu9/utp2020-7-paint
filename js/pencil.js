@@ -42,7 +42,8 @@ function startPointPencil(e) {
   isDrawing = true;
   isOnCanvas = true;
   if (!isReplaying) rememberDrawingTool("Pencil");
-
+  
+  if (isThereSelection) rememberCanvas();
 
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
@@ -51,8 +52,11 @@ function startPointPencil(e) {
 
   drawPointPencil(e.offsetX, e.offsetY);
 
-  drawPencil(e);
+  if (isThereSelection) uniteRememberAndSelectedImages();
 
+  drawPencil(e);
+  
+  
   document.addEventListener("mousemove", drawPencil);
   document.addEventListener("mouseup", endPoint);
   canvas.addEventListener("mouseleave", exitPoint);
@@ -62,7 +66,9 @@ function startPointPencil(e) {
 function drawPencil(e) {
   if (!isDrawing) return;
   if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
-
+  
+  if (isThereSelection) rememberCanvas();
+  
   curX = e.offsetX;
   curY = e.offsetY;
 
@@ -87,6 +93,8 @@ function drawPencil(e) {
   pencilParameters.oldX = curX;
   pencilParameters.oldY = curY;
 
+
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 

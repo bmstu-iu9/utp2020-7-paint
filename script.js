@@ -18,9 +18,11 @@ let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
-let curCords = [];
 let curState = 0;
-let photoOfState = [];
+let photoOfState = {
+  length: 0,
+  layers: new Map()
+};
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -105,9 +107,13 @@ downloadBtn.addEventListener('click', () => {
   resultCanvas.width = canvas.width;
   resultCanvas.height = canvas.height;
   let resultContext = resultCanvas.getContext("2d");
-  for (let i = layersField.children.length - 2; i >= 1; i--) {
-    resultContext.drawImage(document.getElementById("layer" + parseLayerId(layersField.children[i].id)), 0, 0);
+
+  for (let i = layersField.children.length - 1; i >= 0; i--) {
+    if (parseLayerId(layersField.children[i].id) != null) {
+      resultContext.drawImage(document.getElementById("layer" + parseLayerId(layersField.children[i].id)), 0, 0);
+    }
   }
+
   let img = resultCanvas.toDataURL("image/png")
     .replace("image/png", "image/octet-stream");
   downloadBtn.setAttribute("href", img);
@@ -125,24 +131,32 @@ function clearAllLayers() {
     context = canvas.getContext('2d');
     clearCanvas();
   });
-  canvas = layers[curCanvasId].canvas;
+  canvas = layers.get(curCanvasId).canvas;
   context = canvas.getContext('2d');
 }
 
 document.getElementById("clear").addEventListener('click', () => {
   clearCanvas();
-  let id = activeLayer.id, imgOfCanvas = canvas.toDataURL();
-  let count = curState;
-  curCords = curCords.filter((elem, i) => {
-    if (elem.layer == id) {
-      if (i < curState) --count;
-      return false;
-    }
-    return true;
-  });
-  curState = count;
-  photoOfState[id] = (photoOfState[0].length == 2) ? [imgOfCanvas, imgOfCanvas] : [imgOfCanvas];
+  rememberState();
 });
+
+function clearLayerHistory(id) {
+  let count = 0, k = 0;
+  let photo = photoOfState.layers.get(id);
+  for (let i = 1, last = photo[0]; i < photo.length; i++) {
+    if (photo[i] != last) {
+        photoOfState.layers.forEach((state, idOfState) => {
+          if (id != idOfState) state.splice(i - k, 1);
+        });
+        ++k;
+        if (i <= curState) ++count;
+    }
+    last = photo[i];
+  }
+  photoOfState.length -= k;
+  curState -= count;
+  photoOfState.layers.delete(id);
+}
 
 addEventListener('keydown', (event) => {
   if (event.altKey) {

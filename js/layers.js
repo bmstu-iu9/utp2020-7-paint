@@ -1,12 +1,10 @@
 'use strict';
 
-let maxLayerId = 0;
+let maxLayerId = -1;
 let activeLayer;
 let layersField = document.getElementById('layersField');
-let layers = [];
+let layers = new Map();
 let allCanvases = [backCanvas];
-let addLayerTop = document.getElementById('addLayerTop');
-let addLayerBottom = document.getElementById('addLayerBottom');
 
 function createLayerHtml(id) {
   let newLayer = document.createElement('div');
@@ -42,6 +40,12 @@ function createLayerHtml(id) {
   lockBtn.title = 'Заблокировать'
   btnContainer.appendChild(lockBtn);
 
+  let deleteBtn = document.createElement('button');
+  deleteBtn.classList.add('layerBtn');
+  deleteBtn.id = 'deleteLayer' + id;
+  deleteBtn.title = 'Удалить'
+  btnContainer.appendChild(deleteBtn);
+
   return newLayer;
 }
 
@@ -53,6 +57,9 @@ function createCanvasHtml(id) {
   newCanvas.setAttribute('width', curCanvasWidth + 'px');
   newCanvas.style.height = curCanvasHeight + 'px';
   newCanvas.setAttribute('height', curCanvasHeight + 'px');
+  newCanvas.style.left = canvas.style.left;
+  newCanvas.style.top = canvas.style.top;
+  newCanvas.style.margin = canvas.style.margin;
   bottomLayer.canvas.after(newCanvas);
   return newCanvas;
 }
@@ -61,16 +68,13 @@ function parseLayerId(str) {
   switch (str.slice(0, 3)) {
     case 'lay':
       return parseInt(str.slice('layerDisplay'.length));
-      break;
     case 'previewDiv':
       return parseInt(str.slice('previewDiv'.length));
-      break;
     case 'btnContainer':
       return parseInt(str.slice('btnContainer'.length));
       break;
     case 'pre':
       return parseInt(str.slice('preview'.length));
-      break;
   }
   return null;
 }
@@ -79,32 +83,26 @@ function parseLayerBtnId(str) {
   switch (str.slice(0, 3)) {
     case 'hid':
       return parseInt(str.slice('hideLayer'.length));
-      break;
     case 'loc':
       return parseInt(str.slice('lockLayer'.length));
-      break;
   }
   return null;
 }
 
 function getLayerByDisplay(target) {
   let id = parseLayerId(target);
-  if (id !== null) return layers[id];
+  if (id !== null) return layers.get(id);
   return null;
 }
 
 function getLayerByBtn(target) {
   let id = parseLayerBtnId(target);
-  if (id !== null) return layers[id];
+  if (id !== null) return layers.get(id);
   return null;
 }
 
-function switchLayer(event) {
-  let layer = getLayerByDisplay(event.target.id);
-  if (!layer || activeLayer.id === layer.id) return;
-  activeLayer.canvas.style.pointerEvents = "none";
+function setUpLayer(layer) {
   layer.canvas.style.pointerEvents = "auto";
-  activeLayer.display.classList.remove('highlight');
   layer.display.classList.add('highlight');
   activeInstrument && activeInstrument.delete();
   canvas = layer.canvas;
@@ -114,14 +112,25 @@ function switchLayer(event) {
   activeLayer = layer;
 }
 
-class Layer {
-  constructor(caller) {
-    if (caller == 'firstLayer') {
-      this.id = 0;
-      this.display = document.getElementById('layerDisplay0');
-      this.display.addEventListener('click', switchLayer);
-      this.preview = document.getElementById('preview0');
+function switchLayer(event) {
+  let layer = getLayerByDisplay(event.target.id);
+  if (!layer || activeLayer.id === layer.id) return;
+  activeLayer.canvas.style.pointerEvents = "none";
+  activeLayer.display.classList.remove('highlight');
+  setUpLayer(layer);
+}
 
+function getOldestLayer() {
+  return layers.values().next().value;
+}
+
+class Layer {
+  constructor(caller, callerId) {
+    this.id = ++maxLayerId;
+
+    if (caller == 'firstLayer') {
+      this.display = document.getElementById('layerDisplay0');
+      this.preview = document.getElementById('preview0');
       this.canvas = document.getElementById('layer0');
 
       this.index = 50;
@@ -129,84 +138,87 @@ class Layer {
       changePreviewSize(this.preview);
 
       this.hideBtn = document.getElementById('hideLayer0');
-      this.hidden = false;
       this.lockBtn = document.getElementById('lockLayer0');
-      this.locked = false;
+      this.deleteBtn = document.getElementById('deleteLayer0');
+    } else {
+      this.display = createLayerHtml(this.id);
+      this.canvas = createCanvasHtml(this.id);
+      this.preview = this.display.children['previewDiv' + this.id].children['preview' + this.id];
+      this.hideBtn = this.display.children['btnContainer' + this.id].children['hideLayer' + this.id];
+      this.lockBtn = this.display.children['btnContainer' + this.id].children['lockLayer' + this.id];
+      this.deleteBtn = this.display.children['deleteLayer' + this.id];
 
-      this.lockBtn.addEventListener('click', lockLayerHandler);
-      this.hideBtn.addEventListener('click', hideLayerHandler);
-
-      layers.push(this);
-      allCanvases.push(this.canvas);
-      photoOfState.push([this.canvas.toDataURL()]);
-      return this;
+      activeLayer.canvas.style.pointerEvents = "none";
+      this.canvas.style.pointerEvents = "auto";
+      activeLayer.display.classList.remove('highlight');
+      this.display.classList.add('highlight');
+      activeInstrument && activeInstrument.delete();
+      canvas = this.canvas;
+      context = canvas.getContext('2d');
+      activeInstrument && activeInstrument.init();
+      activeLayer = this;
     }
 
-    this.id = ++maxLayerId;
-    this.display = createLayerHtml(this.id);
-    this.display.addEventListener('click', switchLayer);
-    this.canvas = createCanvasHtml(this.id);
-    this.canvas.style.left = canvas.style.left;
-    this.canvas.style.top = canvas.style.top;
-    this.canvas.style.margin = canvas.style.margin;
-
-    activeLayer.canvas.style.pointerEvents = "none";
-    this.canvas.style.pointerEvents = "auto";
-    activeLayer.display.classList.remove('highlight');
-    this.display.classList.add('highlight');
-
-    activeInstrument && activeInstrument.delete();
-    canvas = this.canvas;
-    context = canvas.getContext('2d');
-    activeInstrument && activeInstrument.init();
-    activeLayer = this;
-    let imgOfCanvas = canvas.toDataURL();
-    if (photoOfState[0].length == 2) {
-      photoOfState.push([imgOfCanvas, imgOfCanvas]);
-    } else photoOfState.push([imgOfCanvas]);
-
-
-    this.preview = this.display.children['previewDiv' + this.id].children['preview' + this.id];
-    this.hideBtn = this.display.children['btnContainer' + this.id].children['hideLayer' + this.id];
-    this.hidden = false;
-    this.lockBtn = this.display.children['btnContainer' + this.id].children['lockLayer' + this.id];
     this.locked = false;
+    this.hidden = false;
 
     changePreviewSize(this.preview);
-
+    
+    this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);
     this.lockBtn.addEventListener('click', lockLayerHandler);
+    this.deleteBtn.addEventListener('click', deleteLayerHandler);
 
     if (caller === 'addLayerTop') {
-      topLayer.display.before(this.display);
-      this.index = topLayer.index + 1;
+      let callerLayer = layers.get(callerId);
+      layers.forEach((layer) => {
+        if (layer.index > callerLayer.index) {
+          ++layer.index;
+          layer.canvas.style.zIndex = this.index;
+        }
+      });
+      callerLayer.display.before(this.display);
+      this.index = callerLayer.index + 1;
       this.canvas.style.zIndex = this.index;
-      topLayer = this;
-    } else {
-      bottomLayer.display.after(this.display);
-      this.index = bottomLayer.index - 1;
+    }
+    if (caller === 'addLayerBottom') {
+      let callerLayer = layers.get(callerId);
+      layers.forEach((layer) => {
+        if (layer.index < callerLayer.index) {
+          --layer.index;
+          layer.canvas.style.zIndex = this.index;
+        }
+      });
+      callerLayer.display.after(this.display);
+      this.index = callerLayer.index - 1;
       this.canvas.style.zIndex = this.index;
-      bottomLayer = this;
     }
 
+    layers.set(this.id, this);
     allCanvases.push(this.canvas);
-    layers.push(this);
+    photoOfState.layers.set(this.id, []);
+    ++photoOfState.length;
+  }
+
+  delete() {
+    if (layers.size === 1) return;
+
+    layers.delete(this.id);
+    let pos = 0;
+    while (allCanvases[pos].id != this.canvas.id) ++pos;
+    allCanvases.splice(pos, 1);
+
+    if (activeLayer.id === this.id) {
+      setUpLayer(getOldestLayer());
+    }
+
+    this.canvas.remove();
+    this.display.remove();
   }
 }
 
 let firstLayer = new Layer('firstLayer');
 activeLayer = firstLayer;
-let topLayer = firstLayer;
-let bottomLayer = firstLayer;
-
-function addLayerHandler(event) {
-  let caller = event.target.id;
-
-  new Layer(caller);
-}
-
-addLayerTop.addEventListener('click', addLayerHandler);
-addLayerBottom.addEventListener('click', addLayerHandler);
 
 function changePreview() {
   let previewContext = activeLayer.preview.getContext('2d');
@@ -253,4 +265,68 @@ function lockLayerHandler(event) {
     layer.lockBtn.classList.add('pressed');
     layer.display.classList.add('locked');
   }
+}
+
+function deleteLayerHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('deleteLayer'.length));
+  if (id === NaN) return;
+
+  layers.get(id).delete();
+  clearLayerHistory(id);
+}
+
+function addLayerTopHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('addLayerTop'.length));
+
+  if (id !== NaN) new Layer('addLayerTop', id);
+}
+
+function addLayerBottomHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('addLayerBottom'.length));
+
+  if (id !== NaN) new Layer('addLayerBottom', id);
+}
+
+function swapIndexes(layer1, layer2) {
+  let temp = layer1.index;
+  layer1.index = layer2.index;
+  layer2.index = temp;
+
+  layer1.canvas.style.zIndex = layer1.index;
+  layer2.canvas.style.zIndex = layer2.index;
+}
+
+function swapTopHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('swapTop'.length));
+  if (id === NaN) return;
+  let closestTopLayer = getOldestLayer();
+  let curLayer = layers.get(id);
+
+  layers.forEach((layer) => {
+    if (layer.index > curLayer.index && layer.index < closestTopLayer.index) {
+      closestTopLayer = layer;
+    }
+  });
+
+  swapIndexes(closestTopLayer, curLayer);
+}
+
+function swapBottomHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('swapBottom'.length));
+  if (id === NaN) return;
+  let closestBotLayer = getOldestLayer();
+  let curLayer = layers.get(id);
+
+  layers.forEach((layer) => {
+    if (layer.index < curLayer.index && layer.index > closestBotpLayer.index) {
+      closestBotLayer = layer;
+    }
+  });
+
+  swapIndexes(closestBotLayer, curLayer);
 }

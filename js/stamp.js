@@ -12,9 +12,10 @@ function initStamp() {
 function deleteStamp() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointStamp);
-  canvas.removeEventListener("mousemove", drawStamp);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawStamp);
+  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener("mouseleave", exitPoint);
+  canvas.removeEventListener("mouseenter", returnPoint);
   document.removeEventListener('keydown', stopStamp);
 }
 
@@ -33,11 +34,14 @@ function resizeMemCanvas(x, y) {
 }
 
 function startPointStamp(e) {
+  e.preventDefault();
   isDrawing = true;
-  if (!isReplaying) rememberDrawingTool("Stamp");
+  isOnCanvas = true;
 
   oldX = e.offsetX;
   oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
   let x = oldX - stampX, y = oldY - stampY;
   let pattern;
 
@@ -66,17 +70,25 @@ function startPointStamp(e) {
   } else start();
 
   document.addEventListener('keydown', stopStamp);
-  canvas.addEventListener("mousemove", drawStamp);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawStamp);
+  document.addEventListener("mouseup", endPoint);
+  canvas.addEventListener("mouseleave", exitPoint);
+  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawStamp(e) {
   if (!isDrawing) return;
-  if (!isReplaying) curCords[curState - 1].cords.push([e.offsetX, e.offsetY]);
 
-  distance = Math.sqrt(Math.pow(e.offsetX - oldX, 2) + Math.pow(e.offsetY - oldY, 2))
-  angle = Math.atan2(e.offsetX - oldX, e.offsetY - oldY);
+  curX = e.offsetX;
+  curY = e.offsetY;
+
+  if (!isOnCanvas) {
+    curX -= deltaX;
+    curY -= deltaY;
+  }
+
+  distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
+  angle = Math.atan2(curX - oldX, curY - oldY);
 
   for (let i = 0; i < distance; i++) {
     newX = oldX + i * Math.sin(angle);
@@ -86,8 +98,8 @@ function drawStamp(e) {
     context.fill();
   }
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
+  oldX = curX;
+  oldY = curY;
 
   changePreview();
 }

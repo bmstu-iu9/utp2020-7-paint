@@ -181,6 +181,24 @@ addEventListener('keydown', (event) => {
   }
 });
 
+addEventListener('keydown', (event) => {
+  if (event.ctrlKey) {
+    switch (event.key) {
+      case 'c':
+        if (isThereSelection) copySelectedArea();
+        break;
+      case 'v':
+        //sCanvas.getContext("2d").drawImage(copyCanvas, 0, 0);
+        insertCanvas(copyCanvas);
+        break;
+      case 'Backspace':
+        if (isThereSelection) context.clearRect(leftTopPointSelection[0], leftTopPointSelection[1], rightBottomPointSelection[0] - leftTopPointSelection[0], rightBottomPointSelection[1] - leftTopPointSelection[1]);
+        break;
+    }
+  }
+});
+
+
 let changeCanvasHeight = document.getElementById("changeCanvasHeight");
 let changeCanvasWidth = document.getElementById("changeCanvasWidth");
 let changeBorderWidth = document.getElementById("changeBorderWidth");

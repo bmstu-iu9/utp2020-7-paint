@@ -31,7 +31,7 @@ function deletePencil() {
 }
 
 function startPointPencil(e) {
-  e.preventDefault();
+  //e.preventDefault();
   isDrawing = true;
 
   context.save();
@@ -45,7 +45,6 @@ function startPointPencil(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
 
   drawPencil(e);
-  
   
   document.addEventListener("mousemove", drawPencil);
   document.addEventListener("mouseup", endPoint);
@@ -72,7 +71,6 @@ function drawPencil(e) {
 
   pencilParameters.oldX = curX;
   pencilParameters.oldY = curY;
-
 
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();

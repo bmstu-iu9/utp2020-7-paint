@@ -63,6 +63,7 @@ function insertImg(img) {
     deltaX = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('width').replace('px', '')) / 2;
     deltaY = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('height').replace('px', '')) / 2;
     sign = 1;
+    photoAngle = 0;
   }
 
   if (lastPhoto) photoIn.removeChild(lastPhoto);

@@ -6,6 +6,39 @@ let layersField = document.getElementById('layersField');
 let layers = new Map();
 let allCanvases = [backCanvas];
 
+function createLayerOptionsHtml(id) {
+  let optContainer = document.createElement('div');
+  optContainer.classList.add('layerOptions');
+  optContainer.id = 'layerOptions' + id;
+
+  let deleteBtn = document.createElement('button');
+  deleteBtn.id = 'deleteLayer' + id;
+  deleteBtn.innerText = 'Удалить слой';
+  optContainer.appendChild(deleteBtn);
+
+  let addTopBtn = document.createElement('button');
+  addTopBtn.id = 'addLayerTop' + id;
+  addTopBtn.innerText = 'Добавить слой сверху';
+  optContainer.appendChild(addTopBtn);
+
+  let addBotBtn = document.createElement('button');
+  addBotBtn.id = 'addLayerBottom' + id;
+  addBotBtn.innerText = 'Добавить слой снизу';
+  optContainer.appendChild(addBotBtn);
+
+  let swapTopBtn = document.createElement('button');
+  swapTopBtn.id = 'swapTop' + id;
+  swapTopBtn.innerText = 'Поднять слой';
+  optContainer.appendChild(swapTopBtn);
+
+  let swapBotBtn = document.createElement('button');
+  swapBotBtn.id = 'swapBottom' + id;
+  swapBotBtn.innerText = 'Опустить слой';
+  optContainer.appendChild(swapBotBtn);
+
+  return optContainer;
+}
+
 function createLayerHtml(id) {
   let newLayer = document.createElement('div');
   newLayer.classList.add('layer');
@@ -40,11 +73,15 @@ function createLayerHtml(id) {
   lockBtn.title = 'Заблокировать'
   btnContainer.appendChild(lockBtn);
 
-  let deleteBtn = document.createElement('button');
-  deleteBtn.classList.add('layerBtn');
-  deleteBtn.id = 'deleteLayer' + id;
-  deleteBtn.title = 'Удалить'
-  btnContainer.appendChild(deleteBtn);
+  let layerDroplist = document.createElement('div');
+  layerDroplist.classList.add('droplist');
+  layerDroplist.id = 'droplist' + id;
+
+  let menuBtn = document.createElement('button');
+  menuBtn.classList.add('layerOptionsBtn');
+  layerDroplist.appendChild(menuBtn);
+  layerDroplist.appendChild(createLayerOptionsHtml(id));
+  btnContainer.appendChild(layerDroplist);
 
   return newLayer;
 }
@@ -149,11 +186,18 @@ class Layer {
       this.canvas = createCanvasHtml(this.id);
       this.preview = this.display.children['previewDiv' + this.id]
                                  .children['preview' + this.id];
-      this.hideBtn = this.display.children['btnContainer' + this.id]
-                                 .children['hideLayer' + this.id];
-      this.lockBtn = this.display.children['btnContainer' + this.id]
-                                 .children['lockLayer' + this.id];
-      this.deleteBtn = this.display.children['deleteLayer' + this.id];
+
+      let btnContainer = this.display.children['btnContainer' + this.id]
+      this.hideBtn = btnContainer.children['hideLayer' + this.id];
+      this.lockBtn = btnContainer.children['lockLayer' + this.id];
+
+      let droplist = btnContainer.children['droplist' + this.id];
+      let options = droplist.children['layerOptions' + this.id]
+      this.deleteBtn = options.children['deleteLayer' + this.id];
+      this.addTopBtn = options.children['addLayerTop' + this.id];
+      this.addBottomBtn = options.children['addLayerBottom' + this.id];
+      this.swapTopBtn = options.children['swapTop' + this.id];
+      this.swapBottomBtn = options.children['swapBottom' + this.id];
 
       activeLayer.canvas.style.pointerEvents = "none";
       this.canvas.style.pointerEvents = "auto";
@@ -308,6 +352,10 @@ function swapIndexes(layer1, layer2) {
 
   layer1.canvas.style.zIndex = layer1.index;
   layer2.canvas.style.zIndex = layer2.index;
+
+  let display1 = layer1.display, display2 = layer2.display;
+
+  display1.parentNode.insertBefore(display1, display2);
 }
 
 function swapTopHandler(event) {
@@ -318,26 +366,31 @@ function swapTopHandler(event) {
   let curLayer = layers.get(id);
 
   layers.forEach((layer) => {
-    if (layer.index > curLayer.index && layer.index < closestTopLayer.index) {
+    if (layer.index > curLayer.index &&
+       (closestTopLayer === null || layer.index < closestTopLayer.index)) {
       closestTopLayer = layer;
     }
   });
 
-  swapIndexes(closestTopLayer, curLayer);
+  if (closestTopLayer != null) swapIndexes(closestTopLayer, curLayer);
 }
 
 function swapBottomHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('swapBottom'.length));
   if (id === NaN) return;
-  let closestBotLayer = getOldestLayer();
+  let closestBotLayer = null;
   let curLayer = layers.get(id);
 
   layers.forEach((layer) => {
-    if (layer.index < curLayer.index && layer.index > closestBotLayer.index) {
+    if (layer.index < curLayer.index &&
+       (closestBotLayer === null || layer.index > closestBotLayer.index)) {
       closestBotLayer = layer;
     }
   });
-
-  swapIndexes(closestBotLayer, curLayer);
+  console.log(curLayer);
+  console.log(closestBotLayer);
+  if (closestBotLayer != null) swapIndexes(closestBotLayer, curLayer);
+  console.log(curLayer);
+  console.log(closestBotLayer);
 }

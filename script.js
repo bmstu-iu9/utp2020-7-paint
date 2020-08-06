@@ -187,7 +187,7 @@ addEventListener('keydown', (event) => {
 
 let changeCanvasHeight = document.getElementById("changeCanvasHeight");
 let changeCanvasWidth = document.getElementById("changeCanvasWidth");
-let changeBorderWidth = document.getElementById("borderWidth");
+let changeBorderWidth = document.getElementById("changeBorderWidth");
 
 changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
@@ -197,10 +197,10 @@ changeCanvasWidth.oninput = function () {
   addEventListener('keydown', setWidth);
 
   let width = changeCanvasWidth.value;
+  let maxW = changeCanvasWidth.max;
+  let minW = changeCanvasWidth.min;
 
-  if (checkPxInput(width) &&
-     (parseInt(width) >= changeCanvasWidth.min) &&
-     (parseInt(width) <= changeCanvasWidth.max)) {
+  if (checkPxInput(width, minW, maxW)) {
     curCanvasWidth = parseInt(width);
 
     clearAllLayers();
@@ -219,7 +219,8 @@ changeCanvasWidth.oninput = function () {
   changePreview();
 
   function getWidth(str) {
-    if (!checkPxInput(str))
+
+    if (isNaN(parseInt(str)))
       return defaultWidth;
 
     if (parseInt(str) > changeCanvasWidth.max)
@@ -254,10 +255,10 @@ changeCanvasHeight.oninput = function () {
   addEventListener('keydown', setHeight);
 
   let height = changeCanvasHeight.value;
+  let maxH = changeCanvasHeight.max;
+  let minH = changeCanvasHeight.min;
 
-  if (checkPxInput(height) &&
-     (parseInt(height) >= changeCanvasHeight.min) &&
-     (parseInt(height) <= changeCanvasHeight.max)) {
+  if (checkPxInput(height, minH, maxH)) {
     curCanvasHeight = parseInt(height);
 
     clearAllLayers();
@@ -280,7 +281,8 @@ changeCanvasHeight.oninput = function () {
 
 
   function getHeight(str) {
-   if (!checkPxInput(str))
+
+  if (isNaN(parseInt(str)))
     return defaultHeight;
 
    if (parseInt(str) > changeCanvasHeight.max)
@@ -312,14 +314,14 @@ changeCanvasHeight.oninput = function () {
   }
 }
 
-borderWidth.oninput = function () {
+changeBorderWidth.oninput = function () {
   addEventListener('keydown', setBorder);
 
   let border = changeBorderWidth.value;
+  let maxB = changeBorderWidth.max;
+  let minB = changeBorderWidth.min;
 
-  if (checkPxInput(border) &&
-     (parseInt(border) >= 0) &&
-     (parseInt(border) <= 30)) {
+  if (checkPxInput(border, minB, maxB)) {
     curCanvasBorder = parseInt(border);
     backCanvas.style.borderWidth = border + 'px';
     changeBorderWidth.style.background = "#ffffff";
@@ -331,7 +333,7 @@ borderWidth.oninput = function () {
 
   function getBorder(str) {
 
-    if (!checkPxInput(str))
+    if (isNaN(parseInt(str)))
       return defaultBorder;
 
     if (parseInt(str) > changeBorderWidth.max)
@@ -366,9 +368,11 @@ borderColor.oninput = function () {
   }
 }
 
-function checkPxInput(str) {
-  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return regExp.test(str);
+function checkPxInput(str, min, max) {
+  const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return  pxInputRegExp.test(str) &&
+         (parseInt(str) >= min) &&
+         (parseInt(str) <= max);
 }
 
 

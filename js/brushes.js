@@ -15,14 +15,11 @@ function deleteBasicBrush() {
   canvas.removeEventListener("mousedown", startPointBasicBrush);
   document.removeEventListener("mousemove", drawBasicBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointBasicBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   oldX = e.offsetX;
   oldY = e.offsetY;
@@ -44,20 +41,13 @@ function startPointBasicBrush(e) {
 
   document.addEventListener("mousemove", drawBasicBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawBasicBrush(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
   angle = Math.atan2(curX - oldX, curY - oldY);
@@ -90,8 +80,6 @@ function deleteNeonBrush() {
   canvas.removeEventListener("mousedown", startPointNeonBrush);
   document.removeEventListener("mousemove", drawNeonBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 
   context.shadowBlur = 0;
 }
@@ -99,7 +87,6 @@ function deleteNeonBrush() {
 function startPointNeonBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   context.save();
   context.lineWidth = curToolSize;
@@ -116,20 +103,13 @@ function startPointNeonBrush(e) {
 
   document.addEventListener("mousemove", drawNeonBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawNeonBrush(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   context.lineTo(curX, curY);
   context.stroke();
@@ -153,14 +133,11 @@ function deleteSmoothBrush() {
   canvas.removeEventListener("mousedown", startPointSmoothBrush);
   document.removeEventListener("mousemove", drawSmoothBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointSmoothBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   oldX = e.offsetX;
   oldY = e.offsetY;
@@ -183,20 +160,13 @@ function startPointSmoothBrush(e) {
 
   document.addEventListener("mousemove", drawSmoothBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawSmoothBrush(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
   angle = Math.atan2(curX - oldX, curY - oldY);
@@ -242,15 +212,13 @@ function deleteSketchBrush() {
   canvas.removeEventListener("mousedown", startPointSketchBrush);
   document.removeEventListener("mousemove", drawSketchBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointSketchBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
+  context.save();
   context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
@@ -258,7 +226,6 @@ function startPointSketchBrush(e) {
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
-  context.save();
   context.strokeStyle = arrayToRgb(curColor);
   context.globalAlpha = "0.1";
 
@@ -270,20 +237,13 @@ function startPointSketchBrush(e) {
 
   document.addEventListener("mousemove", drawSketchBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawSketchBrush(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   pointsCounter++;
 
@@ -334,14 +294,11 @@ function deletePatternBrush() {
   canvas.removeEventListener("mousedown", startPointPatternBrush);
   document.removeEventListener("mousemove", drawPatternBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointPatternBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   context.save();
   context.lineWidth = curToolSize;
@@ -361,8 +318,6 @@ function startPointPatternBrush(e) {
 
   document.addEventListener("mousemove", drawPatternBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawPatternBrush(e) {
@@ -370,13 +325,8 @@ function drawPatternBrush(e) {
 
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   prevPoints[pointsCounter] = [curX, curY];
 
@@ -430,14 +380,11 @@ function deleteFurBrush() {
   canvas.removeEventListener("mousedown", startPointFurBrush);
   document.removeEventListener("mousemove", drawFurBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointFurBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   context.save();
   context.lineWidth = curToolSize;
@@ -457,8 +404,6 @@ function startPointFurBrush(e) {
 
   document.addEventListener("mousemove", drawFurBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawFurBrush(e) {
@@ -466,13 +411,8 @@ function drawFurBrush(e) {
 
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   prevPoints[pointsCounter] = [curX, curY];
 
@@ -525,14 +465,11 @@ function deleteRectangleBrush() {
   canvas.removeEventListener("mousedown", startPointRectangleBrush);
   document.removeEventListener("mousemove", drawRectangleBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointRectangleBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   context.save();
   context.lineWidth = curToolSize;
@@ -548,8 +485,6 @@ function startPointRectangleBrush(e) {
 
   document.addEventListener("mousemove", drawRectangleBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawRectangleBrush(e) {
@@ -557,13 +492,8 @@ function drawRectangleBrush(e) {
 
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   dx = curX - oldX;
   dy = curY - oldY;
@@ -608,14 +538,11 @@ function deleteCircleBrush() {
   canvas.removeEventListener("mousedown", startPointCircleBrush);
   document.removeEventListener("mousemove", drawCircleBrush);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointCircleBrush(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   context.save();
   context.lineWidth = curToolSize;
@@ -631,8 +558,6 @@ function startPointCircleBrush(e) {
 
   document.addEventListener("mousemove", drawCircleBrush);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawCircleBrush(e) {
@@ -640,13 +565,8 @@ function drawCircleBrush(e) {
 
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   dx = curX - oldX;
   dy = curY - oldY;

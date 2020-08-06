@@ -203,6 +203,7 @@ function startPointSketchBrush(e) {
   e.preventDefault();
   isDrawing = true;
 
+  context.save();
   context.lineWidth = curToolSize;
 
   oldX = e.offsetX;
@@ -210,7 +211,6 @@ function startPointSketchBrush(e) {
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
-  context.save();
   context.strokeStyle = arrayToRgb(curColor);
   context.globalAlpha = "0.1";
 

@@ -14,6 +14,7 @@ function initStamp() {
 function deleteStamp() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointStamp);
+  canvas.removeEventListener("click", selectFragment);
   document.removeEventListener("mousemove", drawStamp);
   document.removeEventListener("mouseup", endPoint);
   document.removeEventListener('keydown', stopStamp);

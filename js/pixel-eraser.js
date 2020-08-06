@@ -15,35 +15,40 @@ function initPixelEraser() {
 
 function deletePixelEraser() {
   canvas.removeEventListener("mousedown", startPointPixelEraser);
-  canvas.removeEventListener("mousemove", drawPixelEraser);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
+  document.removeEventListener("mousemove", drawPixelEraser);
+  document.removeEventListener("mouseup", endPoint);
   context.globalCompositeOperation = "source-over";
 }
 
 function startPointPixelEraser(e) {
+  e.preventDefault();
   isDrawing = true;
 
+  context.save();
   pixelEraserParameters.oldX = e.offsetX;
   pixelEraserParameters.oldY = e.offsetY;
+  deltaX = e.pageX - e.offsetX;
+  deltaY = e.pageY - e.offsetY;
 
   drawPointPixelEraser(e.offsetX, e.offsetY);
 
   drawPixelEraser(e);
 
-  canvas.addEventListener("mousemove", drawPixelEraser);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener("mousemove", drawPixelEraser);
+  document.addEventListener("mouseup", endPoint);
 }
 
 function drawPixelEraser(e) {
   if (!isDrawing) return;
 
-  pixelEraserParameters.newX = e.offsetX;
-  pixelEraserParameters.newY = e.offsetY;
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
-  pixelEraserParameters.distance = Math.sqrt(Math.pow(e.offsetX - pixelEraserParameters.oldX, 2) + Math.pow(e.offsetY - pixelEraserParameters.oldY, 2));
-  pixelEraserParameters.angle = Math.atan2(e.offsetX - pixelEraserParameters.oldX, e.offsetY - pixelEraserParameters.oldY);
+  pixelEraserParameters.newX = curX;
+  pixelEraserParameters.newY = curY;
+
+  pixelEraserParameters.distance = Math.sqrt(Math.pow(curX - pixelEraserParameters.oldX, 2) + Math.pow(curY - pixelEraserParameters.oldY, 2));
+  pixelEraserParameters.angle = Math.atan2(curX - pixelEraserParameters.oldX, curY - pixelEraserParameters.oldY);
 
   for (let i = 0; i < pixelEraserParameters.distance; i++) {
     pixelEraserParameters.newX = Math.floor(pixelEraserParameters.oldX + i * Math.sin(pixelEraserParameters.angle));
@@ -52,8 +57,8 @@ function drawPixelEraser(e) {
     drawPointPixelEraser(pixelEraserParameters.newX, pixelEraserParameters.newY);
   }
 
-  pixelEraserParameters.oldX = e.offsetX;
-  pixelEraserParameters.oldY = e.offsetY;
+  pixelEraserParameters.oldX = curX;
+  pixelEraserParameters.oldY = curY;
 
   changePreview();
 }

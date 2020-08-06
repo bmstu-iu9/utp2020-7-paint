@@ -10,17 +10,15 @@ function deleteStraightLine() {
   canvas.removeEventListener("mousedown", startPointStraightLine);
   document.removeEventListener("mousemove", drawStraightLine);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointStraightLine(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -35,20 +33,13 @@ function startPointStraightLine(e) {
 
   document.addEventListener("mousemove", drawStraightLine);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawStraightLine(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 

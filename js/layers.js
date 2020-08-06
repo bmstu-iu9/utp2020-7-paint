@@ -369,11 +369,8 @@ function swapTopHandler(event) {
       closestTopLayer = layer;
     }
   });
-  console.log(curLayer);
-  console.log(closestTopLayer);
+
   if (closestTopLayer != null) swapIndexes(curLayer, closestTopLayer);
-  console.log(curLayer);
-  console.log(closestTopLayer);
 }
 
 function swapBottomHandler(event) {

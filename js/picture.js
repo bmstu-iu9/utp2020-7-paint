@@ -63,6 +63,7 @@ function insertImg(img) {
     deltaX = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('width').replace('px', '')) / 2;
     deltaY = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('height').replace('px', '')) / 2;
     sign = 1;
+    photoAngle = 0;
   }
 
   if (lastPhoto) photoIn.removeChild(lastPhoto);
@@ -145,7 +146,9 @@ photoRotator.addEventListener('mousedown', (e) => {
     let coDeirect = coDirectional(n1, n2);
 
     sign = (coDeirect && sign > 0 || !coDeirect && sign < 0) ? sign : sign * (-1);
-    photoAngle += sign * Math.acos((x1 * x2 + y1 * y2) / (dist1 * dist2));
+    let cos = (x1 * x2 + y1 * y2) / (dist1 * dist2);
+    if (Math.abs(cos) > 1) cos = Math.trunc(cos);
+    photoAngle += sign * Math.acos(cos);
     lastX = x;
     lastY = y;
 

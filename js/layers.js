@@ -101,29 +101,27 @@ function createCanvasHtml(id) {
   return newCanvas;
 }
 
-function parseLayerId(str) {
-  switch (str.slice(0, 3)) {
-    case 'lay':
-      return parseInt(str.slice('layerDisplay'.length));
-    case 'previewDiv':
-      return parseInt(str.slice('previewDiv'.length));
-    case 'btnContainer':
-      return parseInt(str.slice('btnContainer'.length));
-      break;
-    case 'pre':
-      return parseInt(str.slice('preview'.length));
+function parseAlowedNodesId(str, allowedNodes) {
+  for (let i = 0; i < allowedNodes.length; i++) {
+    let name = allowedNodes[i];
+    let cutStr = str.slice(0, name.length);
+    if (cutStr === name) {
+      let id = parseInt(str.slice(name.length));
+      if (id !== NaN) return id;
+    }
   }
   return null;
 }
 
+function parseLayerId(str) {
+  let allowedNodes = ['layerDisplay', 'previewDiv',
+                      'btnContainer', 'preview'];
+  return parseAlowedNodesId(str, allowedNodes);
+}
+
 function parseLayerBtnId(str) {
-  switch (str.slice(0, 3)) {
-    case 'hid':
-      return parseInt(str.slice('hideLayer'.length));
-    case 'loc':
-      return parseInt(str.slice('lockLayer'.length));
-  }
-  return null;
+  let allowedNodes = ['hideLayer', 'lockLayer'];
+  return parseAlowedNodesId(str, allowedNodes);
 }
 
 function getLayerByDisplay(target) {
@@ -371,8 +369,11 @@ function swapTopHandler(event) {
       closestTopLayer = layer;
     }
   });
-
-  if (closestTopLayer != null) swapIndexes(closestTopLayer, curLayer);
+  console.log(curLayer);
+  console.log(closestTopLayer);
+  if (closestTopLayer != null) swapIndexes(curLayer, closestTopLayer);
+  console.log(curLayer);
+  console.log(closestTopLayer);
 }
 
 function swapBottomHandler(event) {
@@ -388,9 +389,6 @@ function swapBottomHandler(event) {
       closestBotLayer = layer;
     }
   });
-  console.log(curLayer);
-  console.log(closestBotLayer);
+
   if (closestBotLayer != null) swapIndexes(closestBotLayer, curLayer);
-  console.log(curLayer);
-  console.log(closestBotLayer);
 }

@@ -10,17 +10,15 @@ function deleteRectangle() {
   canvas.removeEventListener("mousedown", startPointRectangle);
   document.removeEventListener("mousemove", drawRectangle);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointRectangle(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -35,20 +33,13 @@ function startPointRectangle(e) {
 
   document.addEventListener("mousemove", drawRectangle);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawRectangle(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -72,17 +63,15 @@ function deleteCircle() {
   canvas.removeEventListener("mousedown", startPointCircle);
   document.removeEventListener("mousemove", drawCircle);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointCircle(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -97,20 +86,13 @@ function startPointCircle(e) {
 
   document.addEventListener("mousemove", drawCircle);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawCircle(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   radius = Math.sqrt(Math.pow(curX - centerX, 2) + Math.pow(curY - centerY, 2));
 
@@ -135,17 +117,15 @@ function deleteEllipse() {
   canvas.removeEventListener("mousedown", startPointEllipse);
   document.removeEventListener("mousemove", drawEllipse);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointEllipse(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -160,20 +140,13 @@ function startPointEllipse(e) {
 
   document.addEventListener("mousemove", drawEllipse);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawEllipse(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -199,17 +172,15 @@ function deleteEqTriangle() {
   canvas.removeEventListener("mousedown", startPointEqTriangle);
   document.removeEventListener("mousemove", drawEqTriangle);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointEqTriangle(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -224,20 +195,13 @@ function startPointEqTriangle(e) {
 
   document.addEventListener("mousemove", drawEqTriangle);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawEqTriangle(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -263,17 +227,15 @@ function deleteRightTriangle() {
   canvas.removeEventListener("mousedown", startPointRightTriangle);
   document.removeEventListener("mousemove", drawRightTriangle);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointRightTriangle(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   saveImg();
 
+  context.save();
   context.lineWidth = curToolSize;
   context.lineJoin = "round";
   context.lineCap = "round";
@@ -288,20 +250,13 @@ function startPointRightTriangle(e) {
 
   document.addEventListener("mousemove", drawRightTriangle);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawRightTriangle(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 

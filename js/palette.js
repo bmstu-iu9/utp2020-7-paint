@@ -9,6 +9,10 @@ colorInput.addEventListener('input', () => {
   colorBtn.style.background = color;
 });
 
+colorBtn.addEventListener('click', () => {
+  colorInput.click();
+});
+
 function hexToRgb(hex) {
   let r1 = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
   let r2 = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);

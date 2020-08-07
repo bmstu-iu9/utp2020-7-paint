@@ -217,7 +217,7 @@ body {
   outline: none;
 }
 
-.hiddenLayer{
+.hiddenLayer {
   background-color: red;
 }
 
@@ -238,20 +238,27 @@ body {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 60px;
+  min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1000;
 }
 
 .droplist:hover .layerOptions {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .layerOptions button {
   width: 100%;
   font-size: 12px;
+  padding: 2px 4px;
   border: none;
+  border-bottom: 1px solid #b6b6b6;
   outline: none;
+}
+
+.layerOptions button:last-child {
+  border-bottom: none;
 }
 
 .layerOptions button:hover {

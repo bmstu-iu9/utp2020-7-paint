@@ -211,26 +211,30 @@ body {
 .visibleLayer {
   width: 20px;
   height: 20px;
-  background-color: green;
+  background-image: url("img/tools/show_layer.svg");
+  background-size: cover;
+  background-color: #fafafa;
   border: none;
   margin-right: 5px;
   outline: none;
 }
 
 .hiddenLayer {
-  background-color: red;
+  background-image: url("img/tools/hide_layer.svg");
 }
 
 .unlockedLayer {
   width: 20px;
   height: 20px;
-  background-color: green;
+  background-image: url("img/tools/unlock_layer.svg");
+  background-size: cover;
+  background-color: #fafafa;
   border: none;
   outline: none;
 }
 
 .lockedLayer {
-  background-color: red;
+  background-image: url("img/tools/lock_layer.svg");
 }
 
 .layerOptions {
@@ -270,6 +274,9 @@ body {
   height: 20px;
   border: none;
   outline: none;
+  background-image: url("img/tools/more_layer.svg");
+  background-size: cover;
+  background-color: #fafafa;
 }
 
 .previewWindow {

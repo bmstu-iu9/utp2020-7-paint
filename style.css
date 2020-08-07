@@ -141,6 +141,7 @@ body {
   border-left: 1px solid #cccccc;
   transition: 0.5s;
   transform: translateX(0%);
+  z-index: 1000;
 }
 
 .layersFieldClosed {
@@ -189,7 +190,7 @@ body {
   margin-left: 5%;
   margin-top: 5%;
   width: 90%;
-  height: 30px;
+  height: 36px;
   display: flex;
   align-items: center;
 }
@@ -204,8 +205,11 @@ body {
 
 .layerBtncontainer {
   position: absolute;
-  right: 5px;
+  right: 1px;
   height: 20px;
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .visibleLayer {
@@ -215,7 +219,6 @@ body {
   background-size: cover;
   background-color: #fafafa;
   border: none;
-  margin-right: 5px;
   outline: none;
 }
 
@@ -280,11 +283,12 @@ body {
 }
 
 .previewWindow {
-  width: 20px;
-  height: 20px;
-  border: 0.5px solid black;
+  width: 42%;
+  height: 36px;
   float: left;
   margin-left: 2px;
+  display: flex;
+  align-items: center;
 }
 
 canvas.preview {
@@ -294,6 +298,7 @@ canvas.preview {
   position: relative;
   height: 100%;
   width: 100%;
+  border: 0.5px solid black;
 }
 
 #colorIndicatorDynamic {

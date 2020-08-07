@@ -31,10 +31,12 @@ function deletePencil() {
 }
 
 function startPointPencil(e) {
-  //e.preventDefault();
+  e.preventDefault();
   isDrawing = true;
 
   context.save();
+  if (isThereSelection) rememberCanvasWithoutSelection();
+  
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;
@@ -53,6 +55,7 @@ function startPointPencil(e) {
 function drawPencil(e) {
   if (!isDrawing) return;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 

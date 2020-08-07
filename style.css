@@ -407,6 +407,20 @@ option:checked {
   z-index: 1000;
 }
 
+#canvasInsertion {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px dashed #bbbbbb;
+  box-sizing: border-box;
+}
+
+#copyCanvasForInsertion {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
 #photoForInsertion {
   max-width: 100%;
   max-height: 100%;

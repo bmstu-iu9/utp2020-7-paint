@@ -41,6 +41,7 @@ function startPointStamp(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   context.save();
   oldX = e.offsetX - curToolSize / 2;
   oldY = e.offsetY - curToolSize / 2;
@@ -57,6 +58,7 @@ function startPointStamp(e) {
   }
 
   drawSquareStamp(oldX, oldY);
+  if (isThereSelection) uniteRememberAndSelectedImages();
 
   document.addEventListener('keydown', stopStamp);
   document.addEventListener("mousemove", drawStamp);
@@ -66,6 +68,7 @@ function startPointStamp(e) {
 function drawStamp(e) {
   if (!isDrawing) return;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   curX = e.pageX - deltaX - curToolSize / 2;
   curY = e.pageY - deltaY - curToolSize / 2;
 
@@ -81,6 +84,7 @@ function drawStamp(e) {
   oldX = curX;
   oldY = curY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 

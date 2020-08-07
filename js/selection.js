@@ -1,21 +1,22 @@
-let copyCanvas;
-
-
-
-let sCanvas = document.createElement("canvas");
-sCanvas.width = canvas.width;
-sCanvas.height = canvas.height;
-sCanvas.id = "sCanvas";
-document.getElementById("layer0").after(sCanvas);
-
-let leftTopPointSelection = [0, 0];
-let rightBottomPointSelection = [0, 0];
+let deltaXS, deltaYS, curXS, curYS, oldXS, oldYS;
 
 let isThereSelection = false;
 let arrayOfSelectedArea = [];
 
+let leftTopPointSelection = [0, 0];
+let rightBottomPointSelection = [0, 0];
+
+let copyCanvas;
+
+let rememberedCanvas = document.createElement("canvas");
+let rememberedContext = rememberedCanvas.getContext("2d");
+let canvasIn = document.getElementById('canvasInsertion');
+
 function endSelectionPoint() {
-  isDrawing = false;
+  context.restore();
+  if (isDrawing) {
+    isDrawing = false;
+  }
   context.beginPath();
   if (isThereSelection) {
     if (leftTopPointSelection[0] != rightBottomPointSelection[0] && leftTopPointSelection[1] != rightBottomPointSelection[1]) {
@@ -27,36 +28,29 @@ function endSelectionPoint() {
   }
 }
 
-function initSelection() {
+function initRectangleSelection() {
   canvas.addEventListener("mousedown", startPointRectangleSelection);
 }
 
-function deleteSelection() {
+function deleteRectangleSelection() {
   canvas.removeEventListener("mousedown", startPointRectangleSelection);
   document.removeEventListener("mousemove", drawRectangleSelection);
   document.removeEventListener("mouseup", endSelectionPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
 }
 
 function startPointRectangleSelection(e) {
   e.preventDefault();
   
   isDrawing = true;
-  isOnCanvas = true;
-  
-  //if (!isReplaying) rememberDrawingTool("Rectangle", [e.offsetX, e.offsetY]);
 
   if (isThereSelection) deleteSelectedArea();
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
+  oldXS = e.offsetX;
+  oldYS = e.offsetY;
+  deltaXS = e.pageX - oldXS;
+  deltaYS = e.pageY - oldYS;
 
   document.addEventListener("mousemove", drawRectangleSelection);
   document.addEventListener("mouseup", endSelectionPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawRectangleSelection(e) {
@@ -73,33 +67,26 @@ function drawRectangleSelection(e) {
     selectionCanvas.height = selectionCanvas.offsetHeight;
     selectionCanvas.style.zIndex = 999;
     selectionCanvas.style.pointerEvents = "none";
-    
-    //selectionContext.lineDashOffset = -5;
   }
+
   isThereSelection = true;
   
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curXS = e.pageX - deltaXS;
+  curYS = e.pageY - deltaYS;
 
   let selectionContext = document.getElementById("selectionCanvas").getContext("2d");
   selectionContext.clearRect(0, 0, canvas.width, canvas.height);
   selectionContext.beginPath();
-  selectionContext.setLineDash([10, 16]);
+  selectionContext.setLineDash([5, 5]);
   selectionContext.strokeStyle = "grey";
-  selectionContext.strokeRect(oldX, oldY, curX - oldX, curY - oldY);
-  leftTopPointSelection = [Math.min(oldX, curX), Math.min(oldY, curY)];
-  rightBottomPointSelection = [Math.max(oldX, curX), Math.max(oldY, curY)];
+  selectionContext.strokeRect(oldXS, oldYS, curXS - oldXS, curYS - oldYS);
+
+  leftTopPointSelection = [Math.min(oldXS, curXS), Math.min(oldYS, curYS)];
+  rightBottomPointSelection = [Math.max(oldXS, curXS), Math.max(oldYS, curYS)];
 }
 
-let rememberedCanvas = document.createElement("canvas");
-let rememberedContext = rememberedCanvas.getContext("2d");
 
-function rememberCanvas() {
+function rememberCanvasWithoutSelection() {
   rememberedCanvas.width = canvas.width;
   rememberedCanvas.height = canvas.height;
   rememberedContext.clearRect(0, 0, canvas.width, canvas.height);
@@ -142,10 +129,11 @@ function deleteSelectedArea() {
 }
 
 function copySelectedArea() {
-  let copyImageData = context.getImageData(0, 0, canvas.width, canvas.height);          
-  for (let i = 0; i < canvas.width; i++) {
-    for (let j = 0; j < canvas.height; j++) {
-      if (arrayOfSelectedArea[i] === undefined || arrayOfSelectedArea[i][j] != true) {
+  let copyImageData = context.getImageData(leftTopPointSelection[0], leftTopPointSelection[1], rightBottomPointSelection[0] - leftTopPointSelection[0], rightBottomPointSelection[1] - leftTopPointSelection[1]);          
+  
+  for (let i = leftTopPointSelection[0]; i <= rightBottomPointSelection[0]; i++) {
+    for (let j = leftTopPointSelection[1]; j <= rightBottomPointSelection[1]; j++) {
+      if (arrayOfSelectedArea[i] === undefined || !arrayOfSelectedArea[i][j]) {
         copyImageData.data[getIndexOfRedInData(i, j)] = 0;
         copyImageData.data[getIndexOfGreenInData(i, j)] = 0;
         copyImageData.data[getIndexOfBlueInData(i, j)] = 0;
@@ -153,8 +141,10 @@ function copySelectedArea() {
       }
     }
   }
+
   copyCanvas = document.createElement("canvas");
-  //copyCanvas.style.width = 
+  copyCanvas.setAttribute("width", rightBottomPointSelection[0] - leftTopPointSelection[0]);
+  copyCanvas.setAttribute("height", rightBottomPointSelection[1] - leftTopPointSelection[1]);
   copyCanvas.getContext("2d").putImageData(copyImageData, 0, 0);
 }
 
@@ -173,50 +163,82 @@ function clearSelectedArea() {
   context.putImageData(resultImageData);
 }
 
-
-
-
-
-
-
-
-function insertCanvas(img) {
-  let photoIn = document.getElementById('photoInsertion');
-  let lastPhoto = document.getElementById('photoForInsertion');
+function insertCanvas(copyCanvas) {
+  deleteSelectedArea();
+  let lastPasteCanvas = document.getElementById('copyCanvasForInsertion');
 
   function pressForInsertion() {
     if (event.code == 'Enter' && event.altKey) {
-      let posOfPhoto = getElementPosition(photoResizer);
-      let posOfCanvas = getElementPosition(canvas);
-      let dx = posOfPhoto.x - posOfCanvas.x, dy = posOfPhoto.y - posOfCanvas.y;
-      let dWidth = photoResizer.offsetWidth, dHeight = photoResizer.offsetHeight;
-
-      photoResizer.hidden = true;
-      context.drawImage(img, 0, 0, img.width, img.height, dx, dy, dWidth, dHeight);
+      if (isThereSelection) rememberCanvasWithoutSelection();
+      let posOfPhoto = getMiddleCoords(canvasIn);
+      let posOfCanvas = {
+        x: canvas.getBoundingClientRect().left,
+        y: canvas.getBoundingClientRect().top
+      };
+      let dx = Math.floor(posOfPhoto.x - posOfCanvas.x + 2.5), dy = Math.floor(posOfPhoto.y - posOfCanvas.y + 2.5);
+      context.save();
+      context.translate(dx, dy);
+      
+      context.drawImage(copyCanvas, 0, 0, copyCanvas.width, copyCanvas.height, -Math.floor(deltaX), -Math.floor(deltaY), copyCanvas.width, copyCanvas.height);
+      
+      context.restore();
+      canvasIn.hidden = true;
+      if (photoAngle) {
+        photoAngle = 0;
+        rotatePhoto();
+      }
       document.removeEventListener('keydown', pressForInsertion);
 
+      if (isThereSelection) uniteRememberAndSelectedImages();
       changePreview();
-      rememberState(); 
+      rememberState();
     }
   }
 
   function setInitialParameters() {
-    photoResizer.hidden = false;
-    photoResizer.style.width = 'auto';
-    photoResizer.style.height = 'auto';
-    photoResizer.style.top = canvas.getBoundingClientRect().top + 'px';
-    photoResizer.style.left = canvas.getBoundingClientRect().left + 'px';
-    photoResizer.style.zIndex = activeLayer.index;
+    canvasIn.hidden = false;
+    canvasIn.style.width = 'auto';
+    canvasIn.style.height = 'auto';
+    canvasIn.style.top = canvas.getBoundingClientRect().top + 'px';
+    canvasIn.style.left = canvas.getBoundingClientRect().left + 'px';
+    canvasIn.style.zIndex = activeLayer.index;
+
+    deltaX = parseFloat(getComputedStyle(canvasIn, null).getPropertyValue('width').replace('px', '')) / 2;
+    deltaY = parseFloat(getComputedStyle(canvasIn, null).getPropertyValue('height').replace('px', '')) / 2;
+    sign = 1;
+    photoAngle = 0;
   }
 
-  if (lastPhoto) photoIn.removeChild(lastPhoto);
-  //photoIn.insertAdjacentHTML('afterbegin', "<img src='" + img.src + "' id='photoForInsertion'>");
-  img.id = 'photoForInsertion';
-  photoIn.appendChild(img);
+  if (lastPasteCanvas) canvasIn.removeChild(lastPasteCanvas);
+  copyCanvas.id = 'copyCanvasForInsertion';
+  canvasIn.appendChild(copyCanvas);
   setInitialParameters();
   document.addEventListener('keydown', pressForInsertion);
-  makeResizablePhoto();
 }
 
+canvasIn.ondragstart = () => false;
 
+canvasIn.addEventListener('mousedown', (e) => {
+  let img = document.getElementById('copyCanvasForInsertion');
+  let curMiddle = getMiddleCoords(img);
+  let shiftX = e.clientX - (curMiddle.x - deltaX);
+  let shiftY = e.clientY - (curMiddle.y - deltaY);
 
+  function moveAt(x, y) {
+    canvasIn.style.left = x - shiftX + 'px';
+    canvasIn.style.top = y - shiftY + 'px';
+  }
+
+  function move(e) {
+    if (!isResizing && !isRotating) moveAt(e.clientX, e.clientY);
+  }
+
+  function stop() {
+    document.removeEventListener('mousemove', move);
+    document.removeEventListener('mouseup', stop);
+  }
+
+  moveAt(e.clientX, e.clientY);
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', stop);
+});

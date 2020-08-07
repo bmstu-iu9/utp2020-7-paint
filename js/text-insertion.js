@@ -6,7 +6,11 @@ let textElements = ['textMenu', 'textFormat', 'fontSize', 'fontColor', 'textAngl
 textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);
 
 function chooseTextFormat() {
-  writeText(canvas.width / 2, canvas.height / 2);
+  if (!isThereSelection) {
+    writeText(canvas.width / 2, canvas.height / 2);
+  } else {
+    writeText(leftTopPointSelection[0] + (rightBottomPointSelection[0] - leftTopPointSelection[0]) / 2, leftTopPointSelection[1] + (rightBottomPointSelection[1] - leftTopPointSelection[1]) / 2);
+  }
 }
 
 function initText() {
@@ -51,6 +55,7 @@ function deleteText() {
 function writeText(x, y) {
   clearCanvas();
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  if (isThereSelection) rememberCanvasWithoutSelection();
   context.save();
 
   function write(x, y) {
@@ -71,6 +76,7 @@ function writeText(x, y) {
   }
   context.restore();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 

@@ -11,6 +11,8 @@ function deleteFilling() {
 }
 
 function fill(event) {
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
   let originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   let resultImageData = originalImageData;
 
@@ -52,6 +54,7 @@ function fill(event) {
 
   context.putImageData(resultImageData, 0, 0);
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
   rememberState(); 
 

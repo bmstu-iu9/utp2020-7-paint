@@ -11,7 +11,6 @@
 <div id="topPanel">
   <span id="title">IMAGO</span>
   <div id="topContainer">
-    <button title="Выделение" id="selection"></button>
     <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
     <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
     <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/tools/clear.svg)"></button>
@@ -63,6 +62,9 @@
           <li>Alt + u — загрузить фото</li>
           <li>Alt + y — вернуть</li>
           <li>Alt + z — отменить</li>
+          <li>Ctrl + c — скопировать выделенную область</li>
+          <li>Ctrl + v — вставить скопированную область</li>
+          <li>Ctrl + Backspace — очистить выделенную область</li>
         </ul>
       </div>
     </div>
@@ -106,6 +108,7 @@
       <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 1px solid black">
         <input type="color" id="colorPalette" style="opacity: 0">
       </button>
+      <button title="Прямоугольное выделение" class="toolBtn" id="rectangleSelection"></button>
       <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
       </button>
       <button id="eyedropperWindow" hidden="true"></button>
@@ -190,7 +193,6 @@
 </div>
 
 <div class="resizable" id="photoResizer" hidden="true">
-<<<<<<< Updated upstream
   <div class="resizers" id="photoInsertion">
     <button class="rotator middle" id="photoRotator" style="background-image: url(img/rotate.png)">
     </button>
@@ -199,8 +201,10 @@
     <div class="resizer bottom-left"></div>
     <div class="resizer bottom-right"></div>
   </div>
-  
 </div>
+
+
+<div id="canvasInsertion" hidden="true"></div>
 
 <script src="preloader.js"></script>
 <script src="script.js"></script>

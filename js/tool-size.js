@@ -129,8 +129,6 @@ toolAngleText.onchange = () => {
   }
 }
 
-//
-
 let toolMarkingSizeRange = document.getElementById("toolMarkingSizeRange");
 let toolMarkingSizeText = document.getElementById("toolMarkingSizeText");
 
@@ -173,8 +171,6 @@ toolMarkingSizeText.onchange = () => {
     toolMarkingSizeText.style.background = "white";
   }
 }
-
-//
 
 function checkSizeToolInput(str) {
   const regExp = new RegExp(`^\\d+(px|)$`, 'i');

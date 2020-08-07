@@ -188,8 +188,7 @@ addEventListener('keydown', (event) => {
         if (isThereSelection) copySelectedArea();
         break;
       case 'v':
-        //sCanvas.getContext("2d").drawImage(copyCanvas, 0, 0);
-        insertCanvas(copyCanvas);
+        if (copyCanvas) insertCanvas(copyCanvas);
         break;
       case 'Backspace':
         if (isThereSelection) context.clearRect(leftTopPointSelection[0], leftTopPointSelection[1], rightBottomPointSelection[0] - leftTopPointSelection[0], rightBottomPointSelection[1] - leftTopPointSelection[1]);

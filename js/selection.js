@@ -1,4 +1,4 @@
-let deltaXS, deltaYS, curXS, curYS, oldXS, oldYS;
+let deltaXSelecting, deltaYSelecting, curXSelecting, curYSelecting;
 
 let isThereSelection = false;
 let arrayOfSelectedArea = [];
@@ -44,10 +44,10 @@ function startPointRectangleSelection(e) {
   isDrawing = true;
 
   if (isThereSelection) deleteSelectedArea();
-  oldXS = e.offsetX;
-  oldYS = e.offsetY;
-  deltaXS = e.pageX - oldXS;
-  deltaYS = e.pageY - oldYS;
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
 
   document.addEventListener("mousemove", drawRectangleSelection);
   document.addEventListener("mouseup", endSelectionPoint);
@@ -71,18 +71,18 @@ function drawRectangleSelection(e) {
 
   isThereSelection = true;
   
-  curXS = e.pageX - deltaXS;
-  curYS = e.pageY - deltaYS;
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   let selectionContext = document.getElementById("selectionCanvas").getContext("2d");
   selectionContext.clearRect(0, 0, canvas.width, canvas.height);
   selectionContext.beginPath();
   selectionContext.setLineDash([5, 5]);
   selectionContext.strokeStyle = "grey";
-  selectionContext.strokeRect(oldXS, oldYS, curXS - oldXS, curYS - oldYS);
+  selectionContext.strokeRect(oldX, oldY, curX - oldX, curY - oldY);
 
-  leftTopPointSelection = [Math.min(oldXS, curXS), Math.min(oldYS, curYS)];
-  rightBottomPointSelection = [Math.max(oldXS, curXS), Math.max(oldYS, curYS)];
+  leftTopPointSelection = [Math.min(oldX, curX), Math.min(oldY, curY)];
+  rightBottomPointSelection = [Math.max(oldX, curX), Math.max(oldY, curY)];
 }
 
 
@@ -131,8 +131,8 @@ function deleteSelectedArea() {
 function copySelectedArea() {
   let copyImageData = context.getImageData(leftTopPointSelection[0], leftTopPointSelection[1], rightBottomPointSelection[0] - leftTopPointSelection[0], rightBottomPointSelection[1] - leftTopPointSelection[1]);          
   
-  for (let i = leftTopPointSelection[0]; i <= rightBottomPointSelection[0]; i++) {
-    for (let j = leftTopPointSelection[1]; j <= rightBottomPointSelection[1]; j++) {
+  for (let i = leftTopPointSelection[0]; i < rightBottomPointSelection[0]; i++) {
+    for (let j = leftTopPointSelection[1]; j < rightBottomPointSelection[1]; j++) {
       if (arrayOfSelectedArea[i] === undefined || !arrayOfSelectedArea[i][j]) {
         copyImageData.data[getIndexOfRedInData(i, j)] = 0;
         copyImageData.data[getIndexOfGreenInData(i, j)] = 0;
@@ -179,7 +179,7 @@ function insertCanvas(copyCanvas) {
       context.save();
       context.translate(dx, dy);
       
-      context.drawImage(copyCanvas, 0, 0, copyCanvas.width, copyCanvas.height, -Math.floor(deltaX), -Math.floor(deltaY), copyCanvas.width, copyCanvas.height);
+      context.drawImage(copyCanvas, 0, 0, copyCanvas.width, copyCanvas.height, -Math.floor(deltaXSelecting), -Math.floor(deltaYSelecting), copyCanvas.width, copyCanvas.height);
       
       context.restore();
       canvasIn.hidden = true;
@@ -203,8 +203,8 @@ function insertCanvas(copyCanvas) {
     canvasIn.style.left = canvas.getBoundingClientRect().left + 'px';
     canvasIn.style.zIndex = activeLayer.index;
 
-    deltaX = parseFloat(getComputedStyle(canvasIn, null).getPropertyValue('width').replace('px', '')) / 2;
-    deltaY = parseFloat(getComputedStyle(canvasIn, null).getPropertyValue('height').replace('px', '')) / 2;
+    deltaXSelecting = parseFloat(getComputedStyle(canvasIn, null).getPropertyValue('width').replace('px', '')) / 2;
+    deltaYSelecting = parseFloat(getComputedStyle(canvasIn, null).getPropertyValue('height').replace('px', '')) / 2;
     sign = 1;
     photoAngle = 0;
   }
@@ -221,8 +221,8 @@ canvasIn.ondragstart = () => false;
 canvasIn.addEventListener('mousedown', (e) => {
   let img = document.getElementById('copyCanvasForInsertion');
   let curMiddle = getMiddleCoords(img);
-  let shiftX = e.clientX - (curMiddle.x - deltaX);
-  let shiftY = e.clientY - (curMiddle.y - deltaY);
+  let shiftX = e.clientX - (curMiddle.x - deltaXSelecting);
+  let shiftY = e.clientY - (curMiddle.y - deltaYSelecting);
 
   function moveAt(x, y) {
     canvasIn.style.left = x - shiftX + 'px';

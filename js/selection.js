@@ -164,7 +164,7 @@ function clearSelectedArea() {
 }
 
 function insertCanvas(copyCanvas) {
-  deleteSelectedArea();
+  if (isThereSelection) deleteSelectedArea();
   let lastPasteCanvas = document.getElementById('copyCanvasForInsertion');
 
   function pressForInsertion() {

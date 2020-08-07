@@ -10,6 +10,7 @@ function initHand() {
 
 function deleteHand() {
   canvas.removeEventListener("mousedown", startMoving);
+  canvas.removeEventListener("dblclick", centerCanvas);
   canvas.style.cursor = 'default';
 }
 
@@ -25,8 +26,8 @@ function startMoving(e) {
 
   function move(e) {
     let x = e.pageX, y = e.pageY;
-    layers.forEach(layer => {
-      let layerStyle = layer.canvas.style;
+    allCanvases.forEach(layer => {
+      let layerStyle = layer.style;
       layerStyle.margin = '0';
       layerStyle.left = x - shiftX + 'px';
       layerStyle.top = y - shiftY + 'px';
@@ -41,4 +42,17 @@ function startMoving(e) {
 
   document.addEventListener("mousemove", move);
   canvas.addEventListener("mouseup", stopMoving);
+  canvas.addEventListener("dblclick", centerCanvas);
+}
+
+function centerCanvas () {
+  allCanvases.forEach(layer => {
+    let layerStyle = layer.style;
+    layerStyle.position = "absolute";
+    layerStyle.margin = "auto";
+    layerStyle.left = 0;
+    layerStyle.top = 45 + 'px';
+    layerStyle.right = 0;
+    layerStyle.bottom =0;
+  });
 }

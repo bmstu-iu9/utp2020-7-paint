@@ -1,9 +1,16 @@
 'use strict';
 
-let colorInput = document.querySelector('#color');
+let colorInput = document.getElementById('colorPalette');
+let colorBtn = document.getElementById('colorBtn');
 
 colorInput.addEventListener('input', () => {
-  curColor = hexToRgb(colorInput.value);
+  let color = colorInput.value;
+  curColor = hexToRgb(color);
+  colorBtn.style.background = color;
+});
+
+colorBtn.addEventListener('click', () => {
+  colorInput.click();
 });
 
 function hexToRgb(hex) {
@@ -14,8 +21,8 @@ function hexToRgb(hex) {
       hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
     }
     return [parseInt(hex.substr(1, 2), 16),
-          parseInt(hex.substr(3, 2), 16),
-          parseInt(hex.substr(5, 2), 16)];
+            parseInt(hex.substr(3, 2), 16),
+            parseInt(hex.substr(5, 2), 16)];
   }
   throw "Wrong color code";
 }

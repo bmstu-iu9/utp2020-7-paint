@@ -1,7 +1,9 @@
 'use strict';
 
-let stampX, stampY, curStampFragment;
+let stampX, stampY;
 let isStamping;
+let lastCanvas = document.createElement('canvas');
+let lastContext = lastCanvas.getContext('2d');
 
 function initStamp() {
   isStamping = false;
@@ -12,23 +14,25 @@ function initStamp() {
 function deleteStamp() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener("mousedown", startPointStamp);
+  canvas.removeEventListener("click", selectFragment);
   document.removeEventListener("mousemove", drawStamp);
   document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
   document.removeEventListener('keydown', stopStamp);
 }
 
 function selectFragment(e) {
   stampX = e.offsetX;
   stampY = e.offsetY;
+  lastCanvas.width = canvas.width;
+  lastCanvas.height = canvas.height;
+  lastContext.drawImage(canvas, 0, 0);
   canvas.style.cursor = 'default';
   canvas.removeEventListener("click", selectFragment);
   canvas.addEventListener("mousedown", startPointStamp);
 }
 
 function resizeMemCanvas(x, y) {
-  memContext.clearRect(0, 0, memContext.width, memContext.height);
+  memContext.clearRect(0, 0, memCanvas.width, memCanvas.height);
   memCanvas.width = canvas.offsetWidth + x;
   memCanvas.height = canvas.offsetHeight + y;
 }
@@ -36,56 +40,34 @@ function resizeMemCanvas(x, y) {
 function startPointStamp(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-  let x = oldX - stampX, y = oldY - stampY;
-  let pattern;
-
-  function start() {
-    context.fillStyle = pattern;
-    context.beginPath();
-    context.arc(oldX, oldY, curToolSize / 2, 0, Math.PI * 2, false);
-    context.fill();
-    context.closePath();
-
-    drawStamp(e);
-  }
+  context.save();
+  oldX = e.offsetX - curToolSize / 2;
+  oldY = e.offsetY - curToolSize / 2;
+  deltaX = e.pageX - e.offsetX;
+  deltaY = e.pageY - e.offsetY;
 
   if (!isStamping) {
     isStamping = true;
-    curStampFragment = new Image();
-    resizeMemCanvas(x, y);
-    memContext.drawImage(canvas, x, y);
+    let x = e.offsetX - stampX;
+    let y = e.offsetY - stampY;
+    resizeMemCanvas(Math.abs(x), Math.abs(y));
+    memContext.drawImage(canvas, 0, 0);
+    memContext.drawImage(lastCanvas, x, y);
+  }
 
-    curStampFragment.onload = () => {
-      pattern = context.createPattern(curStampFragment, 'no-repeat');
-      start();
-    }
-
-    curStampFragment.src = memCanvas.toDataURL();
-  } else start();
+  drawSquareStamp(oldX, oldY);
 
   document.addEventListener('keydown', stopStamp);
   document.addEventListener("mousemove", drawStamp);
   document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
 }
 
 function drawStamp(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  curX = e.pageX - deltaX - curToolSize / 2;
+  curY = e.pageY - deltaY - curToolSize / 2;
 
   distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
   angle = Math.atan2(curX - oldX, curY - oldY);
@@ -93,15 +75,18 @@ function drawStamp(e) {
   for (let i = 0; i < distance; i++) {
     newX = oldX + i * Math.sin(angle);
     newY = oldY + i * Math.cos(angle);
-    context.beginPath();
-    context.arc(newX, newY, curToolSize / 2, 0, Math.PI * 2, false);
-    context.fill();
+    drawSquareStamp(newX, newY);
   }
 
   oldX = curX;
   oldY = curY;
 
   changePreview();
+}
+
+function drawSquareStamp(x, y) {
+  let newFragment = memContext.getImageData(x, y, curToolSize, curToolSize);
+  context.putImageData(newFragment, x, y);
 }
 
 function stopStamp() {

@@ -35,15 +35,15 @@
         <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
         <div class="field">
           <label>Высота холста:</label>
-          <input type="text" size="1" id="changeCanvasHeight" min="50" max ="800">
+          <input type="text" size="1" id="changeCanvasHeight" min="50" max ="1000">
         </div>
         <div class="field">
           <label>Ширина холста:</label>
-          <input type="text" size="1" id="changeCanvasWidth" min="50" max="1400">
+          <input type="text" size="1" id="changeCanvasWidth" min="50" max="1800">
         </div>
         <div class="field">
           <label>Ширина рамки:</label>
-          <input type="text" size="1" id="borderWidth" min="0" max="30">
+          <input type="text" size="1" id="changeBorderWidth" min="0" max="30">
         </div>
         <div class="field">
           <label>Цвет рамки:</label>
@@ -223,6 +223,8 @@
 
 <div class="resizable" id="photoResizer" hidden="true">
   <div class="resizers" id="photoInsertion">
+    <button class="rotator middle" id="photoRotator" style="background-image: url(img/rotate.png)">
+    </button>
     <div class="resizer top-left"></div>
     <div class="resizer top-right"></div>
     <div class="resizer bottom-left"></div>

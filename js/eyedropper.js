@@ -58,9 +58,9 @@ function handleEyedropper(event) {
   } else eyedropperWindow.style.background = arrayToRgb(color);
 
   function moveWindow(x, y) {
-    eyedropperWindow.style.left = x + 230 + 'px';
-    eyedropperWindow.style.top = y - 20 + 'px';
+    eyedropperWindow.style.left = x + 40 + 'px';
+    eyedropperWindow.style.top = y - 60 + 'px';
   }
 
-  moveWindow(eventLocation.x, eventLocation.y);
+  moveWindow(event.clientX, event.clientY);
 }

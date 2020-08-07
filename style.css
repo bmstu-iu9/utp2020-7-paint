@@ -468,3 +468,130 @@ option:checked {
   border-radius: 50%;
   border: none;
 }
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+  z-index: 1000;
+}
+.modal-content {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  background-color: white;
+  width: 900px;
+  height: 500px;
+  padding: 0;
+}
+
+.modal-header {
+  position: relative;
+  width: 100%;
+  height: 6%;
+  background-color: #ffdf2b;
+  color: black;
+   overflow:hidden;
+}
+
+.leftSide {
+  margin: 0;
+  width: 550px;
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.filterCanvasWrapper {
+  width: 500px;
+  height: 350px;
+  border: 0.5px solid black;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.filterCanvas {
+  background: repeat url("img/background.png");
+  display: inline-block;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.rightSide {
+  vertical-align:top;
+  display: inline-flex;
+  flex-direction: column;
+  margin: 0;
+  width: 300px;
+  height: 100%;
+  justify-content: space-around;
+}
+
+.rightSide button {
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+}
+
+.rightSide button:hover {
+  border: solid 1px #ff7f50;
+}
+
+.centerFilterBtns{
+  display: flex;
+  justify-content: space-around;
+}
+
+#undoFilter{
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  background-image: url("img/filters/filters_undo.svg");
+}
+
+#redoFilter {
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  background-image: url("img/filters/filters_redo.svg");
+}
+
+.closeButton {
+  float: right;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.closeButton:hover {
+  background-color: darkgray;
+}
+
+.spaceWrapper{
+  white-space: nowrap;
+  height: 94%;
+}
+
+.show-modal {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}

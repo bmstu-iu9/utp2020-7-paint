@@ -1,6 +1,13 @@
 'use strict';
 
+let firstClickHand = true;
+
 function initHand() {
+  if (firstClickHand) {
+    toggleModal();
+    hintsContent.innerHTML = "При двойном нажатии на холст в режиме \"руки\" он центрируется";
+    firstClickHand = false;
+  }
   canvas.addEventListener("dragstart", function() {
     return false;
   });

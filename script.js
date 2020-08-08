@@ -388,7 +388,14 @@ document.getElementById("help").addEventListener('click', (event) => {
   hideAndShow("helpMenu", event);
 });
 
+let firstClickUpload = true;
+
 document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
+  if (firstClickUpload) {
+    toggleModal();
+    hintsContent.innerHTML = "Горячие клавиши:<br> Alt + Enter — вставить фото";
+    firstClickUpload = false;
+  }
   hideAndShow("uploadImgMenu", event);
 });
 
@@ -435,3 +442,17 @@ function getIndexOfAlphaInData(x, y) {
 function areInCanvas(x, y) {
   return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
 }
+
+let modalHints = document.querySelector(".modalHints");
+
+function toggleModal() {
+  modalHints.classList.toggle("show-modalHints");
+}
+
+function windowOnClick(event) {
+  if (event.target === modalHints) {
+    toggleModal();
+  }
+}
+
+window.addEventListener("click", windowOnClick);

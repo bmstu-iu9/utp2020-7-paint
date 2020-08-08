@@ -12,6 +12,8 @@ let rememberedCanvas = document.createElement("canvas");
 let rememberedContext = rememberedCanvas.getContext("2d");
 let canvasInsertion = document.getElementById('canvasInsertion');
 
+let firstClickSelection = true;
+
 function endSelectionPoint() {
   context.restore();
   if (isDrawing) {
@@ -29,6 +31,11 @@ function endSelectionPoint() {
 }
 
 function initRectangleSelection() {
+  if (firstClickSelection) {
+    toggleModal();
+    hintsContent.innerHTML = "Горячие клавиши:<br> Alt + Enter — вставить выделение";
+    firstClickSelection = false;
+  }
   canvas.addEventListener("mousedown", startPointRectangleSelection);
   document.addEventListener("keydown", hotkeyInsertion);
 }

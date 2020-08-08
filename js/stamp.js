@@ -4,8 +4,21 @@ let stampX, stampY;
 let isStamping;
 let lastCanvas = document.createElement('canvas');
 let lastContext = lastCanvas.getContext('2d');
+let firstClickStamp = true;
 
 function initStamp() {
+  if (firstClickStamp) {
+    toggleModal();
+    hintsContent.innerHTML =
+    `<p>Алгоритм работы со штампом: </p>
+    <ol>
+    <li>Провести курсором по копируемому элементу</li>
+    <li>Движением курсора начать проявлять скопированный фрагмент</li>
+    <li>Наведение курсором и сочетание Alt + Enter — проявление в новом месте</li>
+    <li>Вернуться ко второму пункту</li>
+    </ol>`;
+    firstClickStamp = false;
+  }
   isStamping = false;
   canvas.style.cursor = 'crosshair';
   canvas.addEventListener("click", selectFragment);

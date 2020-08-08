@@ -1,6 +1,15 @@
 'use strict';
 
+let firstClickFilling = true;
+
 function initFilling() {
+  if (firstClickFilling) {
+    toggleModal();
+    hintsContent.innerHTML =
+    `Процент заливки регулирует допустимую разницу в цветах. <br>
+    Например, 0% заливает только точно такой же цвет, а 100% заливает все цвета.`;
+    firstClickFilling = false;
+  }
   canvas.style.cursor = "url('img/cursors/filling-cursor.png') 0 25, auto";
   canvas.addEventListener("click", fill);
 }
@@ -56,7 +65,7 @@ function fill(event) {
 
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
-  rememberState(); 
+  rememberState();
 
   function haveSameColor(x, y) {
     let thisRGBA = [

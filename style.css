@@ -28,7 +28,7 @@ body {
   font-family: 'Passion One', cursive;
   font-size: 35px;
   color: #ffdf2b;
-  margin-left: 70px;
+  margin-left: 120px;
 }
 
 #topContainer {
@@ -40,10 +40,9 @@ body {
   position: fixed;
   left: 10px;
   padding-bottom: 20px;
-  width: 50px;
+  width: 100px;
   background-color: #ffdf2b;
   z-index: 1006;
-  /* text-align: center; */
 }
 
 #leftPanel:after {
@@ -54,8 +53,8 @@ body {
   width: 0;
   height: 0;
   border-bottom: 13px solid #e5e6e7;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
 }
 
 #openPanel {
@@ -72,14 +71,14 @@ body {
   background-color: #ffdf2b;
   padding-top: 20px;
   width: 100%;
-  /* position: absolute; */
   margin: auto;
+  text-align: center; 
 }
 
 .toolBtn {
   display: inline-block;
   padding: 0px;
-  margin: 5px;
+  margin: 2px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -296,17 +295,13 @@ option:checked {
   font-size: 14px;
 }
 
-.leftPaneldrop {
-  position: relative;
-  display: inline-block;
-}
-
 .leftMenu {
   position: relative;
+  text-align: left; 
   z-index: 1000;
   background-color: #159099;
-  min-width: 150px;
-  clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
+  min-width: 110px;
+  clip-path: polygon(0% 0%, 91.5% 0%, 100% 50%, 91.5% 100%, 0% 100%);
 }
 
 .rangeAndText {

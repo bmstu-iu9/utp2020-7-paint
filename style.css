@@ -499,7 +499,9 @@ option:checked {
   height: 6%;
   background-color: #ffdf2b;
   color: black;
-   overflow:hidden;
+  overflow:hidden;
+  display: flex;
+  align-items: center;
 }
 
 .leftSide {
@@ -535,7 +537,7 @@ option:checked {
   justify-content: space-around;
 }
 
-.rightSide button {
+.colorFiltersBtns button {
   width: 60px;
   height: 60px;
   border: none;
@@ -552,6 +554,48 @@ option:checked {
   justify-content: space-around;
 }
 
+.textFilterBtns button {
+  width: 80px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+}
+
+.sliderFilterContainer {
+  width: 500px;
+}
+
+.sliderFilterContainer input[type='range'] {
+  -webkit-appearance: none;
+  height: 5px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  background-size: cover;
+  outline: none;
+  margin-right: 5px;
+  -webkit-transition: .2s;
+}
+
+.sliderFilterContainer input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #24a4ff;
+  cursor: pointer;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.5);
+}
+
+.sliderFilterContainer input[type='range']::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #24a4ff;
+  cursor: pointer;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.5);
+}
+
 #undoFilter{
   width: 25px;
   height: 25px;
@@ -564,24 +608,32 @@ option:checked {
 #redoFilter {
   width: 25px;
   height: 25px;
-  text-align: center;
   cursor: pointer;
   display: inline-block;
   background-image: url("img/filters/filters_redo.svg");
 }
 
-.closeButton {
-  float: right;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: white;
+#closeWithoutSaving {
+  background-image: url("img/filters/filters_close.svg");
 }
 
-.closeButton:hover {
-  background-color: darkgray;
+#closeWithSaving {
+  background-image: url("img/filters/filters_ready.svg");
+}
+
+.closeBtnsContainer {
+  position: absolute;
+  right: 1px;
+  width: 55px;
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.closeButton {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
 }
 
 .spaceWrapper{

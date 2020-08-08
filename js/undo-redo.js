@@ -38,7 +38,7 @@ document.getElementById('undo').addEventListener('click', () => {
       let layer = layers.get(key).canvas;
       let ctx = layer.getContext('2d');
       if (value[curState]) {
-        ctx.drawImage(value[curState], 0, 0, layer.width, layer.height);
+        ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
       }
     })
     changePreview();
@@ -53,7 +53,7 @@ document.getElementById('redo').addEventListener('click', () => {
       let layer = layers.get(key).canvas;
       let ctx = layer.getContext('2d');
       if (value[curState]) {
-        ctx.drawImage(value[curState], 0, 0, layer.width, layer.height);
+        ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
       }
     })
     changePreview();

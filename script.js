@@ -181,6 +181,7 @@ addEventListener('keydown', (event) => {
   }
 });
 
+
 let changeCanvasHeight = document.getElementById("changeCanvasHeight");
 let changeCanvasWidth = document.getElementById("changeCanvasWidth");
 let changeBorderWidth = document.getElementById("changeBorderWidth");

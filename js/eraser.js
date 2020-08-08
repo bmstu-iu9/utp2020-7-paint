@@ -29,6 +29,8 @@ function startPointEraser(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
   eraserParameters.oldX = e.offsetX;
   eraserParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;
@@ -46,6 +48,8 @@ function startPointEraser(e) {
   context.stroke();
   context.closePath();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
+
   drawEraser(e);
 
   document.addEventListener("mousemove", drawEraser);
@@ -54,6 +58,8 @@ function startPointEraser(e) {
 
 function drawEraser(e) {
   if (!isDrawing) return;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
@@ -76,5 +82,7 @@ function drawEraser(e) {
   eraserParameters.oldY = curY;
 
   context.globalCompositeOperation = "source-over";
+
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }

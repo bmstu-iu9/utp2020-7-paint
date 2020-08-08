@@ -16,6 +16,7 @@ function startPointStraightLine(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   saveImg();
 
   context.save();
@@ -29,6 +30,7 @@ function startPointStraightLine(e) {
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   drawStraightLine(e);
 
   document.addEventListener("mousemove", drawStraightLine);
@@ -37,6 +39,8 @@ function startPointStraightLine(e) {
 
 function drawStraightLine(e) {
   if (!isDrawing) return;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
@@ -49,5 +53,6 @@ function drawStraightLine(e) {
   context.lineTo (curX, curY);
   context.stroke();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }

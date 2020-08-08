@@ -16,6 +16,8 @@ function startPointRectangle(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
   saveImg();
 
   context.save();
@@ -29,6 +31,8 @@ function startPointRectangle(e) {
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
+
   drawRectangle(e);
 
   document.addEventListener("mousemove", drawRectangle);
@@ -37,6 +41,8 @@ function startPointRectangle(e) {
 
 function drawRectangle(e) {
   if (!isDrawing) return;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
@@ -47,6 +53,7 @@ function drawRectangle(e) {
   context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
   context.strokeRect(oldX, oldY, curX - oldX, curY - oldY);
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -69,6 +76,7 @@ function startPointCircle(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   saveImg();
 
   context.save();
@@ -82,6 +90,7 @@ function startPointCircle(e) {
   deltaX = e.pageX - centerX;
   deltaY = e.pageY - centerY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   drawCircle(e);
 
   document.addEventListener("mousemove", drawCircle);
@@ -90,6 +99,8 @@ function startPointCircle(e) {
 
 function drawCircle(e) {
   if (!isDrawing) return;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
@@ -103,6 +114,7 @@ function drawCircle(e) {
   context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
   context.stroke();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -123,6 +135,7 @@ function startPointEllipse(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   saveImg();
 
   context.save();
@@ -136,6 +149,7 @@ function startPointEllipse(e) {
   deltaX = e.pageX - centerX;
   deltaY = e.pageY - centerY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   drawEllipse(e);
 
   document.addEventListener("mousemove", drawEllipse);
@@ -145,6 +159,7 @@ function startPointEllipse(e) {
 function drawEllipse(e) {
   if (!isDrawing) return;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
@@ -157,6 +172,7 @@ function drawEllipse(e) {
   context.bezierCurveTo(curX, curY, centerX, curY, centerX, centerY + (curY - centerY) / 2);
   context.stroke();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -178,6 +194,7 @@ function startPointEqTriangle(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   saveImg();
 
   context.save();
@@ -191,6 +208,7 @@ function startPointEqTriangle(e) {
   deltaX = e.pageX - startX;
   deltaY = e.pageY - startY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   drawEqTriangle(e);
 
   document.addEventListener("mousemove", drawEqTriangle);
@@ -200,6 +218,7 @@ function startPointEqTriangle(e) {
 function drawEqTriangle(e) {
   if (!isDrawing) return;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
@@ -213,6 +232,7 @@ function drawEqTriangle(e) {
   context.lineTo(startX, startY);
   context.stroke();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -233,6 +253,7 @@ function startPointRightTriangle(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   saveImg();
 
   context.save();
@@ -246,6 +267,7 @@ function startPointRightTriangle(e) {
   deltaX = e.pageX - startX;
   deltaY = e.pageY - startY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   drawEqTriangle(e);
 
   document.addEventListener("mousemove", drawRightTriangle);
@@ -255,6 +277,7 @@ function startPointRightTriangle(e) {
 function drawRightTriangle(e) {
   if (!isDrawing) return;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
@@ -268,5 +291,6 @@ function drawRightTriangle(e) {
   context.lineTo(startX, startY);
   context.stroke();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }

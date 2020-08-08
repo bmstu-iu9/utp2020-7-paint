@@ -434,14 +434,3 @@ function getIndexOfAlphaInData(x, y) {
 function areInCanvas(x, y) {
   return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
 }
-
-let modal = document.querySelector(".modal");
-let trigger = document.querySelector(".trigger");
-
-function toggleModal() {
-    modal.classList.toggle("show-modal");
-}
-
-trigger.addEventListener("click", toggleModal);
-closeWithoutSaving.addEventListener("click", toggleModal);
-closeWithSaving.addEventListener("click", toggleModal);

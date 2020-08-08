@@ -1,3 +1,61 @@
+let modal = document.querySelector(".modal");
+let trigger = document.querySelector(".trigger");
+let filtersModal = document.getElementById("filters-modal");
+let modalCanvas = document.getElementById("modalCanvas");
+
+modalCanvas.setAttribute("width", modalCanvas.width);
+modalCanvas.setAttribute("height", modalCanvas.height);
+
+let originalCanvas;
+
+let modalContext = modalCanvas.getContext("2d");
+
+function toggleModal() {
+  modal.classList.toggle("show-modal");
+}
+
+trigger.addEventListener("click", toggleModal);
+closeWithoutSaving.addEventListener("click", toggleModal);
+closeWithSaving.addEventListener("click", toggleModal);
+
+
+filtersModal.addEventListener("click", useFiltersModal);
+
+closeWithoutSaving.addEventListener("click", () => {
+  canvas = originalCanvas;
+  context = canvas.getContext("2d");
+});
+
+closeWithSaving.addEventListener("click", () => {
+  originalCanvas.getContext("2d").putImageData(context.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
+  canvas = originalCanvas;
+  context = canvas.getContext("2d");
+  
+});
+
+function useFiltersModal() {
+  originalCanvas = canvas;
+  
+  let filterCanvas = document.createElement("canvas");
+  filterCanvas.setAttribute("width", canvas.width);
+  filterCanvas.setAttribute("height", canvas.height);
+  let filterContext = filterCanvas.getContext("2d");
+  filterContext.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+
+  modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
+  modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
+
+  canvas = filterCanvas;
+  context = filterContext;
+
+  let history = [];
+}
+
+function endFilter() {
+  modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
+  modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
+}
+
 let negativeFilterButton = document.getElementById("negative");
 negativeFilterButton.onclick = () => { applySimpleFilter("negative"); }
 
@@ -22,7 +80,7 @@ sobelFilterButton.onclick = applySobelFilter;
 let embossFilterButton = document.getElementById("emboss");
 embossFilterButton.onclick = () => {
   applyConvolutionMatrixFilter([-2, -1, 0, -1, 1, 1, 0, 1, 2], 1);
-  changePreview();
+  endFilter();
 }
 
 let blurFilterButton = document.getElementById("blur");
@@ -33,7 +91,7 @@ blurFilterButton.onclick = () => {
     6/256, 24/256, 36/256, 24/256, 6/256,
     4/256, 16/256, 24/256, 16/256, 4/256,
     1/256, 4/256, 6/256, 4/256, 1/256], 1);
-  changePreview();
+  endFilter();
 }
 
 function applySimpleFilter(filterName) {
@@ -44,7 +102,7 @@ function applySimpleFilter(filterName) {
     }
   }
   context.putImageData(curImageData, 0, 0);
-  changePreview();
+  endFilter();
 
   function changePixel(x, y) {
     let red = curImageData.data[getIndexOfRedInData(x, y)];
@@ -102,7 +160,6 @@ contrastRange.oninput = () => {
 contrastRange.onchange = () => {
   isClickedContrast = true;
   contrast.value = 1;
-  changePreview();
 }
 
 contrastRange.onmouseup = () => {
@@ -152,7 +209,7 @@ function applyContrastFilter(contrastCoef) {
   }
 
   context.putImageData(curImageData, 0, 0);
-  changePreview();
+  endFilter();
 }
 
 let isClickedBrightness = true;
@@ -169,7 +226,6 @@ brightnessRange.oninput = () => {
 brightnessRange.onchange = () => {
   isClickedBrightness = true;
   brightness.value = 0;
-  changePreview();
 }
 
 brightnessRange.onmouseup = () => {
@@ -192,7 +248,7 @@ function applyBrightnessFilter(brightnessCoef) {
   }
 
   context.putImageData(curImageData, 0, 0);
-  changePreview();
+  endFilter();
 }
 
 let isClickedSharp = true;
@@ -209,13 +265,11 @@ sharpRange.oninput = () => {
     -6/256, -24/256, 476/256, -24/256, -6/256,
     -4/256, -16/256, -24/256, -16/256, -4/256,
     -1/256, -4/256, -6/256, -4/256, -1/256], sharpRange.value);
-  changePreview();
 }
 
 sharpRange.onchange = () => {
   isClickedSharp = true;
   sharpRange.value = 0;
-  changePreview();
 }
 
 sharpRange.onmouseup = () => {
@@ -237,6 +291,7 @@ function applySobelFilter() {
      finalImg.data[i+3] = 255;
    }
    context.putImageData(finalImg, 0, 0);
+   endFilter();
 }
 
 function getResultOfConvolutionMatrixFilter(weights, coeff) {
@@ -281,6 +336,7 @@ function getResultOfConvolutionMatrixFilter(weights, coeff) {
 function applyConvolutionMatrixFilter(weights, coeff) {
   let result = getResultOfConvolutionMatrixFilter(weights, coeff);
   context.putImageData(result, 0, 0);
+  endFilter();
 }
 
 let horizontalReflectionFilterButton = document.getElementById("horizontal-reflection");
@@ -303,7 +359,7 @@ function applyHorizontalReflection() {
   }
 
   context.putImageData(resultImageData, 0, 0);
-  changePreview();
+  endFilter();
 }
 
 function applyVerticalReflection() {
@@ -320,7 +376,7 @@ function applyVerticalReflection() {
   }
 
   context.putImageData(resultImageData, 0, 0);
-  changePreview();
+  endFilter();
 }
 
 let medianFilterButton = document.getElementById("median");
@@ -350,4 +406,5 @@ function applyMedianFilter(radius) {
     }
   }
   context.putImageData(resultImageData, 0, 0);
+  endFilter();
 }

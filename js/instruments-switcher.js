@@ -1,7 +1,9 @@
 'use strict';
 
-const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush', 'sketchBrush', 'patternBrush', 'furBrush', 'rectangleBrush',
-'circleBrush', 'filling', 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'eyedropper', 'straightLine', 'hand', 'text', 'stamp', 'rectangleSelection'];
+const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush',
+                'sketchBrush', 'patternBrush', 'furBrush', 'rectangleBrush','circleBrush',
+                'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'straightLine',
+                'eyedropper', 'filling', 'hand', 'text', 'stamp', 'rectangleSelection'];
 
 let allInstruments = new Map();
 let activeInstrument = null;

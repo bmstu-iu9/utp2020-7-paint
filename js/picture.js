@@ -80,7 +80,6 @@ photoResizer.ondragstart = () => false;
 photoResizer.addEventListener('mousedown', (e) => {
   let img = document.getElementById('photoForInsertion');
   let curMiddle = getMiddleCoords(img);
-  test.innerHTML = deltaX;
   let shiftX = e.clientX - (curMiddle.x - deltaX);
   let shiftY = e.clientY - (curMiddle.y - deltaY);
 

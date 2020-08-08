@@ -108,9 +108,9 @@ downloadBtn.addEventListener('click', () => {
   resultCanvas.height = canvas.height;
   let resultContext = resultCanvas.getContext("2d");
 
-  for (let i = layersField.children.length - 1; i >= 0; i--) {
-    if (parseLayerId(layersField.children[i].id) != null) {
-      resultContext.drawImage(document.getElementById("layer" + parseLayerId(layersField.children[i].id)), 0, 0);
+  for (let i = layerScrollBox.children.length - 1; i >= 0; i--) {
+    if (parseLayerId(layerScrollBox.children[i].id) != null) {
+      resultContext.drawImage(document.getElementById("layer" + parseLayerId(layerScrollBox.children[i].id)), 0, 0);
     }
   }
 

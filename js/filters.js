@@ -469,7 +469,7 @@ let maxModalCanvasHeight = document.getElementById("modalCanvasWrapper").clientH
 let maxModalCanvasWidth = document.getElementById("modalCanvasWrapper").clientWidth;
 
 function changeModalCanvasSize() {
-  if (curCanvasHeight > curCanvasWidth) {
+  if (curCanvasHeight / maxModalCanvasHeight > curCanvasWidth / maxModalCanvasWidth) {
     modalCanvas.style.height = maxModalCanvasHeight + 'px';
     modalCanvas.style.width = curCanvasWidth * (parseInt(modalCanvas.style.height) / curCanvasHeight) + 'px';
   } else {

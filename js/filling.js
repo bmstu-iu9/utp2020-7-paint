@@ -3,6 +3,8 @@
 let firstClickFilling = true;
 
 function initFilling() {
+  document.getElementById('fillMenu').hidden = false;
+  document.getElementById('filling').classList.add('pressed');
   if (firstClickFilling) {
     toggleModal();
     hintsContent.innerHTML =
@@ -17,6 +19,8 @@ function initFilling() {
 function deleteFilling() {
   canvas.style.cursor = 'default';
   canvas.removeEventListener('click', fill);
+  document.getElementById('fillMenu').hidden = true;
+  document.getElementById('filling').classList.remove('pressed');
 }
 
 function fill(event) {

@@ -428,10 +428,6 @@ document.getElementById('openPanel').addEventListener('click', (event) => {
   hideAndShow('leftContainer', event);
 });
 
-document.getElementById('filling').addEventListener('click', (event) => {
-  hideAndShow('fillMenu', event);
-});
-
 document.getElementById('toolSettings').addEventListener('click', (event) => {
   hideAndShow('toolSettingsMenu', event);
 });

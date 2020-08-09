@@ -33,7 +33,15 @@ function endSelectionPoint() {
 function initRectangleSelection() {
   if (firstClickSelection) {
     toggleModal();
-    hintsContent.innerHTML = 'Горячие клавиши:<br> Alt + Enter — вставить выделение';
+    hintsContent.innerHTML =
+    `<p>Копирование и вставка выделенной области: </p>
+    <ul>
+    <li></li>
+    <li>Ctrl + c — скопировать выделенный фрагмент</li>
+    <li>Ctrl + v — появление скопированного фрагмента</li>
+    <li>Alt + Enter — добавить фрагмент на холст</li>
+    <li>Ctrl + x — отменить добавление на холст</li>
+    </ul>`;
     firstClickSelection = false;
   }
   canvas.addEventListener('mousedown', startPointRectangleSelection);

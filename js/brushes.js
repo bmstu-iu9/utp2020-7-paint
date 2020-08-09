@@ -4,7 +4,7 @@ let isDrawing = false;
 let oldX, oldY, newX, newY, distance, angle;
 
 function initBasicBrush() {
-  canvas.style.cursor = 'url('img/cursors/basic_brush_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/basic_brush_cursor.png\") 0 25, auto';
 
   canvas.addEventListener('mousedown', startPointBasicBrush);
 }
@@ -76,7 +76,7 @@ function drawBasicBrush(e) {
 
 
 function initNeonBrush() {
-  canvas.style.cursor = 'url('img/cursors/neon_brush_cursor.png') 0 0, auto';
+  canvas.style.cursor = 'url(\"img/cursors/neon_brush_cursor.png\") 0 0, auto';
 
   canvas.addEventListener('mousedown', startPointNeonBrush);
 }
@@ -136,7 +136,7 @@ function drawNeonBrush(e) {
 
 
 function initSmoothBrush() {
-  canvas.style.cursor = 'url('img/cursors/smooth_brush_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/smooth_brush_cursor.png\") 0 25, auto';
   canvas.addEventListener('mousedown', startPointSmoothBrush);
 }
 
@@ -212,7 +212,7 @@ function drawSmoothBrush(e) {
 let pointsCounter, prevPoints;
 
 function initSketchBrush() {
-  canvas.style.cursor = 'url('img/cursors/sketch-cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/sketch-cursor.png\") 0 25, auto';
 
   curToolSize = 1;
   toolSizeRange.value = 1;
@@ -302,7 +302,7 @@ function drawSketchBrush(e) {
 
 
 function initPatternBrush() {
-  canvas.style.cursor = 'url('img/cursors/pattern_brush_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/pattern_brush_cursor.png\") 0 25, auto';
 
   curToolSize = 1;
   toolSizeRange.value = 1;
@@ -395,7 +395,7 @@ function drawPatternBrush(e) {
 
 
 function initFurBrush() {
-  canvas.style.cursor = 'url('img/cursors/fur_brush_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/fur_brush_cursor.png\") 0 25, auto';
 
   curToolSize = 1;
   toolSizeRange.value = 1;
@@ -488,7 +488,7 @@ function drawFurBrush(e) {
 
 
 function initRectangleBrush() {
-  canvas.style.cursor = 'url('img/cursors/rectangle_brush_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/rectangle_brush_cursor.png\") 0 25, auto';
 
   curToolSize = 1;
   toolSizeRange.value = 1;
@@ -568,7 +568,7 @@ function drawRectangleBrush(e) {
 
 
 function initCircleBrush() {
-  canvas.style.cursor = 'url('img/cursors/circle_brush_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/circle_brush_cursor.png\") 0 25, auto';
 
   curToolSize = 1;
   toolSizeRange.value = 1;

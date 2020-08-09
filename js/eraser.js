@@ -10,7 +10,7 @@ let eraserParameters = {
 };
 
 function initEraser() {
-  canvas.style.cursor = 'url('img/cursors/eraser_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/eraser_cursor.png\") 0 25, auto';
 
   canvas.addEventListener('mousedown', startPointEraser);
 }

@@ -10,7 +10,7 @@ function initFilling() {
     Например, 0% заливает только точно такой же цвет, а 100% заливает все цвета.`;
     firstClickFilling = false;
   }
-  canvas.style.cursor = 'url('img/cursors/filling-cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/filling-cursor.png\") 0 25, auto';
   canvas.addEventListener('click', fill);
 }
 
@@ -23,14 +23,14 @@ function fill(event) {
   let oldAreInCanvas = areInCanvas;
 
   if (isThereSelection) {
-    areInCanvas = (x, y) => { 
-      return arrayOfSelectedArea[x] && arrayOfSelectedArea[x][y]; 
+    areInCanvas = (x, y) => {
+      return arrayOfSelectedArea[x] && arrayOfSelectedArea[x][y];
     }
   }
-  
-  if (!areInCanvas(event.offsetX, event.offsetY)) { 
-    areInCanvas = oldAreInCanvas; 
-    return; 
+
+  if (!areInCanvas(event.offsetX, event.offsetY)) {
+    areInCanvas = oldAreInCanvas;
+    return;
   }
 
   let originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);

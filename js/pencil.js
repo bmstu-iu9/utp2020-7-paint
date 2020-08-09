@@ -21,7 +21,7 @@ function endPoint() {
 }
 
 function initPencil() {
-  canvas.style.cursor = 'url('img/cursors/pencil_cursor.png') 0 25, auto';
+  canvas.style.cursor = 'url(\"img/cursors/pencil_cursor.png\") 0 25, auto';
 
   canvas.addEventListener('mousedown', startPointPencil);
 }
@@ -40,7 +40,7 @@ function startPointPencil(e) {
 
   context.save();
   if (isThereSelection) rememberCanvasWithoutSelection();
-  
+
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;
@@ -51,7 +51,7 @@ function startPointPencil(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
 
   drawPencil(e);
-  
+
   document.addEventListener('mousemove', drawPencil);
   document.addEventListener('mouseup', endPoint);
 }

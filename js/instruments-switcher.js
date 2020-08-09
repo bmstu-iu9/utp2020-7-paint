@@ -35,7 +35,9 @@ function instrumentsHandler(event) {
 
   activeInstrument = allInstruments.get(targetId);
   document.getElementById(targetId).classList.add('pressed');
-  activeInstrument.init();
+  if (!activeLayer.locked) {
+    activeInstrument.init();
+  }
 }
 
 allIds.forEach((id) => {

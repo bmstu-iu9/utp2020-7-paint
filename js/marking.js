@@ -1,6 +1,6 @@
 'use strict';
 
-let initial_offset, inter;
+let initial_offset;
 
 function initCage() {
   startPointCage();
@@ -63,7 +63,6 @@ function startPointHorizontal(e) {
   correctInitialOffset();
   context.beginPath();
 
-  let inter = markingInterval;
   for (let x = initial_offset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);

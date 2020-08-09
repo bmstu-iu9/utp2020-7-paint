@@ -208,6 +208,9 @@ function insertCanvas(copyCanvas) {
       if (isThereSelection) uniteRememberAndSelectedImages();
       changePreview();
       rememberState();
+    } else if (event.key == 'x' && event.ctrlKey) {
+      canvasInsertion.hidden = true;
+      document.removeEventListener('keydown', pressForInsertion);
     }
   }
 

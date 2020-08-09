@@ -37,7 +37,7 @@ function switchEyedropperWindow() {
 
 function getPixelColor(x, y) {
   let curCanvasId = activeLayer.id;
-  let maxIndex = bottomLayer.index - 1, highestPixel = [0, 0, 0, 0], pixel;
+  let maxIndex = -100, highestPixel = [0, 0, 0, 0], pixel;
   layers.forEach(layer => {
     canvas = layer.canvas;
     pixel = canvas.getContext('2d').getImageData(x, y, 1, 1).data;
@@ -46,6 +46,7 @@ function getPixelColor(x, y) {
       highestPixel = pixel;
     }
   });
+
   canvas = layers.get(curCanvasId).canvas;
   return highestPixel;
 }

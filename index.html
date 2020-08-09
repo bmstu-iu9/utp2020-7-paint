@@ -10,21 +10,6 @@
 <body>
 <div id="topPanel">
   <span id="title">IMAGO</span>
-  <button title="negative" id="negative"></button>
-  <button title="grey-scale" id="grey-scale"></button>
-  <button title="sepia" id="sepia"></button>
-  <button title="black-white" id="black-white"></button>
-  <button title="rainbowLines" id="sobel"></button>
-  <button title="binarization" id="binarization"></button>
-  <button title="colored" id="colored"></button>
-  <button title="emboss" id="emboss"></button>
-  <button title="median" id="median"></button>
-  <button title="blur" id="blur"></button>
-  <button title="horizontal reflection" id="horizontal-reflection"></button>
-  <button title="vertical reflection" id="vertical-reflection"></button>
-  <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
-  <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
-  <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
   <div id="topContainer">
     <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
     <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
@@ -43,6 +28,7 @@
         </div>
       </button>
     </div>
+    <button title="Фильтры" class="toolBtn trigger" id="filters-modal" style="background-image: url(img/tools/filters.svg)"></button>
     <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
     <div class="droplist">
       <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
@@ -225,6 +211,62 @@
   </div>
 </div>
 
+<div class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div title="Сбросить изменения" class="filterHeaderBtns" id="deletingChanges"></div>
+      <div class="filterHeaderBtns" id="undoFilter"></div>
+      <div class="filterHeaderBtns" id="redoFilter"></div>
+      <div class="closeBtnsContainer">
+        <div class="closeButton" id="closeWithoutSaving"></div>
+        <div class="closeButton" id="closeWithSaving"></div>
+      </div>
+    </div>
+    <div class="spaceWrapper">
+      <div class="leftSide">
+        <div class="filterCanvasWrapper" id="modalCanvasWrapper">
+          <canvas class="filterCanvas" id="modalCanvas"></canvas>
+        </div>
+        <div>
+          <div class="rangeAndDescription">
+            <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
+            <p>Контрастность</p>
+          </div>
+          <div class="rangeAndDescription">
+            <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
+            <p>Яркость</p>
+          </div>
+          <div class="rangeAndDescription">
+            <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
+            <p>Резкость</p>
+          </div>
+        </div>
+      </div>
+      <div class="rightSide">
+        <div class="centerFilterBtns colorFiltersBtns">
+          <button title="negative" id="negative" style="background-image: url(img/filters/negative.svg)"></button>
+          <button title="grey-scale" id="grey-scale" style="background-image: url(img/filters/greyscale.svg)"></button>
+          <button title="sepia" id="sepia" style="background-image: url(img/filters/sepia.svg)"></button>
+        </div>
+        <div class="centerFilterBtns colorFiltersBtns">
+          <button title="black-white" id="black-white" style="background-image: url(img/filters/blackwhite.svg)"></button>
+          <button title="rainbowLines" id="sobel" style="background-image: url(img/filters/rainbowlines.svg"></button>
+          <button title="binarization" id="binarization" style="background-image: url(img/filters/binarization.svg)"></button>
+        </div>
+        <div class="centerFilterBtns colorFiltersBtns">
+          <button title="colored" id="colored" style="background-image: url(img/filters/colored.svg)"></button>
+          <button title="horizontal reflection" id="horizontal-reflection" style="background-image: url(img/filters/horizontal_reflection.svg)"></button>
+          <button title="vertical reflection" id="vertical-reflection" style="background-image: url(img/filters/vertical_reflection.svg)"></button>
+        </div>
+        <div class="centerFilterBtns textFilterBtns">
+          <button title="emboss" id="emboss">Объем</button>
+          <button title="blur" id="blur">Блюр</button>
+          <button title="median" id="median">Шум</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="canvasInsertion" hidden="true"></div>
 
@@ -249,6 +291,7 @@
 <script src="js/text-insertion.js"></script>
 <script src="js/picture.js"></script>
 <script src="js/stamp.js"></script>
+<script src="js/filters.js"></script>
 <script src="js/selection.js"></script>
 <script src="js/instruments-switcher.js"></script>
 <script src="js/tool-size.js"></script>

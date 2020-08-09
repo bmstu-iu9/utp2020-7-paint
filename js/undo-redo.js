@@ -40,8 +40,8 @@ document.getElementById('undo').addEventListener('click', () => {
       if (value[curState]) {
         ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
       }
+      changePreview(layers.get(key));
     })
-    changePreview();
   }
 });
 
@@ -55,7 +55,7 @@ document.getElementById('redo').addEventListener('click', () => {
       if (value[curState]) {
         ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
       }
+      changePreview(layers.get(key));
     })
-    changePreview();
   }
 });

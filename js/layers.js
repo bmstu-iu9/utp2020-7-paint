@@ -227,7 +227,7 @@ function changePreview(layer) {
   }
   let previewContext = layer.preview.getContext('2d');
   previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
-  previewContext.drawImage(canvas, 0, 0, layer.preview.width, layer.preview.height);
+  previewContext.drawImage(layer.canvas, 0, 0, layer.preview.width, layer.preview.height);
 }
 
 function hideLayerHandler(event) {

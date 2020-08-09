@@ -249,6 +249,9 @@ changeCanvasWidth.oninput = function () {
         canvas.style.width = actualWidth + 'px';
         canvas.setAttribute('width', actualWidth + 'px');
       });
+      layers.forEach((layer) => {
+        changePreviewSize(layer.preview);
+      });
 
       changeCanvasWidth.value = actualWidth + 'px';
       document.getElementById('curWidth').innerHTML = actualWidth + '';
@@ -274,10 +277,6 @@ changeCanvasHeight.oninput = function () {
       canvas.style.height = curCanvasHeight + 'px';
       canvas.setAttribute('height', curCanvasHeight + 'px');
     });
-    layers.forEach((layer) => {
-      changePreviewSize(layer.preview);
-    });
-
     document.getElementById('curHeight').innerHTML = curCanvasHeight + '';
     changeCanvasHeight.style.background = '#ffffff';
     changeCanvasHeight.value = curCanvasHeight;
@@ -312,6 +311,9 @@ changeCanvasHeight.oninput = function () {
       allCanvases.forEach((canvas) => {
         canvas.style.height = actualHeight + 'px';
         canvas.setAttribute('height', actualHeight + 'px');
+      });
+      layers.forEach((layer) => {
+        changePreviewSize(layer.preview);
       });
 
       changeCanvasHeight.value = actualHeight + 'px';

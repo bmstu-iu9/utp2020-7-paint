@@ -11,8 +11,6 @@ function startPointCage() {
   correctInitialOffset();
   context.beginPath();
 
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
-
   for (let x = initial_offset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
@@ -29,7 +27,7 @@ function startPointCage() {
 }
 
 function deleteCage() {
-  cage.removeEventListener("mousedown", startPointCage);
+  cage.removeEventListener('mousedown', undo.click());
 }
 
 function initVertical() {
@@ -53,7 +51,7 @@ function startPointVertical(e) {
 }
 
 function deleteVertical() {
-  vertical.removeEventListener("mousedown", startPointVertical);
+  vertical.removeEventListener('mousedown', undo.click());
 }
 
 function initHorizontal() {
@@ -65,6 +63,7 @@ function startPointHorizontal(e) {
   correctInitialOffset();
   context.beginPath();
 
+  let inter = markingInterval;
   for (let x = initial_offset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
@@ -77,7 +76,7 @@ function startPointHorizontal(e) {
 }
 
 function deleteHorizontal() {
-  horizontal.removeEventListener("mousedown", startPointHorizontal);
+  horizontal.removeEventListener('mousedown', undo.click());
 }
 
 function initDiagonal() {
@@ -89,7 +88,7 @@ function startPointDiagonal(e) {
   correctInitialOffset();
   context.beginPath();
 
-  let shift, angleInRadians;
+  let shift, angleInRadians, inter = markingInterval;
   if (inclinationAngle == 90) {
     startPointHorizontal();
   }
@@ -119,7 +118,7 @@ function startPointDiagonal(e) {
 }
 
 function deleteDiagonal() {
-  diagonal.removeEventListener("mousedown", startPointDiagonal);
+  diagonal.removeEventListener('mousedown', undo.click());
 }
 
 function initDoubleDiagonal() {
@@ -131,7 +130,7 @@ function startPointDoubleDiagonal(e) {
   correctInitialOffset();
   context.beginPath();
 
-  let shift, angleInRadians;
+  let shift, angleInRadians, inter = markingInterval;
 
   angleInRadians = inclinationAngle * Math.PI / 180;
   shift = canvas.height * Math.tan(angleInRadians);
@@ -154,7 +153,7 @@ function startPointDoubleDiagonal(e) {
 }
 
 function deleteDoubleDiagonal() {
-  doubleDiagonal.removeEventListener("mousedown", startPointDoubleDiagonal);
+  doubleDiagonal.removeEventListener('mousedown', undo.click());
 }
 
 function initWavy() {
@@ -166,7 +165,8 @@ function startPointWavy(e) {
   correctInitialOffset();
   context.beginPath();
 
-  let cx = 0;
+  let cx = 0, inter = markingInterval;
+
   for (let cy = initial_offset + inclinationAngle; cy < canvas.height + inclinationAngle; cy += markingInterval) {
     context.moveTo(cx, cy);
     for (let i = 1; i < canvas.width; i++) {
@@ -183,7 +183,7 @@ function startPointWavy(e) {
 }
 
 function deleteWavy() {
-  wavy.removeEventListener("mousedown", startPointWavy);
+  wavy.removeEventListener('mousedown', undo.click());
 }
 
 function correctInitialOffset() {

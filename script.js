@@ -401,10 +401,13 @@ let firstClickUpload = true;
 document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
   if (firstClickUpload) {
     toggleModal();
-    hintsContent.innerHTML = 'Горячие клавиши:<br> Alt + Enter — вставить фото';
+    hintsContent.innerHTML = `Горячие клавиши:
+      <br>
+      <br> Alt + Enter — вставить фото
+      <br> Двойное нажатие левой кнопкой мыши на фото — вернуть исходный размер`;
     firstClickUpload = false;
   }
-  hideAndShow('uploadImgMenu', event);
+  hideAndShow("uploadImgMenu", event);
 });
 
 document.getElementById('brush').addEventListener('click', (event) => {

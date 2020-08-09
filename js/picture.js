@@ -3,7 +3,7 @@
 let photoResizer = document.getElementById('photoResizer');
 let deleteImageBtn = document.getElementById('deleteImage');
 let isResizing = false;
-let curImg;
+let curImg, originalImgWidth, originalImgHeight;
 let deltaImgX, deltaImgY;
 
 function getMiddleCoords(element) {
@@ -34,10 +34,21 @@ function pressForImgInsertion() {
   }
 }
 
+function getOriginalSizeOfImg() {
+  let img = document.getElementById('photoForInsertion');
+
+  photoResizer.style.width = img.style.width = originalImgWidth + 'px';
+  photoResizer.style.height = img.style.height = originalImgHeight + 'px';
+
+  deltaImgX = originalImgWidth / 2;
+  deltaImgY = originalImgHeight / 2;
+}
+
 function deleteImg() {
   photoResizer.hidden = true;
   document.removeEventListener('keydown', pressForImgInsertion);
   deleteImageBtn.removeEventListener('click', deleteImage);
+  photoResizer.removeEventListener('dblclick', getOriginalSizeOfImg);
 }
 
 function insertImg(img) {
@@ -46,21 +57,32 @@ function insertImg(img) {
   curImg = img;
 
   function setInitialParameters() {
+    let docWidth = document.documentElement.clientWidth;
+    let d = docWidth - img.width;
+    if (d < 10) {
+      let photo = document.getElementById('photoForInsertion');
+      img.width = docWidth - 10;
+      photo.style.width = img.width + 'px';
+    }
+
     photoResizer.hidden = false;
-    photoResizer.style.width = 'auto';
+    photoResizer.style.width = img.width + 'px';
     photoResizer.style.height = 'auto';
-    photoResizer.style.top = canvas.getBoundingClientRect().top + 'px';
-    photoResizer.style.left = canvas.getBoundingClientRect().left + 'px';
+    photoResizer.style.top = '50px';
+    photoResizer.style.left = (docWidth - img.width) / 2 + 'px';
     photoResizer.style.zIndex = activeLayer.index;
 
-    deltaImgX = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('width').replace('px', '')) / 2;
-    deltaImgY = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('height').replace('px', '')) / 2;
+    originalImgWidth = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('width').replace('px', ''));
+    originalImgHeight = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('height').replace('px', ''));
+    deltaImgX = originalImgWidth / 2;
+    deltaImgY = originalImgHeight / 2;
   }
 
   if (lastPhoto) photoIn.removeChild(lastPhoto);
   photoIn.insertAdjacentHTML('afterbegin', '<img src=\"' + img.src + '\" id=\"photoForInsertion\">');
   setInitialParameters();
   document.addEventListener('keydown', pressForImgInsertion);
+  photoResizer.addEventListener('dblclick', getOriginalSizeOfImg);
   makeResizablePhoto(photoResizer);
 }
 
@@ -98,7 +120,7 @@ function makeResizablePhoto(element) {
   let originalMouseX, originalMouseY, minSize = 20;
   for (let i = 0; i < resizers.length; i++) {
     let currentResizer = resizers[i];
-    currentResizer.addEventListener('mousedown', function(e) {
+    currentResizer.addEventListener('mousedown', (e) => {
       e.preventDefault();
       originalWidth = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
       originalHeight = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));

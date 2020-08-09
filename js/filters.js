@@ -1,35 +1,43 @@
-let modal = document.querySelector(".modal");
-let trigger = document.querySelector(".trigger");
-let undoFilter = document.getElementById("undoFilter");
-let redoFilter = document.getElementById("redoFilter");
-let deletingChanges = document.getElementById("deletingChanges");
+let modal = document.querySelector('.modal');
+let trigger = document.querySelector('.trigger');
+let undoFilter = document.getElementById('undoFilter');
+let redoFilter = document.getElementById('redoFilter');
+let deletingChanges = document.getElementById('deletingChanges');
 
-trigger.addEventListener("click", toggleFilterModal);
-closeWithoutSaving.addEventListener("click", toggleFilterModal);
-closeWithSaving.addEventListener("click", toggleFilterModal);
+trigger.addEventListener('click', toggleFilterModal);
+closeWithoutSaving.addEventListener('click', toggleFilterModal);
+closeWithSaving.addEventListener('click', toggleFilterModal);
 
-let filtersModal = document.getElementById("filters-modal");
-filtersModal.addEventListener("click", useFiltersModal);
+let filtersModal = document.getElementById('filters-modal');
+filtersModal.addEventListener('click', useFiltersModal);
 
-let modalCanvas = document.getElementById("modalCanvas");
-let modalContext = modalCanvas.getContext("2d");
-modalCanvas.setAttribute("width", modalCanvas.width);
-modalCanvas.setAttribute("height", modalCanvas.height);
+let modalCanvas = document.getElementById('modalCanvas');
+let modalContext = modalCanvas.getContext('2d');
+modalCanvas.setAttribute('width', modalCanvas.width);
+modalCanvas.setAttribute('height', modalCanvas.height);
 
-let filterCanvas = document.createElement("canvas");
+let filterCanvas = document.createElement('canvas');
 let originalCanvas;
 
 function toggleFilterModal() {
-  modal.classList.toggle("show-modal");
+  modal.classList.toggle('show-modal');
 }
 
 function useFiltersModal() {
   changeModalCanvasSize();
   originalCanvas = canvas;
 
-  filterCanvas.setAttribute("width", canvas.width);
-  filterCanvas.setAttribute("height", canvas.height);
-  let filterContext = filterCanvas.getContext("2d");
+  addEventListener('keydown', escapeExit);
+
+  function escapeExit(event) {
+    if (event.code == 'Escape') {
+      closeWithoutSaving.click();
+    }
+  }
+
+  filterCanvas.setAttribute('width', canvas.width);
+  filterCanvas.setAttribute('height', canvas.height);
+  let filterContext = filterCanvas.getContext('2d');
   filterContext.drawImage(canvas, 0, 0, canvas.width, canvas.height);
 
   modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
@@ -43,33 +51,34 @@ function useFiltersModal() {
 
   rememberFilterState();
 
-  undoFilter.addEventListener("click", applyPrevState);
-  redoFilter.addEventListener("click", applyNextState);
+  undoFilter.addEventListener('click', applyPrevState);
+  redoFilter.addEventListener('click', applyNextState);
 
-  closeWithoutSaving.addEventListener("click", closeModalWithoutSaving);
-  closeWithSaving.addEventListener("click", closeModalWithSaving);
-  deletingChanges.addEventListener("click", deleteChanges);
+  closeWithoutSaving.addEventListener('click', closeModalWithoutSaving);
+  closeWithSaving.addEventListener('click', closeModalWithSaving);
+  deletingChanges.addEventListener('click', deleteChanges);
 
   function closeModalWithoutSaving() {
     canvas = originalCanvas;
-    context = canvas.getContext("2d");
-    undoFilter.removeEventListener("click", applyPrevState);
-    redoFilter.removeEventListener("click", applyNextState);
-    closeWithSaving.removeEventListener("click", closeModalWithSaving);
-    closeWithoutSaving.removeEventListener("click", closeModalWithoutSaving);
-    deletingChanges.removeEventListener("click", deleteChanges);
+    context = canvas.getContext('2d');
+    undoFilter.removeEventListener('click', applyPrevState);
+    redoFilter.removeEventListener('click', applyNextState);
+    closeWithSaving.removeEventListener('click', closeModalWithSaving);
+    closeWithoutSaving.removeEventListener('click', closeModalWithoutSaving);
+    deletingChanges.removeEventListener('click', deleteChanges);
+    removeEventListener('keydown', escapeExit);
   }
 
   function closeModalWithSaving() {
-    originalCanvas.getContext("2d").putImageData(context.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
+    originalCanvas.getContext('2d').putImageData(context.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
     canvas = originalCanvas;
-    context = canvas.getContext("2d");
+    context = canvas.getContext('2d');
     rememberState();
-    undoFilter.removeEventListener("click", applyPrevState);
-    redoFilter.removeEventListener("click", applyNextState);
-    closeWithSaving.removeEventListener("click", closeModalWithSaving);
-    closeWithoutSaving.removeEventListener("click", closeModalWithoutSaving);
-    deletingChanges.removeEventListener("click", deleteChanges);
+    undoFilter.removeEventListener('click', applyPrevState);
+    redoFilter.removeEventListener('click', applyNextState);
+    closeWithSaving.removeEventListener('click', closeModalWithSaving);
+    closeWithoutSaving.removeEventListener('click', closeModalWithoutSaving);
+    deletingChanges.removeEventListener('click', deleteChanges);
     changePreview();
   }
 
@@ -109,37 +118,37 @@ function useFiltersModal() {
     history = history.slice(0, 1);
   }
 
-  let negativeFilterButton = document.getElementById("negative");
-  negativeFilterButton.onclick = () => { applySimpleFilter("negative"); rememberFilterState(); }
+  let negativeFilterButton = document.getElementById('negative');
+  negativeFilterButton.onclick = () => { applySimpleFilter('negative'); rememberFilterState(); }
 
-  let greyScaleFilterButton = document.getElementById("grey-scale");
-  greyScaleFilterButton.onclick = () => { applySimpleFilter("grey-scale"); rememberFilterState(); }
+  let greyScaleFilterButton = document.getElementById('grey-scale');
+  greyScaleFilterButton.onclick = () => { applySimpleFilter('grey-scale'); rememberFilterState(); }
 
-  let sepiaFilterButton = document.getElementById("sepia");
-  sepiaFilterButton.onclick = () => { applySimpleFilter("sepia"); rememberFilterState(); }
+  let sepiaFilterButton = document.getElementById('sepia');
+  sepiaFilterButton.onclick = () => { applySimpleFilter('sepia'); rememberFilterState(); }
 
-  let blackWhiteFilterButton = document.getElementById("black-white");
-  blackWhiteFilterButton.onclick = () => { applySimpleFilter("black-white"); rememberFilterState(); }
+  let blackWhiteFilterButton = document.getElementById('black-white');
+  blackWhiteFilterButton.onclick = () => { applySimpleFilter('black-white'); rememberFilterState(); }
 
-  let binarizationFilterButton = document.getElementById("binarization");
-  binarizationFilterButton.onclick = () => { applySimpleFilter("binarization"); rememberFilterState(); }
+  let binarizationFilterButton = document.getElementById('binarization');
+  binarizationFilterButton.onclick = () => { applySimpleFilter('binarization'); rememberFilterState(); }
 
-  let coloredFilterButton = document.getElementById("colored");
-  coloredFilterButton.onclick = () => { applySimpleFilter("colored"); rememberFilterState(); }
+  let coloredFilterButton = document.getElementById('colored');
+  coloredFilterButton.onclick = () => { applySimpleFilter('colored'); rememberFilterState(); }
 
-  let sobelFilterButton = document.getElementById("sobel");
+  let sobelFilterButton = document.getElementById('sobel');
   sobelFilterButton.onclick = () => { applySobelFilter(); rememberFilterState(); }
 
-  let embossFilterButton = document.getElementById("emboss");
+  let embossFilterButton = document.getElementById('emboss');
   embossFilterButton.onclick = () => {
     applyConvolutionMatrixFilter([-2, -1, 0, -1, 1, 1, 0, 1, 2], 1);
     rememberFilterState();
   }
 
-  let medianFilterButton = document.getElementById("median");
+  let medianFilterButton = document.getElementById('median');
   medianFilterButton.onclick = () => { applyMedianFilter(1); rememberFilterState(); }
 
-  let blurFilterButton = document.getElementById("blur");
+  let blurFilterButton = document.getElementById('blur');
   blurFilterButton.onclick = () => {
     applyConvolutionMatrixFilter(
       [1/256, 4/256, 6/256, 4/256, 1/256,
@@ -150,10 +159,10 @@ function useFiltersModal() {
     rememberFilterState();
   }
 
-  let horizontalReflectionFilterButton = document.getElementById("horizontal-reflection");
+  let horizontalReflectionFilterButton = document.getElementById('horizontal-reflection');
   horizontalReflectionFilterButton.onclick = () => { applyHorizontalReflection(); rememberFilterState(); }
 
-  let verticalReflectionFilterButton = document.getElementById("vertical-reflection");
+  let verticalReflectionFilterButton = document.getElementById('vertical-reflection');
   verticalReflectionFilterButton.onclick = () => { applyVerticalReflection(); rememberFilterState(); }
 
   function applySimpleFilter(filterName) {
@@ -171,20 +180,20 @@ function useFiltersModal() {
       let green = curImageData.data[getIndexOfGreenInData(x, y)];
       let blue = curImageData.data[getIndexOfBlueInData(x, y)];
 
-      if (filterName === "negative") {
+      if (filterName === 'negative') {
         curImageData.data[getIndexOfRedInData(x, y)] = 255 - red;
         curImageData.data[getIndexOfGreenInData(x, y)] = 255 - green;
         curImageData.data[getIndexOfBlueInData(x, y)] = 255 - blue;
-      } else if (filterName === "grey-scale") {
+      } else if (filterName === 'grey-scale') {
         let grey = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
         curImageData.data[getIndexOfRedInData(x, y)] = grey;
         curImageData.data[getIndexOfGreenInData(x, y)] = grey;
         curImageData.data[getIndexOfBlueInData(x, y)] = grey;
-      } else if (filterName === "sepia") {
+      } else if (filterName === 'sepia') {
         curImageData.data[getIndexOfRedInData(x, y)] = red * 0.393 + green * 0.769 + blue * 0.189;
         curImageData.data[getIndexOfGreenInData(x, y)] = red * 0.349 + green * 0.686 + blue * 0.168;
         curImageData.data[getIndexOfBlueInData(x, y)] = red * 0.272 + green * 0.534 + blue * 0.131;
-      } else if (filterName === "black-white") {
+      } else if (filterName === 'black-white') {
         let threshold = 255 / 2 * 3;
         if (red + green + blue > threshold) {
           curImageData.data[getIndexOfRedInData(x, y)] = 255;
@@ -195,11 +204,11 @@ function useFiltersModal() {
           curImageData.data[getIndexOfGreenInData(x, y)] = 0;
           curImageData.data[getIndexOfBlueInData(x, y)] = 0;
         }
-      } else if (filterName === "colored") {
+      } else if (filterName === 'colored') {
         curImageData.data[getIndexOfRedInData(x, y)] = 1.6914 * red - 0.6094 * green - 0.082 * blue;
         curImageData.data[getIndexOfGreenInData(x, y)] = -0.3086 * red + 1.3906 * green - 0.082 * blue;
         curImageData.data[getIndexOfBlueInData(x, y)] = -0.3086 * red - 0.6094 * green + 1.918 * blue;
-      } else if (filterName === "binarization") {
+      } else if (filterName === 'binarization') {
         curImageData.data[getIndexOfRedInData(x, y)] = 255 * Math.floor(red/128);
         curImageData.data[getIndexOfGreenInData(x, y)] = 255 * Math.floor(green/128);
         curImageData.data[getIndexOfBlueInData(x, y)] = 255 * Math.floor(blue/128);
@@ -210,7 +219,7 @@ function useFiltersModal() {
   let isClickedContrast = true;
 
   contrast.value = 1;
-  let contrastRange = document.getElementById("contrast");
+  let contrastRange = document.getElementById('contrast');
 
   contrastRange.oninput = () => {
     if (isClickedContrast) saveImg();
@@ -277,7 +286,7 @@ function useFiltersModal() {
 
   let isClickedBrightness = true;
   brightness.value = 0;
-  let brightnessRange = document.getElementById("brightness");
+  let brightnessRange = document.getElementById('brightness');
 
   brightnessRange.oninput = () => {
     if (isClickedBrightness) saveImg();
@@ -317,7 +326,7 @@ function useFiltersModal() {
 
   let isClickedSharp = true;
   sharp.value = 0;
-  let sharpRange = document.getElementById("sharp");
+  let sharpRange = document.getElementById('sharp');
 
   sharpRange.oninput = () => {
     if (isClickedSharp) saveImg();
@@ -342,7 +351,7 @@ function useFiltersModal() {
   }
 
   function applySobelFilter() {
-    applySimpleFilter("grey-scale");
+    applySimpleFilter('grey-scale');
     let srcBuff = context.getImageData(0, 0, canvas.width, canvas.height).data;
     let horizontal = getResultOfConvolutionMatrixFilter([-1, -2, -1, 0, 0, 0, 1, 2 , 1], 1);
     let vertical =  getResultOfConvolutionMatrixFilter([-1, 0, 1, -2, 0, 2, -1, 0 , 1], 1);
@@ -465,8 +474,8 @@ function useFiltersModal() {
   }
 }
 
-let maxModalCanvasHeight = document.getElementById("modalCanvasWrapper").clientHeight;
-let maxModalCanvasWidth = document.getElementById("modalCanvasWrapper").clientWidth;
+let maxModalCanvasHeight = document.getElementById('modalCanvasWrapper').clientHeight;
+let maxModalCanvasWidth = document.getElementById('modalCanvasWrapper').clientWidth;
 
 function changeModalCanvasSize() {
   if (curCanvasHeight / maxModalCanvasHeight > curCanvasWidth / maxModalCanvasWidth) {

@@ -24,6 +24,7 @@ function toggleModal() {
 }
 
 function useFiltersModal() {
+  changeModalCanvasSize();
   originalCanvas = canvas;
   
   filterCanvas.setAttribute("width", canvas.width);
@@ -440,7 +441,6 @@ function useFiltersModal() {
   function applyMedianFilter(radius) {
     let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
     let resultImageData = curImageData;
-    let storonaKvadrata = 2 * radius + 1;
 
     for (let k = 0; k < 3; k++) {
       for (let i = 0; i < canvas.width; i++) {
@@ -465,4 +465,17 @@ function useFiltersModal() {
   }
 }
 
+let maxModalCanvasHeight = document.getElementById("modalCanvasWrapper").clientHeight;
+let maxModalCanvasWidth = document.getElementById("modalCanvasWrapper").clientWidth;
 
+function changeModalCanvasSize() {
+  if (curCanvasHeight > curCanvasWidth) {
+    modalCanvas.style.height = maxModalCanvasHeight + 'px';
+    modalCanvas.style.width = curCanvasWidth * (parseInt(modalCanvas.style.height) / curCanvasHeight) + 'px';
+  } else {
+    modalCanvas.style.width = maxModalCanvasWidth + 'px';
+    modalCanvas.style.height = curCanvasHeight * (parseInt(modalCanvas.style.width) / curCanvasWidth) + 'px';
+  }
+  modalCanvas.setAttribute('width', modalCanvas.style.width);
+  modalCanvas.setAttribute('height', modalCanvas.style.height);
+}

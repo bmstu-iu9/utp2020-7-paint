@@ -73,8 +73,10 @@ function drawRectangleSelection(e) {
     document.body.appendChild(selectionCanvas);
 
     selectionCanvas.classList.add('mainCanvas');
-    selectionCanvas.width = selectionCanvas.offsetWidth;
-    selectionCanvas.height = selectionCanvas.offsetHeight;
+    selectionCanvas.style.width = curCanvasWidth + 'px';
+    selectionCanvas.style.height = curCanvasHeight + 'px';
+    selectionCanvas.setAttribute("width", curCanvasWidth);
+    selectionCanvas.setAttribute("height", curCanvasHeight);
     selectionCanvas.style.top = canvas.style.top;
     selectionCanvas.style.left = canvas.style.left;
     selectionCanvas.style.margin = canvas.style.margin;

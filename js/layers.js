@@ -277,9 +277,31 @@ function changePreview(layer) {
   if (arguments.length == 0) {
     layer = activeLayer;
   }
+  let countOfSteps = Math.ceil(Math.log(layer.canvas.width / layer.preview.width) / Math.log(2));
+  let oc = document.createElement('canvas');
+  let octx = oc.getContext('2d');
+  let dopOc = document.createElement('canvas');
+  let dopOctx = dopOc.getContext('2d');
+  
+  oc.width = layer.canvas.width;
+  oc.height = layer.canvas.height;
+  dopOc.width = layer.canvas.width;
+  dopOc.height = layer.canvas.height;
+  
+  octx.drawImage(layer.canvas, 0, 0, oc.width, oc.height);
+  
+  let i = 0;
+  for (; i < countOfSteps - 1; i++) {
+    dopOctx.clearRect(0, 0, dopOc.width, dopOc.height);
+    dopOctx.drawImage(oc, 0, 0);
+    
+    octx.clearRect(0, 0, dopOc.width, dopOc.height);
+    octx.drawImage(dopOc, 0, 0, oc.width / 2, oc.height / 2);
+  }
+  
   let previewContext = layer.preview.getContext('2d');
   previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
-  previewContext.drawImage(layer.canvas, 0, 0, layer.preview.width, layer.preview.height);
+  previewContext.drawImage(oc, 0, 0, oc.width / (2 ** i), oc.height / (2 ** i), 0, 0, layer.preview.width, layer.preview.height);
 }
 
 function hideLayerHandler(event) {

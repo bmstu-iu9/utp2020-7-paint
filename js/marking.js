@@ -9,6 +9,9 @@ function initCage() {
 function startPointCage() {
   setParameters();
   correctInitialOffset();
+  context.beginPath();
+
+  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
 
   for (let x = initial_offset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
@@ -19,6 +22,7 @@ function startPointCage() {
     context.lineTo(x, canvas.height);
   }
   context.stroke();
+  context.beginPath();
 
   rememberState();
   changePreview();
@@ -35,12 +39,14 @@ function initVertical() {
 function startPointVertical(e) {
   setParameters();
   correctInitialOffset();
+  context.beginPath();
 
   for (let x = initial_offset; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
   }
   context.stroke();
+  context.beginPath();
 
   rememberState();
   changePreview();
@@ -57,12 +63,14 @@ function initHorizontal() {
 function startPointHorizontal(e) {
   setParameters();
   correctInitialOffset();
+  context.beginPath();
 
   for (let x = initial_offset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
   context.stroke();
+  context.beginPath();
 
   rememberState();
   changePreview();
@@ -79,14 +87,32 @@ function initDiagonal() {
 function startPointDiagonal(e) {
   setParameters();
   correctInitialOffset();
+  context.beginPath();
 
-  let shift = canvas.height/Math.tan(inclinationAngle);
+  let shift, angleInRadians;
+  if (inclinationAngle == 90) {
+    startPointHorizontal();
+  }
+  if (inclinationAngle < 90) {
+    angleInRadians = inclinationAngle * Math.PI / 180;
+    shift = canvas.height * Math.tan(angleInRadians);
 
-  for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x + shift, canvas.height);
+    for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+      context.moveTo(x - shift/2, canvas.height);
+      context.lineTo(x + shift/2, 0);
+    }
+  }
+  if  (inclinationAngle > 90) {
+    angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
+    shift = canvas.height * Math.tan(angleInRadians);
+
+    for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+      context.moveTo(x - shift/2, 0);
+      context.lineTo(x + shift/2, canvas.height);
+    }
   }
   context.stroke();
+  context.beginPath();
 
   rememberState();
   changePreview();
@@ -103,20 +129,25 @@ function initDoubleDiagonal() {
 function startPointDoubleDiagonal(e) {
   setParameters();
   correctInitialOffset();
+  context.beginPath();
 
-  let shift = canvas.height/Math.tan(inclinationAngle);
+  let shift, angleInRadians;
 
-  for (let x = initial_offset - shift; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x + shift, canvas.height);
+  angleInRadians = inclinationAngle * Math.PI / 180;
+  shift = canvas.height * Math.tan(angleInRadians);
+
+  for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+    context.moveTo(x - shift/2, canvas.height);
+    context.lineTo(x + shift/2, 0);
   }
 
-  shift = -canvas.height/Math.tan(inclinationAngle);
-  for (let x = initial_offset; x < canvas.width - shift; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x + shift, canvas.height);
+  for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+    context.moveTo(x - shift/2, 0);
+    context.lineTo(x + shift/2, canvas.height);
   }
+
   context.stroke();
+  context.beginPath();
 
   rememberState();
   changePreview();
@@ -133,6 +164,7 @@ function initWavy() {
 function startPointWavy(e) {
   setParameters();
   correctInitialOffset();
+  context.beginPath();
 
   let cx = 0;
   for (let cy = initial_offset + inclinationAngle; cy < canvas.height + inclinationAngle; cy += markingInterval) {
@@ -144,6 +176,7 @@ function startPointWavy(e) {
     }
   }
   context.stroke();
+  context.beginPath();
 
   rememberState();
   changePreview();

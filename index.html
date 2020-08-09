@@ -203,52 +203,51 @@
 </div>
 
 <div class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-      	<div id="deletingChanges">Сбросить изменения</div>
-        <div id="undoFilter"></div>
-        <div id="redoFilter"></div>
-        <div class="closeBtnsContainer">
-          <div class="closeButton" id="closeWithoutSaving"></div>
-          <div class="closeButton" id="closeWithSaving"></div>
-        </div>
-      </div>
-      <div class="spaceWrapper">
-        <div class="leftSide">
-          <div class="filterCanvasWrapper" id="modalCanvasWrapper">
-            <canvas class="filterCanvas" id="modalCanvas"></canvas>
-          </div>
-          <div class="sliderFilterContainer">
-            <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
-            <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
-            <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
-          </div>
-        </div><!--
-        --><div class="rightSide">
-          <div class="centerFilterBtns colorFiltersBtns">
-            <button title="negative" id="negative" style="background-image: url(img/filters/negative.svg)"></button>
-            <button title="grey-scale" id="grey-scale" style="background-image: url(img/filters/greyscale.svg)"></button>
-            <button title="sepia" id="sepia" style="background-image: url(img/filters/sepia.svg)"></button>
-          </div>
-          <div class="centerFilterBtns colorFiltersBtns">
-            <button title="black-white" id="black-white" style="background-image: url(img/filters/blackwhite.svg)"></button>
-            <button title="rainbowLines" id="sobel" style="background-image: url(img/filters/rainbowlines.svg"></button>
-            <button title="binarization" id="binarization" style="background-image: url(img/filters/binarization.svg)"></button>
-          </div>
-          <div class="centerFilterBtns colorFiltersBtns">
-            <button title="colored" id="colored" style="background-image: url(img/filters/colored.svg)"></button>
-            <button title="horizontal reflection" id="horizontal-reflection" style="background-image: url(img/filters/horizontal_reflection.svg)"></button>
-            <button title="vertical reflection" id="vertical-reflection" style="background-image: url(img/filters/vertical_reflection.svg)"></button>
-          </div>
-          <div class="centerFilterBtns textFilterBtns">
-            <button title="emboss" id="emboss">Объем</button>
-            <button title="blur" id="blur">Блюр</button>
-            <button title="median" id="median">Шум</button>
-          </div>
-        </div>
-        <div></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <div id="deletingChanges">Сбросить изменения</div>
+      <div id="undoFilter"></div>
+      <div id="redoFilter"></div>
+      <div class="closeBtnsContainer">
+        <div class="closeButton" id="closeWithoutSaving"></div>
+        <div class="closeButton" id="closeWithSaving"></div>
       </div>
     </div>
+    <div class="spaceWrapper">
+      <div class="leftSide">
+        <div class="filterCanvasWrapper" id="modalCanvasWrapper">
+          <canvas class="filterCanvas" id="modalCanvas"></canvas>
+        </div>
+        <div class="sliderFilterContainer">
+          <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
+          <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
+          <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
+        </div>
+      </div>
+      <div class="rightSide">
+        <div class="centerFilterBtns colorFiltersBtns">
+          <button title="negative" id="negative" style="background-image: url(img/filters/negative.svg)"></button>
+          <button title="grey-scale" id="grey-scale" style="background-image: url(img/filters/greyscale.svg)"></button>
+          <button title="sepia" id="sepia" style="background-image: url(img/filters/sepia.svg)"></button>
+        </div>
+        <div class="centerFilterBtns colorFiltersBtns">
+          <button title="black-white" id="black-white" style="background-image: url(img/filters/blackwhite.svg)"></button>
+          <button title="rainbowLines" id="sobel" style="background-image: url(img/filters/rainbowlines.svg"></button>
+          <button title="binarization" id="binarization" style="background-image: url(img/filters/binarization.svg)"></button>
+        </div>
+        <div class="centerFilterBtns colorFiltersBtns">
+          <button title="colored" id="colored" style="background-image: url(img/filters/colored.svg)"></button>
+          <button title="horizontal reflection" id="horizontal-reflection" style="background-image: url(img/filters/horizontal_reflection.svg)"></button>
+          <button title="vertical reflection" id="vertical-reflection" style="background-image: url(img/filters/vertical_reflection.svg)"></button>
+        </div>
+        <div class="centerFilterBtns textFilterBtns">
+          <button title="emboss" id="emboss">Объем</button>
+          <button title="blur" id="blur">Блюр</button>
+          <button title="median" id="median">Шум</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="preloader.js"></script>

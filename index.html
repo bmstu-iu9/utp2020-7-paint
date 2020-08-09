@@ -205,9 +205,9 @@
 <div class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <div id="deletingChanges">Сбросить изменения</div>
-      <div id="undoFilter"></div>
-      <div id="redoFilter"></div>
+      <div title="Сбросить изменения" class="filterHeaderBtns" id="deletingChanges"></div>
+      <div class="filterHeaderBtns" id="undoFilter"></div>
+      <div class="filterHeaderBtns" id="redoFilter"></div>
       <div class="closeBtnsContainer">
         <div class="closeButton" id="closeWithoutSaving"></div>
         <div class="closeButton" id="closeWithSaving"></div>
@@ -218,10 +218,19 @@
         <div class="filterCanvasWrapper" id="modalCanvasWrapper">
           <canvas class="filterCanvas" id="modalCanvas"></canvas>
         </div>
-        <div class="sliderFilterContainer">
-          <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
-          <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
-          <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
+        <div>
+          <div class="rangeAndDescription">
+            <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
+            <p>Контрастность</p>
+          </div>
+          <div class="rangeAndDescription">
+            <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
+            <p>Яркость</p>
+          </div>
+          <div class="rangeAndDescription">
+            <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
+            <p>Резкость</p>
+          </div>
         </div>
       </div>
       <div class="rightSide">

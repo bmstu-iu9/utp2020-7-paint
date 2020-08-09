@@ -435,7 +435,7 @@ function areInCanvas(x, y) {
 }
 
 function changePreviewSize(preview) {
-  if (curCanvasHeight > curCanvasWidth) {
+  if (curCanvasHeight / maxPreviewHeight > curCanvasWidth / maxPreviewWidth) {
     preview.style.height = maxPreviewHeight + 'px';
     preview.style.width = curCanvasWidth * (parseInt(preview.style.height) / curCanvasHeight) + 'px';
   } else {

@@ -6,7 +6,7 @@ let arrayOfSelectedArea = [];
 let leftTopPointSelection = [0, 0];
 let rightBottomPointSelection = [0, 0];
 
-let copyCanvas;
+let curcopyCanvas;
 
 let rememberedCanvas = document.createElement('canvas');
 let rememberedContext = rememberedCanvas.getContext('2d');
@@ -166,10 +166,10 @@ function copySelectedArea() {
     }
   }
 
-  copyCanvas = document.createElement('canvas');
-  copyCanvas.setAttribute('width', rightBottomPointSelection[0] - leftTopPointSelection[0]);
-  copyCanvas.setAttribute('height', rightBottomPointSelection[1] - leftTopPointSelection[1]);
-  copyCanvas.getContext('2d').putImageData(copyImageData, 0, 0);
+  curcopyCanvas = document.createElement('canvas');
+  curcopyCanvas.setAttribute('width', rightBottomPointSelection[0] - leftTopPointSelection[0]);
+  curcopyCanvas.setAttribute('height', rightBottomPointSelection[1] - leftTopPointSelection[1]);
+  curcopyCanvas.getContext('2d').putImageData(copyImageData, 0, 0);
 }
 
 function clearSelectedArea() {
@@ -190,7 +190,7 @@ function clearSelectedArea() {
 function insertCanvas(copyCanvas) {
   if (isThereSelection) deleteSelectedArea();
   let lastPasteCanvas = document.getElementById('copyCanvasForInsertion');
-
+  curcopyCanvas = copyCanvas;
   function pressForInsertion() {
     if (event.code == 'Enter' && event.altKey) {
       if (isThereSelection) rememberCanvasWithoutSelection();
@@ -199,11 +199,11 @@ function insertCanvas(copyCanvas) {
         x: canvas.getBoundingClientRect().left,
         y: canvas.getBoundingClientRect().top
       };
-      let dx = Math.floor(posOfPhoto.x - posOfCanvas.x + 2.5), dy = Math.floor(posOfPhoto.y - posOfCanvas.y + 2.5);
+      let dx = Math.floor(posOfPhoto.x - posOfCanvas.x + 3), dy = Math.floor(posOfPhoto.y - posOfCanvas.y + 3);
       context.save();
       context.translate(dx, dy);
 
-      context.drawImage(copyCanvas, 0, 0, copyCanvas.width, copyCanvas.height, -Math.floor(deltaXSelecting), -Math.floor(deltaYSelecting), copyCanvas.width, copyCanvas.height);
+      context.drawImage(curcopyCanvas, 0, 0, curcopyCanvas.width, curcopyCanvas.height, -Math.floor(deltaXSelecting), -Math.floor(deltaYSelecting), curcopyCanvas.width, curcopyCanvas.height);
 
       context.restore();
       canvasInsertion.hidden = true;
@@ -237,8 +237,8 @@ function insertCanvas(copyCanvas) {
   }
 
   if (lastPasteCanvas) canvasInsertion.removeChild(lastPasteCanvas);
-  copyCanvas.id = 'copyCanvasForInsertion';
-  canvasInsertion.appendChild(copyCanvas);
+  curcopyCanvas.id = 'copyCanvasForInsertion';
+  canvasInsertion.appendChild(curcopyCanvas);
   setInitialParameters();
   document.addEventListener('keydown', pressForInsertion);
 }
@@ -278,7 +278,7 @@ function hotkeyInsertion(event) {
         if (isThereSelection) copySelectedArea();
         break;
       case 'v':
-        if (copyCanvas) insertCanvas(copyCanvas);
+        if (curcopyCanvas) insertCanvas(curcopyCanvas);
         break;
       case 'Backspace':
         if (isThereSelection) context.clearRect(leftTopPointSelection[0], leftTopPointSelection[1], rightBottomPointSelection[0] - leftTopPointSelection[0], rightBottomPointSelection[1] - leftTopPointSelection[1]);

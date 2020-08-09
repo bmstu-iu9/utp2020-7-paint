@@ -10,13 +10,13 @@ function initFilling() {
     Например, 0% заливает только точно такой же цвет, а 100% заливает все цвета.`;
     firstClickFilling = false;
   }
-  canvas.style.cursor = "url('img/cursors/filling-cursor.png') 0 25, auto";
-  canvas.addEventListener("click", fill);
+  canvas.style.cursor = 'url('img/cursors/filling-cursor.png') 0 25, auto';
+  canvas.addEventListener('click', fill);
 }
 
 function deleteFilling() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("click", fill);
+  canvas.removeEventListener('click', fill);
 }
 
 function fill(event) {

@@ -17,8 +17,8 @@ function RGBAtoRGB(rgba) {
 
 let maxAllowableColorDifference = getColorDifference([255, 255, 255], [0, 0, 0]);
 
-let colorDifferenceRange = document.getElementById("colorDifferenceRange");
-let colorDifferenceText = document.getElementById("colorDifferenceText");
+let colorDifferenceRange = document.getElementById('colorDifferenceRange');
+let colorDifferenceText = document.getElementById('colorDifferenceText');
 
 colorDifferenceRange.value = curAllowableColorDifference;
 colorDifferenceText.value = `${curAllowableColorDifference}%`;
@@ -27,18 +27,18 @@ let defaultAllowableColorDifference = curAllowableColorDifference;
 
 colorDifferenceRange.oninput = () => {
   colorDifferenceText.value = colorDifferenceRange.value + '%';
-  colorDifferenceText.style.background = "white";
+  colorDifferenceText.style.background = 'white';
 }
 
 colorDifferenceRange.onchange = () => { curAllowableColorDifference = colorDifferenceRange.value; }
 
 colorDifferenceText.oninput = () => {
   if (checkColorDifferenceInput(colorDifferenceText.value)) {
-    colorDifferenceText.style.background = "white";
+    colorDifferenceText.style.background = 'white';
     colorDifferenceRange.value = parseInt(colorDifferenceText.value);
     curAllowableColorDifference = parseInt(colorDifferenceText.value);
   } else {
-    colorDifferenceText.style.background = "#ffd4d4";
+    colorDifferenceText.style.background = '#ffd4d4';
     curAllowableColorDifference = getcolorDifference(colorDifferenceText, colorDifferenceRange);
   }
 
@@ -56,7 +56,7 @@ colorDifferenceText.onchange = () => {
   } else {
     colorDifferenceRange.value = curAllowableColorDifference;
     colorDifferenceText.value = curAllowableColorDifference + '%';
-    colorDifferenceText.style.background = "white";
+    colorDifferenceText.style.background = 'white';
   }
 }
 

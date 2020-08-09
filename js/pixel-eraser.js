@@ -10,14 +10,14 @@ let pixelEraserParameters = {
 };
 
 function initPixelEraser() {
-  canvas.addEventListener("mousedown", startPointPixelEraser);
+  canvas.addEventListener('mousedown', startPointPixelEraser);
 }
 
 function deletePixelEraser() {
-  canvas.removeEventListener("mousedown", startPointPixelEraser);
-  document.removeEventListener("mousemove", drawPixelEraser);
-  document.removeEventListener("mouseup", endPoint);
-  context.globalCompositeOperation = "source-over";
+  canvas.removeEventListener('mousedown', startPointPixelEraser);
+  document.removeEventListener('mousemove', drawPixelEraser);
+  document.removeEventListener('mouseup', endPoint);
+  context.globalCompositeOperation = 'source-over';
 }
 
 function startPointPixelEraser(e) {
@@ -38,8 +38,8 @@ function startPointPixelEraser(e) {
 
   drawPixelEraser(e);
 
-  document.addEventListener("mousemove", drawPixelEraser);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawPixelEraser);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawPixelEraser(e) {
@@ -77,9 +77,9 @@ function drawPointPixelEraser(x, y) {
   function drawBresenhamCircle() {
     context.beginPath();
     context.lineWidth = 1;
-    context.lineJoin = "miter";
-    context.lineCap = "butt";
-    context.globalCompositeOperation = "destination-out";
+    context.lineJoin = 'miter';
+    context.lineCap = 'butt';
+    context.globalCompositeOperation = 'destination-out';
     let x0 = 0;
     let y0 = radius;
     let delta = 1 - 2 * radius;

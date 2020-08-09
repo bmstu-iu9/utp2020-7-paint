@@ -24,5 +24,5 @@ function hexToRgb(hex) {
             parseInt(hex.substr(3, 2), 16),
             parseInt(hex.substr(5, 2), 16)];
   }
-  throw "Wrong color code";
+  throw 'Wrong color code';
 }

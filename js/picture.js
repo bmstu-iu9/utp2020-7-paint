@@ -58,7 +58,7 @@ function insertImg(img) {
   }
 
   if (lastPhoto) photoIn.removeChild(lastPhoto);
-  photoIn.insertAdjacentHTML('afterbegin', "<img src='" + img.src + "' id='photoForInsertion'>");
+  photoIn.insertAdjacentHTML('afterbegin', '<img src=\"' + img.src + '\" id=\"photoForInsertion\">');
   setInitialParameters();
   document.addEventListener('keydown', pressForImgInsertion);
   makeResizablePhoto(photoResizer);

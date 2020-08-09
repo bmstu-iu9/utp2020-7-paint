@@ -20,15 +20,15 @@ function initStamp() {
   }
   isStamping = false;
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("click", selectFragment);
+  canvas.addEventListener('click', selectFragment);
 }
 
 function deleteStamp() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointStamp);
-  canvas.removeEventListener("click", selectFragment);
-  document.removeEventListener("mousemove", drawStamp);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointStamp);
+  canvas.removeEventListener('click', selectFragment);
+  document.removeEventListener('mousemove', drawStamp);
+  document.removeEventListener('mouseup', endPoint);
   document.removeEventListener('keydown', stopStamp);
 }
 
@@ -39,8 +39,8 @@ function selectFragment(e) {
   lastCanvas.height = canvas.height;
   lastContext.drawImage(canvas, 0, 0);
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("click", selectFragment);
-  canvas.addEventListener("mousedown", startPointStamp);
+  canvas.removeEventListener('click', selectFragment);
+  canvas.addEventListener('mousedown', startPointStamp);
 }
 
 function resizeMemCanvas(x, y) {
@@ -73,8 +73,8 @@ function startPointStamp(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
 
   document.addEventListener('keydown', stopStamp);
-  document.addEventListener("mousemove", drawStamp);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawStamp);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawStamp(e) {

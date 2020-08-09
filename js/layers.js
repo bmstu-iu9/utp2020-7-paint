@@ -91,7 +91,7 @@ function getLayerByBtn(target) {
 }
 
 function setUpLayer(layer) {
-  layer.canvas.style.pointerEvents = "auto";
+  layer.canvas.style.pointerEvents = 'auto';
   layer.display.classList.add('highlight');
   activeInstrument && activeInstrument.delete();
   canvas = layer.canvas;
@@ -104,7 +104,7 @@ function setUpLayer(layer) {
 function switchLayer(event) {
   let layer = getLayerByDisplay(event.target.id);
   if (!layer || activeLayer.id === layer.id) return;
-  activeLayer.canvas.style.pointerEvents = "none";
+  activeLayer.canvas.style.pointerEvents = 'none';
   activeLayer.display.classList.remove('highlight');
   setUpLayer(layer);
 }
@@ -136,8 +136,8 @@ class Layer {
       this.lockBtn = this.display.children['lockLayer' + this.id];
       this.deleteBtn = this.display.children['deleteLayer' + this.id];
 
-      activeLayer.canvas.style.pointerEvents = "none";
-      this.canvas.style.pointerEvents = "auto";
+      activeLayer.canvas.style.pointerEvents = 'none';
+      this.canvas.style.pointerEvents = 'auto';
       activeLayer.display.classList.remove('highlight');
       this.display.classList.add('highlight');
       activeInstrument && activeInstrument.delete();

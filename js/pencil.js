@@ -21,17 +21,17 @@ function endPoint() {
 }
 
 function initPencil() {
-  canvas.style.cursor = "url('img/cursors/pencil_cursor.png') 0 25, auto";
+  canvas.style.cursor = 'url('img/cursors/pencil_cursor.png') 0 25, auto';
 
-  canvas.addEventListener("mousedown", startPointPencil);
+  canvas.addEventListener('mousedown', startPointPencil);
 }
 
 function deletePencil() {
   canvas.style.cursor = 'default';
 
-  canvas.removeEventListener("mousedown", startPointPencil);
-  document.removeEventListener("mousemove", drawPencil);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointPencil);
+  document.removeEventListener('mousemove', drawPencil);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointPencil(e) {
@@ -52,8 +52,8 @@ function startPointPencil(e) {
 
   drawPencil(e);
   
-  document.addEventListener("mousemove", drawPencil);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawPencil);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawPencil(e) {
@@ -89,8 +89,8 @@ function drawPointPencil(x, y) {
 
   function drawBresenhamCircle() {
     context.beginPath();
-    context.lineJoin = "miter";
-    context.lineCap = "butt";
+    context.lineJoin = 'miter';
+    context.lineCap = 'butt';
     context.lineWidth = 1;
     context.strokeStyle = arrayToRgb(curColor);
     let x0 = 0;

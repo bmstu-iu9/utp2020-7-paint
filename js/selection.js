@@ -8,8 +8,8 @@ let rightBottomPointSelection = [0, 0];
 
 let copyCanvas;
 
-let rememberedCanvas = document.createElement("canvas");
-let rememberedContext = rememberedCanvas.getContext("2d");
+let rememberedCanvas = document.createElement('canvas');
+let rememberedContext = rememberedCanvas.getContext('2d');
 let canvasInsertion = document.getElementById('canvasInsertion');
 
 let firstClickSelection = true;
@@ -24,7 +24,7 @@ function endSelectionPoint() {
     if (leftTopPointSelection[0] != rightBottomPointSelection[0] && leftTopPointSelection[1] != rightBottomPointSelection[1]) {
       defineSelectedArea();
     } else {
-      alert("Выделенная область не может содержать 0 пикселей"); //TODO : in design make it pretty
+      alert('Выделенная область не может содержать 0 пикселей'); //TODO : in design make it pretty
       deleteSelectedArea();
     }
   }
@@ -33,18 +33,18 @@ function endSelectionPoint() {
 function initRectangleSelection() {
   if (firstClickSelection) {
     toggleModal();
-    hintsContent.innerHTML = "Горячие клавиши:<br> Alt + Enter — вставить выделение";
+    hintsContent.innerHTML = 'Горячие клавиши:<br> Alt + Enter — вставить выделение';
     firstClickSelection = false;
   }
-  canvas.addEventListener("mousedown", startPointRectangleSelection);
-  document.addEventListener("keydown", hotkeyInsertion);
+  canvas.addEventListener('mousedown', startPointRectangleSelection);
+  document.addEventListener('keydown', hotkeyInsertion);
 }
 
 function deleteRectangleSelection() {
-  canvas.removeEventListener("mousedown", startPointRectangleSelection);
-  document.removeEventListener("mousemove", drawRectangleSelection);
-  document.removeEventListener("mouseup", endSelectionPoint);
-  document.removeEventListener("keydown", hotkeyInsertion);
+  canvas.removeEventListener('mousedown', startPointRectangleSelection);
+  document.removeEventListener('mousemove', drawRectangleSelection);
+  document.removeEventListener('mouseup', endSelectionPoint);
+  document.removeEventListener('keydown', hotkeyInsertion);
 }
 
 function startPointRectangleSelection(e) {
@@ -58,16 +58,16 @@ function startPointRectangleSelection(e) {
   deltaX = e.pageX - oldX;
   deltaY = e.pageY - oldY;
 
-  document.addEventListener("mousemove", drawRectangleSelection);
-  document.addEventListener("mouseup", endSelectionPoint);
+  document.addEventListener('mousemove', drawRectangleSelection);
+  document.addEventListener('mouseup', endSelectionPoint);
 }
 
 function drawRectangleSelection(e) {
   if (!isDrawing) return;
 
   if (!isThereSelection) {
-    let selectionCanvas = document.createElement("canvas");
-    selectionCanvas.id = "selectionCanvas";
+    let selectionCanvas = document.createElement('canvas');
+    selectionCanvas.id = 'selectionCanvas';
     allCanvases.push(selectionCanvas);
 
     document.body.appendChild(selectionCanvas);
@@ -75,13 +75,13 @@ function drawRectangleSelection(e) {
     selectionCanvas.classList.add('mainCanvas');
     selectionCanvas.style.width = curCanvasWidth + 'px';
     selectionCanvas.style.height = curCanvasHeight + 'px';
-    selectionCanvas.setAttribute("width", curCanvasWidth);
-    selectionCanvas.setAttribute("height", curCanvasHeight);
+    selectionCanvas.setAttribute('width', curCanvasWidth);
+    selectionCanvas.setAttribute('height', curCanvasHeight);
     selectionCanvas.style.top = canvas.style.top;
     selectionCanvas.style.left = canvas.style.left;
     selectionCanvas.style.margin = canvas.style.margin;
     selectionCanvas.style.zIndex = 999;
-    selectionCanvas.style.pointerEvents = "none";
+    selectionCanvas.style.pointerEvents = 'none';
   }
 
   isThereSelection = true;
@@ -89,11 +89,11 @@ function drawRectangleSelection(e) {
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
-  let selectionContext = document.getElementById("selectionCanvas").getContext("2d");
+  let selectionContext = document.getElementById('selectionCanvas').getContext('2d');
   selectionContext.clearRect(0, 0, canvas.width, canvas.height);
   selectionContext.beginPath();
   selectionContext.setLineDash([5, 5]);
-  selectionContext.strokeStyle = "grey";
+  selectionContext.strokeStyle = 'grey';
   selectionContext.strokeRect(oldX, oldY, curX - oldX, curY - oldY);
 
   leftTopPointSelection = [Math.min(oldX, curX), Math.min(oldY, curY)];
@@ -139,8 +139,8 @@ function defineSelectedArea() {
 
 function deleteSelectedArea() {
   isThereSelection = false;
-  document.getElementById("selectionCanvas").remove();
-  allCanvases = allCanvases.filter((canvas) => canvas.id != "selectionCanvas");
+  document.getElementById('selectionCanvas').remove();
+  allCanvases = allCanvases.filter((canvas) => canvas.id != 'selectionCanvas');
   arrayOfSelectedArea = [];
 }
 
@@ -158,10 +158,10 @@ function copySelectedArea() {
     }
   }
 
-  copyCanvas = document.createElement("canvas");
-  copyCanvas.setAttribute("width", rightBottomPointSelection[0] - leftTopPointSelection[0]);
-  copyCanvas.setAttribute("height", rightBottomPointSelection[1] - leftTopPointSelection[1]);
-  copyCanvas.getContext("2d").putImageData(copyImageData, 0, 0);
+  copyCanvas = document.createElement('canvas');
+  copyCanvas.setAttribute('width', rightBottomPointSelection[0] - leftTopPointSelection[0]);
+  copyCanvas.setAttribute('height', rightBottomPointSelection[1] - leftTopPointSelection[1]);
+  copyCanvas.getContext('2d').putImageData(copyImageData, 0, 0);
 }
 
 function clearSelectedArea() {

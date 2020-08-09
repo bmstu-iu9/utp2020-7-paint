@@ -1,7 +1,7 @@
 'use strict';
 
-let toolSizeRange = document.getElementById("toolSizeRange");
-let toolSizeText = document.getElementById("toolSizeText");
+let toolSizeRange = document.getElementById('toolSizeRange');
+let toolSizeText = document.getElementById('toolSizeText');
 
 toolSizeRange.value = curToolSize;
 toolSizeText.value = `${curToolSize}px`;
@@ -10,7 +10,7 @@ let defaultSize = curToolSize;
 
 toolSizeRange.oninput = () => {
   toolSizeText.value = toolSizeRange.value + 'px';
-  toolSizeText.style.background = "white";
+  toolSizeText.style.background = 'white';
 }
 
 toolSizeRange.onchange = () => { curToolSize = toolSizeRange.value; }
@@ -22,11 +22,11 @@ toolSizeText.oninput = () => {
   let minTS = toolSizeRange.min;
 
   if (checkPxInput(toolSize, minTS, maxTS)) {
-    toolSizeText.style.background = "white";
+    toolSizeText.style.background = 'white';
     toolSizeRange.value = parseInt(toolSize);
     curToolSize = parseInt(toolSizeText.value);
   } else {
-    toolSizeText.style.background = "#ffd4d4";
+    toolSizeText.style.background = '#ffd4d4';
     curToolSize = getToolSize(parseInt(toolSize), toolSizeRange);
   }
 
@@ -49,6 +49,6 @@ toolSizeText.onchange = () => {
   } else {
     toolSizeRange.value = curToolSize;
     toolSizeText.value = curToolSize + 'px';
-    toolSizeText.style.background = "white";
+    toolSizeText.style.background = 'white';
   }
 }

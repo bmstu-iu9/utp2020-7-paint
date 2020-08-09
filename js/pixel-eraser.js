@@ -10,19 +10,21 @@ let pixelEraserParameters = {
 };
 
 function initPixelEraser() {
-  canvas.addEventListener("mousedown", startPointPixelEraser);
+  canvas.addEventListener('mousedown', startPointPixelEraser);
 }
 
 function deletePixelEraser() {
-  canvas.removeEventListener("mousedown", startPointPixelEraser);
-  document.removeEventListener("mousemove", drawPixelEraser);
-  document.removeEventListener("mouseup", endPoint);
-  context.globalCompositeOperation = "source-over";
+  canvas.removeEventListener('mousedown', startPointPixelEraser);
+  document.removeEventListener('mousemove', drawPixelEraser);
+  document.removeEventListener('mouseup', endPoint);
+  context.globalCompositeOperation = 'source-over';
 }
 
 function startPointPixelEraser(e) {
   e.preventDefault();
   isDrawing = true;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
   context.save();
   pixelEraserParameters.oldX = e.offsetX;
@@ -32,14 +34,18 @@ function startPointPixelEraser(e) {
 
   drawPointPixelEraser(e.offsetX, e.offsetY);
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
+
   drawPixelEraser(e);
 
-  document.addEventListener("mousemove", drawPixelEraser);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawPixelEraser);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawPixelEraser(e) {
   if (!isDrawing) return;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
@@ -59,7 +65,8 @@ function drawPixelEraser(e) {
 
   pixelEraserParameters.oldX = curX;
   pixelEraserParameters.oldY = curY;
-
+  
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -70,9 +77,9 @@ function drawPointPixelEraser(x, y) {
   function drawBresenhamCircle() {
     context.beginPath();
     context.lineWidth = 1;
-    context.lineJoin = "miter";
-    context.lineCap = "butt";
-    context.globalCompositeOperation = "destination-out";
+    context.lineJoin = 'miter';
+    context.lineCap = 'butt';
+    context.globalCompositeOperation = 'destination-out';
     let x0 = 0;
     let y0 = radius;
     let delta = 1 - 2 * radius;

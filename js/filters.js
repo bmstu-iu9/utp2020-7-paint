@@ -4,9 +4,9 @@ let undoFilter = document.getElementById("undoFilter");
 let redoFilter = document.getElementById("redoFilter");
 let deletingChanges = document.getElementById("deletingChanges");
 
-trigger.addEventListener("click", toggleModal);
-closeWithoutSaving.addEventListener("click", toggleModal);
-closeWithSaving.addEventListener("click", toggleModal);
+trigger.addEventListener("click", toggleFilterModal);
+closeWithoutSaving.addEventListener("click", toggleFilterModal);
+closeWithSaving.addEventListener("click", toggleFilterModal);
 
 let filtersModal = document.getElementById("filters-modal");
 filtersModal.addEventListener("click", useFiltersModal);
@@ -19,14 +19,14 @@ modalCanvas.setAttribute("height", modalCanvas.height);
 let filterCanvas = document.createElement("canvas");
 let originalCanvas;
 
-function toggleModal() {
+function toggleFilterModal() {
   modal.classList.toggle("show-modal");
 }
 
 function useFiltersModal() {
   changeModalCanvasSize();
   originalCanvas = canvas;
-  
+
   filterCanvas.setAttribute("width", canvas.width);
   filterCanvas.setAttribute("height", canvas.height);
   let filterContext = filterCanvas.getContext("2d");
@@ -40,12 +40,12 @@ function useFiltersModal() {
 
   let history = [];
   let curStateFilter = -1;
-  
+
   rememberFilterState();
-  
+
   undoFilter.addEventListener("click", applyPrevState);
   redoFilter.addEventListener("click", applyNextState);
-  
+
   closeWithoutSaving.addEventListener("click", closeModalWithoutSaving);
   closeWithSaving.addEventListener("click", closeModalWithSaving);
   deletingChanges.addEventListener("click", deleteChanges);
@@ -59,7 +59,7 @@ function useFiltersModal() {
     closeWithoutSaving.removeEventListener("click", closeModalWithoutSaving);
     deletingChanges.removeEventListener("click", deleteChanges);
   }
-  
+
   function closeModalWithSaving() {
     originalCanvas.getContext("2d").putImageData(context.getImageData(0, 0, canvas.width, canvas.height), 0, 0);
     canvas = originalCanvas;
@@ -72,40 +72,40 @@ function useFiltersModal() {
     deletingChanges.removeEventListener("click", deleteChanges);
     changePreview();
   }
-  
+
   function applyPrevState() {
     if (curStateFilter > 0) {
       --curStateFilter;
       context.putImageData(history[curStateFilter], 0, 0);
       modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
-      modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height); 
+      modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
     }
   }
-  
+
   function applyNextState() {
     if (curStateFilter + 1 < history.length) {
       ++curStateFilter;
       context.putImageData(history[curStateFilter], 0, 0);
       modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
-      modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height); 
+      modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
     }
   }
-  
+
   function endFilter() {
     modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
     modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
   }
-  
+
   function rememberFilterState() {
     history = history.slice(0, curStateFilter + 1);
     history.push(context.getImageData(0, 0, canvas.width, canvas.height));
     ++curStateFilter;
   }
-  
+
   function deleteChanges() {
     context.putImageData(history[0], 0, 0);
     modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
-    modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height); 
+    modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
     history = history.slice(0, 1);
   }
 

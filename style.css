@@ -28,7 +28,7 @@ body {
   font-family: 'Passion One', cursive;
   font-size: 35px;
   color: #ffdf2b;
-  margin-left: 70px;
+  margin-left: 120px;
 }
 
 #topContainer {
@@ -40,10 +40,9 @@ body {
   position: fixed;
   left: 10px;
   padding-bottom: 20px;
-  width: 50px;
+  width: 100px;
   background-color: #ffdf2b;
   z-index: 1006;
-  /* text-align: center; */
 }
 
 #leftPanel:after {
@@ -54,8 +53,8 @@ body {
   width: 0;
   height: 0;
   border-bottom: 13px solid #e5e6e7;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
 }
 
 #openPanel {
@@ -72,14 +71,14 @@ body {
   background-color: #ffdf2b;
   padding-top: 20px;
   width: 100%;
-  /* position: absolute; */
   margin: auto;
+  text-align: center;
 }
 
 .toolBtn {
   display: inline-block;
   padding: 0px;
-  margin: 5px;
+  margin: 2px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -95,7 +94,8 @@ body {
 
 .toolBtn.pressed,
 #help:hover,
-#help.pressed {
+#help.pressed,
+#deleteImage:hover {
   border: solid 1px #ff7f50;
 }
 
@@ -135,12 +135,13 @@ body {
   box-sizing: border-box;
   top: 50px;
   right: 0;
-  width: 10%;
+  width: 12%;
   height: 100%;
   background: #eeeeee;
   border-left: 1px solid #cccccc;
   transition: 0.5s;
   transform: translateX(0%);
+  z-index: 1000;
 }
 
 .layersFieldClosed {
@@ -158,13 +159,40 @@ body {
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
 }
 
+.layerScrollBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+}
+
+.layerScrollBox::-webkit-scrollbar-track {
+  background-color: #d4d4d4;
+  padding: 20px 0;
+
+}
+
+.layerScrollBox::-webkit-scrollbar {
+  width: 7px;
+}
+
+.layerScrollBox::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background: linear-gradient(#FFA600, #FFFC48);
+}
+
 .layer {
   background: #fafafa;
   position: relative;
   margin-left: 5%;
   margin-top: 5%;
   width: 90%;
-  height: 5%;
+  height: 36px;
+  display: flex;
+  align-items: center;
 }
 
 .layer.highlight {
@@ -175,15 +203,102 @@ body {
   text-align: center;
 }
 
+.layerBtncontainer {
+  position: absolute;
+  right: 1px;
+  height: 20px;
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.visibleLayer {
+  width: 20px;
+  height: 20px;
+  background-image: url('img/tools/show_layer.svg');
+  background-size: cover;
+  background-color: #fafafa;
+  border: none;
+  outline: none;
+}
+
+.hiddenLayer {
+  background-image: url("img/tools/hide_layer.svg");
+}
+
+.unlockedLayer {
+  width: 20px;
+  height: 20px;
+  background-image: url("img/tools/unlock_layer.svg");
+  background-size: cover;
+  background-color: #fafafa;
+  border: none;
+  outline: none;
+}
+
+.lockedLayer {
+  background-image: url("img/tools/lock_layer.svg");
+}
+
+.layerOptions {
+  right: 2%;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.droplist:hover .layerOptions {
+  display: flex;
+  flex-direction: column;
+}
+
+.layerOptions button {
+  width: 100%;
+  font-size: 12px;
+  padding: 2px 4px;
+  border: none;
+  border-bottom: 1px solid #b6b6b6;
+  outline: none;
+}
+
+.layerOptions button:last-child {
+  border-bottom: none;
+}
+
+.layerOptions button:hover {
+  background-color: #b6b6b6;
+}
+
+.layerOptionsBtn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  outline: none;
+  background-image: url("img/tools/more_layer.svg");
+  background-size: cover;
+  background-color: #fafafa;
+}
+
+.previewWindow {
+  width: 42%;
+  height: 36px;
+  float: left;
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+}
+
 canvas.preview {
   background: repeat url("img/background.png");
   background-size: 10%;
   display: inline-block;
   position: relative;
-  top: 45px;
-  left: 4%;
-  height: 80%;
-  width: 36%;
+  height: 100%;
+  width: 100%;
+  border: 0.5px solid black;
 }
 
 #colorIndicatorDynamic {
@@ -207,12 +322,8 @@ canvas.preview {
 }
 
 #help {
-  /* position: fixed; */
-  /* right: 1%; */
   border-radius: 50%;
-  /* padding: 20px; */
   font-size: 3px;
-  /* margin: 4px 2px; */
   outline: none;
 }
 
@@ -253,7 +364,6 @@ option:checked {
 .droplist {
   position: relative;
   display: inline-block;
-  z-index: 1000;
 }
 
 .droplist-content {
@@ -269,10 +379,6 @@ option:checked {
 
 .droplist:hover .droplist-content {
   display: block;
-}
-
-.droplist:hover .dropbtn {
-  background-color: #ffeb99;
 }
 
 .field {
@@ -296,17 +402,13 @@ option:checked {
   font-size: 14px;
 }
 
-.leftPaneldrop {
-  position: relative;
-  display: inline-block;
-}
-
 .leftMenu {
   position: relative;
+  text-align: left;
   z-index: 1000;
   background-color: #159099;
-  min-width: 150px;
-  clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
+  min-width: 110px;
+  clip-path: polygon(0% 0%, 91.5% 0%, 100% 50%, 91.5% 100%, 0% 100%);
 }
 
 .rangeAndText {
@@ -407,6 +509,20 @@ option:checked {
   z-index: 1000;
 }
 
+#canvasInsertion {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px dashed #bbbbbb;
+  box-sizing: border-box;
+}
+
+#copyCanvasForInsertion {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
 #photoForInsertion {
   max-width: 100%;
   max-height: 100%;
@@ -415,7 +531,7 @@ option:checked {
 
 .resizable {
   background: transparent;
-  position: absolute;
+  position: fixed;
 }
 
 .resizable .resizers{
@@ -455,18 +571,49 @@ option:checked {
   cursor: nwse-resize;
 }
 
-.resizable .resizers .rotator.middle {
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  top: -1px;
+.modalHints {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+  z-index: 1010;
+}
+
+.modalHints-content {
+  position: fixed;
+  top: 50%;
   left: 50%;
-  margin-right: -50%;
   transform: translate(-50%, -50%);
-  background-color: #bbbbbb;
-  background-size: cover;
+  background-color: #ffe252c2;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+}
+
+.show-modalHints {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+#imageMenu {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+}
+
+#deleteImage {
+  float: right;
+  height: 25px;
+  width: 25px;
+  border: 1px solid transparent;
   border-radius: 50%;
-  border: none;
 }
 
 .modal {

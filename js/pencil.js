@@ -21,17 +21,17 @@ function endPoint() {
 }
 
 function initPencil() {
-  canvas.style.cursor = "url('img/cursors/pencil_cursor.png') 0 25, auto";
+  canvas.style.cursor = 'url(\"img/cursors/pencil_cursor.png\") 0 25, auto';
 
-  canvas.addEventListener("mousedown", startPointPencil);
+  canvas.addEventListener('mousedown', startPointPencil);
 }
 
 function deletePencil() {
   canvas.style.cursor = 'default';
 
-  canvas.removeEventListener("mousedown", startPointPencil);
-  document.removeEventListener("mousemove", drawPencil);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointPencil);
+  document.removeEventListener('mousemove', drawPencil);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointPencil(e) {
@@ -39,6 +39,8 @@ function startPointPencil(e) {
   isDrawing = true;
 
   context.save();
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;
@@ -46,15 +48,18 @@ function startPointPencil(e) {
 
   drawPointPencil(e.offsetX, e.offsetY);
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
+
   drawPencil(e);
 
-  document.addEventListener("mousemove", drawPencil);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawPencil);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawPencil(e) {
   if (!isDrawing) return;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
@@ -74,6 +79,7 @@ function drawPencil(e) {
   pencilParameters.oldX = curX;
   pencilParameters.oldY = curY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -83,8 +89,8 @@ function drawPointPencil(x, y) {
 
   function drawBresenhamCircle() {
     context.beginPath();
-    context.lineJoin = "miter";
-    context.lineCap = "butt";
+    context.lineJoin = 'miter';
+    context.lineCap = 'butt';
     context.lineWidth = 1;
     context.strokeStyle = arrayToRgb(curColor);
     let x0 = 0;

@@ -10,27 +10,26 @@ let eraserParameters = {
 };
 
 function initEraser() {
-  canvas.style.cursor = "url('img/cursors/eraser_cursor.png') 0 25, auto";
+  canvas.style.cursor = 'url(\"img/cursors/eraser_cursor.png\") 0 25, auto';
 
-  canvas.addEventListener("mousedown", startPointEraser);
+  canvas.addEventListener('mousedown', startPointEraser);
 }
 
 function deleteEraser() {
   canvas.style.cursor = 'default';
 
-  context.globalCompositeOperation = "source-over";
+  canvas.removeEventListener('mousedown', startPointEraser);
+  document.removeEventListener('mousemove', drawEraser);
+  document.removeEventListener('mouseup', endPoint);
 
-  canvas.removeEventListener("mousedown", startPointEraser);
-  document.removeEventListener("mousemove", drawEraser);
-  document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
+  context.globalCompositeOperation = 'source-over';
 }
 
 function startPointEraser(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
   eraserParameters.oldX = e.offsetX;
   eraserParameters.oldY = e.offsetY;
@@ -38,7 +37,7 @@ function startPointEraser(e) {
   deltaY = e.pageY - e.offsetY;
 
   context.save();
-  context.globalCompositeOperation = "destination-out";
+  context.globalCompositeOperation = 'destination-out';
   context.lineWidth = 0.1;
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
@@ -49,26 +48,23 @@ function startPointEraser(e) {
   context.stroke();
   context.closePath();
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
+
   drawEraser(e);
 
-  document.addEventListener("mousemove", drawEraser);
-  document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
+  document.addEventListener('mousemove', drawEraser);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawEraser(e) {
   if (!isDrawing) return;
 
-  context.globalCompositeOperation = "destination-out";
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.offsetX;
-  curY = e.offsetY;
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  context.globalCompositeOperation = 'destination-out';
 
   eraserParameters.distance = Math.sqrt(Math.pow(curX - eraserParameters.oldX, 2) + Math.pow(curY - eraserParameters.oldY, 2));
   eraserParameters.angle = Math.atan2(curX - eraserParameters.oldX, curY - eraserParameters.oldY);
@@ -85,6 +81,8 @@ function drawEraser(e) {
   eraserParameters.oldX = curX;
   eraserParameters.oldY = curY;
 
-  context.globalCompositeOperation = "source-over";
+  context.globalCompositeOperation = 'source-over';
+
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }

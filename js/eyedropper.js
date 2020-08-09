@@ -4,7 +4,7 @@ let eyedropperButton = document.getElementById('eyedropper');
 let eyedropperWindow = document.getElementById('eyedropperWindow');
 
 function initEyedropper() {
-  canvas.style.cursor = "url('img/cursors/eyedropper-cursor.png') 0 20, auto";
+  canvas.style.cursor = 'url(\"img/cursors/eyedropper-cursor.png\") 0 20, auto';
 
   canvas.addEventListener('mousemove', handleEyedropper);
   canvas.addEventListener('click', stopEyedropper);
@@ -25,8 +25,8 @@ function stopEyedropper(event) {
   let eventLocation = getEventLocation(this, event);
   let color = getPixelColor(eventLocation.x, eventLocation.y);
   curColor = color;
-  colorInput.value = "#" + rgbToHex(color);
-  document.getElementById("colorBtn").style.background = arrayToRgb(color);
+  colorInput.value = '#' + rgbToHex(color);
+  document.getElementById('colorBtn').style.background = arrayToRgb(color);
   switchEyedropperWindow();
   eyedropperButton.click();
 }
@@ -54,13 +54,13 @@ function handleEyedropper(event) {
   let eventLocation = getEventLocation(this, event);
   let color = getPixelColor(eventLocation.x, eventLocation.y);
   if (color.every(elem => elem === 0)) {
-    eyedropperWindow.style.background = 'url(\"img/background.png\")';
+    eyedropperWindow.style.background = 'url(\'img/background.png\')';
   } else eyedropperWindow.style.background = arrayToRgb(color);
 
   function moveWindow(x, y) {
-    eyedropperWindow.style.left = x + 230 + 'px';
-    eyedropperWindow.style.top = y - 20 + 'px';
+    eyedropperWindow.style.left = x + 40 + 'px';
+    eyedropperWindow.style.top = y - 60 + 'px';
   }
 
-  moveWindow(eventLocation.x, eventLocation.y);
+  moveWindow(event.clientX, event.clientY);
 }

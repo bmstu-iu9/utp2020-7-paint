@@ -1,8 +1,8 @@
 'use strict';
 
-let backCanvas = document.getElementById("backCanvas");
-let canvas = document.getElementById("layer0");
-let context = canvas.getContext("2d");
+let backCanvas = document.getElementById('backCanvas');
+let canvas = document.getElementById('layer0');
+let context = canvas.getContext('2d');
 
 const defaultWidth = 780;
 const defaultHeight = 400;
@@ -29,7 +29,7 @@ canvas.height = canvas.offsetHeight;
 
 let memCanvas = document.createElement('canvas');
 let memContext = memCanvas.getContext('2d');
-let uploadImage = document.getElementById("uploadImage");
+let uploadImage = document.getElementById('uploadImage');
 
 function saveImg() {
   memCanvas.width = canvas.width;
@@ -62,15 +62,19 @@ function getEventLocation(element, event) {
   };
 }
 
+document.getElementById('colorBtn').onclick = function choosing() {
+  colorInput.click();
+  colorInput.focus();
+}
 
 function rgbToHex(rgb) {
   let r = rgb[0], g = rgb[1], b = rgb[2];
 
   if (r < 256 && g < 256 && b < 256) {
     let color = (r << 16) | (g << 8) | b;
-    return (("000000" + color.toString(16)).slice(-6));
+    return (('000000' + color.toString(16)).slice(-6));
   } else {
-    throw "Wrong color code";
+    throw 'Wrong color code';
   }
 }
 
@@ -96,17 +100,18 @@ function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
   img.onload = () => {
+    deleteImg();
     insertImg(img);
   }
 }
 
-let downloadBtn = document.getElementById("download");
+let downloadBtn = document.getElementById('download');
 
 downloadBtn.addEventListener('click', () => {
   let resultCanvas = document.createElement('canvas');
   resultCanvas.width = canvas.width;
   resultCanvas.height = canvas.height;
-  let resultContext = resultCanvas.getContext("2d");
+  let resultContext = resultCanvas.getContext('2d');
 
   for (let i = layerScrollBox.children.length - 1; i >= 0; i--) {
     if (parseLayerId(layerScrollBox.children[i].id) != null) {
@@ -114,9 +119,9 @@ downloadBtn.addEventListener('click', () => {
     }
   }
 
-  let img = resultCanvas.toDataURL("image/png")
-    .replace("image/png", "image/octet-stream");
-  downloadBtn.setAttribute("href", img);
+  let img = resultCanvas.toDataURL('image/png')
+    .replace('image/png', 'image/octet-stream');
+  downloadBtn.setAttribute('href', img);
 });
 
 function clearCanvas() {
@@ -135,7 +140,7 @@ function clearAllLayers() {
   context = canvas.getContext('2d');
 }
 
-document.getElementById("clear").addEventListener('click', () => {
+document.getElementById('clear').addEventListener('click', () => {
   clearCanvas();
   rememberState();
 });
@@ -162,7 +167,7 @@ addEventListener('keydown', (event) => {
   if (event.altKey) {
     switch (event.key) {
       case 'c':
-        document.getElementById("clear").click();
+        document.getElementById('clear').click();
         break;
       case 'p':
         colorInput.focus();
@@ -175,18 +180,19 @@ addEventListener('keydown', (event) => {
         uploadImage.click();
         break;
       case 'y':
-        document.getElementById("redo").click();
+        document.getElementById('redo').click();
         break;
       case 'z':
-        document.getElementById("undo").click();
+        document.getElementById('undo').click();
         break;
     }
   }
 });
 
-let changeCanvasHeight = document.getElementById("changeCanvasHeight");
-let changeCanvasWidth = document.getElementById("changeCanvasWidth");
-let changeBorderWidth = document.getElementById("borderWidth");
+
+let changeCanvasHeight = document.getElementById('changeCanvasHeight');
+let changeCanvasWidth = document.getElementById('changeCanvasWidth');
+let changeBorderWidth = document.getElementById('changeBorderWidth');
 
 changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
@@ -196,14 +202,14 @@ changeCanvasWidth.oninput = function () {
   addEventListener('keydown', setWidth);
 
   let width = changeCanvasWidth.value;
+  let maxW = changeCanvasWidth.max;
+  let minW = changeCanvasWidth.min;
 
-  if (checkPxInput(width) &&
-     (parseInt(width) >= changeCanvasWidth.min) &&
-     (parseInt(width) <= changeCanvasWidth.max)) {
+  if (checkPxInput(width, minW, maxW)) {
     curCanvasWidth = parseInt(width);
     clearAllLayers();
 
-    changeCanvasWidth.style.background = "#ffffff";
+    changeCanvasWidth.style.background = '#ffffff';
     allCanvases.forEach((canvas) => {
       canvas.style.width = curCanvasWidth + 'px';
       canvas.setAttribute('width', curCanvasWidth + 'px');
@@ -214,13 +220,14 @@ changeCanvasWidth.oninput = function () {
     document.getElementById("curWidth").innerHTML = curCanvasWidth + "";
   } else {
     curCanvasWidth = getWidth(width);
-    changeCanvasWidth.style.background = "#ffd4d4";
+    changeCanvasWidth.style.background = '#ffd4d4';
   }
 
   changePreview();
 
   function getWidth(str) {
-    if (!checkPxInput(str))
+
+    if (isNaN(parseInt(str)))
       return defaultWidth;
 
     if (parseInt(str) > changeCanvasWidth.max)
@@ -244,8 +251,8 @@ changeCanvasWidth.oninput = function () {
       });
 
       changeCanvasWidth.value = actualWidth + 'px';
-      document.getElementById("curWidth").innerHTML = actualWidth + "";
-      changeCanvasWidth.style.background = "#ffffff";
+      document.getElementById('curWidth').innerHTML = actualWidth + '';
+      changeCanvasWidth.style.background = '#ffffff';
       removeEventListener('keydown', setWidth);
     }
   }
@@ -255,10 +262,10 @@ changeCanvasHeight.oninput = function () {
   addEventListener('keydown', setHeight);
 
   let height = changeCanvasHeight.value;
+  let maxH = changeCanvasHeight.max;
+  let minH = changeCanvasHeight.min;
 
-  if (checkPxInput(height) &&
-     (parseInt(height) >= changeCanvasHeight.min) &&
-     (parseInt(height) <= changeCanvasHeight.max)) {
+  if (checkPxInput(height, minH, maxH)) {
     curCanvasHeight = parseInt(height);
 
     clearAllLayers();
@@ -271,19 +278,20 @@ changeCanvasHeight.oninput = function () {
       changePreviewSize(layer.preview);
     });
 
-    document.getElementById("curHeight").innerHTML = curCanvasHeight + "";
-    changeCanvasHeight.style.background = "#ffffff";
+    document.getElementById('curHeight').innerHTML = curCanvasHeight + '';
+    changeCanvasHeight.style.background = '#ffffff';
     changeCanvasHeight.value = curCanvasHeight;
   } else {
     curCanvasHeight = getHeight(height);
-    changeCanvasHeight.style.background = "#ffd4d4";
+    changeCanvasHeight.style.background = '#ffd4d4';
   }
 
  changePreview();
 
 
   function getHeight(str) {
-   if (!checkPxInput(str))
+
+  if (isNaN(parseInt(str)))
     return defaultHeight;
 
    if (parseInt(str) > changeCanvasHeight.max)
@@ -307,34 +315,34 @@ changeCanvasHeight.oninput = function () {
       });
 
       changeCanvasHeight.value = actualHeight + 'px';
-      document.getElementById("curHeight").innerHTML = actualHeight + "";
-      changeCanvasHeight.style.background = "#ffffff";
+      document.getElementById('curHeight').innerHTML = actualHeight + '';
+      changeCanvasHeight.style.background = '#ffffff';
 
       removeEventListener('keydown', setHeight);
     }
   }
 }
 
-borderWidth.oninput = function () {
+changeBorderWidth.oninput = function () {
   addEventListener('keydown', setBorder);
 
   let border = changeBorderWidth.value;
+  let maxB = changeBorderWidth.max;
+  let minB = changeBorderWidth.min;
 
-  if (checkPxInput(border) &&
-     (parseInt(border) >= 0) &&
-     (parseInt(border) <= 30)) {
+  if (checkPxInput(border, minB, maxB)) {
     curCanvasBorder = parseInt(border);
     backCanvas.style.borderWidth = border + 'px';
-    changeBorderWidth.style.background = "#ffffff";
+    changeBorderWidth.style.background = '#ffffff';
   } else {
     curCanvasBorder = getBorder(border);
-    changeBorderWidth.style.background = "#ffd4d4";
+    changeBorderWidth.style.background = '#ffd4d4';
     backCanvas.style.borderWidth = curCanvasBorder;
   }
 
   function getBorder(str) {
 
-    if (!checkPxInput(str))
+    if (isNaN(parseInt(str)))
       return defaultBorder;
 
     if (parseInt(str) > changeBorderWidth.max)
@@ -351,7 +359,7 @@ borderWidth.oninput = function () {
       let actualBorder = curCanvasBorder;
 
       changeBorderWidth.value = actualBorder + 'px';
-      changeBorderWidth.style.background = "#ffffff";
+      changeBorderWidth.style.background = '#ffffff';
       backCanvas.style.borderWidth = actualBorder + 'px';
 
       removeEventListener('keydown', setBorder);
@@ -361,7 +369,7 @@ borderWidth.oninput = function () {
 }
 
 borderColor.oninput = function () {
-  let color = document.getElementById("borderColor").value;
+  let color = document.getElementById('borderColor').value;
   if (color) {
     canvas.style.borderColor = color;
   } else {
@@ -369,9 +377,11 @@ borderColor.oninput = function () {
   }
 }
 
-function checkPxInput(str) {
-  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return regExp.test(str);
+function checkPxInput(str, min, max) {
+  const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return  pxInputRegExp.test(str) &&
+         (parseInt(str) >= min) &&
+         (parseInt(str) <= max);
 }
 
 
@@ -379,39 +389,46 @@ function checkPxInput(str) {
 function hideAndShow(element) {
   let menu = document.getElementById(element);
   menu.hidden = !menu.hidden;
-  event.currentTarget.classList.toggle("pressed");
+  event.currentTarget.classList.toggle('pressed');
 }
 
-document.getElementById("help").addEventListener('click', (event) => {
-  hideAndShow("helpMenu", event);
+document.getElementById('help').addEventListener('click', (event) => {
+  hideAndShow('helpMenu', event);
 });
 
-document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
-  hideAndShow("uploadImgMenu", event);
+let firstClickUpload = true;
+
+document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
+  if (firstClickUpload) {
+    toggleModal();
+    hintsContent.innerHTML = 'Горячие клавиши:<br> Alt + Enter — вставить фото';
+    firstClickUpload = false;
+  }
+  hideAndShow('uploadImgMenu', event);
 });
 
-document.getElementById("brush").addEventListener('click', (event) => {
-  hideAndShow("brushMenu", event);
+document.getElementById('brush').addEventListener('click', (event) => {
+  hideAndShow('brushMenu', event);
 });
 
-document.getElementById("figure").addEventListener('click', (event) => {
-  hideAndShow("figureMenu", event);
+document.getElementById('figure').addEventListener('click', (event) => {
+  hideAndShow('figureMenu', event);
 });
 
-document.getElementById("openPanel").addEventListener('click', (event) => {
-  hideAndShow("lefContainer", event);
+document.getElementById('openPanel').addEventListener('click', (event) => {
+  hideAndShow('leftContainer', event);
 });
 
-document.getElementById("filling").addEventListener('click', (event) => {
-  hideAndShow("fillMenu", event);
+document.getElementById('filling').addEventListener('click', (event) => {
+  hideAndShow('fillMenu', event);
 });
 
-document.getElementById("toolSettings").addEventListener('click', (event) => {
-  hideAndShow("toolSettingsMenu", event);
+document.getElementById('toolSettings').addEventListener('click', (event) => {
+  hideAndShow('toolSettingsMenu', event);
 });
 
-document.getElementById("openLayersBtn").addEventListener('click', (event) => {
-  document.getElementById("layersField").classList.toggle("layersFieldClosed");
+document.getElementById('openLayersBtn').addEventListener('click', (event) => {
+  document.getElementById('layersField').classList.toggle('layersFieldClosed');
 });
 
 function getIndexOfRedInData(x, y) {
@@ -445,3 +462,17 @@ function changePreviewSize(preview) {
   preview.setAttribute('width', preview.style.width);
   preview.setAttribute('height', preview.style.height);
 }
+
+let modalHints = document.querySelector('.modalHints');
+
+function toggleModal() {
+  modalHints.classList.toggle('show-modalHints');
+}
+
+function windowOnClick(event) {
+  if (event.target === modalHints) {
+    toggleModal();
+  }
+}
+
+window.addEventListener('click', windowOnClick);

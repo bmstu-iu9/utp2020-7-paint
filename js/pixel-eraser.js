@@ -10,40 +10,51 @@ let pixelEraserParameters = {
 };
 
 function initPixelEraser() {
-  canvas.addEventListener("mousedown", startPointPixelEraser);
+  canvas.addEventListener('mousedown', startPointPixelEraser);
 }
 
 function deletePixelEraser() {
-  canvas.removeEventListener("mousedown", startPointPixelEraser);
-  canvas.removeEventListener("mousemove", drawPixelEraser);
-  canvas.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", endPoint);
-  context.globalCompositeOperation = "source-over";
+  canvas.removeEventListener('mousedown', startPointPixelEraser);
+  document.removeEventListener('mousemove', drawPixelEraser);
+  document.removeEventListener('mouseup', endPoint);
+  context.globalCompositeOperation = 'source-over';
 }
 
 function startPointPixelEraser(e) {
+  e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
+  context.save();
   pixelEraserParameters.oldX = e.offsetX;
   pixelEraserParameters.oldY = e.offsetY;
+  deltaX = e.pageX - e.offsetX;
+  deltaY = e.pageY - e.offsetY;
 
   drawPointPixelEraser(e.offsetX, e.offsetY);
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
+
   drawPixelEraser(e);
 
-  canvas.addEventListener("mousemove", drawPixelEraser);
-  canvas.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", endPoint);
+  document.addEventListener('mousemove', drawPixelEraser);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawPixelEraser(e) {
   if (!isDrawing) return;
 
-  pixelEraserParameters.newX = e.offsetX;
-  pixelEraserParameters.newY = e.offsetY;
+  if (isThereSelection) rememberCanvasWithoutSelection();
 
-  pixelEraserParameters.distance = Math.sqrt(Math.pow(e.offsetX - pixelEraserParameters.oldX, 2) + Math.pow(e.offsetY - pixelEraserParameters.oldY, 2));
-  pixelEraserParameters.angle = Math.atan2(e.offsetX - pixelEraserParameters.oldX, e.offsetY - pixelEraserParameters.oldY);
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
+
+  pixelEraserParameters.newX = curX;
+  pixelEraserParameters.newY = curY;
+
+  pixelEraserParameters.distance = Math.sqrt(Math.pow(curX - pixelEraserParameters.oldX, 2) + Math.pow(curY - pixelEraserParameters.oldY, 2));
+  pixelEraserParameters.angle = Math.atan2(curX - pixelEraserParameters.oldX, curY - pixelEraserParameters.oldY);
 
   for (let i = 0; i < pixelEraserParameters.distance; i++) {
     pixelEraserParameters.newX = Math.floor(pixelEraserParameters.oldX + i * Math.sin(pixelEraserParameters.angle));
@@ -52,9 +63,10 @@ function drawPixelEraser(e) {
     drawPointPixelEraser(pixelEraserParameters.newX, pixelEraserParameters.newY);
   }
 
-  pixelEraserParameters.oldX = e.offsetX;
-  pixelEraserParameters.oldY = e.offsetY;
-
+  pixelEraserParameters.oldX = curX;
+  pixelEraserParameters.oldY = curY;
+  
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -65,9 +77,9 @@ function drawPointPixelEraser(x, y) {
   function drawBresenhamCircle() {
     context.beginPath();
     context.lineWidth = 1;
-    context.lineJoin = "miter";
-    context.lineCap = "butt";
-    context.globalCompositeOperation = "destination-out";
+    context.lineJoin = 'miter';
+    context.lineCap = 'butt';
+    context.globalCompositeOperation = 'destination-out';
     let x0 = 0;
     let y0 = radius;
     let delta = 1 - 2 * radius;

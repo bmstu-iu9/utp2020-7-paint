@@ -137,7 +137,7 @@ function getLayerByBtn(target) {
 }
 
 function setUpLayer(layer) {
-  layer.canvas.style.pointerEvents = "auto";
+  layer.canvas.style.pointerEvents = 'auto';
   layer.display.classList.add('highlight');
   activeInstrument && activeInstrument.delete();
   canvas = layer.canvas;
@@ -150,7 +150,7 @@ function setUpLayer(layer) {
 function switchLayer(event) {
   let layer = getLayerByDisplay(event.target.id);
   if (!layer || activeLayer.id === layer.id) return;
-  activeLayer.canvas.style.pointerEvents = "none";
+  activeLayer.canvas.style.pointerEvents = 'none';
   activeLayer.display.classList.remove('highlight');
   setUpLayer(layer);
 }
@@ -197,8 +197,8 @@ class Layer {
       this.swapTopBtn = options.children['swapTop' + this.id];
       this.swapBottomBtn = options.children['swapBottom' + this.id];
 
-      activeLayer.canvas.style.pointerEvents = "none";
-      this.canvas.style.pointerEvents = "auto";
+      activeLayer.canvas.style.pointerEvents = 'none';
+      this.canvas.style.pointerEvents = 'auto';
       activeLayer.display.classList.remove('highlight');
       this.display.classList.add('highlight');
       activeInstrument && activeInstrument.delete();
@@ -273,10 +273,13 @@ class Layer {
 let firstLayer = new Layer('firstLayer');
 activeLayer = firstLayer;
 
-function changePreview() {
-  let previewContext = activeLayer.preview.getContext('2d');
-  previewContext.clearRect(0, 0, activeLayer.preview.width, activeLayer.preview.height);
-  previewContext.drawImage(canvas, 0, 0, activeLayer.preview.width, activeLayer.preview.height);
+function changePreview(layer) {
+  if (arguments.length == 0) {
+    layer = activeLayer;
+  }
+  let previewContext = layer.preview.getContext('2d');
+  previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
+  previewContext.drawImage(layer.canvas, 0, 0, layer.preview.width, layer.preview.height);
 }
 
 function hideLayerHandler(event) {

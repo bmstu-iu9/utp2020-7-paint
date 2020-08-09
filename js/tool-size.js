@@ -1,7 +1,7 @@
 'use strict';
 
-let toolSizeRange = document.getElementById("toolSizeRange");
-let toolSizeText = document.getElementById("toolSizeText");
+let toolSizeRange = document.getElementById('toolSizeRange');
+let toolSizeText = document.getElementById('toolSizeText');
 
 toolSizeRange.value = curToolSize;
 toolSizeText.value = `${curToolSize}px`;
@@ -10,42 +10,45 @@ let defaultSize = curToolSize;
 
 toolSizeRange.oninput = () => {
   toolSizeText.value = toolSizeRange.value + 'px';
-  toolSizeText.style.background = "white";
+  toolSizeText.style.background = 'white';
 }
 
 toolSizeRange.onchange = () => { curToolSize = toolSizeRange.value; }
 
 toolSizeText.oninput = () => {
-  if (checkSizeToolInput(toolSizeText.value)) {
-    toolSizeText.style.background = "white";
-    toolSizeRange.value = parseInt(toolSizeText.value);
+
+  let toolSize = toolSizeText.value;
+  let maxTS = toolSizeRange.max;
+  let minTS = toolSizeRange.min;
+
+  if (checkPxInput(toolSize, minTS, maxTS)) {
+    toolSizeText.style.background = 'white';
+    toolSizeRange.value = parseInt(toolSize);
     curToolSize = parseInt(toolSizeText.value);
   } else {
-    toolSizeText.style.background = "#ffd4d4";
-    curToolSize = getToolSize(toolSizeText, toolSizeRange);
+    toolSizeText.style.background = '#ffd4d4';
+    curToolSize = getToolSize(parseInt(toolSize), toolSizeRange);
   }
 
-  function getToolSize(toolSizeText, toolSizeRange) {
-    if (parseInt(toolSizeText.value) > toolSizeRange.max) { return toolSizeRange.max; }
-    if (parseInt(toolSizeText.value) < toolSizeRange.min) { return toolSizeRange.min; }
+  function getToolSize(toolSizeNum, toolSizeRange) {
+    if (toolSizeNum > toolSizeRange.max) { return toolSizeRange.max; }
+    if (toolSizeNum < toolSizeRange.min) { return toolSizeRange.min; }
     return defaultSize;
   }
 }
 
 toolSizeText.onchange = () => {
-  if (checkSizeToolInput(toolSizeText.value)) {
-    toolSizeText.value = parseInt(toolSizeText.value) + 'px';
-    toolSizeRange.value = parseInt(toolSizeText.value);
+
+  let toolSize = toolSizeText.value;
+  let maxTS = toolSizeText.max;
+  let minTS = toolSizeText.min;
+
+  if (checkPxInput(toolSize, minTS, maxTS)) {
+    toolSizeText.value = parseInt(toolSize) + 'px';
+    toolSizeRange.value = parseInt(toolSize);
   } else {
     toolSizeRange.value = curToolSize;
     toolSizeText.value = curToolSize + 'px';
-    toolSizeText.style.background = "white";
+    toolSizeText.style.background = 'white';
   }
-}
-
-function checkSizeToolInput(str) {
-  const regExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return (regExp.test(str)) &&
-         (parseInt(str) <= toolSizeRange.max) &&
-         (parseInt(str) >= toolSizeRange.min);
 }

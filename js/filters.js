@@ -1,31 +1,31 @@
-let negativeFilterButton = document.getElementById("negative");
-negativeFilterButton.onclick = () => { applySimpleFilter("negative"); }
+let negativeFilterButton = document.getElementById('negative');
+negativeFilterButton.onclick = () => { applySimpleFilter('negative'); }
 
-let greyScaleFilterButton = document.getElementById("grey-scale");
-greyScaleFilterButton.onclick = () => { applySimpleFilter("grey-scale"); }
+let greyScaleFilterButton = document.getElementById('grey-scale');
+greyScaleFilterButton.onclick = () => { applySimpleFilter('grey-scale'); }
 
-let sepiaFilterButton = document.getElementById("sepia");
-sepiaFilterButton.onclick = () => { applySimpleFilter("sepia"); }
+let sepiaFilterButton = document.getElementById('sepia');
+sepiaFilterButton.onclick = () => { applySimpleFilter('sepia'); }
 
-let blackWhiteFilterButton = document.getElementById("black-white");
-blackWhiteFilterButton.onclick = () => { applySimpleFilter("black-white"); }
+let blackWhiteFilterButton = document.getElementById('black-white');
+blackWhiteFilterButton.onclick = () => { applySimpleFilter('black-white'); }
 
-let binarizationFilterButton = document.getElementById("binarization");
-binarizationFilterButton.onclick = () => { applySimpleFilter("binarization"); }
+let binarizationFilterButton = document.getElementById('binarization');
+binarizationFilterButton.onclick = () => { applySimpleFilter('binarization'); }
 
-let coloredFilterButton = document.getElementById("colored");
-coloredFilterButton.onclick = () => { applySimpleFilter("colored"); }
+let coloredFilterButton = document.getElementById('colored');
+coloredFilterButton.onclick = () => { applySimpleFilter('colored'); }
 
-let sobelFilterButton = document.getElementById("sobel");
+let sobelFilterButton = document.getElementById('sobel');
 sobelFilterButton.onclick = applySobelFilter;
 
-let embossFilterButton = document.getElementById("emboss");
+let embossFilterButton = document.getElementById('emboss');
 embossFilterButton.onclick = () => {
   applyConvolutionMatrixFilter([-2, -1, 0, -1, 1, 1, 0, 1, 2], 1);
   changePreview();
 }
 
-let blurFilterButton = document.getElementById("blur");
+let blurFilterButton = document.getElementById('blur');
 blurFilterButton.onclick = () => {
   applyConvolutionMatrixFilter(
     [1/256, 4/256, 6/256, 4/256, 1/256,
@@ -51,20 +51,20 @@ function applySimpleFilter(filterName) {
     let green = curImageData.data[getIndexOfGreenInData(x, y)];
     let blue = curImageData.data[getIndexOfBlueInData(x, y)];
 
-    if (filterName === "negative") {
+    if (filterName === 'negative') {
       curImageData.data[getIndexOfRedInData(x, y)] = 255 - red;
       curImageData.data[getIndexOfGreenInData(x, y)] = 255 - green;
       curImageData.data[getIndexOfBlueInData(x, y)] = 255 - blue;
-    } else if (filterName === "grey-scale") {
+    } else if (filterName === 'grey-scale') {
       let grey = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
       curImageData.data[getIndexOfRedInData(x, y)] = grey;
       curImageData.data[getIndexOfGreenInData(x, y)] = grey;
       curImageData.data[getIndexOfBlueInData(x, y)] = grey;
-    } else if (filterName === "sepia") {
+    } else if (filterName === 'sepia') {
       curImageData.data[getIndexOfRedInData(x, y)] = red * 0.393 + green * 0.769 + blue * 0.189;
       curImageData.data[getIndexOfGreenInData(x, y)] = red * 0.349 + green * 0.686 + blue * 0.168;
       curImageData.data[getIndexOfBlueInData(x, y)] = red * 0.272 + green * 0.534 + blue * 0.131;
-    } else if (filterName === "black-white") {
+    } else if (filterName === 'black-white') {
       let threshold = 255 / 2 * 3;
       if (red + green + blue > threshold) {
         curImageData.data[getIndexOfRedInData(x, y)] = 255;
@@ -75,11 +75,11 @@ function applySimpleFilter(filterName) {
         curImageData.data[getIndexOfGreenInData(x, y)] = 0;
         curImageData.data[getIndexOfBlueInData(x, y)] = 0;
       }
-    } else if (filterName === "colored") {
+    } else if (filterName === 'colored') {
       curImageData.data[getIndexOfRedInData(x, y)] = 1.6914 * red - 0.6094 * green - 0.082 * blue;
       curImageData.data[getIndexOfGreenInData(x, y)] = -0.3086 * red + 1.3906 * green - 0.082 * blue;
       curImageData.data[getIndexOfBlueInData(x, y)] = -0.3086 * red - 0.6094 * green + 1.918 * blue;
-    } else if (filterName === "binarization") {
+    } else if (filterName === 'binarization') {
       curImageData.data[getIndexOfRedInData(x, y)] = 255 * Math.floor(red/128);
       curImageData.data[getIndexOfGreenInData(x, y)] = 255 * Math.floor(green/128);
       curImageData.data[getIndexOfBlueInData(x, y)] = 255 * Math.floor(blue/128);
@@ -90,7 +90,7 @@ function applySimpleFilter(filterName) {
 let isClickedContrast = true;
 
 contrast.value = 1;
-let contrastRange = document.getElementById("contrast");
+let contrastRange = document.getElementById('contrast');
 
 contrastRange.oninput = () => {
   if (isClickedContrast) saveImg();
@@ -157,7 +157,7 @@ function applyContrastFilter(contrastCoef) {
 
 let isClickedBrightness = true;
 brightness.value = 0;
-let brightnessRange = document.getElementById("brightness");
+let brightnessRange = document.getElementById('brightness');
 
 brightnessRange.oninput = () => {
   if (isClickedBrightness) saveImg();
@@ -197,7 +197,7 @@ function applyBrightnessFilter(brightnessCoef) {
 
 let isClickedSharp = true;
 sharp.value = 0;
-let sharpRange = document.getElementById("sharp");
+let sharpRange = document.getElementById('sharp');
 
 sharpRange.oninput = () => {
   if (isClickedSharp) saveImg();
@@ -223,7 +223,7 @@ sharpRange.onmouseup = () => {
 }
 
 function applySobelFilter() {
-  applySimpleFilter("grey-scale");
+  applySimpleFilter('grey-scale');
   let srcBuff = context.getImageData(0, 0, canvas.width, canvas.height).data;
   let horizontal = getResultOfConvolutionMatrixFilter([-1, -2, -1, 0, 0, 0, 1, 2 , 1], 1);
   let vertical =  getResultOfConvolutionMatrixFilter([-1, 0, 1, -2, 0, 2, -1, 0 , 1], 1);
@@ -283,10 +283,10 @@ function applyConvolutionMatrixFilter(weights, coeff) {
   context.putImageData(result, 0, 0);
 }
 
-let horizontalReflectionFilterButton = document.getElementById("horizontal-reflection");
+let horizontalReflectionFilterButton = document.getElementById('horizontal-reflection');
 horizontalReflectionFilterButton.onclick = () => { applyHorizontalReflection(); }
 
-let verticalReflectionFilterButton = document.getElementById("vertical-reflection");
+let verticalReflectionFilterButton = document.getElementById('vertical-reflection');
 verticalReflectionFilterButton.onclick = () => { applyVerticalReflection(); }
 
 function applyHorizontalReflection() {
@@ -323,7 +323,7 @@ function applyVerticalReflection() {
   changePreview();
 }
 
-let medianFilterButton = document.getElementById("median");
+let medianFilterButton = document.getElementById('median');
 medianFilterButton.onclick = () => { applyMedianFilter(1); }
 
 function applyMedianFilter(radius) {

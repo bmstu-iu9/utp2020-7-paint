@@ -1,27 +1,49 @@
 'use strict';
 
 let photoResizer = document.getElementById('photoResizer');
+let deleteImageBtn = document.getElementById('deleteImage');
 let isResizing = false;
+let curImg;
+let deltaImgX, deltaImgY;
+
+function getMiddleCoords(element) {
+  return {
+    x: element.getBoundingClientRect().left + element.getBoundingClientRect().width / 2,
+    y: element.getBoundingClientRect().top + element.getBoundingClientRect().height / 2
+  }
+}
+
+function pressForImgInsertion() {
+  if (event.code == 'Enter' && event.altKey) {
+    let posOfPhoto = getMiddleCoords(photoResizer);
+    let posOfCanvas = {
+      x: canvas.getBoundingClientRect().left,
+      y: canvas.getBoundingClientRect().top
+    };
+    let dx = posOfPhoto.x - posOfCanvas.x + 2.5, dy = posOfPhoto.y - posOfCanvas.y + 2.5;
+    let dWidth = photoResizer.clientWidth - 6, dHeight = photoResizer.clientHeight - 6;
+
+    context.save();
+    context.translate(dx, dy);
+    context.drawImage(curImg, 0, 0, curImg.width, curImg.height, -deltaImgX, -deltaImgY, dWidth, dHeight);
+    context.restore();
+
+    deleteImg();
+    changePreview();
+    rememberState();
+  }
+}
+
+function deleteImg() {
+  photoResizer.hidden = true;
+  document.removeEventListener('keydown', pressForImgInsertion);
+  deleteImageBtn.removeEventListener('click', deleteImage);
+}
 
 function insertImg(img) {
   let photoIn = document.getElementById('photoInsertion');
   let lastPhoto = document.getElementById('photoForInsertion');
-
-  function pressForInsertion() {
-    if (event.code == 'Enter' && event.altKey) {
-      let posOfPhoto = getElementPosition(photoResizer);
-      let posOfCanvas = getElementPosition(canvas);
-      let dx = posOfPhoto.x - posOfCanvas.x, dy = posOfPhoto.y - posOfCanvas.y;
-      let dWidth = photoResizer.offsetWidth, dHeight = photoResizer.offsetHeight;
-
-      photoResizer.hidden = true;
-      context.drawImage(img, 0, 0, img.width, img.height, dx, dy, dWidth, dHeight);
-      document.removeEventListener('keydown', pressForInsertion);
-
-      changePreview();
-      rememberState(); 
-    }
-  }
+  curImg = img;
 
   function setInitialParameters() {
     photoResizer.hidden = false;
@@ -30,21 +52,25 @@ function insertImg(img) {
     photoResizer.style.top = canvas.getBoundingClientRect().top + 'px';
     photoResizer.style.left = canvas.getBoundingClientRect().left + 'px';
     photoResizer.style.zIndex = activeLayer.index;
+
+    deltaImgX = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('width').replace('px', '')) / 2;
+    deltaImgY = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('height').replace('px', '')) / 2;
   }
 
   if (lastPhoto) photoIn.removeChild(lastPhoto);
-  photoIn.insertAdjacentHTML('afterbegin', "<img src='" + img.src + "' id='photoForInsertion'>");
+  photoIn.insertAdjacentHTML('afterbegin', '<img src=\"' + img.src + '\" id=\"photoForInsertion\">');
   setInitialParameters();
-  document.addEventListener('keydown', pressForInsertion);
-  makeResizablePhoto();
+  document.addEventListener('keydown', pressForImgInsertion);
+  makeResizablePhoto(photoResizer);
 }
 
 photoResizer.ondragstart = () => false;
 
 photoResizer.addEventListener('mousedown', (e) => {
   let img = document.getElementById('photoForInsertion');
-  let shiftX = e.clientX - img.getBoundingClientRect().left;
-  let shiftY = e.clientY - img.getBoundingClientRect().top;
+  let curMiddle = getMiddleCoords(img);
+  let shiftX = e.clientX - (curMiddle.x - deltaImgX);
+  let shiftY = e.clientY - (curMiddle.y - deltaImgY);
 
   function moveAt(x, y) {
     photoResizer.style.left = x - shiftX + 'px';
@@ -57,16 +83,15 @@ photoResizer.addEventListener('mousedown', (e) => {
 
   function stop() {
     document.removeEventListener('mousemove', move);
-    photoResizer.removeEventListener('mouseup', stop);
+    document.removeEventListener('mouseup', stop);
   }
 
   moveAt(e.clientX, e.clientY);
   document.addEventListener('mousemove', move);
-  photoResizer.addEventListener('mouseup', stop);
+  document.addEventListener('mouseup', stop);
 });
 
-function makeResizablePhoto() {
-  let element = photoResizer;
+function makeResizablePhoto(element) {
   let img = document.getElementById('photoForInsertion');
   let resizers = document.querySelectorAll('.resizer');
   let originalWidth, originalHeight, originalX, originalY;
@@ -77,8 +102,8 @@ function makeResizablePhoto() {
       e.preventDefault();
       originalWidth = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
       originalHeight = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
-      originalX = element.getBoundingClientRect().left;
-      originalY = element.getBoundingClientRect().top;
+      originalX = getMiddleCoords(img).x - deltaImgX;
+      originalY = getMiddleCoords(img).y - deltaImgY;
       originalMouseX = e.pageX;
       originalMouseY = e.pageY;
       document.addEventListener('mousemove', resize);
@@ -128,6 +153,8 @@ function makeResizablePhoto() {
           img.style.top = element.style.top = originalY + (e.pageY - originalMouseY) + 'px';
         }
       }
+      deltaImgX = parseFloat(element.style.width.replace('px', '')) / 2;
+      deltaImgY = parseFloat(element.style.height.replace('px', '')) / 2;
     }
 
     function stopResize() {

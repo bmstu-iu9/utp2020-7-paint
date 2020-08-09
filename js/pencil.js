@@ -1,6 +1,5 @@
 'use strict';
 
-let isOnCanvas = false;
 let curX, curY, deltaX, deltaY;
 
 let pencilParameters = {
@@ -21,36 +20,27 @@ function endPoint() {
   context.beginPath();
 }
 
-function exitPoint() {
-  isOnCanvas = false;
-}
-
-function returnPoint() {
-  isOnCanvas = true;
-}
-
 function initPencil() {
-  canvas.style.cursor = "url('img/cursors/pencil_cursor.png') 0 25, auto";
+  canvas.style.cursor = 'url(\"img/cursors/pencil_cursor.png\") 0 25, auto';
 
-  canvas.addEventListener("mousedown", startPointPencil);
+  canvas.addEventListener('mousedown', startPointPencil);
 }
 
 function deletePencil() {
   canvas.style.cursor = 'default';
 
-  canvas.removeEventListener("mousedown", startPointPencil);
-  document.removeEventListener("mousemove", drawPencil);
-  document.removeEventListener("mouseup", endPoint);
-  canvas.removeEventListener("mouseleave", exitPoint);
-  canvas.removeEventListener("mouseenter", returnPoint);
+  canvas.removeEventListener('mousedown', startPointPencil);
+  document.removeEventListener('mousemove', drawPencil);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointPencil(e) {
   e.preventDefault();
   isDrawing = true;
-  isOnCanvas = true;
 
   context.save();
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
   pencilParameters.oldX = e.offsetX;
   pencilParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;
@@ -58,24 +48,20 @@ function startPointPencil(e) {
 
   drawPointPencil(e.offsetX, e.offsetY);
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
+
   drawPencil(e);
 
-  document.addEventListener("mousemove", drawPencil);
-  document.addEventListener("mouseup", endPoint);
-  canvas.addEventListener("mouseleave", exitPoint);
-  canvas.addEventListener("mouseenter", returnPoint);
+  document.addEventListener('mousemove', drawPencil);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawPencil(e) {
   if (!isDrawing) return;
 
-  curX = e.offsetX;
-  curY = e.offsetY;
-
-  if (!isOnCanvas) {
-    curX -= deltaX;
-    curY -= deltaY;
-  }
+  if (isThereSelection) rememberCanvasWithoutSelection();
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
 
   pencilParameters.newX = e.curX;
   pencilParameters.newY = e.curY;
@@ -93,6 +79,7 @@ function drawPencil(e) {
   pencilParameters.oldX = curX;
   pencilParameters.oldY = curY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
@@ -102,8 +89,8 @@ function drawPointPencil(x, y) {
 
   function drawBresenhamCircle() {
     context.beginPath();
-    context.lineJoin = "miter";
-    context.lineCap = "butt";
+    context.lineJoin = 'miter';
+    context.lineCap = 'butt';
     context.lineWidth = 1;
     context.strokeStyle = arrayToRgb(curColor);
     let x0 = 0;

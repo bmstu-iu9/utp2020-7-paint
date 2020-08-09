@@ -227,7 +227,7 @@ class Layer {
       layers.forEach((layer) => {
         if (layer.index > callerLayer.index) {
           ++layer.index;
-          layer.canvas.style.zIndex = this.index;
+          layer.canvas.style.zIndex = layer.index;
         }
       });
       callerLayer.display.before(this.display);
@@ -239,7 +239,7 @@ class Layer {
       layers.forEach((layer) => {
         if (layer.index < callerLayer.index) {
           --layer.index;
-          layer.canvas.style.zIndex = this.index;
+          layer.canvas.style.zIndex = layer.index;
         }
       });
       callerLayer.display.after(this.display);

@@ -94,7 +94,8 @@ body {
 
 .toolBtn.pressed,
 #help:hover,
-#help.pressed {
+#help.pressed,
+#deleteImage:hover {
   border: solid 1px #ff7f50;
 }
 
@@ -464,20 +465,6 @@ option:checked {
   cursor: nwse-resize;
 }
 
-.resizable .resizers .rotator.middle {
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  top: -1px;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  background-color: #bbbbbb;
-  background-size: cover;
-  border-radius: 50%;
-  border: none;
-}
-
 .modalHints {
   position: fixed;
   left: 0;
@@ -496,7 +483,7 @@ option:checked {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffe252c2; 
+  background-color: #ffe252c2;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
@@ -507,4 +494,18 @@ option:checked {
   visibility: visible;
   transform: scale(1.0);
   transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+#imageMenu {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+}
+
+#deleteImage {
+  float: right;
+  height: 25px;
+  width: 25px;
+  border: 1px solid transparent;
+  border-radius: 50%;
 }

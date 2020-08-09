@@ -97,6 +97,7 @@ function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
   img.onload = () => {
+    deleteImg();
     insertImg(img);
   }
 }

@@ -35,8 +35,11 @@
     </a>
     <div class="droplist">
       <button title="Загрузить изображение" class="toolBtn dropBtn" id="uploadImgBtn" style="background-image: url(img/tools/photo.svg)">
-        <div class="menu dropMenu" id="uploadImgMenu" hidden="true">
-          <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
+        <div title="" class="menu dropMenu" id="uploadImgMenu" hidden="true">
+          <span id="imageMenu">
+            <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
+            <img src="img/tools/delete_image.svg" id="deleteImage" onclick="deleteImg()">
+          </span>
         </div>
       </button>
     </div>
@@ -202,8 +205,6 @@
 
 <div class="resizable" id="photoResizer" hidden="true">
   <div class="resizers" id="photoInsertion">
-    <button class="rotator middle" id="photoRotator" style="background-image: url(img/rotate.png)">
-    </button>
     <div class="resizer top-left"></div>
     <div class="resizer top-right"></div>
     <div class="resizer bottom-left"></div>

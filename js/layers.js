@@ -221,10 +221,13 @@ function addLayerHandler(event) {
 addLayerTop.addEventListener('click', addLayerHandler);
 addLayerBottom.addEventListener('click', addLayerHandler);
 
-function changePreview() {
-  let previewContext = activeLayer.preview.getContext('2d');
-  previewContext.clearRect(0, 0, activeLayer.preview.width, activeLayer.preview.height);
-  previewContext.drawImage(canvas, 0, 0, activeLayer.preview.width, activeLayer.preview.height);
+function changePreview(layer) {
+  if (arguments.length == 0) {
+    layer = activeLayer;
+  }
+  let previewContext = layer.preview.getContext('2d');
+  previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
+  previewContext.drawImage(canvas, 0, 0, layer.preview.width, layer.preview.height);
 }
 
 function hideLayerHandler(event) {

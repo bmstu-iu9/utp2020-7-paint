@@ -40,9 +40,9 @@ toolMarkingSizeRange.oninput = () => { onInputRange(toolMarkingSizeText, toolMar
 
 toolSizeRange.onchange = () => { curToolSize = toolSizeRange.value; }
 
-toolMarkingRange.onchange = () => { markingInterval = toolMarkingRange.value; }
+toolMarkingRange.onchange = () => { markingInterval = parseInt(toolMarkingRange.value); }
 
-toolAngleRange.onchange = () => { inclinationAngle = toolAngleRange.value; }
+toolAngleRange.onchange = () => { inclinationAngle = parseInt(toolAngleRange.value); }
 
 toolMarkingSizeRange.onchange = () => { markingSize = toolMarkingSizeRange.value; }
 

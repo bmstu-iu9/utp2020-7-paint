@@ -1,6 +1,6 @@
 'use strict';
 
-let initial_offset;
+let initial_offset, inter;
 
 function initCage() {
   startPointCage();
@@ -88,7 +88,7 @@ function startPointDiagonal(e) {
   correctInitialOffset();
   context.beginPath();
 
-  let shift, angleInRadians, inter = markingInterval;
+  let shift, angleInRadians;
   if (inclinationAngle == 90) {
     startPointHorizontal();
   }
@@ -130,7 +130,7 @@ function startPointDoubleDiagonal(e) {
   correctInitialOffset();
   context.beginPath();
 
-  let shift, angleInRadians, inter = markingInterval;
+  let shift, angleInRadians;
 
   angleInRadians = inclinationAngle * Math.PI / 180;
   shift = canvas.height * Math.tan(angleInRadians);
@@ -165,9 +165,9 @@ function startPointWavy(e) {
   correctInitialOffset();
   context.beginPath();
 
-  let cx = 0, inter = markingInterval;
+  let cx = 0;
 
-  for (let cy = initial_offset + inclinationAngle; cy < canvas.height + inclinationAngle; cy += markingInterval) {
+  for (let cy = initial_offset - inclinationAngle; cy < canvas.height + inclinationAngle; cy += markingInterval) {
     context.moveTo(cx, cy);
     for (let i = 1; i < canvas.width; i++) {
       let x = 3 * i;

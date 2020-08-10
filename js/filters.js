@@ -116,6 +116,7 @@ function useFiltersModal() {
     modalContext.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
     modalContext.drawImage(canvas, 0, 0, modalCanvas.width, modalCanvas.height);
     history = history.slice(0, 1);
+    curStateFilter = 0;
   }
 
   let negativeFilterButton = document.getElementById('negative');

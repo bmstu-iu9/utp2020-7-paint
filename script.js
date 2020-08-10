@@ -83,11 +83,14 @@ function arrayToRgb(color) {
 }
 
 uploadImage.addEventListener('change', () => {
+  if (document.getElementById("uploadImgMenu").hidden) {
+    hideAndShow("uploadImgMenu", event);
+  }
   let target = event.target;
   if (target.files && target.files[0]) {
     handleImg(target.files[0]);
   }
-  uploadImage.value = null;
+  document.getElementById('chosenImg').innerHTML = target.files[0].name;
 });
 
 function handleImg(img) {
@@ -102,6 +105,7 @@ function drawUploaded(e) {
   img.onload = () => {
     deleteImg();
     insertImg(img);
+    uploadImage.value = null;
   }
 }
 
@@ -170,7 +174,6 @@ addEventListener('keydown', (event) => {
         document.getElementById('clear').click();
         break;
       case 'p':
-        colorInput.focus();
         colorInput.click();
         break;
       case 's':
@@ -280,7 +283,7 @@ changeCanvasHeight.oninput = function () {
     layers.forEach((layer) => {
       changePreviewSize(layer.preview);
     });
-    
+
     document.getElementById('curHeight').innerHTML = curCanvasHeight + '';
     changeCanvasHeight.style.background = '#ffffff';
     changeCanvasHeight.value = curCanvasHeight;
@@ -413,7 +416,7 @@ document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
       <br> Двойное нажатие левой кнопкой мыши на фото — вернуть исходный размер`;
     firstClickUpload = false;
   }
-  hideAndShow("uploadImgMenu", event);
+  uploadImage.click();
 });
 
 document.getElementById('brush').addEventListener('click', (event) => {

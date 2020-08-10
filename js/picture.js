@@ -13,6 +13,8 @@ function getMiddleCoords(element) {
   }
 }
 
+deleteImageBtn.addEventListener('click', e => hideAndShow("uploadImgMenu", e));
+
 function pressForImgInsertion() {
   if (event.code == 'Enter' && event.altKey) {
     let posOfPhoto = getMiddleCoords(photoResizer);
@@ -28,6 +30,7 @@ function pressForImgInsertion() {
     context.drawImage(curImg, 0, 0, curImg.width, curImg.height, -deltaImgX, -deltaImgY, dWidth, dHeight);
     context.restore();
 
+    deleteImageBtn.click();
     deleteImg();
     changePreview();
     rememberState();
@@ -45,9 +48,9 @@ function getOriginalSizeOfImg() {
 }
 
 function deleteImg() {
+  event.stopPropagation();
   photoResizer.hidden = true;
   document.removeEventListener('keydown', pressForImgInsertion);
-  deleteImageBtn.removeEventListener('click', deleteImage);
   photoResizer.removeEventListener('dblclick', getOriginalSizeOfImg);
 }
 

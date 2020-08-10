@@ -20,13 +20,14 @@
     </a>
     <div class="droplist">
       <button title="Загрузить изображение" class="toolBtn dropBtn" id="uploadImgBtn" style="background-image: url(img/tools/photo.svg)">
+        </button>
         <div title="" class="menu dropMenu" id="uploadImgMenu" hidden="true">
+          <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage" hidden="true">
           <span id="imageMenu">
-            <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage">
+            <span id="chosenImg"></span>
             <img src="img/tools/delete_image.svg" id="deleteImage" onclick="deleteImg()">
           </span>
         </div>
-      </button>
     </div>
     <button title="Фильтры" class="toolBtn trigger" id="filters-modal" style="background-image: url(img/tools/filters.svg)"></button>
     <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>

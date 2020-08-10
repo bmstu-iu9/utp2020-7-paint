@@ -4,13 +4,17 @@ let isDrawing = false;
 let oldX, oldY, newX, newY, distance, angle;
 
 function initBasicBrush() {
-  canvas.addEventListener("mousedown", startPointBasicBrush);
+  canvas.style.cursor = 'url(\"img/cursors/basic_brush_cursor.png\") 0 25, auto';
+
+  canvas.addEventListener('mousedown', startPointBasicBrush);
 }
 
 function deleteBasicBrush() {
-  canvas.removeEventListener("mousedown", startPointBasicBrush);
-  document.removeEventListener("mousemove", drawBasicBrush);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.style.cursor = 'default';
+
+  canvas.removeEventListener('mousedown', startPointBasicBrush);
+  document.removeEventListener('mousemove', drawBasicBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointBasicBrush(e) {
@@ -39,8 +43,8 @@ function startPointBasicBrush(e) {
 
   drawBasicBrush(e);
 
-  document.addEventListener("mousemove", drawBasicBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawBasicBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawBasicBrush(e) {
@@ -72,13 +76,18 @@ function drawBasicBrush(e) {
 
 
 function initNeonBrush() {
-  canvas.addEventListener("mousedown", startPointNeonBrush);
+  canvas.style.cursor = 'url(\"img/cursors/neon_brush_cursor.png\") 0 0, auto';
+
+  canvas.addEventListener('mousedown', startPointNeonBrush);
 }
 
 function deleteNeonBrush() {
-  canvas.removeEventListener("mousedown", startPointNeonBrush);
-  document.removeEventListener("mousemove", drawNeonBrush);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.style.cursor = 'default';
+
+  canvas.removeEventListener('mousedown', startPointNeonBrush);
+  document.removeEventListener('mousemove', drawNeonBrush);
+  document.removeEventListener('mouseup', endPoint);
+
   context.shadowBlur = 0;
 }
 
@@ -90,8 +99,8 @@ function startPointNeonBrush(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
-  context.lineCap = "round";
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor)
   context.shadowBlur = curToolSize;
   context.shadowColor = arrayToRgb(curColor)
@@ -103,8 +112,8 @@ function startPointNeonBrush(e) {
 
   drawNeonBrush(e);
 
-  document.addEventListener("mousemove", drawNeonBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawNeonBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawNeonBrush(e) {
@@ -127,16 +136,18 @@ function drawNeonBrush(e) {
 
 
 function initSmoothBrush() {
-  //canvas.style.cursor = "url('img/cursors/spray.png') 0 25, auto";
-  canvas.addEventListener("mousedown", startPointSmoothBrush);
+  canvas.style.cursor = 'url(\"img/cursors/smooth_brush_cursor.png\") 0 25, auto';
+  canvas.addEventListener('mousedown', startPointSmoothBrush);
 }
 
 function deleteSmoothBrush() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointSmoothBrush);
-  document.removeEventListener("mousemove", drawSmoothBrush);
-  document.removeEventListener("mouseup", endPoint);
-  context.globalAlpha = "1";
+
+  context.globalAlpha = '1';
+
+  canvas.removeEventListener('mousedown', startPointSmoothBrush);
+  document.removeEventListener('mousemove', drawSmoothBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointSmoothBrush(e) {
@@ -152,7 +163,7 @@ function startPointSmoothBrush(e) {
 
   context.save();
   context.lineWidth = 0.1;
-  context.globalAlpha = "0.01";
+  context.globalAlpha = '0.01';
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
 
@@ -166,8 +177,8 @@ function startPointSmoothBrush(e) {
 
   drawSmoothBrush(e);
 
-  document.addEventListener("mousemove", drawSmoothBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawSmoothBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawSmoothBrush(e) {
@@ -201,24 +212,28 @@ function drawSmoothBrush(e) {
 let pointsCounter, prevPoints;
 
 function initSketchBrush() {
-  canvas.style.cursor = "url('img/cursors/sketch-cursor.png') 0 25, auto";
+  canvas.style.cursor = 'url(\"img/cursors/sketch-cursor.png\") 0 25, auto';
+
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
   toolSizeRange.max = 5;
-  canvas.addEventListener("mousedown", startPointSketchBrush);
+
+  canvas.addEventListener('mousedown', startPointSketchBrush);
 }
 
 function deleteSketchBrush() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointSketchBrush);
-  document.removeEventListener("mousemove", drawSketchBrush);
-  document.removeEventListener("mouseup", endPoint);
-  context.globalAlpha = "1";
+
+  context.globalAlpha = '1';
   curToolSize = 5;
   toolSizeText.value = '5px';
   toolSizeRange.value = 5;
   toolSizeRange.max = 300;
+
+  canvas.removeEventListener('mousedown', startPointSketchBrush);
+  document.removeEventListener('mousemove', drawSketchBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointSketchBrush(e) {
@@ -236,7 +251,7 @@ function startPointSketchBrush(e) {
   deltaY = e.pageY - oldY;
 
   context.strokeStyle = arrayToRgb(curColor);
-  context.globalAlpha = "0.1";
+  context.globalAlpha = '0.1';
 
   prevPoints = new Array(10);
   pointsCounter = 0;
@@ -246,8 +261,8 @@ function startPointSketchBrush(e) {
 
   drawSketchBrush(e);
 
-  document.addEventListener("mousemove", drawSketchBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawSketchBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawSketchBrush(e) {
@@ -287,22 +302,28 @@ function drawSketchBrush(e) {
 
 
 function initPatternBrush() {
+  canvas.style.cursor = 'url(\"img/cursors/pattern_brush_cursor.png\") 0 25, auto';
+
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
   toolSizeRange.max = 5;
-  canvas.addEventListener("mousedown", startPointPatternBrush);
+
+  canvas.addEventListener('mousedown', startPointPatternBrush);
 }
 
 function deletePatternBrush() {
-  canvas.removeEventListener("mousedown", startPointPatternBrush);
-  document.removeEventListener("mousemove", drawPatternBrush);
-  document.removeEventListener("mouseup", endPoint);
-  context.globalAlpha = "1";
+  canvas.style.cursor = 'default';
+
+  context.globalAlpha = '1';
   toolSizeRange.max = 300;
   toolSizeText.value = '5px';
   toolSizeRange.value = 5;
   curToolSize = 5;
+
+  canvas.removeEventListener('mousedown', startPointPatternBrush);
+  document.removeEventListener('mousemove', drawPatternBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointPatternBrush(e) {
@@ -313,7 +334,7 @@ function startPointPatternBrush(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.globalAlpha = "0.1";
+  context.globalAlpha = '0.1';
 
   oldX = e.offsetX;
   oldY = e.offsetY;
@@ -329,8 +350,8 @@ function startPointPatternBrush(e) {
 
   drawPatternBrush(e);
 
-  document.addEventListener("mousemove", drawPatternBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawPatternBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawPatternBrush(e) {
@@ -374,22 +395,28 @@ function drawPatternBrush(e) {
 
 
 function initFurBrush() {
+  canvas.style.cursor = 'url(\"img/cursors/fur_brush_cursor.png\") 0 25, auto';
+
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
   toolSizeRange.max = 5;
-  canvas.addEventListener("mousedown", startPointFurBrush);
+
+  canvas.addEventListener('mousedown', startPointFurBrush);
 }
 
 function deleteFurBrush() {
-  canvas.removeEventListener("mousedown", startPointFurBrush);
-  document.removeEventListener("mousemove", drawFurBrush);
-  document.removeEventListener("mouseup", endPoint);
-  context.globalAlpha = "1";
+  canvas.style.cursor = 'default';
+
+  context.globalAlpha = '1';
   toolSizeRange.max = 300;
   toolSizeText.value = '5px';
   toolSizeRange.value = 5;
   curToolSize = 5;
+
+  canvas.removeEventListener('mousedown', startPointFurBrush);
+  document.removeEventListener('mousemove', drawFurBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointFurBrush(e) {
@@ -400,7 +427,7 @@ function startPointFurBrush(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.globalAlpha = "0.1";
+  context.globalAlpha = '0.1';
 
   oldX = e.offsetX;
   oldY = e.offsetY;
@@ -416,8 +443,8 @@ function startPointFurBrush(e) {
 
   drawFurBrush(e);
 
-  document.addEventListener("mousemove", drawFurBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawFurBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawFurBrush(e) {
@@ -461,21 +488,27 @@ function drawFurBrush(e) {
 
 
 function initRectangleBrush() {
+  canvas.style.cursor = 'url(\"img/cursors/rectangle_brush_cursor.png\") 0 25, auto';
+
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
   toolSizeRange.max = 5;
-  canvas.addEventListener("mousedown", startPointRectangleBrush);
+
+  canvas.addEventListener('mousedown', startPointRectangleBrush);
 }
 
 function deleteRectangleBrush() {
-  canvas.removeEventListener("mousedown", startPointRectangleBrush);
-  document.removeEventListener("mousemove", drawRectangleBrush);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.style.cursor = 'default';
+
   toolSizeRange.max = 300;
   toolSizeText.value = '5px';
   toolSizeRange.value = 5;
   curToolSize = 5;
+
+  canvas.removeEventListener('mousedown', startPointRectangleBrush);
+  document.removeEventListener('mousemove', drawRectangleBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointRectangleBrush(e) {
@@ -498,8 +531,8 @@ function startPointRectangleBrush(e) {
 
   drawRectangleBrush(e);
 
-  document.addEventListener("mousemove", drawRectangleBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawRectangleBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawRectangleBrush(e) {
@@ -535,21 +568,27 @@ function drawRectangleBrush(e) {
 
 
 function initCircleBrush() {
+  canvas.style.cursor = 'url(\"img/cursors/circle_brush_cursor.png\") 0 25, auto';
+
   curToolSize = 1;
   toolSizeRange.value = 1;
   toolSizeText.value = '1px';
   toolSizeRange.max = 5;
-  canvas.addEventListener("mousedown", startPointCircleBrush);
+
+  canvas.addEventListener('mousedown', startPointCircleBrush);
 }
 
 function deleteCircleBrush() {
-  canvas.removeEventListener("mousedown", startPointCircleBrush);
-  document.removeEventListener("mousemove", drawCircleBrush);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.style.cursor = 'default';
+
   toolSizeRange.max = 300;
   toolSizeText.value = '5px';
   toolSizeRange.value = 5;
   curToolSize = 5;
+
+  canvas.removeEventListener('mousedown', startPointCircleBrush);
+  document.removeEventListener('mousemove', drawCircleBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointCircleBrush(e) {
@@ -572,8 +611,8 @@ function startPointCircleBrush(e) {
 
   drawCircleBrush(e);
 
-  document.addEventListener("mousemove", drawCircleBrush);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawCircleBrush);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawCircleBrush(e) {

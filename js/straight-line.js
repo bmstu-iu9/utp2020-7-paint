@@ -2,14 +2,14 @@
 
 function initStraightLine() {
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("mousedown", startPointStraightLine);
+  canvas.addEventListener('mousedown', startPointStraightLine);
 }
 
 function deleteStraightLine() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointStraightLine);
-  document.removeEventListener("mousemove", drawStraightLine);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointStraightLine);
+  document.removeEventListener('mousemove', drawStraightLine);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointStraightLine(e) {
@@ -21,8 +21,8 @@ function startPointStraightLine(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
-  context.lineCap = "round";
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
   oldX = e.offsetX;
@@ -33,8 +33,8 @@ function startPointStraightLine(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
   drawStraightLine(e);
 
-  document.addEventListener("mousemove", drawStraightLine);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawStraightLine);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawStraightLine(e) {

@@ -24,7 +24,7 @@ function initText() {
       dyOfText = pastedText.getBoundingClientRect().height;
       pastedText.hidden = true;
       textMenu.hidden = false;
-      textFormat.addEventListener("click", startPointText);
+      textFormat.addEventListener('click', startPointText);
       textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
       chooseTextFormat();
       document.removeEventListener('keydown', pressForInsertion);
@@ -42,8 +42,8 @@ function deleteText() {
     textMenu.hidden = true;
   }
 
-  canvas.removeEventListener("mousemove", drawTextInsertion);
-  document.removeEventListener("mouseup", stopInsertion);
+  canvas.removeEventListener('mousemove', drawTextInsertion);
+  document.removeEventListener('mouseup', stopInsertion);
 
   fontSize.value = '20';
   font.value = 'serif';
@@ -93,9 +93,9 @@ function startPointText(e) {
 
   drawTextInsertion(e);
 
-  textFormat.removeEventListener("click", startPointText);
-  canvas.addEventListener("mousemove", drawTextInsertion);
-  document.addEventListener("mouseup", stopInsertion);
+  textFormat.removeEventListener('click', startPointText);
+  canvas.addEventListener('mousemove', drawTextInsertion);
+  document.addEventListener('mouseup', stopInsertion);
 }
 
 function drawTextInsertion(e) {

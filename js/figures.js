@@ -2,14 +2,14 @@
 
 function initRectangle() {
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("mousedown", startPointRectangle);
+  canvas.addEventListener('mousedown', startPointRectangle);
 }
 
 function deleteRectangle() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointRectangle);
-  document.removeEventListener("mousemove", drawRectangle);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointRectangle);
+  document.removeEventListener('mousemove', drawRectangle);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointRectangle(e) {
@@ -22,8 +22,8 @@ function startPointRectangle(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
-  context.lineCap = "round";
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
   oldX = e.offsetX;
@@ -35,8 +35,8 @@ function startPointRectangle(e) {
 
   drawRectangle(e);
 
-  document.addEventListener("mousemove", drawRectangle);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawRectangle);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawRectangle(e) {
@@ -62,14 +62,14 @@ let centerX, centerY, radius;
 
 function initCircle() {
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("mousedown", startPointCircle);
+  canvas.addEventListener('mousedown', startPointCircle);
 }
 
 function deleteCircle() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointCircle);
-  document.removeEventListener("mousemove", drawCircle);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointCircle);
+  document.removeEventListener('mousemove', drawCircle);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointCircle(e) {
@@ -81,8 +81,8 @@ function startPointCircle(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
-  context.lineCap = "round";
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
   centerX = e.offsetX;
@@ -93,8 +93,8 @@ function startPointCircle(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
   drawCircle(e);
 
-  document.addEventListener("mousemove", drawCircle);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawCircle);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawCircle(e) {
@@ -121,14 +121,14 @@ function drawCircle(e) {
 
 function initEllipse() {
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("mousedown", startPointEllipse);
+  canvas.addEventListener('mousedown', startPointEllipse);
 }
 
 function deleteEllipse() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointEllipse);
-  document.removeEventListener("mousemove", drawEllipse);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointEllipse);
+  document.removeEventListener('mousemove', drawEllipse);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointEllipse(e) {
@@ -140,8 +140,8 @@ function startPointEllipse(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
-  context.lineCap = "round";
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
   centerX = e.offsetX;
@@ -152,8 +152,8 @@ function startPointEllipse(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
   drawEllipse(e);
 
-  document.addEventListener("mousemove", drawEllipse);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawEllipse);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawEllipse(e) {
@@ -180,14 +180,14 @@ let startX, startY;
 
 function initEqTriangle() {
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("mousedown", startPointEqTriangle);
+  canvas.addEventListener('mousedown', startPointEqTriangle);
 }
 
 function deleteEqTriangle() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointEqTriangle);
-  document.removeEventListener("mousemove", drawEqTriangle);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointEqTriangle);
+  document.removeEventListener('mousemove', drawEqTriangle);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointEqTriangle(e) {
@@ -199,8 +199,8 @@ function startPointEqTriangle(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
-  context.lineCap = "round";
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
   startX = e.offsetX;
@@ -211,8 +211,8 @@ function startPointEqTriangle(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
   drawEqTriangle(e);
 
-  document.addEventListener("mousemove", drawEqTriangle);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawEqTriangle);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawEqTriangle(e) {
@@ -239,14 +239,14 @@ function drawEqTriangle(e) {
 
 function initRightTriangle() {
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("mousedown", startPointRightTriangle);
+  canvas.addEventListener('mousedown', startPointRightTriangle);
 }
 
 function deleteRightTriangle() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointRightTriangle);
-  document.removeEventListener("mousemove", drawRightTriangle);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointRightTriangle);
+  document.removeEventListener('mousemove', drawRightTriangle);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 function startPointRightTriangle(e) {
@@ -258,8 +258,8 @@ function startPointRightTriangle(e) {
 
   context.save();
   context.lineWidth = curToolSize;
-  context.lineJoin = "round";
-  context.lineCap = "round";
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
   startX = e.offsetX;
@@ -270,8 +270,8 @@ function startPointRightTriangle(e) {
   if (isThereSelection) uniteRememberAndSelectedImages();
   drawEqTriangle(e);
 
-  document.addEventListener("mousemove", drawRightTriangle);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawRightTriangle);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawRightTriangle(e) {

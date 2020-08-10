@@ -1,40 +1,87 @@
 'use strict';
 
 let maxLayerId = -1;
-let activeLayer, topLayer, bottomLayer;
+let activeLayer;
 let layersField = document.getElementById('layersField');
 let layers = new Map();
 let allCanvases = [backCanvas];
-let addLayerTop = document.getElementById('addLayerTop');
-let addLayerBottom = document.getElementById('addLayerBottom');
+
+function createLayerOptionsHtml(id) {
+  let optContainer = document.createElement('div');
+  optContainer.classList.add('layerOptions');
+  optContainer.id = 'layerOptions' + id;
+
+  let deleteBtn = document.createElement('button');
+  deleteBtn.id = 'deleteLayer' + id;
+  deleteBtn.innerText = 'Удалить слой';
+  optContainer.appendChild(deleteBtn);
+
+  let addTopBtn = document.createElement('button');
+  addTopBtn.id = 'addLayerTop' + id;
+  addTopBtn.innerText = 'Добавить слой сверху';
+  optContainer.appendChild(addTopBtn);
+
+  let addBotBtn = document.createElement('button');
+  addBotBtn.id = 'addLayerBottom' + id;
+  addBotBtn.innerText = 'Добавить слой снизу';
+  optContainer.appendChild(addBotBtn);
+
+  let swapTopBtn = document.createElement('button');
+  swapTopBtn.id = 'swapTop' + id;
+  swapTopBtn.innerText = 'Поднять слой';
+  optContainer.appendChild(swapTopBtn);
+
+  let swapBotBtn = document.createElement('button');
+  swapBotBtn.id = 'swapBottom' + id;
+  swapBotBtn.innerText = 'Опустить слой';
+  optContainer.appendChild(swapBotBtn);
+
+  return optContainer;
+}
 
 function createLayerHtml(id) {
   let newLayer = document.createElement('div');
   newLayer.classList.add('layer');
   newLayer.id = 'layerDisplay' + id;
 
+  let previewDiv = document.createElement('div');
+  previewDiv.classList.add('previewWindow');
+  previewDiv.id = 'previewDiv' + id;
+  newLayer.appendChild(previewDiv);
+
   let previewLayer = document.createElement('canvas');
   previewLayer.classList.add('preview');
   previewLayer.id = 'preview' + id;
-  newLayer.appendChild(previewLayer);
+  previewDiv.appendChild(previewLayer);
+
+  let btnContainer = document.createElement('div');
+  btnContainer.classList.add('layerBtncontainer');
+  btnContainer.id = 'btnContainer' + id;
+  newLayer.appendChild(btnContainer);
 
   let hideBtn = document.createElement('button');
   hideBtn.classList.add('layerBtn');
+  hideBtn.classList.add('visibleLayer');
   hideBtn.id = 'hideLayer' + id;
   hideBtn.title = 'Скрыть';
-  newLayer.appendChild(hideBtn);
+  btnContainer.appendChild(hideBtn);
 
   let lockBtn = document.createElement('button');
   lockBtn.classList.add('layerBtn');
+  lockBtn.classList.add('unlockedLayer');
   lockBtn.id = 'lockLayer' + id;
   lockBtn.title = 'Заблокировать'
-  newLayer.appendChild(lockBtn);
+  btnContainer.appendChild(lockBtn);
 
-  let deleteBtn = document.createElement('button');
-  deleteBtn.classList.add('layerBtn');
-  deleteBtn.id = 'deleteLayer' + id;
-  deleteBtn.title = 'Удалить'
-  newLayer.appendChild(deleteBtn);
+  let layerDroplist = document.createElement('div');
+  layerDroplist.classList.add('droplist');
+  layerDroplist.id = 'droplist' + id;
+
+  let menuBtn = document.createElement('button');
+  menuBtn.classList.add('layerOptionsBtn');
+  layerDroplist.appendChild(menuBtn);
+  layerDroplist.appendChild(createLayerOptionsHtml(id));
+  btnContainer.appendChild(layerDroplist);
 
   return newLayer;
 }
@@ -50,32 +97,31 @@ function createCanvasHtml(id) {
   newCanvas.style.left = canvas.style.left;
   newCanvas.style.top = canvas.style.top;
   newCanvas.style.margin = canvas.style.margin;
-  bottomLayer.canvas.after(newCanvas);
+  getOldestLayer().canvas.after(newCanvas);
   return newCanvas;
 }
 
-function parseLayerId(str) {
-  switch (str.slice(0, 3)) {
-    case 'lay':
-      return parseInt(str.slice('layerDisplay'.length));
-      break;
-    case 'pre':
-      return parseInt(str.slice('preview'.length));
-      break;
+function parseAlowedNodesId(str, allowedNodes) {
+  for (let i = 0; i < allowedNodes.length; i++) {
+    let name = allowedNodes[i];
+    let cutStr = str.slice(0, name.length);
+    if (cutStr === name) {
+      let id = parseInt(str.slice(name.length));
+      if (id !== NaN) return id;
+    }
   }
   return null;
 }
 
+function parseLayerId(str) {
+  let allowedNodes = ['layerDisplay', 'previewDiv',
+                      'btnContainer', 'preview'];
+  return parseAlowedNodesId(str, allowedNodes);
+}
+
 function parseLayerBtnId(str) {
-  switch (str.slice(0, 3)) {
-    case 'hid':
-      return parseInt(str.slice('hideLayer'.length));
-      break;
-    case 'loc':
-      return parseInt(str.slice('lockLayer'.length));
-      break;
-  }
-  return null;
+  let allowedNodes = ['hideLayer', 'lockLayer'];
+  return parseAlowedNodesId(str, allowedNodes);
 }
 
 function getLayerByDisplay(target) {
@@ -91,7 +137,7 @@ function getLayerByBtn(target) {
 }
 
 function setUpLayer(layer) {
-  layer.canvas.style.pointerEvents = "auto";
+  layer.canvas.style.pointerEvents = 'auto';
   layer.display.classList.add('highlight');
   activeInstrument && activeInstrument.delete();
   canvas = layer.canvas;
@@ -104,7 +150,7 @@ function setUpLayer(layer) {
 function switchLayer(event) {
   let layer = getLayerByDisplay(event.target.id);
   if (!layer || activeLayer.id === layer.id) return;
-  activeLayer.canvas.style.pointerEvents = "none";
+  activeLayer.canvas.style.pointerEvents = 'none';
   activeLayer.display.classList.remove('highlight');
   setUpLayer(layer);
 }
@@ -114,7 +160,7 @@ function getOldestLayer() {
 }
 
 class Layer {
-  constructor(caller) {
+  constructor(caller, callerId) {
     this.id = ++maxLayerId;
 
     if (caller == 'firstLayer') {
@@ -124,20 +170,35 @@ class Layer {
 
       this.index = 50;
       this.canvas.style.zIndex = this.index;
+      changePreviewSize(this.preview);
 
       this.hideBtn = document.getElementById('hideLayer0');
       this.lockBtn = document.getElementById('lockLayer0');
       this.deleteBtn = document.getElementById('deleteLayer0');
+      this.addTopBtn = document.getElementById('addLayerTop0');
+      this.addBottomBtn = document.getElementById('addLayerBottom0');
+      this.swapTopBtn = document.getElementById('swapTop0');
+      this.swapBottomBtn = document.getElementById('swapBottom0');
     } else {
       this.display = createLayerHtml(this.id);
       this.canvas = createCanvasHtml(this.id);
-      this.preview = this.display.children['preview' + this.id];
-      this.hideBtn = this.display.children['hideLayer' + this.id];
-      this.lockBtn = this.display.children['lockLayer' + this.id];
-      this.deleteBtn = this.display.children['deleteLayer' + this.id];
+      this.preview = this.display.children['previewDiv' + this.id]
+                                 .children['preview' + this.id];
 
-      activeLayer.canvas.style.pointerEvents = "none";
-      this.canvas.style.pointerEvents = "auto";
+      let btnContainer = this.display.children['btnContainer' + this.id]
+      this.hideBtn = btnContainer.children['hideLayer' + this.id];
+      this.lockBtn = btnContainer.children['lockLayer' + this.id];
+
+      let droplist = btnContainer.children['droplist' + this.id];
+      let options = droplist.children['layerOptions' + this.id]
+      this.deleteBtn = options.children['deleteLayer' + this.id];
+      this.addTopBtn = options.children['addLayerTop' + this.id];
+      this.addBottomBtn = options.children['addLayerBottom' + this.id];
+      this.swapTopBtn = options.children['swapTop' + this.id];
+      this.swapBottomBtn = options.children['swapBottom' + this.id];
+
+      activeLayer.canvas.style.pointerEvents = 'none';
+      this.canvas.style.pointerEvents = 'auto';
       activeLayer.display.classList.remove('highlight');
       this.display.classList.add('highlight');
       activeInstrument && activeInstrument.delete();
@@ -150,22 +211,40 @@ class Layer {
     this.locked = false;
     this.hidden = false;
 
+    changePreviewSize(this.preview);
+
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);
     this.lockBtn.addEventListener('click', lockLayerHandler);
     this.deleteBtn.addEventListener('click', deleteLayerHandler);
+    this.addTopBtn.addEventListener('click', addLayerTopHandler);
+    this.addBottomBtn.addEventListener('click', addLayerBottomHandler);
+    this.swapTopBtn.addEventListener('click', swapTopHandler);
+    this.swapBottomBtn.addEventListener('click', swapBottomHandler);
 
     if (caller === 'addLayerTop') {
-      topLayer.display.before(this.display);
-      this.index = topLayer.index + 1;
+      let callerLayer = layers.get(callerId);
+      layers.forEach((layer) => {
+        if (layer.index > callerLayer.index) {
+          ++layer.index;
+          layer.canvas.style.zIndex = layer.index;
+        }
+      });
+      callerLayer.display.before(this.display);
+      this.index = callerLayer.index + 1;
       this.canvas.style.zIndex = this.index;
-      topLayer = this;
     }
     if (caller === 'addLayerBottom') {
-      bottomLayer.display.after(this.display);
-      this.index = bottomLayer.index - 1;
+      let callerLayer = layers.get(callerId);
+      layers.forEach((layer) => {
+        if (layer.index < callerLayer.index) {
+          --layer.index;
+          layer.canvas.style.zIndex = layer.index;
+        }
+      });
+      callerLayer.display.after(this.display);
+      this.index = callerLayer.index - 1;
       this.canvas.style.zIndex = this.index;
-      bottomLayer = this;
     }
 
     layers.set(this.id, this);
@@ -182,22 +261,6 @@ class Layer {
     while (allCanvases[pos].id != this.canvas.id) ++pos;
     allCanvases.splice(pos, 1);
 
-    if (bottomLayer.id === this.id) {
-      bottomLayer = getOldestLayer();
-      layers.forEach((layer) => {
-        if (bottomLayer.index > layer.index)
-          bottomLayer = layer;
-      });
-    }
-
-    if (topLayer.id === this.id) {
-      topLayer = getOldestLayer();
-      layers.forEach((layer) => {
-        if (topLayer.index < layer.index)
-          topLayer = layer;
-      });
-    }
-
     if (activeLayer.id === this.id) {
       setUpLayer(getOldestLayer());
     }
@@ -209,27 +272,43 @@ class Layer {
 
 let firstLayer = new Layer('firstLayer');
 activeLayer = firstLayer;
-topLayer = firstLayer;
-bottomLayer = firstLayer;
 
-function addLayerHandler(event) {
-  let caller = event.target.id;
-
-  new Layer(caller);
-}
-
-addLayerTop.addEventListener('click', addLayerHandler);
-addLayerBottom.addEventListener('click', addLayerHandler);
-
-function changePreview() {
-  let previewContext = activeLayer.preview.getContext('2d');
-  previewContext.clearRect(0, 0, activeLayer.preview.width, activeLayer.preview.height);
-  previewContext.drawImage(canvas, 0, 0, activeLayer.preview.width, activeLayer.preview.height);
+function changePreview(layer) {
+  if (arguments.length == 0) {
+    layer = activeLayer;
+  }
+  let countOfSteps = Math.ceil(Math.log(layer.canvas.width / layer.preview.width) / Math.log(2));
+  let oc = document.createElement('canvas');
+  let octx = oc.getContext('2d');
+  let dopOc = document.createElement('canvas');
+  let dopOctx = dopOc.getContext('2d');
+  
+  oc.width = layer.canvas.width;
+  oc.height = layer.canvas.height;
+  dopOc.width = layer.canvas.width;
+  dopOc.height = layer.canvas.height;
+  
+  octx.drawImage(layer.canvas, 0, 0, oc.width, oc.height);
+  
+  let i = 0;
+  for (; i < countOfSteps - 1; i++) {
+    dopOctx.clearRect(0, 0, dopOc.width, dopOc.height);
+    dopOctx.drawImage(oc, 0, 0);
+    
+    octx.clearRect(0, 0, dopOc.width, dopOc.height);
+    octx.drawImage(dopOc, 0, 0, oc.width / 2, oc.height / 2);
+  }
+  
+  let previewContext = layer.preview.getContext('2d');
+  previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
+  previewContext.drawImage(oc, 0, 0, oc.width / (2 ** i), oc.height / (2 ** i), 0, 0, layer.preview.width, layer.preview.height);
 }
 
 function hideLayerHandler(event) {
   let layer = getLayerByBtn(event.target.id);
   if (!layer) return;
+
+  layer.hideBtn.classList.toggle('hiddenLayer');
 
   if (layer.hidden) {
     layer.hidden = false;
@@ -247,6 +326,8 @@ function hideLayerHandler(event) {
 function lockLayerHandler(event) {
   let layer = getLayerByBtn(event.target.id);
   if (!layer) return;
+
+  layer.lockBtn.classList.toggle('lockedLayer');
 
   let cond = layer.locked;
   if (cond) {
@@ -267,7 +348,69 @@ function lockLayerHandler(event) {
 function deleteLayerHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('deleteLayer'.length));
+  if (id === NaN) return;
 
   layers.get(id).delete();
   clearLayerHistory(id);
+}
+
+function addLayerTopHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('addLayerTop'.length));
+
+  if (id !== NaN) new Layer('addLayerTop', id);
+}
+
+function addLayerBottomHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('addLayerBottom'.length));
+
+  if (id !== NaN) new Layer('addLayerBottom', id);
+}
+
+function swapIndexes(layer1, layer2) {
+  let temp = layer1.index;
+  layer1.index = layer2.index;
+  layer2.index = temp;
+
+  layer1.canvas.style.zIndex = layer1.index;
+  layer2.canvas.style.zIndex = layer2.index;
+
+  let display1 = layer1.display, display2 = layer2.display;
+
+  display1.parentNode.insertBefore(display1, display2);
+}
+
+function swapTopHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('swapTop'.length));
+  if (id === NaN) return;
+  let closestTopLayer = getOldestLayer();
+  let curLayer = layers.get(id);
+
+  layers.forEach((layer) => {
+    if (layer.index > curLayer.index &&
+       (closestTopLayer === null || layer.index < closestTopLayer.index)) {
+      closestTopLayer = layer;
+    }
+  });
+
+  if (closestTopLayer != null) swapIndexes(curLayer, closestTopLayer);
+}
+
+function swapBottomHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('swapBottom'.length));
+  if (id === NaN) return;
+  let closestBotLayer = null;
+  let curLayer = layers.get(id);
+
+  layers.forEach((layer) => {
+    if (layer.index < curLayer.index &&
+       (closestBotLayer === null || layer.index > closestBotLayer.index)) {
+      closestBotLayer = layer;
+    }
+  });
+
+  if (closestBotLayer != null) swapIndexes(closestBotLayer, curLayer);
 }

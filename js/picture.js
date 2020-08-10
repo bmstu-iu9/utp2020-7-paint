@@ -16,7 +16,7 @@ function getMiddleCoords(element) {
 deleteImageBtn.addEventListener('click', e => hideAndShow('uploadImgMenu', e));
 
 function pressForImgInsertion() {
-  if (event.code == 'Enter' && event.altKey) {
+  if (event.code == 'Enter') {
     let posOfPhoto = getMiddleCoords(photoResizer);
     let posOfCanvas = {
       x: canvas.getBoundingClientRect().left,

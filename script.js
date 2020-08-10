@@ -380,9 +380,9 @@ changeBorderWidth.oninput = function () {
 borderColor.oninput = function () {
   let color = document.getElementById('borderColor').value;
   if (color) {
-    canvas.style.borderColor = color;
+    backCanvas.style.borderColor = color;
   } else {
-    canvas.style.borderColor = '#000000';
+    backCanvas.style.borderColor = '#000000';
   }
 }
 
@@ -412,7 +412,7 @@ document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
     toggleModal();
     hintsContent.innerHTML = `Горячие клавиши:
       <br>
-      <br> Alt + Enter — вставить фото
+      <br> Enter — вставить фото
       <br> Двойное нажатие левой кнопкой мыши на фото — вернуть исходный размер`;
     firstClickUpload = false;
   }

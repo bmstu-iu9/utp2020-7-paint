@@ -13,7 +13,7 @@ function getMiddleCoords(element) {
   }
 }
 
-deleteImageBtn.addEventListener('click', e => hideAndShow("uploadImgMenu", e));
+deleteImageBtn.addEventListener('click', e => hideAndShow('uploadImgMenu', e));
 
 function pressForImgInsertion() {
   if (event.code == 'Enter' && event.altKey) {

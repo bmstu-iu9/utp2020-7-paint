@@ -83,8 +83,8 @@ function arrayToRgb(color) {
 }
 
 uploadImage.addEventListener('change', () => {
-  if (document.getElementById("uploadImgMenu").hidden) {
-    hideAndShow("uploadImgMenu", event);
+  if (document.getElementById('uploadImgMenu').hidden) {
+    hideAndShow('uploadImgMenu', event);
   }
   let target = event.target;
   if (target.files && target.files[0]) {

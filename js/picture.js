@@ -8,8 +8,8 @@ let deltaImgX, deltaImgY;
 
 function getMiddleCoords(element) {
   return {
-    x: element.getBoundingClientRect().left + element.getBoundingClientRect().width / 2,
-    y: element.getBoundingClientRect().top + element.getBoundingClientRect().height / 2
+    x: element.getBoundingClientRect().left + (element.getBoundingClientRect().width) / 2,
+    y: element.getBoundingClientRect().top + (element.getBoundingClientRect().height) / 2
   }
 }
 
@@ -19,8 +19,8 @@ function pressForImgInsertion() {
   if (event.code == 'Enter') {
     let posOfPhoto = getMiddleCoords(photoResizer);
     let posOfCanvas = {
-      x: canvas.getBoundingClientRect().left,
-      y: canvas.getBoundingClientRect().top
+      x: canvas.getBoundingClientRect().left + curCanvasBorder,
+      y: canvas.getBoundingClientRect().top + curCanvasBorder
     };
     let dx = posOfPhoto.x - posOfCanvas.x + 2.5, dy = posOfPhoto.y - posOfCanvas.y + 2.5;
     let dWidth = photoResizer.clientWidth - 6, dHeight = photoResizer.clientHeight - 6;

@@ -222,6 +222,10 @@ class Layer {
     this.swapTopBtn.addEventListener('click', swapTopHandler);
     this.swapBottomBtn.addEventListener('click', swapBottomHandler);
 
+    this.canvas.style.borderWidth = curCanvasBorder + 'px';
+    this.canvas.style.borderColor = curCanvasBorderColor;
+    this.canvas.style.borderStyle = 'solid';
+    
     if (caller === 'addLayerTop') {
       let callerLayer = layers.get(callerId);
       layers.forEach((layer) => {

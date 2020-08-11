@@ -9,8 +9,8 @@ let deltaImgX, deltaImgY;
 function getMiddleCoords(element) {
   let border = parseInt(getComputedStyle(element).getPropertyValue('border-left-width'));
   return {
-    x: element.getBoundingClientRect().left - border + (element.getBoundingClientRect().width - 2 * border) / 2,
-    y: element.getBoundingClientRect().top - border + (element.getBoundingClientRect().height - 2 * border) / 2
+    x: element.getBoundingClientRect().left + border + (element.getBoundingClientRect().width - 2 * border) / 2,
+    y: element.getBoundingClientRect().top + border + (element.getBoundingClientRect().height - 2 * border) / 2
   }
 }
 

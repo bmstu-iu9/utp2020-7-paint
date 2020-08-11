@@ -196,8 +196,8 @@ function insertCanvas(copyCanvas) {
       if (isThereSelection) rememberCanvasWithoutSelection();
       let posOfPhoto = getMiddleCoords(canvasInsertion);
       let posOfCanvas = {
-        x: canvas.getBoundingClientRect().left,
-        y: canvas.getBoundingClientRect().top
+        x: canvas.getBoundingClientRect().left + curCanvasBorder,
+        y: canvas.getBoundingClientRect().top + curCanvasBorder
       };
       let dx = Math.floor(posOfPhoto.x - posOfCanvas.x + 3), dy = Math.floor(posOfPhoto.y - posOfCanvas.y + 3);
       context.save();

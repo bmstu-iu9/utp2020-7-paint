@@ -8,10 +8,6 @@ const defaultWidth = 780;
 const defaultHeight = 400;
 const defaultBorder = 1;
 
-backCanvas.style.border = '1px solid #000000';
-backCanvas.width = defaultWidth;
-backCanvas.height = defaultHeight;
-
 let maxPreviewHeight = document.getElementById("previewDiv0").clientHeight;
 let maxPreviewWidth = document.getElementById("previewDiv0").clientWidth;
 

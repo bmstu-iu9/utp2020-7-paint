@@ -343,7 +343,7 @@ changeBorderWidth.oninput = function () {
   if (checkPxInput(border, minB, maxB)) {
     curCanvasBorder = parseInt(border);
     allCanvases.forEach((canvas) => {
-      canvas.style.borderWidth = border + 'px';
+      canvas.style.borderWidth = curCanvasBorder + 'px';
     });
     changeBorderWidth.style.background = '#ffffff';
   } else {

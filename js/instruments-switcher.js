@@ -1,9 +1,11 @@
 'use strict';
 
-const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush', 'sketchBrush',
-'filling', 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'eyedropper',
-'straightLine', 'hand', 'text', 'cage', 'horizontal', 'vertical', 'singleDiagonal', 'doubleDiagonal',
-'horizontalWavy', 'verticalWavy'];
+const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush',
+                'sketchBrush', 'patternBrush', 'furBrush', 'rectangleBrush','circleBrush',
+                'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'straightLine',
+                'eyedropper', 'filling', 'hand', 'text', 'stamp', 'rectangleSelection', 'cage',
+                'horizontal', 'vertical', 'singleDiagonal', 'doubleDiagonal',
+                'horizontalWavy', 'verticalWavy'];
 
 let allInstruments = new Map();
 let activeInstrument = null;
@@ -35,8 +37,10 @@ function instrumentsHandler(event) {
 
   activeInstrument = allInstruments.get(targetId);
   document.getElementById(targetId).classList.add('pressed');
-  activeInstrument.init();
-  currentElement = document.getElementById(targetId);
+  if (!activeLayer.locked) {
+    activeInstrument.init();
+    currentElement = document.getElementById(targetId);
+  }
 }
 
 allIds.forEach((id) => {

@@ -4,19 +4,31 @@ let stampX, stampY;
 let isStamping;
 let lastCanvas = document.createElement('canvas');
 let lastContext = lastCanvas.getContext('2d');
+let firstClickStamp = true;
 
 function initStamp() {
+  if (firstClickStamp) {
+    toggleModal();
+    hintsContent.innerHTML =
+    `<p>Алгоритм работы со штампом:</p>
+    <ul>
+    <li>1) Установить точку копирования щелчком левой кнопки мыши</li>
+    <li>2) Зажать левую кнопку мыши и движением курсора начать проявлять скопированный фрагмент</li>
+    <li>3) Для смены учатка проявления нажать Alt + Enter и выбрать новую область</li>
+    </ul>`;
+    firstClickStamp = false;
+  }
   isStamping = false;
   canvas.style.cursor = 'crosshair';
-  canvas.addEventListener("click", selectFragment);
+  canvas.addEventListener('click', selectFragment);
 }
 
 function deleteStamp() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("mousedown", startPointStamp);
-  canvas.removeEventListener("click", selectFragment);
-  document.removeEventListener("mousemove", drawStamp);
-  document.removeEventListener("mouseup", endPoint);
+  canvas.removeEventListener('mousedown', startPointStamp);
+  canvas.removeEventListener('click', selectFragment);
+  document.removeEventListener('mousemove', drawStamp);
+  document.removeEventListener('mouseup', endPoint);
   document.removeEventListener('keydown', stopStamp);
 }
 
@@ -27,8 +39,8 @@ function selectFragment(e) {
   lastCanvas.height = canvas.height;
   lastContext.drawImage(canvas, 0, 0);
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("click", selectFragment);
-  canvas.addEventListener("mousedown", startPointStamp);
+  canvas.removeEventListener('click', selectFragment);
+  canvas.addEventListener('mousedown', startPointStamp);
 }
 
 function resizeMemCanvas(x, y) {
@@ -41,6 +53,7 @@ function startPointStamp(e) {
   e.preventDefault();
   isDrawing = true;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   context.save();
   oldX = e.offsetX - curToolSize / 2;
   oldY = e.offsetY - curToolSize / 2;
@@ -57,15 +70,17 @@ function startPointStamp(e) {
   }
 
   drawSquareStamp(oldX, oldY);
+  if (isThereSelection) uniteRememberAndSelectedImages();
 
   document.addEventListener('keydown', stopStamp);
-  document.addEventListener("mousemove", drawStamp);
-  document.addEventListener("mouseup", endPoint);
+  document.addEventListener('mousemove', drawStamp);
+  document.addEventListener('mouseup', endPoint);
 }
 
 function drawStamp(e) {
   if (!isDrawing) return;
 
+  if (isThereSelection) rememberCanvasWithoutSelection();
   curX = e.pageX - deltaX - curToolSize / 2;
   curY = e.pageY - deltaY - curToolSize / 2;
 
@@ -81,6 +96,7 @@ function drawStamp(e) {
   oldX = curX;
   oldY = curY;
 
+  if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 

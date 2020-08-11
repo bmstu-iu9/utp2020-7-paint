@@ -1,6 +1,6 @@
 'use strict';
 
-let initial_offset, currentElement;
+let initialOffset, currentElement;
 
 function initCage() {
   isMarkingButtonClicked();
@@ -11,14 +11,14 @@ function initCage() {
 
 function startPointCage() {
   setParameters();
-  correctInitialOffset();
+  initialOffset = getInitialOffset();
   context.beginPath();
 
-  for (let x = initial_offset; x < canvas.height; x += markingInterval) {
+  for (let x = initialOffset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
-  for (let x = initial_offset; x < canvas.width; x += markingInterval) {
+  for (let x = initialOffset; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
   }
@@ -42,10 +42,10 @@ function initVertical() {
 
 function startPointVertical(e) {
   setParameters();
-  correctInitialOffset();
+  initialOffset = getInitialOffset();
   context.beginPath();
 
-  for (let x = initial_offset; x < canvas.width; x += markingInterval) {
+  for (let x = initialOffset; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
   }
@@ -69,10 +69,10 @@ function initHorizontal() {
 
 function startPointHorizontal(e) {
   setParameters();
-  correctInitialOffset();
+  initialOffset = getInitialOffset();
   context.beginPath();
 
-  for (let x = initial_offset; x < canvas.height; x += markingInterval) {
+  for (let x = initialOffset; x < canvas.height; x += markingInterval) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
@@ -96,7 +96,7 @@ function initSingleDiagonal() {
 
 function startPointSingleDiagonal(e) {
   setParameters();
-  correctInitialOffset();
+  initialOffset = getInitialOffset();
 
   let shift, angleInRadians;
   if (inclinationAngle == 90) {
@@ -108,7 +108,7 @@ function startPointSingleDiagonal(e) {
     shift = canvas.height * Math.tan(angleInRadians);
 
     context.beginPath();
-    for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
       context.moveTo(x - shift/2, canvas.height);
       context.lineTo(x + shift/2, 0);
     }
@@ -118,7 +118,7 @@ function startPointSingleDiagonal(e) {
     shift = canvas.height * Math.tan(angleInRadians);
 
     context.beginPath();
-    for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
       context.moveTo(x - shift/2, 0);
       context.lineTo(x + shift/2, canvas.height);
     }
@@ -143,7 +143,7 @@ function initDoubleDiagonal() {
 
 function startPointDoubleDiagonal(e) {
   setParameters();
-  correctInitialOffset();
+  initialOffset = getInitialOffset();
 
   let shift, angleInRadians, doubleDiagonalFlag = true;
 
@@ -162,12 +162,12 @@ function startPointDoubleDiagonal(e) {
 
   if (doubleDiagonalFlag == true) {
     context.beginPath();
-    for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
       context.moveTo(x - shift/2, canvas.height);
       context.lineTo(x + shift/2, 0);
     }
 
-    for (let x = initial_offset - shift; x < canvas.width + shift; x += markingInterval) {
+    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
       context.moveTo(x - shift/2, 0);
       context.lineTo(x + shift/2, canvas.height);
     }
@@ -193,12 +193,12 @@ function initVerticalWavy() {
 
 function startPointVerticalWavy(e) {
   setParameters();
-  correctInitialOffset();
+  initialOffset = getInitialOffset();
   context.beginPath();
 
   let cy = 0;
 
-  for (let cx = initial_offset - markingAmplitude; cx < canvas.width + markingAmplitude; cx += markingInterval) {
+  for (let cx = initialOffset - markingAmplitude; cx < canvas.width + markingAmplitude; cx += markingInterval) {
     context.moveTo(cx, cy);
     for (let i = 1; i < canvas.height; i++) {
       let y = 3 * i;
@@ -226,12 +226,12 @@ function initHorizontalWavy() {
 
 function startPointHorizontalWavy(e) {
   setParameters();
-  correctInitialOffset();
+  initialOffset = getInitialOffset();
   context.beginPath();
 
   let cx = 0;
 
-  for (let cy = initial_offset - markingAmplitude; cy < canvas.height + markingAmplitude; cy += markingInterval) {
+  for (let cy = initialOffset - markingAmplitude; cy < canvas.height + markingAmplitude; cy += markingInterval) {
     context.moveTo(cx, cy);
     for (let i = 1; i < canvas.width; i++) {
       let x = 3 * i;
@@ -250,12 +250,8 @@ function deleteHorizontalWavy() {
   toolMarkingRange.max = 600;
 }
 
-function correctInitialOffset() {
-  if (markingSize < 5) {
-    initial_offset = -0.5;
-  } else {
-    initial_offset = 0.5;
-  }
+function getInitialOffset() {
+  return (markingSize < 5) ? -0.5 : 0.5;
 }
 
 function setParameters() {
@@ -304,4 +300,103 @@ function isMarkingButtonClicked() {
   if (currentElement == document.getElementById('doubleDiagonal')) { undo.click(); }
   if (currentElement == document.getElementById('verticalWavy')) { undo.click(); }
   if (currentElement == document.getElementById('horizontalWavy')) { undo.click(); }
+}
+
+let toolMarkingRange = document.getElementById("toolMarkingRange");
+let toolMarkingText = document.getElementById("toolMarkingText");
+let defaultMarking = markingInterval;
+
+toolMarkingRange.value = markingInterval;
+toolMarkingText.value = `${markingInterval}px`;
+
+let toolAngleRange = document.getElementById("toolAngleRange");
+let toolAngleText = document.getElementById("toolAngleText");
+let defaultAngle = inclinationAngle;
+
+toolAngleRange.value = inclinationAngle;
+toolAngleText.value = `${inclinationAngle}px`;
+
+let toolMarkingSizeRange = document.getElementById("toolMarkingSizeRange");
+let toolMarkingSizeText = document.getElementById("toolMarkingSizeText");
+let defaultMarkingSize = markingSize;
+
+toolMarkingSizeRange.value = markingSize;
+toolMarkingSizeText.value = `${markingSize}px`;
+
+let toolAmplitudeRange = document.getElementById("toolAmplitudeRange");
+let toolAmplitudeText = document.getElementById("toolAmplitudeText");
+let defaultAmplitude = markingAmplitude;
+
+toolAmplitudeRange.value = markingAmplitude;
+toolAmplitudeText.value = `${markingAmplitude}px`;
+
+toolMarkingRange.oninput = () => { onInputRange(toolMarkingText, toolMarkingRange); }
+
+toolAngleRange.oninput = () => { onInputRange(toolAngleText, toolAngleRange); }
+
+toolMarkingSizeRange.oninput = () => { onInputRange(toolMarkingSizeText, toolMarkingSizeRange); }
+
+toolAmplitudeRange.oninput = () => { onInputRange(toolAmplitudeText, toolAmplitudeRange); }
+
+
+toolMarkingRange.onchange = () => {
+  markingInterval = parseInt(toolMarkingRange.value);
+  updateButton();
+}
+
+toolAngleRange.onchange = () => {
+  inclinationAngle = parseInt(toolAngleRange.value);
+  updateButton();
+}
+
+toolMarkingSizeRange.onchange = () => {
+  markingSize = toolMarkingSizeRange.value;
+  updateButton();
+}
+
+toolAmplitudeRange.onchange = () => {
+  markingAmplitude = parseInt(toolAmplitudeRange.value);
+  updateButton();
+}
+
+
+toolMarkingText.oninput = () => {
+  onInputText(toolMarkingText, toolMarkingRange, defaultMarking);
+  markingInterval = newToolValue;
+}
+
+toolAngleText.oninput = () => {
+  onInputText(toolAngleText, toolAngleRange, defaultAngle);
+  inclinationAngle = newToolValue;
+}
+
+toolMarkingSizeText.oninput = () => {
+  onInputText(toolMarkingSizeText, toolMarkingSizeRange, defaultMarkingSize);
+  markingSize = newToolValue;
+}
+
+toolAmplitudeText.oninput = () => {
+  onInputText(toolAmplitudeText, toolAmplitudeRange, defaultAmplitude);
+  markingAmplitude = newToolValue;
+}
+
+
+toolMarkingText.onchange = () => {
+  onChangeText(toolMarkingText, toolMarkingRange, markingInterval);
+  updateButton();
+}
+
+toolAngleText.onchange = () => {
+  onChangeText(toolAngleText, toolAngleRange, inclinationAngle);
+  updateButton();
+}
+
+toolMarkingSizeText.onchange = () => {
+  onChangeText(toolMarkingSizeText, toolMarkingSizeRange, markingSize);
+  updateButton();
+}
+
+toolAmplitudeText.onchange = () => {
+  onChangeText(toolAmplitudeText, toolAngleRange, markingAmplitude);
+  updateButton();
 }

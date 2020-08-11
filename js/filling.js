@@ -1,16 +1,42 @@
 'use strict';
 
+let firstClickFilling = true;
+
 function initFilling() {
-  canvas.style.cursor = "url('img/cursors/filling-cursor.png') 0 25, auto";
-  canvas.addEventListener("click", fill);
+  document.getElementById('fillMenu').hidden = false;
+  document.getElementById('filling').classList.add('pressed');
+  if (firstClickFilling) {
+    toggleModal();
+    hintsContent.innerHTML =
+    `Процент заливки регулирует допустимую разницу в цветах. <br>
+    Например, 0% заливает только точно такой же цвет, а 100% заливает все цвета.`;
+    firstClickFilling = false;
+  }
+  canvas.style.cursor = 'url(\"img/cursors/filling-cursor.png\") 0 25, auto';
+  canvas.addEventListener('click', fill);
 }
 
 function deleteFilling() {
   canvas.style.cursor = 'default';
-  canvas.removeEventListener("click", fill);
+  canvas.removeEventListener('click', fill);
+  document.getElementById('fillMenu').hidden = true;
+  document.getElementById('filling').classList.remove('pressed');
 }
 
 function fill(event) {
+  let oldAreInCanvas = areInCanvas;
+
+  if (isThereSelection) {
+    areInCanvas = (x, y) => {
+      return arrayOfSelectedArea[x] && arrayOfSelectedArea[x][y];
+    }
+  }
+
+  if (!areInCanvas(event.offsetX, event.offsetY)) {
+    areInCanvas = oldAreInCanvas;
+    return;
+  }
+
   let originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
   let resultImageData = originalImageData;
 
@@ -52,8 +78,9 @@ function fill(event) {
 
   context.putImageData(resultImageData, 0, 0);
 
+  areInCanvas = oldAreInCanvas;
   changePreview();
-  rememberState(); 
+  rememberState();
 
   function haveSameColor(x, y) {
     let thisRGBA = [

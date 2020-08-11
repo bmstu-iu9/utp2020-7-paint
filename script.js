@@ -1,18 +1,22 @@
 'use strict';
 
-let backCanvas = document.getElementById("backCanvas");
-let canvas = document.getElementById("layer0");
-let context = canvas.getContext("2d");
+let backCanvas = document.getElementById('backCanvas');
+let canvas = document.getElementById('layer0');
+let context = canvas.getContext('2d');
 
 const defaultWidth = 780;
 const defaultHeight = 400;
 const defaultBorder = 1;
+
+let maxPreviewHeight = document.getElementById("previewDiv0").clientHeight;
+let maxPreviewWidth = document.getElementById("previewDiv0").clientWidth;
 
 let curColor = [0, 0, 0];
 let curCanvasColor = [255, 255, 255];
 let curCanvasHeight = defaultHeight;
 let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
+let curCanvasBorderColor = '#000000';
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
 let curState = 0;
@@ -30,7 +34,7 @@ canvas.height = canvas.offsetHeight;
 
 let memCanvas = document.createElement('canvas');
 let memContext = memCanvas.getContext('2d');
-let uploadImage = document.getElementById("uploadImage");
+let uploadImage = document.getElementById('uploadImage');
 
 function saveImg() {
   memCanvas.width = canvas.width;
@@ -63,15 +67,19 @@ function getEventLocation(element, event) {
   };
 }
 
+document.getElementById('colorBtn').onclick = function choosing() {
+  colorInput.click();
+  colorInput.focus();
+}
 
 function rgbToHex(rgb) {
   let r = rgb[0], g = rgb[1], b = rgb[2];
 
   if (r < 256 && g < 256 && b < 256) {
     let color = (r << 16) | (g << 8) | b;
-    return (("000000" + color.toString(16)).slice(-6));
+    return (('000000' + color.toString(16)).slice(-6));
   } else {
-    throw "Wrong color code";
+    throw 'Wrong color code';
   }
 }
 
@@ -80,11 +88,14 @@ function arrayToRgb(color) {
 }
 
 uploadImage.addEventListener('change', () => {
+  if (document.getElementById('uploadImgMenu').hidden) {
+    hideAndShow('uploadImgMenu', event);
+  }
   let target = event.target;
   if (target.files && target.files[0]) {
     handleImg(target.files[0]);
   }
-  uploadImage.value = null;
+  document.getElementById('chosenImg').innerHTML = target.files[0].name;
 });
 
 function handleImg(img) {
@@ -97,27 +108,29 @@ function drawUploaded(e) {
   let img = new Image();
   img.src = e.target.result;
   img.onload = () => {
+    deleteImg();
     insertImg(img);
+    uploadImage.value = null;
   }
 }
 
-let downloadBtn = document.getElementById("download");
+let downloadBtn = document.getElementById('download');
 
 downloadBtn.addEventListener('click', () => {
   let resultCanvas = document.createElement('canvas');
   resultCanvas.width = canvas.width;
   resultCanvas.height = canvas.height;
-  let resultContext = resultCanvas.getContext("2d");
+  let resultContext = resultCanvas.getContext('2d');
 
-  for (let i = layersField.children.length - 1; i >= 0; i--) {
-    if (parseLayerId(layersField.children[i].id) != null) {
-      resultContext.drawImage(document.getElementById("layer" + parseLayerId(layersField.children[i].id)), 0, 0);
+  for (let i = layerScrollBox.children.length - 1; i >= 0; i--) {
+    if (parseLayerId(layerScrollBox.children[i].id) != null) {
+      resultContext.drawImage(document.getElementById("layer" + parseLayerId(layerScrollBox.children[i].id)), 0, 0);
     }
   }
 
-  let img = resultCanvas.toDataURL("image/png")
-    .replace("image/png", "image/octet-stream");
-  downloadBtn.setAttribute("href", img);
+  let img = resultCanvas.toDataURL('image/png')
+    .replace('image/png', 'image/octet-stream');
+  downloadBtn.setAttribute('href', img);
 });
 
 function clearCanvas() {
@@ -136,7 +149,7 @@ function clearAllLayers() {
   context = canvas.getContext('2d');
 }
 
-document.getElementById("clear").addEventListener('click', () => {
+document.getElementById('clear').addEventListener('click', () => {
   clearCanvas();
   rememberState();
 });
@@ -163,10 +176,9 @@ addEventListener('keydown', (event) => {
   if (event.altKey) {
     switch (event.key) {
       case 'c':
-        document.getElementById("clear").click();
+        document.getElementById('clear').click();
         break;
       case 'p':
-        colorInput.focus();
         colorInput.click();
         break;
       case 's':
@@ -176,18 +188,19 @@ addEventListener('keydown', (event) => {
         uploadImage.click();
         break;
       case 'y':
-        document.getElementById("redo").click();
+        document.getElementById('redo').click();
         break;
       case 'z':
-        document.getElementById("undo").click();
+        document.getElementById('undo').click();
         break;
     }
   }
 });
 
-let changeCanvasHeight = document.getElementById("changeCanvasHeight");
-let changeCanvasWidth = document.getElementById("changeCanvasWidth");
-let changeBorderWidth = document.getElementById("changeBorderWidth");
+
+let changeCanvasHeight = document.getElementById('changeCanvasHeight');
+let changeCanvasWidth = document.getElementById('changeCanvasWidth');
+let changeBorderWidth = document.getElementById('changeBorderWidth');
 
 changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
@@ -202,18 +215,20 @@ changeCanvasWidth.oninput = function () {
 
   if (checkPxInput(width, minW, maxW)) {
     curCanvasWidth = parseInt(width);
-
     clearAllLayers();
 
-    changeCanvasWidth.style.background = "#ffffff";
+    changeCanvasWidth.style.background = '#ffffff';
     allCanvases.forEach((canvas) => {
       canvas.style.width = curCanvasWidth + 'px';
       canvas.setAttribute('width', curCanvasWidth + 'px');
     });
+    layers.forEach((layer) => {
+      changePreviewSize(layer.preview);
+    });
     document.getElementById("curWidth").innerHTML = curCanvasWidth + "";
   } else {
     curCanvasWidth = getWidth(width);
-    changeCanvasWidth.style.background = "#ffd4d4";
+    changeCanvasWidth.style.background = '#ffd4d4';
   }
 
   changePreview();
@@ -233,7 +248,7 @@ changeCanvasWidth.oninput = function () {
   }
 
   function setWidth(event) {
-    if(event.key === 'Enter') {
+    if (event.key === 'Enter') {
       let actualWidth = curCanvasWidth;
 
       clearAllLayers();
@@ -242,10 +257,13 @@ changeCanvasWidth.oninput = function () {
         canvas.style.width = actualWidth + 'px';
         canvas.setAttribute('width', actualWidth + 'px');
       });
+      layers.forEach((layer) => {
+        changePreviewSize(layer.preview);
+      });
 
       changeCanvasWidth.value = actualWidth + 'px';
-      document.getElementById("curWidth").innerHTML = actualWidth + "";
-      changeCanvasWidth.style.background = "#ffffff";
+      document.getElementById('curWidth').innerHTML = actualWidth + '';
+      changeCanvasWidth.style.background = '#ffffff';
       removeEventListener('keydown', setWidth);
     }
   }
@@ -267,14 +285,16 @@ changeCanvasHeight.oninput = function () {
       canvas.style.height = curCanvasHeight + 'px';
       canvas.setAttribute('height', curCanvasHeight + 'px');
     });
+    layers.forEach((layer) => {
+      changePreviewSize(layer.preview);
+    });
 
-
-    document.getElementById("curHeight").innerHTML = curCanvasHeight + "";
-    changeCanvasHeight.style.background = "#ffffff";
+    document.getElementById('curHeight').innerHTML = curCanvasHeight + '';
+    changeCanvasHeight.style.background = '#ffffff';
     changeCanvasHeight.value = curCanvasHeight;
   } else {
     curCanvasHeight = getHeight(height);
-    changeCanvasHeight.style.background = "#ffd4d4";
+    changeCanvasHeight.style.background = '#ffd4d4';
   }
 
  changePreview();
@@ -295,7 +315,7 @@ changeCanvasHeight.oninput = function () {
   }
 
   function setHeight(event) {
-    if(event.key === 'Enter') {
+    if (event.key === 'Enter') {
       let actualHeight = curCanvasHeight;
 
       clearAllLayers();
@@ -304,10 +324,13 @@ changeCanvasHeight.oninput = function () {
         canvas.style.height = actualHeight + 'px';
         canvas.setAttribute('height', actualHeight + 'px');
       });
+      layers.forEach((layer) => {
+        changePreviewSize(layer.preview);
+      });
 
       changeCanvasHeight.value = actualHeight + 'px';
-      document.getElementById("curHeight").innerHTML = actualHeight + "";
-      changeCanvasHeight.style.background = "#ffffff";
+      document.getElementById('curHeight').innerHTML = actualHeight + '';
+      changeCanvasHeight.style.background = '#ffffff';
 
       removeEventListener('keydown', setHeight);
     }
@@ -323,11 +346,13 @@ changeBorderWidth.oninput = function () {
 
   if (checkPxInput(border, minB, maxB)) {
     curCanvasBorder = parseInt(border);
-    backCanvas.style.borderWidth = border + 'px';
-    changeBorderWidth.style.background = "#ffffff";
+    allCanvases.forEach((canvas) => {
+      canvas.style.borderWidth = curCanvasBorder + 'px';
+    });
+    changeBorderWidth.style.background = '#ffffff';
   } else {
     curCanvasBorder = getBorder(border);
-    changeBorderWidth.style.background = "#ffd4d4";
+    changeBorderWidth.style.background = '#ffd4d4';
     backCanvas.style.borderWidth = curCanvasBorder;
   }
 
@@ -346,12 +371,14 @@ changeBorderWidth.oninput = function () {
   }
 
   function setBorder(event) {
-    if(event.key === 'Enter') {
+    if (event.key === 'Enter') {
       let actualBorder = curCanvasBorder;
 
       changeBorderWidth.value = actualBorder + 'px';
-      changeBorderWidth.style.background = "#ffffff";
-      backCanvas.style.borderWidth = actualBorder + 'px';
+      changeBorderWidth.style.background = '#ffffff';
+      allCanvases.forEach((canvas) => {
+        canvas.style.borderWidth = actualBorder + 'px';
+      });
 
       removeEventListener('keydown', setBorder);
     }
@@ -360,11 +387,17 @@ changeBorderWidth.oninput = function () {
 }
 
 borderColor.oninput = function () {
-  let color = document.getElementById("borderColor").value;
+  let color = document.getElementById('borderColor').value;
   if (color) {
-    canvas.style.borderColor = color;
+    allCanvases.forEach((canvas) => {
+      canvas.style.borderColor = color;
+    });
+    curCanvasBorderColor = color;
   } else {
-    canvas.style.borderColor = '#000000';
+    allCanvases.forEach((canvas) => {
+      canvas.style.borderColor = '#000000';
+    });
+    curCanvasBorderColor = '#000000';
   }
 }
 
@@ -380,23 +413,33 @@ function checkPxInput(str, min, max) {
 function hideAndShow(element) {
   let menu = document.getElementById(element);
   menu.hidden = !menu.hidden;
-  event.currentTarget.classList.toggle("pressed");
+  event.currentTarget.classList.toggle('pressed');
 }
 
-document.getElementById("help").addEventListener('click', (event) => {
-  hideAndShow("helpMenu", event);
+document.getElementById('help').addEventListener('click', (event) => {
+  hideAndShow('helpMenu', event);
 });
 
-document.getElementById("uploadImgBtn").addEventListener('click', (event) => {
-  hideAndShow("uploadImgMenu", event);
+let firstClickUpload = true;
+
+document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
+  if (firstClickUpload) {
+    toggleModal();
+    hintsContent.innerHTML = `Горячие клавиши:
+      <br>
+      <br> Enter — вставить фото
+      <br> Двойное нажатие левой кнопкой мыши на фото — вернуть исходный размер`;
+    firstClickUpload = false;
+  }
+  uploadImage.click();
 });
 
-document.getElementById("brush").addEventListener('click', (event) => {
-  hideAndShow("brushMenu", event);
+document.getElementById('brush').addEventListener('click', (event) => {
+  hideAndShow('brushMenu', event);
 });
 
-document.getElementById("figure").addEventListener('click', (event) => {
-  hideAndShow("figureMenu", event);
+document.getElementById('figure').addEventListener('click', (event) => {
+  hideAndShow('figureMenu', event);
 });
 
 document.getElementById("marking").addEventListener('click', (event) => {
@@ -411,20 +454,16 @@ document.getElementById("wavy").addEventListener('click', (event) => {
   hideAndShow("wavyMarkingMenu", event);
 });
 
-document.getElementById("openPanel").addEventListener('click', (event) => {
-  hideAndShow("lefContainer", event);
+document.getElementById('openPanel').addEventListener('click', (event) => {
+  hideAndShow('leftContainer', event);
 });
 
-document.getElementById("filling").addEventListener('click', (event) => {
-  hideAndShow("fillMenu", event);
+document.getElementById('toolSettings').addEventListener('click', (event) => {
+  hideAndShow('toolSettingsMenu', event);
 });
 
-document.getElementById("toolSettings").addEventListener('click', (event) => {
-  hideAndShow("toolSettingsMenu", event);
-});
-
-document.getElementById("openLayersBtn").addEventListener('click', (event) => {
-  document.getElementById("layersField").classList.toggle("layersFieldActive");
+document.getElementById('openLayersBtn').addEventListener('click', (event) => {
+  document.getElementById('layersField').classList.toggle('layersFieldClosed');
 });
 
 function getIndexOfRedInData(x, y) {
@@ -446,3 +485,29 @@ function getIndexOfAlphaInData(x, y) {
 function areInCanvas(x, y) {
   return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
 }
+
+function changePreviewSize(preview) {
+  if (curCanvasHeight / maxPreviewHeight > curCanvasWidth / maxPreviewWidth) {
+    preview.style.height = maxPreviewHeight + 'px';
+    preview.style.width = curCanvasWidth * (parseInt(preview.style.height) / curCanvasHeight) + 'px';
+  } else {
+    preview.style.width = maxPreviewWidth + 'px';
+    preview.style.height = curCanvasHeight * (parseInt(preview.style.width) / curCanvasWidth) + 'px';
+  }
+  preview.setAttribute('width', preview.style.width);
+  preview.setAttribute('height', preview.style.height);
+}
+
+let modalHints = document.querySelector('.modalHints');
+
+function toggleModal() {
+  modalHints.classList.toggle('show-modalHints');
+}
+
+function windowOnClick(event) {
+  if (event.target === modalHints) {
+    toggleModal();
+  }
+}
+
+window.addEventListener('click', windowOnClick);

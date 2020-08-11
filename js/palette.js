@@ -21,8 +21,8 @@ function hexToRgb(hex) {
       hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
     }
     return [parseInt(hex.substr(1, 2), 16),
-          parseInt(hex.substr(3, 2), 16),
-          parseInt(hex.substr(5, 2), 16)];
+            parseInt(hex.substr(3, 2), 16),
+            parseInt(hex.substr(5, 2), 16)];
   }
-  throw "Wrong color code";
+  throw 'Wrong color code';
 }

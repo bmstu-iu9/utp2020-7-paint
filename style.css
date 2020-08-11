@@ -122,7 +122,6 @@ body {
 
 #backCanvas {
   z-index: -1000;
-  border: 1px solid #000000;
   background: repeat url("img/background.png");
 }
 

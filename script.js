@@ -8,6 +8,10 @@ const defaultWidth = 780;
 const defaultHeight = 400;
 const defaultBorder = 1;
 
+backCanvas.style.border = '1px solid #000000';
+backCanvas.width = defaultWidth;
+backCanvas.height = defaultHeight;
+
 let maxPreviewHeight = document.getElementById("previewDiv0").clientHeight;
 let maxPreviewWidth = document.getElementById("previewDiv0").clientWidth;
 
@@ -16,6 +20,7 @@ let curCanvasColor = [255, 255, 255];
 let curCanvasHeight = defaultHeight;
 let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
+let curCanvasBorderColor = '#000000';
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
 let curState = 0;
@@ -243,7 +248,7 @@ changeCanvasWidth.oninput = function () {
   }
 
   function setWidth(event) {
-    if(event.key === 'Enter') {
+    if (event.key === 'Enter') {
       let actualWidth = curCanvasWidth;
 
       clearAllLayers();
@@ -310,7 +315,7 @@ changeCanvasHeight.oninput = function () {
   }
 
   function setHeight(event) {
-    if(event.key === 'Enter') {
+    if (event.key === 'Enter') {
       let actualHeight = curCanvasHeight;
 
       clearAllLayers();
@@ -341,7 +346,9 @@ changeBorderWidth.oninput = function () {
 
   if (checkPxInput(border, minB, maxB)) {
     curCanvasBorder = parseInt(border);
-    backCanvas.style.borderWidth = border + 'px';
+    allCanvases.forEach((canvas) => {
+      canvas.style.borderWidth = border + 'px';
+    });
     changeBorderWidth.style.background = '#ffffff';
   } else {
     curCanvasBorder = getBorder(border);
@@ -364,12 +371,14 @@ changeBorderWidth.oninput = function () {
   }
 
   function setBorder(event) {
-    if(event.key === 'Enter') {
+    if (event.key === 'Enter') {
       let actualBorder = curCanvasBorder;
 
       changeBorderWidth.value = actualBorder + 'px';
       changeBorderWidth.style.background = '#ffffff';
-      backCanvas.style.borderWidth = actualBorder + 'px';
+      allCanvases.forEach((canvas) => {
+        canvas.style.borderWidth = actualBorder + 'px';
+      });
 
       removeEventListener('keydown', setBorder);
     }
@@ -380,9 +389,15 @@ changeBorderWidth.oninput = function () {
 borderColor.oninput = function () {
   let color = document.getElementById('borderColor').value;
   if (color) {
-    backCanvas.style.borderColor = color;
+    allCanvases.forEach((canvas) => {
+      canvas.style.borderColor = color;
+    });
+    curCanvasBorderColor = color;
   } else {
-    backCanvas.style.borderColor = '#000000';
+    allCanvases.forEach((canvas) => {
+      canvas.style.borderColor = '#000000';
+    });
+    curCanvasBorderColor = '#000000';
   }
 }
 

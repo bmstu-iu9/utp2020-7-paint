@@ -2,7 +2,8 @@
 
 const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush', 'sketchBrush',
 'filling', 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'eyedropper',
-'straightLine', 'hand', 'text', 'cage', 'horizontal', 'vertical', 'diagonal', 'doubleDiagonal', 'wavy'];
+'straightLine', 'hand', 'text', 'cage', 'horizontal', 'vertical', 'singleDiagonal', 'doubleDiagonal',
+'horizontalWavy', 'verticalWavy'];
 
 let allInstruments = new Map();
 let activeInstrument = null;
@@ -15,7 +16,6 @@ class Instrument {
   constructor(id) {
     this.id = id;
     let upperId = firstToUpper(id);
-    console.log(upperId);
     this.init = window['init' + upperId];
     this.delete = window['delete' + upperId];
   }
@@ -36,6 +36,7 @@ function instrumentsHandler(event) {
   activeInstrument = allInstruments.get(targetId);
   document.getElementById(targetId).classList.add('pressed');
   activeInstrument.init();
+  currentElement = document.getElementById(targetId);
 }
 
 allIds.forEach((id) => {

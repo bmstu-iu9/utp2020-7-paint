@@ -30,6 +30,13 @@ let defaultMarkingSize = markingSize;
 toolMarkingSizeRange.value = markingSize;
 toolMarkingSizeText.value = `${markingSize}px`;
 
+let toolAmplitudeRange = document.getElementById("toolAmplitudeRange");
+let toolAmplitudeText = document.getElementById("toolAmplitudeText");
+let defaultAmplitude = markingAmplitude;
+
+toolAmplitudeRange.value = markingAmplitude;
+toolAmplitudeText.value = `${markingAmplitude}px`;
+
 toolSizeRange.oninput = () => { onInputRange(toolSizeText, toolSizeRange); }
 
 toolMarkingRange.oninput = () => { onInputRange(toolMarkingText, toolMarkingRange); }
@@ -38,13 +45,29 @@ toolAngleRange.oninput = () => { onInputRange(toolAngleText, toolAngleRange); }
 
 toolMarkingSizeRange.oninput = () => { onInputRange(toolMarkingSizeText, toolMarkingSizeRange); }
 
+toolAmplitudeRange.oninput = () => { onInputRange(toolAmplitudeText, toolAmplitudeRange); }
+
 toolSizeRange.onchange = () => { curToolSize = toolSizeRange.value; }
 
-toolMarkingRange.onchange = () => { markingInterval = parseInt(toolMarkingRange.value); }
+toolMarkingRange.onchange = () => {
+  markingInterval = parseInt(toolMarkingRange.value);
+  updateButton();
+}
 
-toolAngleRange.onchange = () => { inclinationAngle = parseInt(toolAngleRange.value); }
+toolAngleRange.onchange = () => {
+  inclinationAngle = parseInt(toolAngleRange.value);
+  updateButton();
+}
 
-toolMarkingSizeRange.onchange = () => { markingSize = toolMarkingSizeRange.value; }
+toolMarkingSizeRange.onchange = () => {
+  markingSize = toolMarkingSizeRange.value;
+  updateButton();
+}
+
+toolAmplitudeRange.onchange = () => {
+  markingAmplitude = parseInt(toolAmplitudeRange.value);
+  updateButton();
+}
 
 toolSizeText.oninput = () => {
   onInputText(toolSizeText, toolSizeRange, defaultSize);
@@ -66,13 +89,32 @@ toolMarkingSizeText.oninput = () => {
   markingSize = newToolValue;
 }
 
+toolAmplitudeText.oninput = () => {
+  onInputText(toolAmplitudeText, toolAmplitudeRange, defaultAmplitude);
+  markingAmplitude = newToolValue;
+}
+
 toolSizeText.onchange = () => { onChangeText(toolSizeText, toolSizeRange, curToolSize); }
 
-toolMarkingText.onchange = () => { onChangeText(toolMarkingText, toolMarkingRange, markingInterval); }
+toolMarkingText.onchange = () => {
+  onChangeText(toolMarkingText, toolMarkingRange, markingInterval);
+  updateButton();
+}
 
-toolAngleText.onchange = () => { onChangeText(toolAngleText, toolAngleRange, inclinationAngle); }
+toolAngleText.onchange = () => {
+  onChangeText(toolAngleText, toolAngleRange, inclinationAngle);
+  updateButton();
+}
 
-toolMarkingSizeText.onchange = () => { onChangeText(toolMarkingSizeText, toolMarkingSizeRange, markingSize); }
+toolMarkingSizeText.onchange = () => {
+  onChangeText(toolMarkingSizeText, toolMarkingSizeRange, markingSize);
+  updateButton();
+}
+
+toolAmplitudeText.onchange = () => {
+  onChangeText(toolAmplitudeText, toolAngleRange, markingAmplitude);
+  updateButton();
+}
 
 function onInputRange(toolText, toolRange) {
   toolText.value = toolRange.value + 'px';

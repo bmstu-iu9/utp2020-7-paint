@@ -21,6 +21,7 @@ let photoOfState = {
   layers: new Map()
 };
 let markingInterval = 100;
+let markingAmplitude = 45;
 let inclinationAngle = 45;
 let markingSize = 1;
 
@@ -400,6 +401,14 @@ document.getElementById("figure").addEventListener('click', (event) => {
 
 document.getElementById("marking").addEventListener('click', (event) => {
   hideAndShow("markingMenu", event);
+});
+
+document.getElementById("diagonal").addEventListener('click', (event) => {
+  hideAndShow("diagonalMarkingMenu", event);
+});
+
+document.getElementById("wavy").addEventListener('click', (event) => {
+  hideAndShow("wavyMarkingMenu", event);
 });
 
 document.getElementById("openPanel").addEventListener('click', (event) => {

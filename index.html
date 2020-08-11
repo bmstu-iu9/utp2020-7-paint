@@ -136,7 +136,7 @@
     <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
     </button>
     <div class="leftPaneldrop">
-      <button title="Узоры" class="toolBtn" id="marking" style="background: green">
+      <button title="Узоры" class="toolBtn" id="marking" style="background: green" >
       </button>
       <div class="leftMenu" id="markingMenu" hidden="true" style="min-width: 250px;">
         <p>Толщина линий разметки: </p>
@@ -146,13 +146,8 @@
         </div>
         <p>Расстояние между линиями: </p>
         <div class="rangeAndText">
-          <input type="range" id="toolMarkingRange" min="10" max="2000">
+          <input type="range" id="toolMarkingRange" min="10" max="600">
           <input type="text" id="toolMarkingText">
-        </div>
-        <p>Угол наклона разметки (диагональной и волнистой): </p>
-        <div class="rangeAndText">
-          <input type="range" id="toolAngleRange" min="0" max="180">
-          <input type="text" id="toolAngleText">
         </div>
         <button title="Клетка" class="toolBtn" id="cage">
         </button>
@@ -162,9 +157,29 @@
         </button>
         <button title="Диагональная разметка" class="toolBtn" id="diagonal">
         </button>
+        <button title="Волнистая разметка" class="toolBtn" id="wavy">
+        </button>
+      </div>
+      <div class="leftMenu" id="diagonalMarkingMenu" hidden="true" style="min-width: 250px;">
+        <p>Угол наклона диагональной разметки: </p>
+        <div class="rangeAndText">
+          <input type="range" id="toolAngleRange" min="0" max="180">
+          <input type="text" id="toolAngleText">
+        </div>
+        <button title="Одинарная диагональная разметка" class="toolBtn" id="singleDiagonal">
+        </button>
         <button title="Двойная диагональная разметка" class="toolBtn" id="doubleDiagonal">
         </button>
-        <button title="Волнистая разметка" class="toolBtn" id="wavy">
+      </div>
+      <div class="leftMenu" id="wavyMarkingMenu" hidden="true" style="min-width: 250px;">
+        <p>Амплитуда волнистой разметки: </p>
+        <div class="rangeAndText">
+          <input type="range" id="toolAmplitudeRange" min="0" max="180">
+          <input type="text" id="toolAmplitudeText">
+        </div>
+        <button title="Горизонтальная волнистая разметка" class="toolBtn" id="horizontalWavy">
+        </button>
+        <button title="Вертикальная волнистая разметка" class="toolBtn" id="verticalWavy">
         </button>
       </div>
     </div>

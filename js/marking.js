@@ -21,6 +21,7 @@ function startPointCage() {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
+
   for (let x = initialOffset; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);

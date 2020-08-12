@@ -4,8 +4,10 @@ let initialOffset, currentElement;
 
 function initCage() {
   isMarkingButtonClicked();
+
   toolMarkingRange.max = 600;
   currentElement = document.getElementById('cage');
+
   startPointCage();
 }
 
@@ -18,6 +20,7 @@ function startPointCage() {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
+
   for (let x = initialOffset; x < canvas.width; x += markingInterval) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
@@ -35,8 +38,10 @@ function deleteCage() {
 
 function initVertical() {
   isMarkingButtonClicked();
+
   toolMarkingRange.max = 300;
   currentElement = document.getElementById('vertical');
+
   startPointVertical();
 }
 
@@ -62,8 +67,10 @@ function deleteVertical() {
 
 function initHorizontal() {
   isMarkingButtonClicked();
+
   toolMarkingRange.max = 600;
   currentElement = document.getElementById('horizontal');
+
   startPointHorizontal();
 }
 
@@ -136,8 +143,10 @@ function deleteSingleDiagonal() {
 
 function initDoubleDiagonal() {
   isMarkingButtonClicked();
+
   toolMarkingRange.max = 2000;
   currentElement = document.getElementById('doubleDiagonal');
+
   startPointDoubleDiagonal();
 }
 
@@ -186,8 +195,10 @@ function deleteDoubleDiagonal() {
 
 function initVerticalWavy() {
   isMarkingButtonClicked();
+
   toolMarkingRange.max = 300;
   currentElement = document.getElementById('verticalWavy');
+
   startPointVerticalWavy();
 }
 
@@ -219,8 +230,10 @@ function deleteVerticalWavy() {
 
 function initHorizontalWavy() {
   isMarkingButtonClicked();
+
   toolMarkingRange.max = 600;
   currentElement = document.getElementById('horizontalWavy');
+  
   startPointHorizontalWavy();
 }
 

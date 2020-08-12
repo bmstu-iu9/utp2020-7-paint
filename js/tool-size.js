@@ -55,8 +55,8 @@ function onInputText(toolText, toolRange, defaultValue) {
   }
 
   function getTool(toolNum, toolRange) {
-    if (toolNum > toolRange.max) { return toolRange.max; }
-    if (toolNum < toolRange.min) { return toolRange.min; }
+    if (toolNum > parseInt(toolRange.max)) { return parseInt(toolRange.max); }
+    if (toolNum < parseInt(toolRange.min)) { return parseInt(toolRange.min); }
     return defaultValue;
   }
 }

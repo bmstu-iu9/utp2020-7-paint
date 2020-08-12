@@ -3,9 +3,12 @@
 let initialOffset, currentElement;
 
 function initCage() {
-  isMarkingButtonClicked();
-  toolMarkingRange.max = 600;
-  currentElement = document.getElementById('cage');
+  if (isMarkingButtonClicked()) { undo.click(); }
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
+
   startPointCage();
 }
 
@@ -22,6 +25,7 @@ function startPointCage() {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
   }
+
   context.stroke();
   context.beginPath();
 
@@ -34,13 +38,17 @@ function deleteCage() {
 }
 
 function initVertical() {
-  isMarkingButtonClicked();
+  if (isMarkingButtonClicked()) { undo.click(); }
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
   toolMarkingRange.max = 300;
-  currentElement = document.getElementById('vertical');
+
   startPointVertical();
 }
 
-function startPointVertical(e) {
+function startPointVertical() {
   setParameters();
   initialOffset = getInitialOffset();
   context.beginPath();
@@ -49,6 +57,7 @@ function startPointVertical(e) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
   }
+
   context.stroke();
   context.beginPath();
 
@@ -61,13 +70,16 @@ function deleteVertical() {
 }
 
 function initHorizontal() {
-  isMarkingButtonClicked();
-  toolMarkingRange.max = 600;
-  currentElement = document.getElementById('horizontal');
+  if (isMarkingButtonClicked()) { undo.click(); }
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
+
   startPointHorizontal();
 }
 
-function startPointHorizontal(e) {
+function startPointHorizontal() {
   setParameters();
   initialOffset = getInitialOffset();
   context.beginPath();
@@ -76,6 +88,7 @@ function startPointHorizontal(e) {
     context.moveTo(0, x);
     context.lineTo(canvas.width, x);
   }
+
   context.stroke();
   context.beginPath();
 
@@ -88,41 +101,46 @@ function deleteHorizontal() {
 }
 
 function initSingleDiagonal() {
-  isMarkingButtonClicked();
+  if (isMarkingButtonClicked()) { undo.click(); }
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
   toolMarkingRange.max = 2000;
-  currentElement = document.getElementById('singleDiagonal');
+
   startPointSingleDiagonal();
 }
 
-function startPointSingleDiagonal(e) {
+function startPointSingleDiagonal() {
   setParameters();
   initialOffset = getInitialOffset();
 
   let shift, angleInRadians;
+
   if (inclinationAngle == 90) {
     startPointHorizontal();
-  }
-
-  if (inclinationAngle < 90) {
+  } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
     shift = canvas.height * Math.tan(angleInRadians);
 
     context.beginPath();
+
     for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
       context.moveTo(x - shift/2, canvas.height);
       context.lineTo(x + shift/2, 0);
     }
-  }
-  if  (inclinationAngle > 90) {
+  } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
     shift = canvas.height * Math.tan(angleInRadians);
 
     context.beginPath();
+
     for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
       context.moveTo(x - shift/2, 0);
       context.lineTo(x + shift/2, canvas.height);
     }
   }
+
   context.stroke();
   context.beginPath();
 
@@ -135,13 +153,17 @@ function deleteSingleDiagonal() {
 }
 
 function initDoubleDiagonal() {
-  isMarkingButtonClicked();
+  if (isMarkingButtonClicked()) { undo.click(); }
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
   toolMarkingRange.max = 2000;
-  currentElement = document.getElementById('doubleDiagonal');
+
   startPointDoubleDiagonal();
 }
 
-function startPointDoubleDiagonal(e) {
+function startPointDoubleDiagonal() {
   setParameters();
   initialOffset = getInitialOffset();
 
@@ -150,18 +172,17 @@ function startPointDoubleDiagonal(e) {
   if (inclinationAngle == 90) {
     startPointHorizontal();
     doubleDiagonalFlag = false;
-  }
-
-  if (inclinationAngle < 90) {
+  } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
-  }
-  if  (inclinationAngle > 90) {
+  } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
   }
+
   shift = canvas.height * Math.tan(angleInRadians);
 
   if (doubleDiagonalFlag == true) {
     context.beginPath();
+
     for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
       context.moveTo(x - shift/2, canvas.height);
       context.lineTo(x + shift/2, 0);
@@ -185,13 +206,17 @@ function deleteDoubleDiagonal() {
 }
 
 function initVerticalWavy() {
-  isMarkingButtonClicked();
+  if (isMarkingButtonClicked()) { undo.click(); }
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
   toolMarkingRange.max = 300;
-  currentElement = document.getElementById('verticalWavy');
+
   startPointVerticalWavy();
 }
 
-function startPointVerticalWavy(e) {
+function startPointVerticalWavy() {
   setParameters();
   initialOffset = getInitialOffset();
   context.beginPath();
@@ -206,6 +231,7 @@ function startPointVerticalWavy(e) {
       context.lineTo(cx + x, cy + y);
     }
   }
+
   context.stroke();
   context.beginPath();
 
@@ -218,20 +244,24 @@ function deleteVerticalWavy() {
 }
 
 function initHorizontalWavy() {
-  isMarkingButtonClicked();
-  toolMarkingRange.max = 600;
-  currentElement = document.getElementById('horizontalWavy');
+  if (isMarkingButtonClicked()) { undo.click(); }
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
+  toolMarkingRange.max = 400;
+
   startPointHorizontalWavy();
 }
 
-function startPointHorizontalWavy(e) {
+function startPointHorizontalWavy() {
   setParameters();
   initialOffset = getInitialOffset();
   context.beginPath();
 
   let cx = 0;
 
-  for (let cy = initialOffset - markingAmplitude; cy < canvas.height + markingAmplitude; cy += markingInterval) {
+  for (let cy = initialOffset + markingAmplitude; cy < canvas.height + markingAmplitude; cy += markingInterval) {
     context.moveTo(cx, cy);
     for (let i = 1; i < canvas.width; i++) {
       let x = 3 * i;
@@ -239,6 +269,7 @@ function startPointHorizontalWavy(e) {
       context.lineTo(cx + x, cy + y);
     }
   }
+
   context.stroke();
   context.beginPath();
 
@@ -262,44 +293,44 @@ function setParameters() {
 }
 
 function updateButton() {
-  if (currentElement == document.getElementById('cage')) {
+  if (activeInstrument.id == 'cage') {
     undo.click();
     startPointCage();
   }
-  if (currentElement == document.getElementById('vertical')) {
+  if (activeInstrument.id == 'vertical') {
     undo.click();
     startPointVertical();
   }
-  if (currentElement == document.getElementById('horizontal')) {
+  if (activeInstrument.id == 'horizontal') {
     undo.click();
     startPointHorizontal();
   }
-  if (currentElement == document.getElementById('singleDiagonal')) {
+  if (activeInstrument.id == 'singleDiagonal') {
     undo.click();
     startPointSingleDiagonal();
   }
-  if (currentElement == document.getElementById('doubleDiagonal')) {
+  if (activeInstrument.id == 'doubleDiagonal') {
     undo.click();
     startPointDoubleDiagonal();
   }
-  if (currentElement == document.getElementById('verticalWavy')) {
+  if (activeInstrument.id == 'verticalWavy') {
     undo.click();
     startPointVerticalWavy();
   }
-  if (currentElement == document.getElementById('horizontalWavy')) {
+  if (activeInstrument.id == 'horizontalWavy') {
     undo.click();
     startPointHorizontalWavy();
   }
 }
 
 function isMarkingButtonClicked() {
-  if (currentElement == document.getElementById('cage')) { undo.click(); }
-  if (currentElement == document.getElementById('vertical')) { undo.click(); }
-  if (currentElement == document.getElementById('horizontal')) { undo.click(); }
-  if (currentElement == document.getElementById('singleDiagonal')) { undo.click(); }
-  if (currentElement == document.getElementById('doubleDiagonal')) { undo.click(); }
-  if (currentElement == document.getElementById('verticalWavy')) { undo.click(); }
-  if (currentElement == document.getElementById('horizontalWavy')) { undo.click(); }
+  return (currentElement  == 'cage'
+        || currentElement  == 'vertical'
+        || currentElement  == 'horizontal'
+        || currentElement  == 'singleDiagonal'
+        || currentElement  == 'doubleDiagonal'
+        || currentElement  == 'verticalWavy'
+        || currentElement  == 'horizontalWavy');
 }
 
 let toolMarkingRange = document.getElementById("toolMarkingRange");
@@ -350,7 +381,7 @@ toolAngleRange.onchange = () => {
 }
 
 toolMarkingSizeRange.onchange = () => {
-  markingSize = toolMarkingSizeRange.value;
+  markingSize = parseInt(toolMarkingSizeRange.value);
   updateButton();
 }
 

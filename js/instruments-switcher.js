@@ -39,7 +39,7 @@ function instrumentsHandler(event) {
   document.getElementById(targetId).classList.add('pressed');
   if (!activeLayer.locked) {
     activeInstrument.init();
-    currentElement = document.getElementById(targetId);
+    currentElement = activeInstrument.id;
   }
 }
 

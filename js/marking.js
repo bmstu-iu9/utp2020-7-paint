@@ -325,13 +325,11 @@ function updateButton() {
 }
 
 function isMarkingButtonClicked() {
-  return (currentElement  == 'cage'
-        || currentElement  == 'vertical'
-        || currentElement  == 'horizontal'
-        || currentElement  == 'singleDiagonal'
-        || currentElement  == 'doubleDiagonal'
-        || currentElement  == 'verticalWavy'
-        || currentElement  == 'horizontalWavy');
+  let markingTypes = ['cage', 'vertical', 'horizontal',
+                      'singleDiagonal', 'doubleDiagonal',
+                      'verticalWavy', 'horizontalWavy']
+
+  return markingTypes.includes(currentElement);
 }
 
 let toolMarkingRange = document.getElementById("toolMarkingRange");

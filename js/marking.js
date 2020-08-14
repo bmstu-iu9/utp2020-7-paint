@@ -17,15 +17,8 @@ function startPointCage() {
   initialOffset = getInitialOffset();
   context.beginPath();
 
-  for (let x = initialOffset; x < canvas.height; x += markingInterval) {
-    context.moveTo(0, x);
-    context.lineTo(canvas.width, x);
-  }
-
-  for (let x = initialOffset; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x, canvas.height);
-  }
+  drawVertical();
+  drawHorizontal();
 
   context.stroke();
   context.beginPath();
@@ -54,10 +47,7 @@ function startPointVertical() {
   initialOffset = getInitialOffset();
   context.beginPath();
 
-  for (let x = initialOffset; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x, canvas.height);
-  }
+  drawVertical();
 
   context.stroke();
   context.beginPath();
@@ -85,10 +75,7 @@ function startPointHorizontal() {
   initialOffset = getInitialOffset();
   context.beginPath();
 
-  for (let x = initialOffset; x < canvas.height; x += markingInterval) {
-    context.moveTo(0, x);
-    context.lineTo(canvas.width, x);
-  }
+  drawHorizontal();
 
   context.stroke();
   context.beginPath();
@@ -118,28 +105,20 @@ function startPointSingleDiagonal() {
 
   let shift, angleInRadians;
 
+  context.beginPath();
+
   if (inclinationAngle == 90) {
-    startPointHorizontal();
+    drawHorizontal();
   } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
     shift = canvas.height * Math.tan(angleInRadians);
 
-    context.beginPath();
-
-    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
-      context.moveTo(x - shift/2, canvas.height);
-      context.lineTo(x + shift/2, 0);
-    }
+    drawDiagonal(canvas.height, 0, shift);
   } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
     shift = canvas.height * Math.tan(angleInRadians);
 
-    context.beginPath();
-
-    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
-      context.moveTo(x - shift/2, 0);
-      context.lineTo(x + shift/2, canvas.height);
-    }
+    drawDiagonal(0, canvas.height, shift);
   }
 
   context.stroke();
@@ -168,31 +147,24 @@ function startPointDoubleDiagonal() {
   setParameters();
   initialOffset = getInitialOffset();
 
-  let shift, angleInRadians, doubleDiagonalFlag = true;
+  let shift, angleInRadians;
+
+  context.beginPath();
 
   if (inclinationAngle == 90) {
-    startPointHorizontal();
-    doubleDiagonalFlag = false;
+    drawHorizontal();
   } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
+    shift = canvas.height * Math.tan(angleInRadians);
+
+    drawDiagonal(canvas.height, 0, shift);
+    drawDiagonal(0, canvas.height, shift);
   } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
-  }
+    shift = canvas.height * Math.tan(angleInRadians);
 
-  shift = canvas.height * Math.tan(angleInRadians);
-
-  if (doubleDiagonalFlag == true) {
-    context.beginPath();
-
-    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
-      context.moveTo(x - shift/2, canvas.height);
-      context.lineTo(x + shift/2, 0);
-    }
-
-    for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
-      context.moveTo(x - shift/2, 0);
-      context.lineTo(x + shift/2, canvas.height);
-    }
+    drawDiagonal(canvas.height, 0, shift);
+    drawDiagonal(0, canvas.height, shift);
   }
 
   context.stroke();
@@ -280,6 +252,29 @@ function startPointHorizontalWavy() {
 
 function deleteHorizontalWavy() {
   toolMarkingRange.max = 600;
+}
+
+
+
+function drawVertical() {
+  for (let x = initialOffset; x < canvas.width; x += markingInterval) {
+    context.moveTo(x, 0);
+    context.lineTo(x, canvas.height);
+  }
+}
+
+function drawHorizontal() {
+  for (let x = initialOffset; x < canvas.height; x += markingInterval) {
+    context.moveTo(0, x);
+    context.lineTo(canvas.width, x);
+  }
+}
+
+function drawDiagonal(drawLineFrom, drawLineTo, shift) {
+  for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
+    context.moveTo(x - shift/2, drawLineFrom);
+    context.lineTo(x + shift/2, drawLineTo);
+  }
 }
 
 function getInitialOffset() {

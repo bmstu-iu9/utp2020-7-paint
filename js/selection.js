@@ -32,7 +32,7 @@ function endSelectionPoint() {
 
 function initRectangleSelection() {
   if (firstClickSelection) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML =
     `<p>Копирование и вставка выделенной области: </p>
     <ul>

@@ -4,7 +4,7 @@ let firstClickHand = true;
 
 function initHand() {
   if (firstClickHand) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML = 'При двойном нажатии на холст в режиме \'руки\' он центрируется';
     firstClickHand = false;
   }

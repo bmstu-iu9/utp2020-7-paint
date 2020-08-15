@@ -424,7 +424,7 @@ let firstClickUpload = true;
 
 document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
   if (firstClickUpload) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML = `Горячие клавиши:
       <br>
       <br> Enter — вставить фото
@@ -440,18 +440,6 @@ document.getElementById('brush').addEventListener('click', (event) => {
 
 document.getElementById('figure').addEventListener('click', (event) => {
   hideAndShow('figureMenu', event);
-});
-
-document.getElementById("marking").addEventListener('click', (event) => {
-  hideAndShow("markingMenu", event);
-});
-
-document.getElementById("diagonal").addEventListener('click', (event) => {
-  hideAndShow("diagonalMarkingMenu", event);
-});
-
-document.getElementById("wavy").addEventListener('click', (event) => {
-  hideAndShow("wavyMarkingMenu", event);
 });
 
 document.getElementById('openPanel').addEventListener('click', (event) => {
@@ -500,13 +488,13 @@ function changePreviewSize(preview) {
 
 let modalHints = document.querySelector('.modalHints');
 
-function toggleModal() {
+function toggleHintModal() {
   modalHints.classList.toggle('show-modalHints');
 }
 
 function windowOnClick(event) {
   if (event.target === modalHints) {
-    toggleModal();
+    toggleHintModal();
   }
 }
 

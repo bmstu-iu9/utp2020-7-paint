@@ -1,6 +1,16 @@
 'use strict';
 
+let markingModal = document.getElementById('markingModal');
+let openMarkingModal = document.getElementById('marking');
 let initialOffset, currentElement;
+
+openMarkingModal.addEventListener('click', toggleMarkingModal);
+closeMarkingWithoutSaving.addEventListener('click', toggleMarkingModal);
+closeMarkingWithSaving.addEventListener('click', toggleMarkingModal);
+
+function toggleMarkingModal() {
+  markingModal.classList.toggle('show-modal');
+}
 
 function initCage() {
   if (isMarkingButtonClicked()) { undo.click(); }

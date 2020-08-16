@@ -206,7 +206,7 @@ function makeResizablePhoto(element) {
   const minSize = 20;
   for (let i = 0; i < resizers.length; i++) {
     let currentResizer = resizers[i];
-    currentResizer.addEventListener('mousedown', function(e) {
+    currentResizer.addEventListener('mousedown', (e) => {
       e.preventDefault();
       originalWidth = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
       originalHeight = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));

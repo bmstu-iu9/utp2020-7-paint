@@ -531,7 +531,7 @@ option:checked {
 
 .resizable {
   background: transparent;
-  position: fixed;
+  position: absolute;
 }
 
 .resizable .resizers{

@@ -232,13 +232,12 @@ function insertCanvas(copyCanvas) {
 canvasInsertion.ondragstart = () => false;
 
 canvasInsertion.addEventListener('mousedown', (e) => {
-  let img = document.getElementById('copyCanvasForInsertion');
-  let shiftX = e.clientX - img.getBoundingClientRect().left;
-  let shiftY = e.clientY - img.getBoundingClientRect().top;
+  let shiftX = e.clientX - canvasInsertion.getBoundingClientRect().left;
+  let shiftY = e.clientY - canvasInsertion.getBoundingClientRect().top;
 
   function moveAt(x, y) {
-    canvasInsertion.style.left = x - shiftX + 'px';
-    canvasInsertion.style.top = y - shiftY + 'px';
+    canvasInsertion.style.left = x - shiftX + pageXOffset + 'px';
+    canvasInsertion.style.top = y - shiftY + pageYOffset + 'px';
   }
 
   function move(e) {

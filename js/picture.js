@@ -93,8 +93,8 @@ function insertImg(img) {
     photoResizer.style.left = (docWidth - photoWidth) / 2 + 'px';
     photoResizer.style.zIndex = activeLayer.index;
 
-    originalImgWidth = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('width').replace('px', ''));
-    originalImgHeight = parseFloat(getComputedStyle(photoResizer, null).getPropertyValue('height').replace('px', ''));
+    originalImgWidth = photoResizer.clientWidth;
+    originalImgHeight = photoResizer.clientHeight;
     deltaImgX = originalImgWidth / 2;
     deltaImgY = originalImgHeight / 2;
   }
@@ -109,14 +109,13 @@ function insertImg(img) {
 photoResizer.ondragstart = () => false;
 
 photoResizer.addEventListener('mousedown', (e) => {
-  let img = document.getElementById('photoForInsertion');
-  let curMiddle = getMiddleCoords(img);
+  let curMiddle = getMiddleCoords(photoResizer);
   let shiftX = e.clientX - (curMiddle.x - deltaImgX);
   let shiftY = e.clientY - (curMiddle.y - deltaImgY);
 
   function moveAt(x, y) {
-    photoResizer.style.left = x - shiftX + 'px';
-    photoResizer.style.top = y - shiftY + 'px';
+    photoResizer.style.left = x - shiftX + pageXOffset + 'px';
+    photoResizer.style.top = y - shiftY + pageYOffset + 'px';
   }
 
   function move(e) {
@@ -208,10 +207,10 @@ function makeResizablePhoto(element) {
     let currentResizer = resizers[i];
     currentResizer.addEventListener('mousedown', (e) => {
       e.preventDefault();
-      originalWidth = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
-      originalHeight = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
-      originalX = getMiddleCoords(img).x - deltaImgX;
-      originalY = getMiddleCoords(img).y - deltaImgY;
+      originalWidth = element.clientWidth;
+      originalHeight = element.clientHeight;
+      originalX = getMiddleCoords(img).x - deltaImgX + pageXOffset;
+      originalY = getMiddleCoords(img).y - deltaImgY + pageYOffset;
       center = getTranslations(originalX + originalWidth/2, originalY + originalHeight/2);
       document.addEventListener('mousemove', resize);
       document.addEventListener('mouseup', stopResize);
@@ -219,7 +218,7 @@ function makeResizablePhoto(element) {
 
     class Matrix {
       constructor() {
-        if (arguments.length == 1 && Array.isArray(arguments[0])) {
+        if (arguments.length == 1) {
           this.matrix = arguments[0];
           this.length = arguments[0][0].length;
         } else {
@@ -274,11 +273,12 @@ function makeResizablePhoto(element) {
 
     function resize(e) {
       isResizing = true;
+      let width, height;
 
       if (currentResizer.classList.contains('bottom-right')) {
         let [newP0, newQ] = getNewParams(new Matrix(originalX, originalY, 1), e);
-        let width = newQ[0][0] - newP0[0][0];
-        let height = newQ[1][0] - newP0[1][0];
+        width = newQ[0][0] - newP0[0][0];
+        height = newQ[1][0] - newP0[1][0];
         if (width > minSize) {
           img.style.width = element.style.width = width + 'px';
           img.style.left = element.style.left = newP0[0][0] + 'px';
@@ -289,8 +289,8 @@ function makeResizablePhoto(element) {
         }
       } else if (currentResizer.classList.contains('bottom-left')) {
         let [newP1, newQ] = getNewParams(new Matrix(originalX + originalWidth, originalY, 1), e);
-        let width = newP1[0][0] - newQ[0][0];
-        let height = newQ[1][0] - newP1[1][0];
+        width = newP1[0][0] - newQ[0][0];
+        height = newQ[1][0] - newP1[1][0];
         if (width > minSize) {
           img.style.width = element.style.width = width + 'px';
           img.style.left = element.style.left = newP1[0][0] - width + 'px';
@@ -301,8 +301,8 @@ function makeResizablePhoto(element) {
         }
       } else if (currentResizer.classList.contains('top-right')) {
         let [newP2, newQ] = getNewParams(new Matrix(originalX, originalY + originalHeight, 1), e);
-        let width = newQ[0][0] - newP2[0][0];
-        let height = newP2[1][0] - newQ[1][0];
+        width = newQ[0][0] - newP2[0][0];
+        height = newP2[1][0] - newQ[1][0];
         if (width > minSize) {
           img.style.width = element.style.width = width + 'px';
           img.style.left = element.style.left = newP2[0][0] + 'px';
@@ -313,8 +313,8 @@ function makeResizablePhoto(element) {
         }
       } else {
         let [newP3, newQ] = getNewParams(new Matrix(originalX + originalWidth, originalY + originalHeight, 1), e);
-        let width = newP3[0][0] - newQ[0][0];
-        let height = newP3[1][0] - newQ[1][0];
+        width = newP3[0][0] - newQ[0][0];
+        height = newP3[1][0] - newQ[1][0];
         if (width > minSize) {
           img.style.width = element.style.width = width + 'px';
           img.style.left = element.style.left = newP3[0][0] - width + 'px';
@@ -324,8 +324,8 @@ function makeResizablePhoto(element) {
           img.style.top = element.style.top = newP3[1][0] - height + 'px';
         }
       }
-      deltaImgX = parseFloat(element.style.width.replace('px', '')) / 2;
-      deltaImgY = parseFloat(element.style.height.replace('px', '')) / 2;
+      deltaImgX = width / 2;
+      deltaImgY = height / 2;
     }
 
     function stopResize() {

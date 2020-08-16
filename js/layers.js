@@ -101,13 +101,13 @@ function createCanvasHtml(id) {
   return newCanvas;
 }
 
-function parseAlowedNodesId(str, allowedNodes) {
+function parseAllowedNodesId(str, allowedNodes) {
   for (let i = 0; i < allowedNodes.length; i++) {
     let name = allowedNodes[i];
     let cutStr = str.slice(0, name.length);
     if (cutStr === name) {
       let id = parseInt(str.slice(name.length));
-      if (id !== NaN) return id;
+      if (!isNaN(id)) return id;
     }
   }
   return null;
@@ -116,12 +116,12 @@ function parseAlowedNodesId(str, allowedNodes) {
 function parseLayerId(str) {
   let allowedNodes = ['layerDisplay', 'previewDiv',
                       'btnContainer', 'preview'];
-  return parseAlowedNodesId(str, allowedNodes);
+  return parseAllowedNodesId(str, allowedNodes);
 }
 
 function parseLayerBtnId(str) {
   let allowedNodes = ['hideLayer', 'lockLayer'];
-  return parseAlowedNodesId(str, allowedNodes);
+  return parseAllowedNodesId(str, allowedNodes);
 }
 
 function getLayerByDisplay(target) {
@@ -163,7 +163,7 @@ class Layer {
   constructor(caller, callerId) {
     this.id = ++maxLayerId;
 
-    if (caller == 'firstLayer') {
+    if (caller === 'firstLayer') {
       this.display = document.getElementById('layerDisplay0');
       this.preview = document.getElementById('preview0');
       this.canvas = document.getElementById('layer0');
@@ -278,7 +278,7 @@ let firstLayer = new Layer('firstLayer');
 activeLayer = firstLayer;
 
 function changePreview(layer) {
-  if (arguments.length == 0) {
+  if (arguments.length === 0) {
     layer = activeLayer;
   }
   let countOfSteps = Math.ceil(Math.log(layer.canvas.width / layer.preview.width) / Math.log(2));
@@ -352,7 +352,7 @@ function lockLayerHandler(event) {
 function deleteLayerHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('deleteLayer'.length));
-  if (id === NaN) return;
+  if (isNaN(id)) return;
 
   layers.get(id).delete();
   clearLayerHistory(id);
@@ -362,14 +362,14 @@ function addLayerTopHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('addLayerTop'.length));
 
-  if (id !== NaN) new Layer('addLayerTop', id);
+  if (!isNaN(id)) new Layer('addLayerTop', id);
 }
 
 function addLayerBottomHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('addLayerBottom'.length));
 
-  if (id !== NaN) new Layer('addLayerBottom', id);
+  if (!isNaN(id)) new Layer('addLayerBottom', id);
 }
 
 function swapIndexes(layer1, layer2) {
@@ -388,7 +388,7 @@ function swapIndexes(layer1, layer2) {
 function swapTopHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('swapTop'.length));
-  if (id === NaN) return;
+  if (isNaN(id)) return;
   let closestTopLayer = getOldestLayer();
   let curLayer = layers.get(id);
 
@@ -405,7 +405,7 @@ function swapTopHandler(event) {
 function swapBottomHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('swapBottom'.length));
-  if (id === NaN) return;
+  if (isNaN(id)) return;
   let closestBotLayer = null;
   let curLayer = layers.get(id);
 

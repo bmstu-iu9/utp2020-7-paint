@@ -9,7 +9,10 @@ function chooseTextFormat() {
   if (!isThereSelection) {
     writeText(canvas.width / 2, canvas.height / 2);
   } else {
-    writeText(leftTopPointSelection[0] + (rightBottomPointSelection[0] - leftTopPointSelection[0]) / 2, leftTopPointSelection[1] + (rightBottomPointSelection[1] - leftTopPointSelection[1]) / 2);
+    writeText(leftTopPointSelection[0]
+              + (rightBottomPointSelection[0] - leftTopPointSelection[0]) / 2,
+              leftTopPointSelection[1]
+              + (rightBottomPointSelection[1] - leftTopPointSelection[1]) / 2);
   }
 }
 
@@ -19,7 +22,7 @@ function initText() {
   document.addEventListener('keydown', pressForInsertion);
 
   function pressForInsertion() {
-    if (event.code == 'Enter' && event.altKey) {
+    if (event.code === 'Enter' && event.altKey) {
       dxOfText = pastedText.getBoundingClientRect().width;
       dyOfText = pastedText.getBoundingClientRect().height;
       pastedText.hidden = true;
@@ -102,5 +105,5 @@ function drawTextInsertion(e) {
   canvas.style.cursor = 'crosshair';
   if (!isDrawing) return;
 
-  writeText(e.offsetX,  e.offsetY);
+  writeText(e.offsetX, e.offsetY);
 }

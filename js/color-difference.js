@@ -1,21 +1,23 @@
 'use strict';
 
 function getColorDifference(rgb1, rgb2) {
-  let rmean = (rgb1[0] + rgb2[0]) / 2;
-  let r = rgb1[0] - rgb2[0];
-  let g = rgb1[1] - rgb2[1];
-  let b = rgb1[2] - rgb2[2];
-  return Math.sqrt((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8));
+  const rMean = (rgb1[0] + rgb2[0]) / 2;
+  const r = rgb1[0] - rgb2[0];
+  const g = rgb1[1] - rgb2[1];
+  const b = rgb1[2] - rgb2[2];
+  return Math.sqrt((((512 + rMean) * r * r) >> 8)
+                   + 4 * g * g
+                   + (((767 - rMean) * b * b) >> 8));
 }
 
 function RGBAtoRGB(rgba) {
-  let R = ((1 - rgba[3]/255) * 255) + (rgba[3]/255 * rgba[0]);
-  let G = ((1 - rgba[3]/255) * 255) + (rgba[3]/255 * rgba[1]);
-  let B = ((1 - rgba[3]/255) * 255) + (rgba[3]/255 * rgba[2]);
-  return [R, G, B];
+  const r = ((1 - rgba[3] / 255) * 255) + (rgba[3] / 255 * rgba[0]);
+  const g = ((1 - rgba[3] / 255) * 255) + (rgba[3] / 255 * rgba[1]);
+  const b = ((1 - rgba[3] / 255) * 255) + (rgba[3] / 255 * rgba[2]);
+  return [r, g, b];
 }
 
-let maxAllowableColorDifference = getColorDifference([255, 255, 255], [0, 0, 0]);
+const maxAllowableColorDifference = getColorDifference([255, 255, 255], [0, 0, 0]);
 
 let colorDifferenceRange = document.getElementById('colorDifferenceRange');
 let colorDifferenceText = document.getElementById('colorDifferenceText');
@@ -39,10 +41,10 @@ colorDifferenceText.oninput = () => {
     curAllowableColorDifference = parseInt(colorDifferenceText.value);
   } else {
     colorDifferenceText.style.background = '#ffd4d4';
-    curAllowableColorDifference = getcolorDifference(colorDifferenceText, colorDifferenceRange);
+    curAllowableColorDifference = getColorDifference(colorDifferenceText, colorDifferenceRange);
   }
 
-  function getcolorDifference(colorDifferenceText, colorDifferenceRange) {
+  function getColorDifference(colorDifferenceText, colorDifferenceRange) {
     if (parseInt(colorDifferenceText.value) > colorDifferenceRange.max) { return colorDifferenceRange.max; }
     if (parseInt(colorDifferenceText.value) < colorDifferenceRange.min) { return colorDifferenceRange.min; }
     return defaultAllowableColorDifference;

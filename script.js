@@ -120,7 +120,9 @@ downloadBtn.addEventListener('click', () => {
 
   for (let i = layerScrollBox.children.length - 1; i >= 0; i--) {
     if (parseLayerId(layerScrollBox.children[i].id) != null) {
-      resultContext.drawImage(document.getElementById("layer" + parseLayerId(layerScrollBox.children[i].id)), 0, 0);
+      resultContext.drawImage(document.getElementById('layer'
+                                                      + parseLayerId(layerScrollBox.children[i].id)),
+                              0, 0);
     }
   }
 
@@ -154,7 +156,7 @@ function clearLayerHistory(id) {
   let count = 0, k = 0;
   let photo = photoOfState.layers.get(id);
   for (let i = 1, last = photo[0]; i < photo.length; i++) {
-    if (photo[i] != last) {
+    if (photo[i] !== last) {
         photoOfState.layers.forEach((state, idOfState) => {
           if (id != idOfState) state.splice(i - k, 1);
         });

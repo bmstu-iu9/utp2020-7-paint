@@ -571,6 +571,20 @@ option:checked {
   cursor: nwse-resize;
 }
 
+.resizable .resizers .rotator.middle {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background-color: #bbbbbb;
+  background-size: cover;
+  border-radius: 50%;
+  border: none;
+}
+
 .modalHints {
   position: fixed;
   left: 0;

@@ -9,43 +9,57 @@ let defaultSize = curToolSize;
 toolSizeRange.value = curToolSize;
 toolSizeText.value = `${curToolSize}px`;
 
-toolSizeRange.oninput = () => { onInputRange(toolSizeText, toolSizeRange); }
+toolSizeRange.oninput = () => { onInputRange(toolSizeText, toolSizeRange, 'px'); }
 
 toolSizeRange.onchange = () => { curToolSize = toolSizeRange.value; }
 
 toolSizeText.oninput = () => {
-  onInputText(toolSizeText, toolSizeRange, defaultSize);
+  onInputText(toolSizeText, toolSizeRange, defaultSize, 'px');
   curToolSize = newToolValue;
 }
 
-toolSizeText.onchange = () => { onChangeText(toolSizeText, toolSizeRange, curToolSize); }
+toolSizeText.onchange = () => { onChangeText(toolSizeText, toolSizeRange, curToolSize, 'px'); }
 
-function onInputRange(toolText, toolRange) {
-  toolText.value = toolRange.value + 'px';
+function onInputRange(toolText, toolRange,  measureUnit) {
+  toolText.value = toolRange.value + measureUnit;
   toolText.style.background = "white";
 }
 
-function onChangeText(toolText, toolRange, value) {
+function onChangeText(toolText, toolRange, value, measureUnit) {
   let toolSize = toolText.value;
   let maxTS = toolText.max;
   let minTS = toolText.min;
+  let flag;
 
-  if (checkPxInput(toolSize, minTS, maxTS)) {
-    toolText.value = parseInt(toolSize) + 'px';
+  if (measureUnit == 'px') {
+    flag = checkPxInput(toolSize, minTS, maxTS);
+  } else if (measureUnit == '°') {
+    flag = checkDegreeInput(toolSize, minTS, maxTS);
+  }
+
+  if (flag) {
+    toolText.value = parseInt(toolSize) + measureUnit;
     toolRange.value = parseInt(toolSize);
   } else {
     toolRange.value = value;
-    toolText.value = value + 'px';
+    toolText.value = value + measureUnit;
     toolText.style.background = "white";
   }
 }
 
-function onInputText(toolText, toolRange, defaultValue) {
+function onInputText(toolText, toolRange, defaultValue, measureUnit) {
   let toolSize = toolText.value;
   let maxTS = toolRange.max;
   let minTS = toolRange.min;
+  let flag;
 
-  if (checkPxInput(toolSize, minTS, maxTS)) {
+  if (measureUnit == 'px') {
+    flag = checkPxInput(toolSize, minTS, maxTS);
+  } else if (measureUnit == '°') {
+    flag = checkDegreeInput(toolSize, minTS, maxTS);
+  }
+
+  if (flag) {
     toolText.style.background = "white";
     toolRange.value = parseInt(toolSize);
     newToolValue = parseInt(toolText.value);

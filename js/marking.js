@@ -1,341 +1,519 @@
 'use strict';
 
+let undoMarking = document.getElementById('undoMarking');
+let redoMarking = document.getElementById('redoMarking');
+let deletingChangesMarking = document.getElementById('deletingChangesMarking');
+
 let markingModal = document.getElementById('markingModal');
 let openMarkingModal = document.getElementById('marking');
-let initialOffset, currentElement;
 
 openMarkingModal.addEventListener('click', toggleMarkingModal);
-closeMarkingWithoutSaving.addEventListener('click', toggleMarkingModal);
-closeMarkingWithSaving.addEventListener('click', toggleMarkingModal);
+closeMarkingWithoutSaving.addEventListener('click', toggleMarkingModalForClose);
+closeMarkingWithSaving.addEventListener('click', toggleMarkingModalForClose);
+
+let markingModalCanvas = document.getElementById('markingModalCanvas');
+let markingModalContext = markingModalCanvas.getContext('2d');
+markingModalCanvas.setAttribute('width', markingModalCanvas.width);
+markingModalCanvas.setAttribute('height', markingModalCanvas.height);
+
+let markingCanvas = document.createElement('canvas');
+let markingContext = markingCanvas.getContext('2d');
+
+let markingHistory = [], curStateMarking;
+
+let maxMarkingCanvasHeight = document.getElementById('markingCanvasWrapper').clientHeight;
+let maxMarkingCanvasWidth = document.getElementById('markingCanvasWrapper').clientWidth;
+
+let initialOffset, markingColor, curElement = null;
 
 function toggleMarkingModal() {
   markingModal.classList.toggle('show-modal');
+  useMarkingModal();
 }
 
-function initCage() {
-  if (isMarkingButtonClicked()) { undo.click(); }
+function toggleMarkingModalForClose() {
+  markingModal.classList.toggle('show-modal');
+}
 
-  markingInterval = 100;
-  toolMarkingRange.value = 100;
-  toolMarkingText.value = '100px';
+function useMarkingModal() {
+  originalCanvas = canvas;
+
+  changeModalCanvasSize(maxMarkingCanvasHeight, maxMarkingCanvasWidth, markingModalCanvas);
+
+  markingHistory = [];
+  curStateMarking = -1;
+  markingColor = 'black';
+  markingColorBtn.style.background = 'black';
+
+  disabledMarkingAndMarkingSize(true);
+  disabledAngle(true);
+  disabledAmplitude(true);
+
+  markingCanvas.setAttribute('width', canvas.width);
+  markingCanvas.setAttribute('height', canvas.height);
+
+  markingContext.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+
+  markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
+  markingModalContext.drawImage(canvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
+
+  rememberMarkingState();
+}
+
+addEventListener('keydown', escapeExitMarking);
+
+function escapeExitMarking(event) {
+  if (event.code == 'Escape') {
+    closeMarkingWithoutSaving.click();
+  }
+}
+
+undoMarking.addEventListener('click', applyPrevState);
+redoMarking.addEventListener('click', applyNextState);
+
+deletingChangesMarking.addEventListener('click', deleteChangesMarking);
+closeMarkingWithSaving.addEventListener('click', closeModalWithSaving);
+closeMarkingWithoutSaving.addEventListener('click', closeModalWithoutSaving);
+
+function closeModalWithoutSaving() {
+  canvas = originalCanvas;
+  context = canvas.getContext('2d');
+
+  deleteMarking();
+  removeEventListener('keydown', escapeExitMarking);
+}
+
+function closeModalWithSaving() {
+  let originalContext = originalCanvas.getContext('2d');
+  originalContext.putImageData(markingContext.getImageData(0, 0, markingCanvas.width, markingCanvas.height), 0, 0);
+  canvas = originalCanvas;
+  context = canvas.getContext('2d');
+
+  rememberState();
+  deleteMarking();
+  changePreview();
+}
+
+function deleteMarking() {
+  undoMarking.removeEventListener('click', applyPrevState);
+  redoMarking.removeEventListener('click', applyNextState);
+  deletingChangesMarking.removeEventListener('click', deleteChangesMarking);
+  closeMarkingWithSaving.removeEventListener('click', closeModalWithSaving);
+  closeMarkingWithoutSaving.removeEventListener('click', closeModalWithoutSaving);
+}
+
+function applyPrevState() {
+  if (curStateMarking > 0) {
+    --curStateMarking;
+    markingContext.putImageData(markingHistory[curStateMarking], 0, 0);
+    markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
+    markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
+  }
+}
+
+function applyNextState() {
+  if (curStateMarking + 1 < markingHistory.length) {
+    ++curStateMarking;
+    markingContext.putImageData(markingHistory[curStateMarking], 0, 0);
+    markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
+    markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
+  }
+}
+
+function endMarking() {
+  markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
+  markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
+}
+
+function rememberMarkingState() {
+  markingHistory = markingHistory.slice(0, curStateMarking + 1);
+  markingHistory.push(markingContext.getImageData(0, 0, markingCanvas.width, markingCanvas.height));
+  ++curStateMarking;
+}
+
+function deleteChangesMarking() {
+  markingContext.putImageData(markingHistory[0], 0, 0);
+  markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
+  markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
+  markingHistory = markingHistory.slice(0, 1);
+  curStateMarking = 0;
+}
+
+
+
+let cage = document.getElementById('cage');
+cage.onclick = () => { initCage(); }
+
+let vertical = document.getElementById('vertical');
+vertical.onclick = () => { initVertical(); }
+
+let horizontal = document.getElementById('horizontal');
+horizontal.onclick = () => { initHorizontal(); }
+
+let singleDiagonal = document.getElementById('singleDiagonal');
+singleDiagonal.onclick = () => { initSingleDiagonal(); }
+
+let doubleDiagonal = document.getElementById('doubleDiagonal');
+doubleDiagonal.onclick = () => { initDoubleDiagonal(); }
+
+let verticalWavy = document.getElementById('verticalWavy');
+verticalWavy.onclick = () => { initVerticalWavy(); }
+
+let horizontalWavy = document.getElementById('horizontalWavy');
+horizontalWavy.onclick = () => { initHorizontalWavy(); }
+
+
+function initCage() {
+  curElement = 'cage';
+
+  setTextAndRangeParameters();
+
+  disabledMarkingAndMarkingSize(false);
+  disabledAngle(true);
+  disabledAmplitude(true);
 
   startPointCage();
 }
 
 function startPointCage() {
-  setParameters();
+  applyPrevState();
+
+  setContextParameters();
   initialOffset = getInitialOffset();
-  context.beginPath();
+  markingContext.beginPath();
 
   drawVertical();
   drawHorizontal();
 
-  context.stroke();
-  context.beginPath();
+  markingContext.stroke();
+  markingContext.beginPath();
 
-  rememberState();
-  changePreview();
+  endMarking();
+  rememberMarkingState();
 }
 
-function deleteCage() {
-  toolMarkingRange.max = 600;
-}
+
 
 function initVertical() {
-  if (isMarkingButtonClicked()) { undo.click(); }
+  curElement = 'vertical';
 
-  markingInterval = 100;
-  toolMarkingRange.value = 100;
-  toolMarkingText.value = '100px';
-  toolMarkingRange.max = 300;
+  setTextAndRangeParameters();
+  toolMarkingRange.max = 600;
+
+  disabledMarkingAndMarkingSize(false);
+  disabledAngle(true);
+  disabledAmplitude(true);
 
   startPointVertical();
 }
 
 function startPointVertical() {
-  setParameters();
+  applyPrevState();
+
+  setContextParameters();
   initialOffset = getInitialOffset();
-  context.beginPath();
+  markingContext.beginPath();
 
   drawVertical();
 
-  context.stroke();
-  context.beginPath();
+  markingContext.stroke();
+  markingContext.beginPath();
 
-  rememberState();
-  changePreview();
+  endMarking();
+  rememberMarkingState();
 }
 
-function deleteVertical() {
-  toolMarkingRange.max = 600;
-}
+
 
 function initHorizontal() {
-  if (isMarkingButtonClicked()) { undo.click(); }
+  curElement = 'horizontal';
 
-  markingInterval = 100;
-  toolMarkingRange.value = 100;
-  toolMarkingText.value = '100px';
+  setTextAndRangeParameters();
+  toolMarkingRange.max = 300;
+
+  disabledMarkingAndMarkingSize(false);
+  disabledAngle(true);
+  disabledAmplitude(true);
 
   startPointHorizontal();
 }
 
 function startPointHorizontal() {
-  setParameters();
+  applyPrevState();
+
+  setContextParameters();
   initialOffset = getInitialOffset();
-  context.beginPath();
+  markingContext.beginPath();
 
   drawHorizontal();
 
-  context.stroke();
-  context.beginPath();
+  markingContext.stroke();
+  markingContext.beginPath();
 
-  rememberState();
-  changePreview();
+  endMarking();
+  rememberMarkingState();
 }
 
-function deleteHorizontal() {
-  toolMarkingRange.max = 600;
-}
+
 
 function initSingleDiagonal() {
-  if (isMarkingButtonClicked()) { undo.click(); }
+  curElement = 'singleDiagonal';
 
-  markingInterval = 100;
-  toolMarkingRange.value = 100;
-  toolMarkingText.value = '100px';
-  toolMarkingRange.max = 2000;
+  setTextAndRangeParameters();
+  toolMarkingRange.max = 600;
+  inclinationAngle = 45;
+  toolAngleRange.value = 45;
+  toolAngleText.value = '45°';
+
+  disabledMarkingAndMarkingSize(false);
+  disabledAngle(false);
+  disabledAmplitude(true);
 
   startPointSingleDiagonal();
 }
 
 function startPointSingleDiagonal() {
-  setParameters();
+  applyPrevState();
+
+  setContextParameters();
   initialOffset = getInitialOffset();
 
   let shift, angleInRadians;
 
-  context.beginPath();
+  markingContext.beginPath();
 
   if (inclinationAngle == 90) {
     drawHorizontal();
   } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
-    shift = canvas.height * Math.tan(angleInRadians);
+    shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(canvas.height, 0, shift);
+    drawDiagonal(markingCanvas.height, 0, shift);
   } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
-    shift = canvas.height * Math.tan(angleInRadians);
+    shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(0, canvas.height, shift);
+    drawDiagonal(0, markingCanvas.height, shift);
   }
 
-  context.stroke();
-  context.beginPath();
+  markingContext.stroke();
+  markingContext.beginPath();
 
-  rememberState();
-  changePreview();
+  endMarking();
+  rememberMarkingState();
 }
 
-function deleteSingleDiagonal() {
-  toolMarkingRange.max = 600;
-}
+
 
 function initDoubleDiagonal() {
-  if (isMarkingButtonClicked()) { undo.click(); }
+  curElement = 'doubleDiagonal';
 
-  markingInterval = 100;
-  toolMarkingRange.value = 100;
-  toolMarkingText.value = '100px';
-  toolMarkingRange.max = 2000;
+  setTextAndRangeParameters();
+  toolMarkingRange.max = 600;
+  inclinationAngle = 45;
+  toolAngleRange.value = 45;
+  toolAngleText.value = '45°';
+
+  disabledMarkingAndMarkingSize(false);
+  disabledAngle(false);
+  disabledAmplitude(true);
 
   startPointDoubleDiagonal();
 }
 
 function startPointDoubleDiagonal() {
-  setParameters();
+  applyPrevState();
+
+  setContextParameters();
   initialOffset = getInitialOffset();
 
   let shift, angleInRadians;
 
-  context.beginPath();
+  markingContext.beginPath();
 
   if (inclinationAngle == 90) {
     drawHorizontal();
   } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
-    shift = canvas.height * Math.tan(angleInRadians);
+    shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(canvas.height, 0, shift);
-    drawDiagonal(0, canvas.height, shift);
+    drawDiagonal(markingCanvas.height, 0, shift);
+    drawDiagonal(0, markingCanvas.height, shift);
   } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
-    shift = canvas.height * Math.tan(angleInRadians);
+    shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(canvas.height, 0, shift);
-    drawDiagonal(0, canvas.height, shift);
+    drawDiagonal(markingCanvas.height, 0, shift);
+    drawDiagonal(0, markingCanvas.height, shift);
   }
 
-  context.stroke();
-  context.beginPath();
+  markingContext.stroke();
+  markingContext.beginPath();
 
-  rememberState();
-  changePreview();
+  endMarking();
+  rememberMarkingState();
 }
 
-function deleteDoubleDiagonal() {
-  toolMarkingRange.max = 600;
-}
+
 
 function initVerticalWavy() {
-  if (isMarkingButtonClicked()) { undo.click(); }
+  curElement = 'verticalWavy';
 
-  markingInterval = 100;
-  toolMarkingRange.value = 100;
-  toolMarkingText.value = '100px';
-  toolMarkingRange.max = 300;
+  setTextAndRangeParameters();
+  toolMarkingRange.max = 400;
+  markingAmplitude = 45;
+  toolAmplitudeRange.value = 45;
+  toolAmplitudeText.value = '45°';
+
+  disabledMarkingAndMarkingSize(false);
+  disabledAmplitude(false);
+  disabledAngle(true);
 
   startPointVerticalWavy();
 }
 
 function startPointVerticalWavy() {
-  setParameters();
+  applyPrevState();
+
+  setContextParameters();
   initialOffset = getInitialOffset();
-  context.beginPath();
+  markingContext.beginPath();
 
   let cy = 0;
 
-  for (let cx = initialOffset - markingAmplitude; cx < canvas.width + markingAmplitude; cx += markingInterval) {
-    context.moveTo(cx, cy);
-    for (let i = 1; i < canvas.height; i++) {
+  for (let cx = initialOffset - markingAmplitude; cx < markingCanvas.width + markingAmplitude; cx += markingInterval) {
+    markingContext.moveTo(cx, cy);
+    for (let i = 1; i < markingCanvas.height; i++) {
       let y = 3 * i;
       let x = markingAmplitude * Math.sin(6 * i / 180 * Math.PI);
-      context.lineTo(cx + x, cy + y);
+      markingContext.lineTo(cx + x, cy + y);
     }
   }
 
-  context.stroke();
-  context.beginPath();
+  markingContext.stroke();
+  markingContext.beginPath();
 
-  rememberState();
-  changePreview();
+  endMarking();
+  rememberMarkingState();
 }
 
-function deleteVerticalWavy() {
-  toolMarkingRange.max = 600;
-}
+
 
 function initHorizontalWavy() {
-  if (isMarkingButtonClicked()) { undo.click(); }
+  curElement = 'horizontalWavy';
 
-  markingInterval = 100;
-  toolMarkingRange.value = 100;
-  toolMarkingText.value = '100px';
+  setTextAndRangeParameters();
   toolMarkingRange.max = 400;
+  markingAmplitude = 45;
+  toolAmplitudeRange.value = 45;
+  toolAmplitudeText.value = '45°';
+
+  disabledMarkingAndMarkingSize(false);
+  disabledAmplitude(false);
+  disabledAngle(true);
 
   startPointHorizontalWavy();
 }
 
 function startPointHorizontalWavy() {
-  setParameters();
+  applyPrevState();
+
+  setContextParameters();
   initialOffset = getInitialOffset();
-  context.beginPath();
+  markingContext.beginPath();
 
   let cx = 0;
 
-  for (let cy = initialOffset + markingAmplitude; cy < canvas.height + markingAmplitude; cy += markingInterval) {
-    context.moveTo(cx, cy);
-    for (let i = 1; i < canvas.width; i++) {
+  for (let cy = initialOffset - markingAmplitude; cy < markingCanvas.height + markingAmplitude; cy += markingInterval) {
+    markingContext.moveTo(cx, cy);
+    for (let i = 1; i < markingCanvas.width; i++) {
       let x = 3 * i;
       let y = markingAmplitude * Math.sin(6 * i / 180 * Math.PI);
-      context.lineTo(cx + x, cy + y);
+      markingContext.lineTo(cx + x, cy + y);
     }
   }
 
-  context.stroke();
-  context.beginPath();
+  markingContext.stroke();
+  markingContext.beginPath();
 
-  rememberState();
-  changePreview();
-}
-
-function deleteHorizontalWavy() {
-  toolMarkingRange.max = 600;
+  endMarking();
+  rememberMarkingState();
 }
 
 
 
 function drawVertical() {
-  for (let x = initialOffset; x < canvas.width; x += markingInterval) {
-    context.moveTo(x, 0);
-    context.lineTo(x, canvas.height);
+  for (let x = initialOffset; x < markingCanvas.width + markingInterval; x += markingInterval) {
+    markingContext.moveTo(x, 0);
+    markingContext.lineTo(x, markingCanvas.height);
   }
 }
 
 function drawHorizontal() {
-  for (let x = initialOffset; x < canvas.height; x += markingInterval) {
-    context.moveTo(0, x);
-    context.lineTo(canvas.width, x);
+  for (let x = initialOffset; x < markingCanvas.height + markingInterval; x += markingInterval) {
+    markingContext.moveTo(0, x);
+    markingContext.lineTo(markingCanvas.width, x);
   }
 }
 
 function drawDiagonal(drawLineFrom, drawLineTo, shift) {
-  for (let x = initialOffset - shift; x < canvas.width + shift; x += markingInterval) {
-    context.moveTo(x - shift/2, drawLineFrom);
-    context.lineTo(x + shift/2, drawLineTo);
+  let newInterval = shift / 5 + markingInterval;
+  for (let x = initialOffset - shift; x < markingCanvas.width + shift; x += newInterval) {
+    markingContext.moveTo(x - shift/2, drawLineFrom);
+    markingContext.lineTo(x + shift/2, drawLineTo);
   }
+}
+
+function setContextParameters() {
+  markingContext.lineCap = "round";
+  markingContext.lineJoin = "round";
+  markingContext.lineWidth = markingSize;
+  markingContext.strokeStyle = arrayToRgb(markingColor);
+}
+
+function setTextAndRangeParameters() {
+  markingSize = 1;
+  toolMarkingSizeRange.value = 1;
+  toolMarkingSizeText.value = '1px';
+
+  markingInterval = 100;
+  toolMarkingRange.value = 100;
+  toolMarkingText.value = '100px';
 }
 
 function getInitialOffset() {
-  return (markingSize < 5) ? -0.5 : 0.5;
-}
-
-function setParameters() {
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = markingSize;
-  context.strokeStyle = arrayToRgb(curColor);
+  return (markingSize < 5) ? -0.5 : (markingSize / 2);
 }
 
 function updateButton() {
-  if (activeInstrument.id == 'cage') {
-    undo.click();
-    startPointCage();
-  }
-  if (activeInstrument.id == 'vertical') {
-    undo.click();
-    startPointVertical();
-  }
-  if (activeInstrument.id == 'horizontal') {
-    undo.click();
-    startPointHorizontal();
-  }
-  if (activeInstrument.id == 'singleDiagonal') {
-    undo.click();
-    startPointSingleDiagonal();
-  }
-  if (activeInstrument.id == 'doubleDiagonal') {
-    undo.click();
-    startPointDoubleDiagonal();
-  }
-  if (activeInstrument.id == 'verticalWavy') {
-    undo.click();
-    startPointVerticalWavy();
-  }
-  if (activeInstrument.id == 'horizontalWavy') {
-    undo.click();
-    startPointHorizontalWavy();
-  }
+  if (curElement == 'cage') { startPointCage(); }
+  if (curElement == 'vertical') { startPointVertical(); }
+  if (curElement == 'horizontal') { startPointHorizontal(); }
+  if (curElement == 'singleDiagonal') { startPointSingleDiagonal(); }
+  if (curElement == 'doubleDiagonal') { startPointDoubleDiagonal(); }
+  if (curElement == 'verticalWavy') { startPointVerticalWavy(); }
+  if (curElement == 'horizontalWavy') { startPointHorizontalWavy(); }
 }
 
-function isMarkingButtonClicked() {
-  let markingTypes = ['cage', 'vertical', 'horizontal',
-                      'singleDiagonal', 'doubleDiagonal',
-                      'verticalWavy', 'horizontalWavy']
+function disabledMarkingAndMarkingSize(trueOrFalse) {
+  document.getElementById('toolMarkingSizeText').disabled = trueOrFalse;
+  document.getElementById('toolMarkingSizeRange').disabled = trueOrFalse;
 
-  return markingTypes.includes(currentElement);
+  document.getElementById('toolMarkingText').disabled = trueOrFalse;
+  document.getElementById('toolMarkingRange').disabled = trueOrFalse;
 }
+
+function disabledAngle(trueOrFalse) {
+  document.getElementById('toolAngleText').disabled = trueOrFalse;
+  document.getElementById('toolAngleRange').disabled = trueOrFalse;
+}
+
+function disabledAmplitude(trueOrFalse) {
+  document.getElementById('toolAmplitudeText').disabled = trueOrFalse;
+  document.getElementById('toolAmplitudeRange').disabled = trueOrFalse;
+}
+
+
 
 let toolMarkingRange = document.getElementById("toolMarkingRange");
 let toolMarkingText = document.getElementById("toolMarkingText");
@@ -344,13 +522,6 @@ let defaultMarking = markingInterval;
 toolMarkingRange.value = markingInterval;
 toolMarkingText.value = `${markingInterval}px`;
 
-let toolAngleRange = document.getElementById("toolAngleRange");
-let toolAngleText = document.getElementById("toolAngleText");
-let defaultAngle = inclinationAngle;
-
-toolAngleRange.value = inclinationAngle;
-toolAngleText.value = `${inclinationAngle}px`;
-
 let toolMarkingSizeRange = document.getElementById("toolMarkingSizeRange");
 let toolMarkingSizeText = document.getElementById("toolMarkingSizeText");
 let defaultMarkingSize = markingSize;
@@ -358,20 +529,52 @@ let defaultMarkingSize = markingSize;
 toolMarkingSizeRange.value = markingSize;
 toolMarkingSizeText.value = `${markingSize}px`;
 
+let toolAngleRange = document.getElementById("toolAngleRange");
+let toolAngleText = document.getElementById("toolAngleText");
+let defaultAngle = inclinationAngle;
+
+toolAngleRange.value = inclinationAngle;
+toolAngleText.value = `${inclinationAngle}°`;
+
 let toolAmplitudeRange = document.getElementById("toolAmplitudeRange");
 let toolAmplitudeText = document.getElementById("toolAmplitudeText");
 let defaultAmplitude = markingAmplitude;
 
 toolAmplitudeRange.value = markingAmplitude;
-toolAmplitudeText.value = `${markingAmplitude}px`;
+toolAmplitudeText.value = `${markingAmplitude}°`;
 
-toolMarkingRange.oninput = () => { onInputRange(toolMarkingText, toolMarkingRange); }
 
-toolAngleRange.oninput = () => { onInputRange(toolAngleText, toolAngleRange); }
 
-toolMarkingSizeRange.oninput = () => { onInputRange(toolMarkingSizeText, toolMarkingSizeRange); }
+toolMarkingRange.oninput = () => { onInputRange(toolMarkingText, toolMarkingRange, 'px'); }
 
-toolAmplitudeRange.oninput = () => { onInputRange(toolAmplitudeText, toolAmplitudeRange); }
+toolMarkingSizeRange.oninput = () => { onInputRange(toolMarkingSizeText, toolMarkingSizeRange, 'px'); }
+
+toolAngleRange.oninput = () => { onInputRange(toolAngleText, toolAngleRange, '°'); }
+
+toolAmplitudeRange.oninput = () => { onInputRange(toolAmplitudeText, toolAmplitudeRange, '°'); }
+
+
+
+toolMarkingText.oninput = () => {
+  onInputText(toolMarkingText, toolMarkingRange, defaultMarking, 'px');
+  markingInterval = newToolValue;
+}
+
+toolMarkingSizeText.oninput = () => {
+  onInputText(toolMarkingSizeText, toolMarkingSizeRange, defaultMarkingSize, 'px');
+  markingSize = newToolValue;
+}
+
+toolAngleText.oninput = () => {
+  onInputText(toolAngleText, toolAngleRange, defaultAngle, '°');
+  inclinationAngle = newToolValue;
+}
+
+toolAmplitudeText.oninput = () => {
+  onInputText(toolAmplitudeText, toolAmplitudeRange, defaultAmplitude, '°');
+  markingAmplitude = newToolValue;
+}
+
 
 
 toolMarkingRange.onchange = () => {
@@ -379,13 +582,13 @@ toolMarkingRange.onchange = () => {
   updateButton();
 }
 
-toolAngleRange.onchange = () => {
-  inclinationAngle = parseInt(toolAngleRange.value);
+toolMarkingSizeRange.onchange = () => {
+  markingSize = parseInt(toolMarkingSizeRange.value);
   updateButton();
 }
 
-toolMarkingSizeRange.onchange = () => {
-  markingSize = parseInt(toolMarkingSizeRange.value);
+toolAngleRange.onchange = () => {
+  inclinationAngle = parseInt(toolAngleRange.value);
   updateButton();
 }
 
@@ -395,43 +598,44 @@ toolAmplitudeRange.onchange = () => {
 }
 
 
-toolMarkingText.oninput = () => {
-  onInputText(toolMarkingText, toolMarkingRange, defaultMarking);
-  markingInterval = newToolValue;
-}
-
-toolAngleText.oninput = () => {
-  onInputText(toolAngleText, toolAngleRange, defaultAngle);
-  inclinationAngle = newToolValue;
-}
-
-toolMarkingSizeText.oninput = () => {
-  onInputText(toolMarkingSizeText, toolMarkingSizeRange, defaultMarkingSize);
-  markingSize = newToolValue;
-}
-
-toolAmplitudeText.oninput = () => {
-  onInputText(toolAmplitudeText, toolAmplitudeRange, defaultAmplitude);
-  markingAmplitude = newToolValue;
-}
-
 
 toolMarkingText.onchange = () => {
-  onChangeText(toolMarkingText, toolMarkingRange, markingInterval);
-  updateButton();
-}
-
-toolAngleText.onchange = () => {
-  onChangeText(toolAngleText, toolAngleRange, inclinationAngle);
+  onChangeText(toolMarkingText, toolMarkingRange, markingInterval, 'px');
   updateButton();
 }
 
 toolMarkingSizeText.onchange = () => {
-  onChangeText(toolMarkingSizeText, toolMarkingSizeRange, markingSize);
+  onChangeText(toolMarkingSizeText, toolMarkingSizeRange, markingSize, 'px');
+  updateButton();
+}
+
+toolAngleText.onchange = () => {
+  onChangeText(toolAngleText, toolAngleRange, inclinationAngle, '°');
   updateButton();
 }
 
 toolAmplitudeText.onchange = () => {
-  onChangeText(toolAmplitudeText, toolAngleRange, markingAmplitude);
+  onChangeText(toolAmplitudeText, toolAngleRange, markingAmplitude, '°');
   updateButton();
 }
+
+function checkDegreeInput(str, min, max) {
+  const degreeInputRegExp = new RegExp(`^\\d+(°|)$`, 'i');
+  return  degreeInputRegExp.test(str) &&
+         (parseInt(str) >= min) &&
+         (parseInt(str) <= max);
+}
+
+
+
+let markingColorInput = document.getElementById('markingColor');
+let markingColorBtn = document.getElementById('markingColorBtn');
+
+markingColorInput.addEventListener('input', () => {
+  let color = markingColorInput.value;
+  markingColor = hexToRgb(color);
+  markingColorBtn.style.background = color;
+  updateButton();
+});
+
+markingColorBtn.onclick = () => { markingColorInput.click(); markingColorInput.focus(); }

@@ -3,9 +3,7 @@
 const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush',
                 'sketchBrush', 'patternBrush', 'furBrush', 'rectangleBrush','circleBrush',
                 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'straightLine',
-                'eyedropper', 'filling', 'hand', 'text', 'stamp', 'rectangleSelection', 'cage',
-                'horizontal', 'vertical', 'singleDiagonal', 'doubleDiagonal',
-                'horizontalWavy', 'verticalWavy'];
+                'eyedropper', 'filling', 'hand', 'text', 'stamp', 'rectangleSelection'];
 
 let allInstruments = new Map();
 let activeInstrument = null;
@@ -39,7 +37,6 @@ function instrumentsHandler(event) {
   document.getElementById(targetId).classList.add('pressed');
   if (!activeLayer.locked) {
     activeInstrument.init();
-    currentElement = activeInstrument.id;
   }
 }
 

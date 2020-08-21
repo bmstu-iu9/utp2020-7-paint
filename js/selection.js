@@ -1,4 +1,4 @@
-let deltaXSelecting, deltaYSelecting;
+'use strict';
 
 let isThereSelection = false;
 let arrayOfSelectedArea = [];
@@ -197,25 +197,14 @@ function insertCanvas(copyCanvas) {
   function pressForInsertion() {
     if (event.code === 'Enter' && event.altKey) {
       if (isThereSelection) rememberCanvasWithoutSelection();
-      let posOfPhoto = getMiddleCoords(canvasInsertion);
-      let posOfCanvas = {
-        x: canvas.getBoundingClientRect().left + curCanvasBorder,
-        y: canvas.getBoundingClientRect().top + curCanvasBorder
-      };
-      let dx = Math.floor(posOfPhoto.x - posOfCanvas.x + 3), dy = Math.floor(posOfPhoto.y - posOfCanvas.y + 3);
-      context.save();
-      context.translate(dx, dy);
+      let posOfPhoto = getElementPosition(canvasInsertion);
+      let posOfCanvas = getElementPosition(canvas);
+      let dx = Math.floor(posOfPhoto.x - posOfCanvas.x - curCanvasBorder + 3);
+      let dy = Math.floor(posOfPhoto.y - posOfCanvas.y - curCanvasBorder + 3);
 
-      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height,
-                        -Math.floor(deltaXSelecting), -Math.floor(deltaYSelecting),
-                        curCopyCanvas.width, curCopyCanvas.height);
+      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
 
-      context.restore();
       canvasInsertion.hidden = true;
-      if (photoAngle) {
-        photoAngle = 0;
-        rotatePhoto();
-      }
       document.removeEventListener('keydown', pressForInsertion);
 
       if (isThereSelection) uniteRememberAndSelectedImages();
@@ -234,11 +223,6 @@ function insertCanvas(copyCanvas) {
     canvasInsertion.style.top = canvas.getBoundingClientRect().top + canvas.height / 2 - canvasInsertion.offsetHeight / 2 + 'px';
     canvasInsertion.style.left = canvas.getBoundingClientRect().left + canvas.width / 2 + - canvasInsertion.offsetWidth / 2 + 'px';
     canvasInsertion.style.zIndex = activeLayer.index;
-
-    deltaXSelecting = parseFloat(getComputedStyle(canvasInsertion, null).getPropertyValue('width').replace('px', '')) / 2;
-    deltaYSelecting = parseFloat(getComputedStyle(canvasInsertion, null).getPropertyValue('height').replace('px', '')) / 2;
-    sign = 1;
-    photoAngle = 0;
   }
 
   if (lastPasteCanvas) canvasInsertion.removeChild(lastPasteCanvas);
@@ -251,14 +235,12 @@ function insertCanvas(copyCanvas) {
 canvasInsertion.ondragstart = () => false;
 
 canvasInsertion.addEventListener('mousedown', (e) => {
-  let img = document.getElementById('copyCanvasForInsertion');
-  let curMiddle = getMiddleCoords(img);
-  let shiftX = e.clientX - (curMiddle.x - deltaXSelecting);
-  let shiftY = e.clientY - (curMiddle.y - deltaYSelecting);
+  let shiftX = e.clientX - canvasInsertion.getBoundingClientRect().left;
+  let shiftY = e.clientY - canvasInsertion.getBoundingClientRect().top;
 
   function moveAt(x, y) {
-    canvasInsertion.style.left = x - shiftX + 'px';
-    canvasInsertion.style.top = y - shiftY + 'px';
+    canvasInsertion.style.left = x - shiftX + pageXOffset + 'px';
+    canvasInsertion.style.top = y - shiftY + pageYOffset + 'px';
   }
 
   function move(e) {
@@ -286,10 +268,12 @@ function hotkeyInsertion(event) {
         if (curCopyCanvas) insertCanvas(curCopyCanvas);
         break;
       case 'Backspace':
-        if (isThereSelection) context.clearRect(leftTopPointSelection[0],
-                                                leftTopPointSelection[1],
-                                                rightBottomPointSelection[0] - leftTopPointSelection[0],
-                                                rightBottomPointSelection[1] - leftTopPointSelection[1]);
+        if (isThereSelection) {
+          context.clearRect(leftTopPointSelection[0],
+                            leftTopPointSelection[1],
+                            rightBottomPointSelection[0] - leftTopPointSelection[0],
+                            rightBottomPointSelection[1] - leftTopPointSelection[1]);
+        }
         break;
     }
   }

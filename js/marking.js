@@ -7,9 +7,9 @@ let deletingChangesMarking = document.getElementById('deletingChangesMarking');
 let markingModal = document.getElementById('markingModal');
 let openMarkingModal = document.getElementById('marking');
 
-openMarkingModal.addEventListener('click', toggleMarkingModal);
-closeMarkingWithoutSaving.addEventListener('click', toggleMarkingModalForClose);
-closeMarkingWithSaving.addEventListener('click', toggleMarkingModalForClose);
+openMarkingModal.addEventListener('click', openModalMarking);
+closeMarkingWithoutSaving.addEventListener('click', closeModalMarking);
+closeMarkingWithSaving.addEventListener('click', closeModalMarking);
 
 let markingModalCanvas = document.getElementById('markingModalCanvas');
 let markingModalContext = markingModalCanvas.getContext('2d');
@@ -26,12 +26,12 @@ let maxMarkingCanvasWidth = document.getElementById('markingCanvasWrapper').clie
 
 let initialOffset, markingColor, curElement = null;
 
-function toggleMarkingModal() {
+function openModalMarking() {
   markingModal.classList.toggle('show-modal');
   useMarkingModal();
 }
 
-function toggleMarkingModalForClose() {
+function closeModalMarking() {
   markingModal.classList.toggle('show-modal');
 }
 
@@ -57,6 +57,13 @@ function useMarkingModal() {
   markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingModalContext.drawImage(canvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
 
+  undoMarking.addEventListener('click', applyPrevState);
+  redoMarking.addEventListener('click', applyNextState);
+
+  deletingChangesMarking.addEventListener('click', deleteChangesMarking);
+  closeMarkingWithSaving.addEventListener('click', closeModalWithSaving);
+  closeMarkingWithoutSaving.addEventListener('click', closeModalWithoutSaving);
+
   rememberMarkingState();
 }
 
@@ -67,13 +74,6 @@ function escapeExitMarking(event) {
     closeMarkingWithoutSaving.click();
   }
 }
-
-undoMarking.addEventListener('click', applyPrevState);
-redoMarking.addEventListener('click', applyNextState);
-
-deletingChangesMarking.addEventListener('click', deleteChangesMarking);
-closeMarkingWithSaving.addEventListener('click', closeModalWithSaving);
-closeMarkingWithoutSaving.addEventListener('click', closeModalWithoutSaving);
 
 function closeModalWithoutSaving() {
   canvas = originalCanvas;

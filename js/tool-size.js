@@ -20,7 +20,7 @@ toolSizeText.oninput = () => {
 
 toolSizeText.onchange = () => { onChangeText(toolSizeText, toolSizeRange, curToolSize, 'px'); }
 
-function onInputRange(toolText, toolRange,  measureUnit) {
+function onInputRange(toolText, toolRange, measureUnit) {
   toolText.value = toolRange.value + measureUnit;
   toolText.style.background = "white";
 }

@@ -242,11 +242,14 @@ class Layer {
     this.addBottomBtn.addEventListener('click', addLayerBottomHandler);
     this.swapTopBtn.addEventListener('click', swapTopHandler);
     this.swapBottomBtn.addEventListener('click', swapBottomHandler);
+    this.mergeTopBtn.addEventListener('click', mergeTopHandler);
+    this.mergeBottomBtn.addEventListener('click', mergeBottomHandler);
     this.duplicateLayerBtn.addEventListener('click', duplicateLayerHandler);
 
     this.canvas.style.borderWidth = curCanvasBorder + 'px';
     this.canvas.style.borderColor = curCanvasBorderColor;
     this.canvas.style.borderStyle = 'solid';
+    this.ctx = this.canvas.getContext('2d');
 
     if (caller === 'addLayerTop') {
       let callerLayer = layers.get(callerId);
@@ -293,6 +296,7 @@ class Layer {
 
     this.canvas.remove();
     this.display.remove();
+    clearLayerHistory(this.id);
   }
 }
 
@@ -380,7 +384,6 @@ function deleteLayerHandler(event) {
   if (isNaN(id)) return;
 
   layers.get(id).delete();
-  clearLayerHistory(id);
 }
 
 function addLayerTopHandler(event) {
@@ -410,19 +413,39 @@ function swapIndexes(layer1, layer2) {
   display1.parentNode.insertBefore(display1, display2);
 }
 
+function getClosestTopLayer(curLayer) {
+  let closestTopLayer = null;
+
+  layers.forEach((layer) => {
+    if (layer.index > curLayer.index
+        && (closestTopLayer === null || layer.index < closestTopLayer.index)) {
+      closestTopLayer = layer;
+    }
+  });
+
+  return closestTopLayer;
+}
+
+function getClosestBotLayer(curLayer) {
+  let closestBotLayer = null;
+
+  layers.forEach((layer) => {
+    if (layer.index < curLayer.index
+        && (closestBotLayer === null || layer.index > closestBotLayer.index)) {
+      closestBotLayer = layer;
+    }
+  });
+
+  return closestBotLayer;
+}
+
 function swapTopHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('swapTop'.length));
   if (isNaN(id)) return;
-  let closestTopLayer = getOldestLayer();
-  let curLayer = layers.get(id);
 
-  layers.forEach((layer) => {
-    if (layer.index > curLayer.index &&
-       (closestTopLayer === null || layer.index < closestTopLayer.index)) {
-      closestTopLayer = layer;
-    }
-  });
+  let curLayer = layers.get(id);
+  let closestTopLayer = getClosestTopLayer(curLayer);
 
   if (closestTopLayer !== null) swapIndexes(curLayer, closestTopLayer);
 }
@@ -431,32 +454,53 @@ function swapBottomHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('swapBottom'.length));
   if (isNaN(id)) return;
-  let closestBotLayer = null;
-  let curLayer = layers.get(id);
 
-  layers.forEach((layer) => {
-    if (layer.index < curLayer.index &&
-       (closestBotLayer === null || layer.index > closestBotLayer.index)) {
-      closestBotLayer = layer;
-    }
-  });
+  let curLayer = layers.get(id);
+  let closestBotLayer = getClosestBotLayer(curLayer);
 
   if (closestBotLayer !== null) swapIndexes(closestBotLayer, curLayer);
 }
+
+function mergeTopHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('mergeTop'.length));
+  if (isNaN(id)) return;
+
+  let oldLayer = layers.get(id);
+  let targetLayer = getClosestTopLayer(oldLayer);
+
+  oldLayer.ctx.drawImage(targetLayer.canvas, 0, 0);
+  targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
+  changePreview(targetLayer);
+  
+  oldLayer.delete();
+}
+
+function mergeBottomHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('mergeBottom'.length));
+  if (isNaN(id)) return;
+
+  let oldLayer = layers.get(id);
+  let targetLayer = getClosestBotLayer(oldLayer);
+
+  targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
+  changePreview(targetLayer);
+
+  oldLayer.delete();
+}
+
 
 function duplicateLayerHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('duplicateLayer'.length));
   let source = layers.get(id).canvas;
-  let destCtx = null;
 
   if (!isNaN(id)) {
     let newLayer = new Layer('addLayerTop', id);
-    destCtx = newLayer.canvas.getContext('2d');
 
-    if (destCtx !== null) {
-      console.log(source);
-      destCtx.drawImage(source, 0, 0);
+    if (newLayer !== null) {
+      newLayer.ctx.drawImage(source, 0, 0);
       changePreview(newLayer);
     }
   }

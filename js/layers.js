@@ -36,6 +36,21 @@ function createLayerOptionsHtml(id) {
   swapBotBtn.innerText = 'Опустить слой';
   optContainer.appendChild(swapBotBtn);
 
+  let mergeTopBtn = document.createElement('button');
+  mergeTopBtn.id = 'mergeTop' + id;
+  mergeTopBtn.innerText = 'Слить с верхним';
+  optContainer.appendChild(mergeTopBtn);
+
+  let mergeBotBtn = document.createElement('button');
+  mergeBotBtn.id = 'mergeBottom' + id;
+  mergeBotBtn.innerText = 'Слить с нижним';
+  optContainer.appendChild(mergeBotBtn);
+
+  let duplicateLayerBtn = document.createElement('button');
+  duplicateLayerBtn.id = 'duplicateLayer' + id;
+  duplicateLayerBtn.innerText = 'Дублировать';
+  optContainer.appendChild(duplicateLayerBtn);
+
   return optContainer;
 }
 
@@ -225,7 +240,7 @@ class Layer {
     this.canvas.style.borderWidth = curCanvasBorder + 'px';
     this.canvas.style.borderColor = curCanvasBorderColor;
     this.canvas.style.borderStyle = 'solid';
-    
+
     if (caller === 'addLayerTop') {
       let callerLayer = layers.get(callerId);
       layers.forEach((layer) => {
@@ -286,23 +301,23 @@ function changePreview(layer) {
   let octx = oc.getContext('2d');
   let dopOc = document.createElement('canvas');
   let dopOctx = dopOc.getContext('2d');
-  
+
   oc.width = layer.canvas.width;
   oc.height = layer.canvas.height;
   dopOc.width = layer.canvas.width;
   dopOc.height = layer.canvas.height;
-  
+
   octx.drawImage(layer.canvas, 0, 0, oc.width, oc.height);
-  
+
   let i = 0;
   for (; i < countOfSteps - 1; i++) {
     dopOctx.clearRect(0, 0, dopOc.width, dopOc.height);
     dopOctx.drawImage(oc, 0, 0);
-    
+
     octx.clearRect(0, 0, dopOc.width, dopOc.height);
     octx.drawImage(dopOc, 0, 0, oc.width / 2, oc.height / 2);
   }
-  
+
   let previewContext = layer.preview.getContext('2d');
   previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
   previewContext.drawImage(oc, 0, 0, oc.width / (2 ** i), oc.height / (2 ** i), 0, 0, layer.preview.width, layer.preview.height);

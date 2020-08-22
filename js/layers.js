@@ -203,24 +203,32 @@ function disableBottomButtons(layer) {
   layer.isBottom = true;
   layer.swapBottomBtn.classList.add('inactive');
   layer.mergeBottomBtn.classList.add('inactive');
+  layer.swapBottomBtn.removeEventListener('click', swapBottomHandler);
+  layer.mergeBottomBtn.removeEventListener('click', mergeBottomHandler);
 }
 
 function enableBottomButtons(layer) {
   layer.isBottom = false;
   layer.swapBottomBtn.classList.remove('inactive');
   layer.mergeBottomBtn.classList.remove('inactive');
+  layer.swapBottomBtn.addEventListener('click', swapBottomHandler);
+  layer.mergeBottomBtn.addEventListener('click', mergeBottomHandler);
 }
 
 function disableTopButtons(layer) {
   layer.isTop = true;
   layer.swapTopBtn.classList.add('inactive');
   layer.mergeTopBtn.classList.add('inactive');
+  layer.swapTopBtn.removeEventListener('click', swapTopHandler);
+  layer.mergeTopBtn.removeEventListener('click', mergeTopHandler);
 }
 
 function enableTopButtons(layer) {
   layer.isTop = false;
   layer.swapTopBtn.classList.remove('inactive');
   layer.mergeTopBtn.classList.remove('inactive');
+  layer.swapTopBtn.addEventListener('click', swapTopHandler);
+  layer.mergeTopBtn.addEventListener('click', mergeTopHandler);
 }
 
 class Layer {
@@ -273,6 +281,8 @@ class Layer {
       this.mergeBottomBtn = options.children['mergeBottom' + this.id];
       this.duplicateLayerBtn = options.children['duplicateLayer' + this.id];
 
+      this.deleteBtn.addEventListener('click', deleteLayerHandler);
+
       this.isTop = false;
       this.isBottom = false;
 
@@ -295,13 +305,8 @@ class Layer {
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);
     this.lockBtn.addEventListener('click', lockLayerHandler);
-    this.deleteBtn.addEventListener('click', deleteLayerHandler);
     this.addTopBtn.addEventListener('click', addLayerTopHandler);
     this.addBottomBtn.addEventListener('click', addLayerBottomHandler);
-    this.swapTopBtn.addEventListener('click', swapTopHandler);
-    this.swapBottomBtn.addEventListener('click', swapBottomHandler);
-    this.mergeTopBtn.addEventListener('click', mergeTopHandler);
-    this.mergeBottomBtn.addEventListener('click', mergeBottomHandler);
     this.duplicateLayerBtn.addEventListener('click', duplicateLayerHandler);
 
     this.canvas.style.borderWidth = curCanvasBorder + 'px';
@@ -314,7 +319,9 @@ class Layer {
       let callerLayer = layers.get(callerId);
 
       if (layers.size === 1) {
-        getOldestLayer().deleteBtn.classList.remove('inactive');
+        let lastLayer = getOldestLayer();
+        lastLayer.deleteBtn.classList.remove('inactive');
+        lastLayer.deleteBtn.addEventListener('click', deleteLayerHandler);
       }
 
       if (caller === 'addLayerTop') {
@@ -355,10 +362,16 @@ class Layer {
     if (this.isTop) {
       this.swapTopBtn.classList.add('inactive');
       this.mergeTopBtn.classList.add('inactive');
+    } else {
+      this.swapTopBtn.addEventListener('click', swapTopHandler);
+      this.mergeTopBtn.addEventListener('click', mergeTopHandler);
     }
     if (this.isBottom) {
       this.swapBottomBtn.classList.add('inactive');
       this.mergeBottomBtn.classList.add('inactive');
+    } else {
+      this.swapBottomBtn.addEventListener('click', swapBottomHandler);
+      this.mergeBottomBtn.addEventListener('click', mergeBottomHandler);
     }
 
     layers.set(this.id, this);
@@ -392,7 +405,9 @@ class Layer {
     clearLayerHistory(this.id);
 
     if (layers.size === 1) {
-      getOldestLayer().deleteBtn.classList.add('inactive');
+      let lastLayer = getOldestLayer();
+      lastLayer.deleteBtn.classList.add('inactive');
+      lastLayer.deleteBtn.removeEventListener('click', deleteLayerHandler);
     }
   }
 }

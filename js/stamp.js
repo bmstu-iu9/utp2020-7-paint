@@ -106,7 +106,7 @@ function drawSquareStamp(x, y) {
 }
 
 function stopStamp() {
-  if (event.code == 'Enter' && event.altKey) {
+  if (event.code === 'Enter' && event.altKey) {
     isStamping = false;
     document.removeEventListener('keydown', stopStamp);
   }

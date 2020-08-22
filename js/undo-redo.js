@@ -1,5 +1,7 @@
 'use strict';
 
+const MAX_HIST = 20;
+
 function rememberState() {
   let curId = activeLayer.id;
   let photoOfLayer = photoOfState.layers;
@@ -23,7 +25,7 @@ function checkCurLength() {
     photoOfState.length -= d - 1;
   }
 
-  if (photoOfState.length > 20) {
+  if (photoOfState.length > MAX_HIST) {
     photoOfState.layers.forEach(value => value.shift());
     --curState;
     --photoOfState.length;

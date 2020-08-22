@@ -272,6 +272,10 @@ body {
   background-color: #b6b6b6;
 }
 
+.layerOptions button.inactive {
+  color: #cccccc;
+}
+
 .layerOptionsBtn {
   width: 20px;
   height: 20px;

@@ -5,7 +5,6 @@ let activeLayer;
 let layersField = document.getElementById('layersField');
 let layers = new Map();
 let allCanvases = [backCanvas];
-
 function createLayerOptionsHtml(id) {
   let optContainer = document.createElement('div');
   optContainer.classList.add('layerOptions');
@@ -174,6 +173,56 @@ function getOldestLayer() {
   return layers.values().next().value;
 }
 
+function getClosestTopLayer(curLayer) {
+  let closestTopLayer = null;
+
+  layers.forEach((layer) => {
+    if (layer.index > curLayer.index
+        && (closestTopLayer === null || layer.index < closestTopLayer.index)) {
+      closestTopLayer = layer;
+    }
+  });
+
+  return closestTopLayer;
+}
+
+function getClosestBotLayer(curLayer) {
+  let closestBotLayer = null;
+
+  layers.forEach((layer) => {
+    if (layer.index < curLayer.index
+        && (closestBotLayer === null || layer.index > closestBotLayer.index)) {
+      closestBotLayer = layer;
+    }
+  });
+
+  return closestBotLayer;
+}
+
+function disableBottomButtons(layer) {
+  layer.isBottom = true;
+  layer.swapBottomBtn.classList.add('inactive');
+  layer.mergeBottomBtn.classList.add('inactive');
+}
+
+function enableBottomButtons(layer) {
+  layer.isBottom = false;
+  layer.swapBottomBtn.classList.remove('inactive');
+  layer.mergeBottomBtn.classList.remove('inactive');
+}
+
+function disableTopButtons(layer) {
+  layer.isTop = true;
+  layer.swapTopBtn.classList.add('inactive');
+  layer.mergeTopBtn.classList.add('inactive');
+}
+
+function enableTopButtons(layer) {
+  layer.isTop = false;
+  layer.swapTopBtn.classList.remove('inactive');
+  layer.mergeTopBtn.classList.remove('inactive');
+}
+
 class Layer {
   constructor(caller, callerId) {
     this.id = ++maxLayerId;
@@ -187,6 +236,9 @@ class Layer {
       this.canvas.style.zIndex = this.index;
       changePreviewSize(this.preview);
 
+      this.isTop = true;
+      this.isBottom = true;
+
       this.hideBtn = document.getElementById('hideLayer0');
       this.lockBtn = document.getElementById('lockLayer0');
       this.deleteBtn = document.getElementById('deleteLayer0');
@@ -197,6 +249,9 @@ class Layer {
       this.mergeTopBtn = document.getElementById('mergeTop0');
       this.mergeBottomBtn = document.getElementById('mergeBottom0');
       this.duplicateLayerBtn = document.getElementById('duplicateLayer0');
+
+      this.deleteBtn.classList.add('inactive');
+
     } else {
       this.display = createLayerHtml(this.id);
       this.canvas = createCanvasHtml(this.id);
@@ -217,6 +272,9 @@ class Layer {
       this.mergeTopBtn = options.children['mergeTop' + this.id];
       this.mergeBottomBtn = options.children['mergeBottom' + this.id];
       this.duplicateLayerBtn = options.children['duplicateLayer' + this.id];
+
+      this.isTop = false;
+      this.isBottom = false;
 
       activeLayer.canvas.style.pointerEvents = 'none';
       this.canvas.style.pointerEvents = 'auto';
@@ -251,29 +309,56 @@ class Layer {
     this.canvas.style.borderStyle = 'solid';
     this.ctx = this.canvas.getContext('2d');
 
-    if (caller === 'addLayerTop') {
+
+    if (caller.slice(0, 'addLayer'.length) === 'addLayer') {
       let callerLayer = layers.get(callerId);
-      layers.forEach((layer) => {
-        if (layer.index > callerLayer.index) {
-          ++layer.index;
-          layer.canvas.style.zIndex = layer.index;
+
+      if (layers.size === 1) {
+        getOldestLayer().deleteBtn.classList.remove('inactive');
+      }
+
+      if (caller === 'addLayerTop') {
+        layers.forEach((layer) => {
+          if (layer.index > callerLayer.index) {
+            ++layer.index;
+            layer.canvas.style.zIndex = layer.index;
+          }
+        });
+        callerLayer.display.before(this.display);
+        this.index = callerLayer.index + 1;
+        this.canvas.style.zIndex = this.index;
+
+        if (callerLayer.isTop) {
+          enableTopButtons(callerLayer);
+          this.isTop = true;
         }
-      });
-      callerLayer.display.before(this.display);
-      this.index = callerLayer.index + 1;
-      this.canvas.style.zIndex = this.index;
+      }
+
+      if (caller === 'addLayerBottom') {
+        layers.forEach((layer) => {
+          if (layer.index < callerLayer.index) {
+            --layer.index;
+            layer.canvas.style.zIndex = layer.index;
+          }
+        });
+        callerLayer.display.after(this.display);
+        this.index = callerLayer.index - 1;
+        this.canvas.style.zIndex = this.index;
+
+        if (callerLayer.isBottom) {
+          enableBottomButtons(callerLayer);
+          this.isBottom = true;
+        }
+      }
     }
-    if (caller === 'addLayerBottom') {
-      let callerLayer = layers.get(callerId);
-      layers.forEach((layer) => {
-        if (layer.index < callerLayer.index) {
-          --layer.index;
-          layer.canvas.style.zIndex = layer.index;
-        }
-      });
-      callerLayer.display.after(this.display);
-      this.index = callerLayer.index - 1;
-      this.canvas.style.zIndex = this.index;
+
+    if (this.isTop) {
+      this.swapTopBtn.classList.add('inactive');
+      this.mergeTopBtn.classList.add('inactive');
+    }
+    if (this.isBottom) {
+      this.swapBottomBtn.classList.add('inactive');
+      this.mergeBottomBtn.classList.add('inactive');
     }
 
     layers.set(this.id, this);
@@ -285,6 +370,14 @@ class Layer {
   delete() {
     if (layers.size === 1) return;
 
+    if (this.isTop) {
+      let newTop = getClosestBotLayer(this);
+      disableTopButtons(newTop);
+    }
+    if (this.isBottom) {
+      let newBottom = getClosestTopLayer(this);
+      disableBottomButtons(newBottom);
+    }
     layers.delete(this.id);
     let pos = 0;
     while (allCanvases[pos].id != this.canvas.id) ++pos;
@@ -297,6 +390,10 @@ class Layer {
     this.canvas.remove();
     this.display.remove();
     clearLayerHistory(this.id);
+
+    if (layers.size === 1) {
+      getOldestLayer().deleteBtn.classList.add('inactive');
+    }
   }
 }
 
@@ -413,32 +510,6 @@ function swapIndexes(layer1, layer2) {
   display1.parentNode.insertBefore(display1, display2);
 }
 
-function getClosestTopLayer(curLayer) {
-  let closestTopLayer = null;
-
-  layers.forEach((layer) => {
-    if (layer.index > curLayer.index
-        && (closestTopLayer === null || layer.index < closestTopLayer.index)) {
-      closestTopLayer = layer;
-    }
-  });
-
-  return closestTopLayer;
-}
-
-function getClosestBotLayer(curLayer) {
-  let closestBotLayer = null;
-
-  layers.forEach((layer) => {
-    if (layer.index < curLayer.index
-        && (closestBotLayer === null || layer.index > closestBotLayer.index)) {
-      closestBotLayer = layer;
-    }
-  });
-
-  return closestBotLayer;
-}
-
 function swapTopHandler(event) {
   let caller = event.target.id;
   let id = parseInt(caller.slice('swapTop'.length));
@@ -472,7 +543,7 @@ function mergeTopHandler(event) {
   oldLayer.ctx.drawImage(targetLayer.canvas, 0, 0);
   targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
   changePreview(targetLayer);
-  
+
   oldLayer.delete();
 }
 

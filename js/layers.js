@@ -314,7 +314,6 @@ class Layer {
     this.canvas.style.borderStyle = 'solid';
     this.ctx = this.canvas.getContext('2d');
 
-
     if (caller.slice(0, 'addLayer'.length) === 'addLayer') {
       let callerLayer = layers.get(callerId);
 

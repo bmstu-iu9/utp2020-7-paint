@@ -194,6 +194,9 @@ class Layer {
       this.addBottomBtn = document.getElementById('addLayerBottom0');
       this.swapTopBtn = document.getElementById('swapTop0');
       this.swapBottomBtn = document.getElementById('swapBottom0');
+      this.mergeTopBtn = document.getElementById('mergeTop0');
+      this.mergeBottomBtn = document.getElementById('mergeBottom0');
+      this.duplicateLayerBtn = document.getElementById('duplicateLayer0');
     } else {
       this.display = createLayerHtml(this.id);
       this.canvas = createCanvasHtml(this.id);
@@ -211,6 +214,9 @@ class Layer {
       this.addBottomBtn = options.children['addLayerBottom' + this.id];
       this.swapTopBtn = options.children['swapTop' + this.id];
       this.swapBottomBtn = options.children['swapBottom' + this.id];
+      this.mergeTopBtn = options.children['mergeTop' + this.id];
+      this.mergeBottomBtn = options.children['mergeBottom' + this.id];
+      this.duplicateLayerBtn = options.children['duplicateLayer' + this.id];
 
       activeLayer.canvas.style.pointerEvents = 'none';
       this.canvas.style.pointerEvents = 'auto';
@@ -236,6 +242,7 @@ class Layer {
     this.addBottomBtn.addEventListener('click', addLayerBottomHandler);
     this.swapTopBtn.addEventListener('click', swapTopHandler);
     this.swapBottomBtn.addEventListener('click', swapBottomHandler);
+    this.duplicateLayerBtn.addEventListener('click', duplicateLayerHandler);
 
     this.canvas.style.borderWidth = curCanvasBorder + 'px';
     this.canvas.style.borderColor = curCanvasBorderColor;
@@ -296,7 +303,9 @@ function changePreview(layer) {
   if (arguments.length === 0) {
     layer = activeLayer;
   }
-  let countOfSteps = Math.ceil(Math.log(layer.canvas.width / layer.preview.width) / Math.log(2));
+  let countOfSteps = Math.ceil(Math.log(layer.canvas.width
+                                        / layer.preview.width)
+                               / Math.log(2));
   let oc = document.createElement('canvas');
   let octx = oc.getContext('2d');
   let dopOc = document.createElement('canvas');
@@ -320,7 +329,8 @@ function changePreview(layer) {
 
   let previewContext = layer.preview.getContext('2d');
   previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
-  previewContext.drawImage(oc, 0, 0, oc.width / (2 ** i), oc.height / (2 ** i), 0, 0, layer.preview.width, layer.preview.height);
+  previewContext.drawImage(oc, 0, 0, oc.width / (2 ** i), oc.height / (2 ** i),
+                               0, 0, layer.preview.width, layer.preview.height);
 }
 
 function hideLayerHandler(event) {
@@ -333,7 +343,7 @@ function hideLayerHandler(event) {
     layer.hidden = false;
     layer.canvas.style.visibility = 'visible';
     layer.hideBtn.title = 'Скрыть';
-    layer.hideBtn.classList.remove('pressed'); // TODO: create this class
+    layer.hideBtn.classList.remove('pressed');
   } else {
     layer.hidden = true;
     layer.canvas.style.visibility = 'hidden';
@@ -414,7 +424,7 @@ function swapTopHandler(event) {
     }
   });
 
-  if (closestTopLayer != null) swapIndexes(curLayer, closestTopLayer);
+  if (closestTopLayer !== null) swapIndexes(curLayer, closestTopLayer);
 }
 
 function swapBottomHandler(event) {
@@ -431,5 +441,23 @@ function swapBottomHandler(event) {
     }
   });
 
-  if (closestBotLayer != null) swapIndexes(closestBotLayer, curLayer);
+  if (closestBotLayer !== null) swapIndexes(closestBotLayer, curLayer);
+}
+
+function duplicateLayerHandler(event) {
+  let caller = event.target.id;
+  let id = parseInt(caller.slice('duplicateLayer'.length));
+  let source = layers.get(id).canvas;
+  let destCtx = null;
+
+  if (!isNaN(id)) {
+    let newLayer = new Layer('addLayerTop', id);
+    destCtx = newLayer.canvas.getContext('2d');
+
+    if (destCtx !== null) {
+      console.log(source);
+      destCtx.drawImage(source, 0, 0);
+      changePreview(newLayer);
+    }
+  }
 }

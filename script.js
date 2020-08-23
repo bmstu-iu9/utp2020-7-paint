@@ -223,7 +223,7 @@ changeCanvasWidth.oninput = function () {
     layers.forEach((layer) => {
       changePreviewSize(layer.preview);
     });
-    document.getElementById("curWidth").innerHTML = curCanvasWidth + "";
+    document.getElementById('curWidth').innerHTML = curCanvasWidth + '';
   } else {
     curCanvasWidth = getWidth(width);
     changeCanvasWidth.style.background = '#ffd4d4';

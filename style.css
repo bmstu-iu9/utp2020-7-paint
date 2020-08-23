@@ -277,13 +277,16 @@ body {
 }
 
 .layerOptionsBtn {
-  width: 20px;
-  height: 20px;
   border: none;
   outline: none;
-  background-image: url("img/tools/more_layer.svg");
-  background-size: cover;
   background-color: #fafafa;
+  padding: 0px;
+}
+
+.layerOptionsImg {
+  content: url(img/tools/more_layer.svg);
+  width: 20px;
+  height: 20px;
 }
 
 .previewWindow {

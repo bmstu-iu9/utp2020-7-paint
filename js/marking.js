@@ -24,7 +24,16 @@ let markingHistory = [], curStateMarking;
 let maxMarkingCanvasHeight = document.getElementById('markingCanvasWrapper').clientHeight;
 let maxMarkingCanvasWidth = document.getElementById('markingCanvasWrapper').clientWidth;
 
-let initialOffset, markingColor, curElement = null;
+let initialOffset, markingColor, curMarking = null;
+
+const allMarkings = ['cage','vertical', 'horizontal', 'singleDiagonal',
+ 'doubleDiagonal', 'verticalWavy', 'horizontalWavy'];
+
+ allMarkings.forEach((marking) => {
+   let button = document.getElementById(mark);
+   button.onclick = window['init' + firstToUpper(marking)];
+ });
+
 
 function openModalMarking() {
   markingModal.classList.toggle('show-modal');
@@ -139,32 +148,8 @@ function deleteChangesMarking() {
   curStateMarking = 0;
 }
 
-
-
-let cage = document.getElementById('cage');
-cage.onclick = () => { initCage(); }
-
-let vertical = document.getElementById('vertical');
-vertical.onclick = () => { initVertical(); }
-
-let horizontal = document.getElementById('horizontal');
-horizontal.onclick = () => { initHorizontal(); }
-
-let singleDiagonal = document.getElementById('singleDiagonal');
-singleDiagonal.onclick = () => { initSingleDiagonal(); }
-
-let doubleDiagonal = document.getElementById('doubleDiagonal');
-doubleDiagonal.onclick = () => { initDoubleDiagonal(); }
-
-let verticalWavy = document.getElementById('verticalWavy');
-verticalWavy.onclick = () => { initVerticalWavy(); }
-
-let horizontalWavy = document.getElementById('horizontalWavy');
-horizontalWavy.onclick = () => { initHorizontalWavy(); }
-
-
 function initCage() {
-  curElement = 'cage';
+  curMarking = 'cage';
 
   setTextAndRangeParameters();
 
@@ -195,7 +180,7 @@ function startPointCage() {
 
 
 function initVertical() {
-  curElement = 'vertical';
+  curMarking = 'vertical';
 
   setTextAndRangeParameters();
   toolMarkingRange.max = 600;
@@ -226,7 +211,7 @@ function startPointVertical() {
 
 
 function initHorizontal() {
-  curElement = 'horizontal';
+  curMarking = 'horizontal';
 
   setTextAndRangeParameters();
   toolMarkingRange.max = 300;
@@ -257,7 +242,7 @@ function startPointHorizontal() {
 
 
 function initSingleDiagonal() {
-  curElement = 'singleDiagonal';
+  curMarking = 'singleDiagonal';
 
   setTextAndRangeParameters();
   toolMarkingRange.max = 600;
@@ -306,7 +291,7 @@ function startPointSingleDiagonal() {
 
 
 function initDoubleDiagonal() {
-  curElement = 'doubleDiagonal';
+  curMarking = 'doubleDiagonal';
 
   setTextAndRangeParameters();
   toolMarkingRange.max = 600;
@@ -357,7 +342,7 @@ function startPointDoubleDiagonal() {
 
 
 function initVerticalWavy() {
-  curElement = 'verticalWavy';
+  curMarking = 'verticalWavy';
 
   setTextAndRangeParameters();
   toolMarkingRange.max = 400;
@@ -400,7 +385,7 @@ function startPointVerticalWavy() {
 
 
 function initHorizontalWavy() {
-  curElement = 'horizontalWavy';
+  curMarking = 'horizontalWavy';
 
   setTextAndRangeParameters();
   toolMarkingRange.max = 400;
@@ -486,13 +471,7 @@ function getInitialOffset() {
 }
 
 function updateButton() {
-  if (curElement == 'cage') { startPointCage(); }
-  if (curElement == 'vertical') { startPointVertical(); }
-  if (curElement == 'horizontal') { startPointHorizontal(); }
-  if (curElement == 'singleDiagonal') { startPointSingleDiagonal(); }
-  if (curElement == 'doubleDiagonal') { startPointDoubleDiagonal(); }
-  if (curElement == 'verticalWavy') { startPointVerticalWavy(); }
-  if (curElement == 'horizontalWavy') { startPointHorizontalWavy(); }
+  window["startPoint" + firstToUpper(curMarking)]();
 }
 
 function disabledMarkingAndMarkingSize(trueOrFalse) {

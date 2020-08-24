@@ -121,8 +121,8 @@ downloadBtn.addEventListener('click', () => {
   for (let i = layerScrollBox.children.length - 1; i >= 0; i--) {
     if (parseLayerId(layerScrollBox.children[i].id) != null) {
       resultContext.drawImage(document.getElementById('layer'
-                                                      + parseLayerId(layerScrollBox.children[i].id)),
-                              0, 0);
+        + parseLayerId(layerScrollBox.children[i].id)),
+        0, 0);
     }
   }
 
@@ -157,11 +157,11 @@ function clearLayerHistory(id) {
   let photo = photoOfState.layers.get(id);
   for (let i = 1, last = photo[0]; i < photo.length; i++) {
     if (photo[i] !== last) {
-        photoOfState.layers.forEach((state, idOfState) => {
-          if (id != idOfState) state.splice(i - k, 1);
-        });
-        ++k;
-        if (i <= curState) ++count;
+      photoOfState.layers.forEach((state, idOfState) => {
+        if (id != idOfState) state.splice(i - k, 1);
+      });
+      ++k;
+      if (i <= curState)++count;
     }
     last = photo[i];
   }
@@ -295,21 +295,21 @@ changeCanvasHeight.oninput = function () {
     changeCanvasHeight.style.background = '#ffd4d4';
   }
 
- changePreview();
+  changePreview();
 
 
   function getHeight(str) {
 
-  if (isNaN(parseInt(str)))
+    if (isNaN(parseInt(str)))
+      return defaultHeight;
+
+    if (parseInt(str) > changeCanvasHeight.max)
+      return changeCanvasHeight.max;
+
+    if (parseInt(str) < changeCanvasHeight.min)
+      return changeCanvasHeight.min;
+
     return defaultHeight;
-
-   if (parseInt(str) > changeCanvasHeight.max)
-    return changeCanvasHeight.max;
-
-   if (parseInt(str) < changeCanvasHeight.min)
-    return changeCanvasHeight.min;
-
-   return defaultHeight;
   }
 
   function setHeight(event) {
@@ -391,6 +391,7 @@ borderColor.oninput = function () {
       canvas.style.borderColor = color;
     });
     curCanvasBorderColor = color;
+    colorBorderBtn.style.background = color;
   } else {
     allCanvases.forEach((canvas) => {
       canvas.style.borderColor = '#000000';
@@ -401,9 +402,9 @@ borderColor.oninput = function () {
 
 function checkPxInput(str, min, max) {
   const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return  pxInputRegExp.test(str) &&
-         (parseInt(str) >= min) &&
-         (parseInt(str) <= max);
+  return pxInputRegExp.test(str) &&
+    (parseInt(str) >= min) &&
+    (parseInt(str) <= max);
 }
 
 
@@ -415,7 +416,19 @@ function hideAndShow(element) {
 }
 
 document.getElementById('help').addEventListener('click', (event) => {
-  hideAndShow('helpMenu', event);
+  toggleModal();
+  hintsContent.innerHTML = `Горячие клавиши:
+      <ul>
+          <li>Alt + c — очистить холст</li>
+          <li>Alt + p — выбрать цвет</li>
+          <li>Alt + s — сохранить</li>
+          <li>Alt + u — загрузить фото</li>
+          <li>Alt + y — вернуть</li>
+          <li>Alt + z — отменить</li>
+          <li>Ctrl + c — скопировать выделенную область</li>
+          <li>Ctrl + v — вставить скопированную область</li>
+          <li>Ctrl + Backspace — очистить выделенную область</li>
+      </ul>`;
 });
 
 let firstClickUpload = true;
@@ -440,8 +453,29 @@ document.getElementById('figure').addEventListener('click', (event) => {
   hideAndShow('figureMenu', event);
 });
 
+document.getElementById('settings').addEventListener('click', (event) => {
+  hideAndShow('settingsMenu', event);
+});
+
 document.getElementById('openPanel').addEventListener('click', (event) => {
-  hideAndShow('leftContainer', event);
+  if (document.getElementById('leftContainer').style.width == "8vh") {
+    document.getElementById('leftContainer').style.width = "0";
+    if (document.getElementById('brushMenu').hidden == false) {
+      hideAndShow('brushMenu', event);
+    }
+    if (document.getElementById('figureMenu').hidden == false) {
+      hideAndShow('figureMenu', event);
+    }
+    if (document.getElementById('toolSettingsMenu').hidden == false) {
+      hideAndShow('toolSettingsMenu', event)
+    }
+    if (document.getElementById('fillMenu').hidden == false) {
+      hideAndShow('fillMenu', event)
+    }
+  }
+  else {
+    document.getElementById('leftContainer').style.width = "8vh";
+  }
 });
 
 document.getElementById('toolSettings').addEventListener('click', (event) => {

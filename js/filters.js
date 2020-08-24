@@ -152,11 +152,11 @@ function useFiltersModal() {
   let blurFilterButton = document.getElementById('blur');
   blurFilterButton.onclick = () => {
     applyConvolutionMatrixFilter(
-      [1/256, 4/256, 6/256, 4/256, 1/256,
-      4/256, 16/256, 24/256, 16/256, 4/256,
-      6/256, 24/256, 36/256, 24/256, 6/256,
-      4/256, 16/256, 24/256, 16/256, 4/256,
-      1/256, 4/256, 6/256, 4/256, 1/256], 1);
+      [1 / 256, 4 / 256, 6 / 256, 4 / 256, 1 / 256,
+      4 / 256, 16 / 256, 24 / 256, 16 / 256, 4 / 256,
+      6 / 256, 24 / 256, 36 / 256, 24 / 256, 6 / 256,
+      4 / 256, 16 / 256, 24 / 256, 16 / 256, 4 / 256,
+      1 / 256, 4 / 256, 6 / 256, 4 / 256, 1 / 256], 1);
     rememberFilterState();
   }
 
@@ -210,9 +210,9 @@ function useFiltersModal() {
         curImageData.data[getIndexOfGreenInData(x, y)] = -0.3086 * red + 1.3906 * green - 0.082 * blue;
         curImageData.data[getIndexOfBlueInData(x, y)] = -0.3086 * red - 0.6094 * green + 1.918 * blue;
       } else if (filterName === 'binarization') {
-        curImageData.data[getIndexOfRedInData(x, y)] = 255 * Math.floor(red/128);
-        curImageData.data[getIndexOfGreenInData(x, y)] = 255 * Math.floor(green/128);
-        curImageData.data[getIndexOfBlueInData(x, y)] = 255 * Math.floor(blue/128);
+        curImageData.data[getIndexOfRedInData(x, y)] = 255 * Math.floor(red / 128);
+        curImageData.data[getIndexOfGreenInData(x, y)] = 255 * Math.floor(green / 128);
+        curImageData.data[getIndexOfBlueInData(x, y)] = 255 * Math.floor(blue / 128);
       }
     }
   }
@@ -308,7 +308,7 @@ function useFiltersModal() {
 
   function applyBrightnessFilter(brightnessCoef) {
     let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    let adjustment = 10*brightnessCoef;
+    let adjustment = 10 * brightnessCoef;
 
     for (let i = 0; i < canvas.width; i++) {
       for (let j = 0; j < canvas.height; j++) {
@@ -334,11 +334,11 @@ function useFiltersModal() {
     isClickedSharp = false;
     context.drawImage(memCanvas, 0, 0);
     applyConvolutionMatrixFilter(
-      [-1/256, -4/256, -6/256, -4/256, -1/256,
-      -4/256, -16/256, -24/256, -16/256, -4/256,
-      -6/256, -24/256, 476/256, -24/256, -6/256,
-      -4/256, -16/256, -24/256, -16/256, -4/256,
-      -1/256, -4/256, -6/256, -4/256, -1/256], sharpRange.value);
+      [-1 / 256, -4 / 256, -6 / 256, -4 / 256, -1 / 256,
+      -4 / 256, -16 / 256, -24 / 256, -16 / 256, -4 / 256,
+      -6 / 256, -24 / 256, 476 / 256, -24 / 256, -6 / 256,
+      -4 / 256, -16 / 256, -24 / 256, -16 / 256, -4 / 256,
+      -1 / 256, -4 / 256, -6 / 256, -4 / 256, -1 / 256], sharpRange.value);
   }
 
   sharpRange.onchange = () => {
@@ -353,7 +353,7 @@ function useFiltersModal() {
 
   function applySobelFilter() {
     applySimpleFilter('grey-scale');
-    let srcBuff = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    // let srcBuff = context.getImageData(0, 0, canvas.width, canvas.height).data;
     let horizontal = getResultOfConvolutionMatrixFilter([-1, -2, -1, 0, 0, 0, 1, 2 , 1], 1);
     let vertical =  getResultOfConvolutionMatrixFilter([-1, 0, 1, -2, 0, 2, -1, 0 , 1], 1);
     let finalImg = context.createImageData(canvas.width, canvas.height);
@@ -361,9 +361,9 @@ function useFiltersModal() {
        let v = Math.abs(vertical.data[i]);
        finalImg.data[i] = v;
        let h = Math.abs(horizontal.data[i]);
-       finalImg.data[i+1] = h;
-       finalImg.data[i+2] = (v + h)/4;
-       finalImg.data[i+3] = 255;
+       finalImg.data[i + 1] = h;
+       finalImg.data[i + 2] = (v + h) / 4;
+       finalImg.data[i + 3] = 255;
      }
      context.putImageData(finalImg, 0, 0);
      endFilter();
@@ -372,7 +372,7 @@ function useFiltersModal() {
   function getResultOfConvolutionMatrixFilter(weights, coeff) {
     let width = canvas.width;
     let height = canvas.height;
-    let x, sx, sy, red, green, blue, dstOff, srcOff, wt, cx, cy, scy, scx,
+    let sx, sy, red, green, blue, dstOff, srcOff, wt, cx, cy, scy, scx,
     katet = Math.round(Math.sqrt(weights.length)),
     half = (katet * 0.5) | 0,
     dstData = context.createImageData(width, height),
@@ -465,8 +465,8 @@ function useFiltersModal() {
 
           array.sort((a, b) => a - b);
 
-          let mediam = array[Math.floor(array.length/2)];
-          resultImageData.data[getIndexOfRedInData(i ,j) + k] = mediam;
+          let median = array[Math.floor(array.length / 2)];
+          resultImageData.data[getIndexOfRedInData(i ,j) + k] = median;
         }
       }
     }

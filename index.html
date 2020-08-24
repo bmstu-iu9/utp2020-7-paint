@@ -167,13 +167,18 @@
         <button title="Скрыть" class="layerBtn visibleLayer" id="hideLayer0"></button>
         <button title="Заблокировать" class="layerBtn unlockedLayer" id="lockLayer0"></button>
         <div class="droplist" id="droplist0">
-          <button class="layerOptionsBtn"></button>
+          <button class="layerOptionsBtn">
+            <img src="img/tools/more_layer.svg" width="20px" height="20px"></img>
+          </button>
           <div class="layerOptions" id="layerOptions0">
             <button id="deleteLayer0">Удалить слой</button>
             <button id="addLayerTop0">Добавить слой сверху</button>
             <button id="addLayerBottom0">Добавить слой снизу</button>
             <button id="swapTop0">Поднять слой</button>
             <button id="swapBottom0">Опустить слой</button>
+            <button id="mergeTop0">Слить с верхним</button>
+            <button id="mergeBottom0">Слить с нижним</button>
+            <button id="duplicateLayer0">Дублировать</button>
           </div>
         </div>
       </div>
@@ -207,6 +212,8 @@
 
 <div class="resizable" id="photoResizer" hidden="true">
   <div class="resizers" id="photoInsertion">
+    <button class="rotator middle" id="photoRotator" style="background-image: url(img/rotate.png)">
+    </button>
     <div class="resizer top-left"></div>
     <div class="resizer top-right"></div>
     <div class="resizer bottom-left"></div>

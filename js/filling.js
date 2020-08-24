@@ -89,7 +89,9 @@ function fill(event) {
       originalImageData.data[getIndexOfBlueInData(x, y)],
       originalImageData.data[getIndexOfAlphaInData(x, y)],
     ]
-    return ((getColorDifference(RGBAtoRGB(thisRGBA), RGBAtoRGB(startRGBA))/maxAllowableColorDifference)*100 <= curAllowableColorDifference);
+    return (((getColorDifference(RGBAtoRGB(thisRGBA), RGBAtoRGB(startRGBA))
+             / maxAllowableColorDifference) * 100)
+            <= curAllowableColorDifference);
   }
 
   function wasPushed(x, y) {

@@ -27,6 +27,7 @@ function stopEyedropper(event) {
   curColor = color;
   colorInput.value = '#' + rgbToHex(color);
   document.getElementById('colorBtn').style.background = arrayToRgb(color);
+  showCurColor();
   switchEyedropperWindow();
   eyedropperButton.click();
 }

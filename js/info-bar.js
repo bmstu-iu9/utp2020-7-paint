@@ -1,5 +1,9 @@
 'use strict';
 
+let usedColors = [];
+let usedColorsIds = [];
+const maxUsedColors = [];
+
 function getCurCoordsOnCanvas(event) {
   let eventLocation = getEventLocation(canvas, event);
 
@@ -20,4 +24,9 @@ function showCurCoordsOnCanvas() {
   }
 
   canvas.addEventListener('mousemove', printCurCoords);
+}
+
+function showCurColor() {
+  //set here color on some window
+  //document.getElementById('curColorWindow').style.background = '#' + rgbToHex(curColor);
 }

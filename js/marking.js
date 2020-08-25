@@ -1,7 +1,5 @@
 'use strict';
 
-let undoMarking = document.getElementById('undoMarking');
-let redoMarking = document.getElementById('redoMarking');
 let deletingChangesMarking = document.getElementById('deletingChangesMarking');
 
 let markingModal = document.getElementById('markingModal');
@@ -26,15 +24,6 @@ let maxMarkingCanvasWidth = document.getElementById('markingCanvasWrapper').clie
 
 let initialOffset, markingColor, curMarking = null;
 
-const allMarkings = ['cage','vertical', 'horizontal', 'singleDiagonal',
- 'doubleDiagonal', 'verticalWavy', 'horizontalWavy'];
-
- allMarkings.forEach((marking) => {
-   let button = document.getElementById(mark);
-   button.onclick = window['init' + firstToUpper(marking)];
- });
-
-
 function openModalMarking() {
   markingModal.classList.toggle('show-modal');
   useMarkingModal();
@@ -54,9 +43,7 @@ function useMarkingModal() {
   markingColor = 'black';
   markingColorBtn.style.background = 'black';
 
-  disabledMarkingAndMarkingSize(true);
-  disabledAngle(true);
-  disabledAmplitude(true);
+  disableMarkingTextAndRange(true, true, true);
 
   markingCanvas.setAttribute('width', canvas.width);
   markingCanvas.setAttribute('height', canvas.height);
@@ -65,9 +52,6 @@ function useMarkingModal() {
 
   markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingModalContext.drawImage(canvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
-
-  undoMarking.addEventListener('click', applyPrevState);
-  redoMarking.addEventListener('click', applyNextState);
 
   deletingChangesMarking.addEventListener('click', deleteChangesMarking);
   closeMarkingWithSaving.addEventListener('click', closeModalWithSaving);
@@ -104,8 +88,6 @@ function closeModalWithSaving() {
 }
 
 function deleteMarking() {
-  undoMarking.removeEventListener('click', applyPrevState);
-  redoMarking.removeEventListener('click', applyNextState);
   deletingChangesMarking.removeEventListener('click', deleteChangesMarking);
   closeMarkingWithSaving.removeEventListener('click', closeModalWithSaving);
   closeMarkingWithoutSaving.removeEventListener('click', closeModalWithoutSaving);
@@ -114,15 +96,6 @@ function deleteMarking() {
 function applyPrevState() {
   if (curStateMarking > 0) {
     --curStateMarking;
-    markingContext.putImageData(markingHistory[curStateMarking], 0, 0);
-    markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
-    markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
-  }
-}
-
-function applyNextState() {
-  if (curStateMarking + 1 < markingHistory.length) {
-    ++curStateMarking;
     markingContext.putImageData(markingHistory[curStateMarking], 0, 0);
     markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
     markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
@@ -148,15 +121,21 @@ function deleteChangesMarking() {
   curStateMarking = 0;
 }
 
+
+
+const allMarkings = ['cage','vertical', 'horizontal', 'singleDiagonal',
+ 'doubleDiagonal', 'verticalWavy', 'horizontalWavy'];
+
+ allMarkings.forEach((marking) => {
+   let button = document.getElementById(marking);
+   button.onclick = window['init' + firstToUpper(marking)];
+ });
+
 function initCage() {
+  setTextAndRangeParameters();
   curMarking = 'cage';
 
-  setTextAndRangeParameters();
-
-  disabledMarkingAndMarkingSize(false);
-  disabledAngle(true);
-  disabledAmplitude(true);
-
+  disableMarkingTextAndRange(false, true, true);
   startPointCage();
 }
 
@@ -180,15 +159,11 @@ function startPointCage() {
 
 
 function initVertical() {
-  curMarking = 'vertical';
-
   setTextAndRangeParameters();
+  curMarking = 'vertical';
   toolMarkingRange.max = 600;
 
-  disabledMarkingAndMarkingSize(false);
-  disabledAngle(true);
-  disabledAmplitude(true);
-
+  disableMarkingTextAndRange(false, true, true);
   startPointVertical();
 }
 
@@ -211,15 +186,11 @@ function startPointVertical() {
 
 
 function initHorizontal() {
-  curMarking = 'horizontal';
-
   setTextAndRangeParameters();
+  curMarking = 'horizontal';
   toolMarkingRange.max = 300;
 
-  disabledMarkingAndMarkingSize(false);
-  disabledAngle(true);
-  disabledAmplitude(true);
-
+  disableMarkingTextAndRange(false, true, true);
   startPointHorizontal();
 }
 
@@ -242,18 +213,15 @@ function startPointHorizontal() {
 
 
 function initSingleDiagonal() {
+  setTextAndRangeParameters();
   curMarking = 'singleDiagonal';
 
-  setTextAndRangeParameters();
   toolMarkingRange.max = 600;
   inclinationAngle = 45;
   toolAngleRange.value = 45;
   toolAngleText.value = '45°';
 
-  disabledMarkingAndMarkingSize(false);
-  disabledAngle(false);
-  disabledAmplitude(true);
-
+  disableMarkingTextAndRange(false, false, true);
   startPointSingleDiagonal();
 }
 
@@ -291,18 +259,15 @@ function startPointSingleDiagonal() {
 
 
 function initDoubleDiagonal() {
+  setTextAndRangeParameters();
   curMarking = 'doubleDiagonal';
 
-  setTextAndRangeParameters();
   toolMarkingRange.max = 600;
   inclinationAngle = 45;
   toolAngleRange.value = 45;
   toolAngleText.value = '45°';
 
-  disabledMarkingAndMarkingSize(false);
-  disabledAngle(false);
-  disabledAmplitude(true);
-
+  disableMarkingTextAndRange(false, false, true);
   startPointDoubleDiagonal();
 }
 
@@ -342,18 +307,15 @@ function startPointDoubleDiagonal() {
 
 
 function initVerticalWavy() {
+  setTextAndRangeParameters();
   curMarking = 'verticalWavy';
 
-  setTextAndRangeParameters();
   toolMarkingRange.max = 400;
   markingAmplitude = 45;
   toolAmplitudeRange.value = 45;
   toolAmplitudeText.value = '45°';
 
-  disabledMarkingAndMarkingSize(false);
-  disabledAmplitude(false);
-  disabledAngle(true);
-
+  disableMarkingTextAndRange(false, true, false);
   startPointVerticalWavy();
 }
 
@@ -385,18 +347,15 @@ function startPointVerticalWavy() {
 
 
 function initHorizontalWavy() {
+  setTextAndRangeParameters();
   curMarking = 'horizontalWavy';
 
-  setTextAndRangeParameters();
   toolMarkingRange.max = 400;
   markingAmplitude = 45;
   toolAmplitudeRange.value = 45;
   toolAmplitudeText.value = '45°';
 
-  disabledMarkingAndMarkingSize(false);
-  disabledAmplitude(false);
-  disabledAngle(true);
-
+  disableMarkingTextAndRange(false, true, false);
   startPointHorizontalWavy();
 }
 
@@ -471,25 +430,22 @@ function getInitialOffset() {
 }
 
 function updateButton() {
+  if (curMarking == null) return;
   window["startPoint" + firstToUpper(curMarking)]();
 }
 
-function disabledMarkingAndMarkingSize(trueOrFalse) {
-  document.getElementById('toolMarkingSizeText').disabled = trueOrFalse;
-  document.getElementById('toolMarkingSizeRange').disabled = trueOrFalse;
+function disableMarkingTextAndRange(isDisabledMarkingSizeAndInterval, isDisabledAngle, isDisabledAmplitude) {
+  document.getElementById('toolMarkingSizeText').disabled = isDisabledMarkingSizeAndInterval;
+  document.getElementById('toolMarkingSizeRange').disabled = isDisabledMarkingSizeAndInterval;
 
-  document.getElementById('toolMarkingText').disabled = trueOrFalse;
-  document.getElementById('toolMarkingRange').disabled = trueOrFalse;
-}
+  document.getElementById('toolMarkingText').disabled = isDisabledMarkingSizeAndInterval;
+  document.getElementById('toolMarkingRange').disabled = isDisabledMarkingSizeAndInterval;
 
-function disabledAngle(trueOrFalse) {
-  document.getElementById('toolAngleText').disabled = trueOrFalse;
-  document.getElementById('toolAngleRange').disabled = trueOrFalse;
-}
+  document.getElementById('toolAngleText').disabled = isDisabledAngle;
+  document.getElementById('toolAngleRange').disabled = isDisabledAngle;
 
-function disabledAmplitude(trueOrFalse) {
-  document.getElementById('toolAmplitudeText').disabled = trueOrFalse;
-  document.getElementById('toolAmplitudeRange').disabled = trueOrFalse;
+  document.getElementById('toolAmplitudeText').disabled = isDisabledAmplitude;
+  document.getElementById('toolAmplitudeRange').disabled = isDisabledAmplitude;
 }
 
 

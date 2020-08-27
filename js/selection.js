@@ -78,16 +78,13 @@ function drawRectangleSelection(e) {
     selectionCanvas.id = 'selectionCanvas';
     allCanvases.push(selectionCanvas);
 
-    document.body.appendChild(selectionCanvas);
+    canvasesField.appendChild(selectionCanvas);
 
     selectionCanvas.classList.add('mainCanvas');
     selectionCanvas.style.width = curCanvasWidth + 'px';
     selectionCanvas.style.height = curCanvasHeight + 'px';
     selectionCanvas.setAttribute('width', curCanvasWidth);
     selectionCanvas.setAttribute('height', curCanvasHeight);
-    selectionCanvas.style.top = canvas.style.top;
-    selectionCanvas.style.left = canvas.style.left;
-    selectionCanvas.style.margin = canvas.style.margin;
     selectionCanvas.style.zIndex = 999;
     selectionCanvas.style.pointerEvents = 'none';
   }
@@ -98,7 +95,7 @@ function drawRectangleSelection(e) {
   curY = e.pageY - deltaY;
 
   let selectionContext = document.getElementById('selectionCanvas').getContext('2d');
-  selectionContext.clearRect(0, 0, canvas.width, canvas.height);
+  selectionContext.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
   selectionContext.beginPath();
   selectionContext.setLineDash([5, 5]);
   selectionContext.strokeStyle = 'grey';
@@ -110,20 +107,20 @@ function drawRectangleSelection(e) {
 
 
 function rememberCanvasWithoutSelection() {
-  rememberedCanvas.width = canvas.width;
-  rememberedCanvas.height = canvas.height;
-  rememberedContext.clearRect(0, 0, canvas.width, canvas.height);
+  rememberedCanvas.width = curCanvasWidth;
+  rememberedCanvas.height = curCanvasHeight;
+  rememberedContext.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
   rememberedContext.drawImage(canvas, 0, 0);
 }
 
 function uniteRememberAndSelectedImages() {
-  let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  let rememberedImageData = rememberedContext.getImageData(0, 0, canvas.width, canvas.height);
+  let curImageData = context.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
+  let rememberedImageData = rememberedContext.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
 
   let resultImageData = curImageData;
 
-  for (let i = 0; i < canvas.width; i++) {
-    for (let j = 0; j < canvas.height; j++) {
+  for (let i = 0; i < curCanvasWidth; i++) {
+    for (let j = 0; j < curCanvasHeight; j++) {
       if (arrayOfSelectedArea[i] === undefined || arrayOfSelectedArea[i][j] !== true) {
         resultImageData.data[getIndexOfRedInData(i, j)] = rememberedImageData.data[getIndexOfRedInData(i, j)];
         resultImageData.data[getIndexOfGreenInData(i, j)] = rememberedImageData.data[getIndexOfGreenInData(i, j)];
@@ -176,9 +173,9 @@ function copySelectedArea() {
 }
 
 function clearSelectedArea() {
-  let resultImageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < canvas.width; i++) {
-    for (let j = 0; j < canvas.height; j++) {
+  let resultImageData = context.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
+  for (let i = 0; i < curCanvasWidth; i++) {
+    for (let j = 0; j < curCanvasHeight; j++) {
       if (arrayOfSelectedArea[i] !== undefined && arrayOfSelectedArea[i][j] === true) {
         resultImageData.data[getIndexOfRedInData(i, j)] = 0;
         resultImageData.data[getIndexOfGreenInData(i, j)] = 0;
@@ -199,8 +196,8 @@ function insertCanvas(copyCanvas) {
       if (isThereSelection) rememberCanvasWithoutSelection();
       let posOfPhoto = getElementPosition(canvasInsertion);
       let posOfCanvas = getElementPosition(canvas);
-      let dx = Math.floor(posOfPhoto.x - posOfCanvas.x - curCanvasBorder + 3);
-      let dy = Math.floor(posOfPhoto.y - posOfCanvas.y - curCanvasBorder + 3);
+      let dx = posOfPhoto.x - posOfCanvas.x - curCanvasBorder;
+      let dy = posOfPhoto.y - posOfCanvas.y - curCanvasBorder;
 
       context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
 
@@ -220,8 +217,8 @@ function insertCanvas(copyCanvas) {
     canvasInsertion.hidden = false;
     canvasInsertion.style.width = 'auto';
     canvasInsertion.style.height = 'auto';
-    canvasInsertion.style.top = canvas.getBoundingClientRect().top + canvas.height / 2 - canvasInsertion.offsetHeight / 2 + 'px';
-    canvasInsertion.style.left = canvas.getBoundingClientRect().left + canvas.width / 2 + - canvasInsertion.offsetWidth / 2 + 'px';
+    canvasInsertion.style.top = canvas.getBoundingClientRect().top + curCanvasHeight / 2 - canvasInsertion.offsetHeight / 2 + 'px';
+    canvasInsertion.style.left = canvas.getBoundingClientRect().left + curCanvasWidth / 2 + - canvasInsertion.offsetWidth / 2 + 'px';
     canvasInsertion.style.zIndex = activeLayer.index;
   }
 

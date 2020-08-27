@@ -146,12 +146,7 @@ body {
   position: absolute;
   width: 780px;
   height: 400px;
-  padding: 0;
-  margin: auto;
-  top: 45px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: block;
 }
 
 #backCanvas {
@@ -163,6 +158,35 @@ body {
   #backCanvas.highlight {
     box-shadow: 0 0 30px rgba(0,0,0,0.8);
   }
+
+#canvasesField {
+  position: absolute;
+  width: 782px;
+  height: 402px;
+  max-width: 1802px;
+  max-height: 1002px;
+  padding: 0;
+  margin: auto;
+  top: 45px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 3px solid transparent;
+  z-index: inherit;
+}
+
+#canvasResizer {
+  right: -10px;
+  bottom: -10px;
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: white;
+  border: 3px solid #bbbbbb;
+  padding: 0;
+  margin: 0;
+  cursor: nwse-resize;
+}
 
 .layersFieldActive {
   position: fixed;
@@ -582,9 +606,9 @@ option:checked {
 
 #pastedText {
   font-family: 'Passion One';
-  font-size: 3vh;
+  font-size: 20px;
   background-color: white;
-  padding: 1vh;
+  padding: 10px;
   box-sizing: border-box;
   border: 0.2vh dashed #bbbbbb;
   outline: none;

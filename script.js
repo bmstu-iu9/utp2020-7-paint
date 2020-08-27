@@ -3,6 +3,7 @@
 let backCanvas = document.getElementById('backCanvas');
 let canvas = document.getElementById('layer0');
 let context = canvas.getContext('2d');
+let canvasesField = document.getElementById('canvasesField');
 
 const defaultWidth = 780;
 const defaultHeight = 400;
@@ -33,8 +34,8 @@ let memContext = memCanvas.getContext('2d');
 let uploadImage = document.getElementById('uploadImage');
 
 function saveImg() {
-  memCanvas.width = canvas.width;
-  memCanvas.height = canvas.height;
+  memCanvas.width = curCanvasWidth;
+  memCanvas.height = curCanvasHeight;
   memContext.drawImage(canvas, 0, 0);
 }
 
@@ -204,6 +205,23 @@ changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
 changeBorderWidth.value = defaultBorder + 'px';
 
+function setCanvasWidth() {
+  clearAllLayers();
+
+  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.width = curCanvasWidth + 'px';
+    canvas.setAttribute('width', curCanvasWidth + 'px');
+  });
+  layers.forEach((layer) => {
+    changePreviewSize(layer.preview);
+  });
+
+  document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  changeCanvasWidth.style.background = '#ffffff';
+  changeCanvasWidth.value = curCanvasWidth + 'px';
+}
+
 changeCanvasWidth.oninput = function () {
   addEventListener('keydown', setWidth);
 
@@ -213,19 +231,9 @@ changeCanvasWidth.oninput = function () {
 
   if (checkPxInput(width, minW, maxW)) {
     curCanvasWidth = parseInt(width);
-    clearAllLayers();
-
-    changeCanvasWidth.style.background = '#ffffff';
-    allCanvases.forEach((canvas) => {
-      canvas.style.width = curCanvasWidth + 'px';
-      canvas.setAttribute('width', curCanvasWidth + 'px');
-    });
-    layers.forEach((layer) => {
-      changePreviewSize(layer.preview);
-    });
-    document.getElementById('curWidth').innerHTML = curCanvasWidth + '';
+    setCanvasWidth();
   } else {
-    curCanvasWidth = getWidth(width);
+    curCanvasWidth = parseInt(getWidth(width));
     changeCanvasWidth.style.background = '#ffd4d4';
   }
 
@@ -247,24 +255,27 @@ changeCanvasWidth.oninput = function () {
 
   function setWidth(event) {
     if (event.key === 'Enter') {
-      let actualWidth = curCanvasWidth;
-
-      clearAllLayers();
-
-      allCanvases.forEach((canvas) => {
-        canvas.style.width = actualWidth + 'px';
-        canvas.setAttribute('width', actualWidth + 'px');
-      });
-      layers.forEach((layer) => {
-        changePreviewSize(layer.preview);
-      });
-
-      changeCanvasWidth.value = actualWidth + 'px';
-      document.getElementById('curWidth').innerHTML = actualWidth + '';
-      changeCanvasWidth.style.background = '#ffffff';
+      setCanvasWidth();
       removeEventListener('keydown', setWidth);
     }
   }
+}
+
+function setCanvasHeight() {
+  clearAllLayers();
+
+  canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.height = curCanvasHeight + 'px';
+    canvas.setAttribute('height', curCanvasHeight + 'px');
+  });
+  layers.forEach((layer) => {
+    changePreviewSize(layer.preview);
+  });
+
+  document.getElementById('curHeight').innerHTML = curCanvasHeight;
+  changeCanvasHeight.style.background = '#ffffff';
+  changeCanvasHeight.value = curCanvasHeight + 'px';
 }
 
 changeCanvasHeight.oninput = function () {
@@ -276,27 +287,13 @@ changeCanvasHeight.oninput = function () {
 
   if (checkPxInput(height, minH, maxH)) {
     curCanvasHeight = parseInt(height);
-
-    clearAllLayers();
-
-    allCanvases.forEach((canvas) => {
-      canvas.style.height = curCanvasHeight + 'px';
-      canvas.setAttribute('height', curCanvasHeight + 'px');
-    });
-    layers.forEach((layer) => {
-      changePreviewSize(layer.preview);
-    });
-
-    document.getElementById('curHeight').innerHTML = curCanvasHeight + '';
-    changeCanvasHeight.style.background = '#ffffff';
-    changeCanvasHeight.value = curCanvasHeight;
+    setCanvasHeight();
   } else {
-    curCanvasHeight = getHeight(height);
+    curCanvasHeight = parseInt(getHeight(height));
     changeCanvasHeight.style.background = '#ffd4d4';
   }
 
   changePreview();
-
 
   function getHeight(str) {
 
@@ -314,22 +311,7 @@ changeCanvasHeight.oninput = function () {
 
   function setHeight(event) {
     if (event.key === 'Enter') {
-      let actualHeight = curCanvasHeight;
-
-      clearAllLayers();
-
-      allCanvases.forEach((canvas) => {
-        canvas.style.height = actualHeight + 'px';
-        canvas.setAttribute('height', actualHeight + 'px');
-      });
-      layers.forEach((layer) => {
-        changePreviewSize(layer.preview);
-      });
-
-      changeCanvasHeight.value = actualHeight + 'px';
-      document.getElementById('curHeight').innerHTML = actualHeight + '';
-      changeCanvasHeight.style.background = '#ffffff';
-
+      setCanvasHeight();
       removeEventListener('keydown', setHeight);
     }
   }
@@ -347,9 +329,13 @@ changeBorderWidth.oninput = function () {
     allCanvases.forEach((canvas) => {
       canvas.style.borderWidth = curCanvasBorder + 'px';
     });
+    canvasesField.style.height = canvas.offsetHeight + 'px';
+    canvasesField.style.width = canvas.offsetWidth + 'px';
+    canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
+    canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
     changeBorderWidth.style.background = '#ffffff';
   } else {
-    curCanvasBorder = getBorder(border);
+    curCanvasBorder = parseInt(getBorder(border));
     changeBorderWidth.style.background = '#ffd4d4';
     backCanvas.style.borderWidth = curCanvasBorder;
   }
@@ -370,17 +356,18 @@ changeBorderWidth.oninput = function () {
 
   function setBorder(event) {
     if (event.key === 'Enter') {
-      let actualBorder = curCanvasBorder;
-
-      changeBorderWidth.value = actualBorder + 'px';
+      changeBorderWidth.value = curCanvasBorder + 'px';
       changeBorderWidth.style.background = '#ffffff';
       allCanvases.forEach((canvas) => {
-        canvas.style.borderWidth = actualBorder + 'px';
+        canvas.style.borderWidth = curCanvasBorder + 'px';
       });
+      canvasesField.style.height = canvas.offsetHeight + 'px';
+      canvasesField.style.width = canvas.offsetWidth + 'px';
+      canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
+      canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
 
       removeEventListener('keydown', setBorder);
     }
-
   }
 }
 

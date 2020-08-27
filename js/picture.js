@@ -3,7 +3,6 @@
 let photoResizer = document.getElementById('photoResizer');
 let photoRotator = document.getElementById('photoRotator');
 let deleteImageBtn = document.getElementById('deleteImage');
-let isResizing = false, isRotating = false;
 let curImg, originalImgWidth, originalImgHeight;
 let deltaImgX, deltaImgY;
 let photoAngle = 0, sign = 1;
@@ -109,6 +108,8 @@ function insertImg(img) {
 photoResizer.ondragstart = () => false;
 
 photoResizer.addEventListener('mousedown', (e) => {
+  e.stopPropagation();
+  photoResizer.style.zIndex = activeLayer.index;
   let curMiddle = getMiddleCoords(photoResizer);
   let shiftX = e.clientX - (curMiddle.x - deltaImgX);
   let shiftY = e.clientY - (curMiddle.y - deltaImgY);
@@ -119,7 +120,7 @@ photoResizer.addEventListener('mousedown', (e) => {
   }
 
   function move(e) {
-    if (!isResizing && !isRotating) moveAt(e.clientX, e.clientY);
+    moveAt(e.clientX, e.clientY);
   }
 
   function stop() {
@@ -134,7 +135,7 @@ photoResizer.addEventListener('mousedown', (e) => {
 
 photoRotator.addEventListener('mousedown', (e) => {
   e.preventDefault();
-  isRotating = true;
+  e.stopPropagation();
   let lastX = e.pageX, lastY = e.pageY;
   let center = getMiddleCoords(photoResizer);
 
@@ -188,7 +189,6 @@ photoRotator.addEventListener('mousedown', (e) => {
   }
 
   function stopRotate() {
-    isRotating = false;
     document.removeEventListener('mousemove', rotate);
     document.removeEventListener('mouseup', stopRotate);
   }
@@ -207,6 +207,7 @@ function makeResizablePhoto(element) {
     let currentResizer = resizers[i];
     currentResizer.addEventListener('mousedown', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       originalWidth = element.clientWidth;
       originalHeight = element.clientHeight;
       originalX = getMiddleCoords(img).x - deltaImgX + pageXOffset;
@@ -272,7 +273,6 @@ function makeResizablePhoto(element) {
     }
 
     function resize(e) {
-      isResizing = true;
       let width, height;
 
       if (currentResizer.classList.contains('bottom-right')) {
@@ -329,8 +329,8 @@ function makeResizablePhoto(element) {
     }
 
     function stopResize() {
-      isResizing = false;
       document.removeEventListener('mousemove', resize);
+      document.removeEventListener('mouseup', stopResize);
     }
   }
 }

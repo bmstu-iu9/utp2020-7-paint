@@ -7,7 +7,7 @@ textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']
 
 function chooseTextFormat() {
   if (!isThereSelection) {
-    writeText(canvas.width / 2, canvas.height / 2);
+    writeText(curCanvasWidth / 2, curCanvasHeight / 2);
   } else {
     writeText(leftTopPointSelection[0]
               + (rightBottomPointSelection[0] - leftTopPointSelection[0]) / 2,
@@ -23,8 +23,9 @@ function initText() {
 
   function pressForInsertion() {
     if (event.code === 'Enter' && event.altKey) {
-      dxOfText = pastedText.getBoundingClientRect().width;
-      dyOfText = pastedText.getBoundingClientRect().height;
+      let padding = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('padding').replace('px', ''));
+      dxOfText = pastedText.clientWidth - padding * 2;
+      dyOfText = pastedText.clientHeight - padding * 2;
       pastedText.hidden = true;
       textMenu.hidden = false;
       textFormat.addEventListener('click', startPointText);
@@ -41,7 +42,7 @@ function deleteText() {
 
   if (!textMenu.hidden) {
     clearCanvas();
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+    context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
     textMenu.hidden = true;
   }
 
@@ -57,7 +58,7 @@ function deleteText() {
 
 function writeText(x, y) {
   clearCanvas();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   if (isThereSelection) rememberCanvasWithoutSelection();
   context.save();
 

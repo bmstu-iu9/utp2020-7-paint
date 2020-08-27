@@ -17,7 +17,7 @@ markingModalCanvas.setAttribute('height', markingModalCanvas.height);
 let markingCanvas = document.createElement('canvas');
 let markingContext = markingCanvas.getContext('2d');
 
-let markingHistory = [], curStateMarking;
+let markingHistory = [];
 
 let maxMarkingCanvasHeight = document.getElementById('markingCanvasWrapper').clientHeight;
 let maxMarkingCanvasWidth = document.getElementById('markingCanvasWrapper').clientWidth;
@@ -39,7 +39,6 @@ function useMarkingModal() {
   changeModalCanvasSize(maxMarkingCanvasHeight, maxMarkingCanvasWidth, markingModalCanvas);
 
   markingHistory = [];
-  curStateMarking = -1;
   markingColor = 'black';
   markingColorBtn.style.background = 'black';
 
@@ -58,48 +57,54 @@ function useMarkingModal() {
   closeMarkingWithoutSaving.addEventListener('click', closeModalWithoutSaving);
 
   rememberMarkingState();
-}
 
-addEventListener('keydown', escapeExitMarking);
+  addEventListener('keydown', escapeExitMarking);
 
-function escapeExitMarking(event) {
-  if (event.code == 'Escape') {
-    closeMarkingWithoutSaving.click();
+  function escapeExitMarking(event) {
+    if (event.code == 'Escape') {
+      closeMarkingWithoutSaving.click();
+    }
   }
-}
 
-function closeModalWithoutSaving() {
-  canvas = originalCanvas;
-  context = canvas.getContext('2d');
+  function closeModalWithoutSaving() {
+    canvas = originalCanvas;
+    context = canvas.getContext('2d');
 
-  deleteMarking();
-  removeEventListener('keydown', escapeExitMarking);
-}
+    deleteMarking();
+    removeEventListener('keydown', escapeExitMarking);
+  }
 
-function closeModalWithSaving() {
-  let originalContext = originalCanvas.getContext('2d');
-  originalContext.putImageData(markingContext.getImageData(0, 0, markingCanvas.width, markingCanvas.height), 0, 0);
-  canvas = originalCanvas;
-  context = canvas.getContext('2d');
+  function closeModalWithSaving() {
+    let originalContext = originalCanvas.getContext('2d');
+    originalContext.putImageData(markingContext.getImageData(0, 0, markingCanvas.width, markingCanvas.height), 0, 0);
+    canvas = originalCanvas;
+    context = canvas.getContext('2d');
 
-  rememberState();
-  deleteMarking();
-  changePreview();
-}
+    rememberState();
+    deleteMarking();
+    changePreview();
+  }
 
-function deleteMarking() {
-  deletingChangesMarking.removeEventListener('click', deleteChangesMarking);
-  closeMarkingWithSaving.removeEventListener('click', closeModalWithSaving);
-  closeMarkingWithoutSaving.removeEventListener('click', closeModalWithoutSaving);
-}
+  function deleteMarking() {
+    deletingChangesMarking.removeEventListener('click', deleteChangesMarking);
+    closeMarkingWithSaving.removeEventListener('click', closeModalWithSaving);
+    closeMarkingWithoutSaving.removeEventListener('click', closeModalWithoutSaving);
+  }
 
-function applyPrevState() {
-  if (curStateMarking > 0) {
-    --curStateMarking;
-    markingContext.putImageData(markingHistory[curStateMarking], 0, 0);
+  function deleteChangesMarking() {
+    markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
+    markingContext.drawImage(markingHistory[0], 0, 0, markingCanvas.width, markingCanvas.height);
     markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
-    markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
+    markingModalContext.drawImage(canvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
+    markingHistory = markingHistory.slice(0, 1);
   }
+}
+
+function applyInitialMarkingState() {
+  markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
+  markingContext.drawImage(markingHistory[0], 0, 0, markingCanvas.width, markingCanvas.height);
+  markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
+  markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
 }
 
 function endMarking() {
@@ -108,19 +113,11 @@ function endMarking() {
 }
 
 function rememberMarkingState() {
-  markingHistory = markingHistory.slice(0, curStateMarking + 1);
-  markingHistory.push(markingContext.getImageData(0, 0, markingCanvas.width, markingCanvas.height));
-  ++curStateMarking;
-}
-
-function deleteChangesMarking() {
-  markingContext.putImageData(markingHistory[0], 0, 0);
-  markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
-  markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingHistory = markingHistory.slice(0, 1);
-  curStateMarking = 0;
+  let img = new Image();
+  img.src = markingCanvas.toDataURL();
+  markingHistory.push(img);
 }
-
 
 
 const allMarkings = ['cage','vertical', 'horizontal', 'singleDiagonal',
@@ -140,7 +137,7 @@ function initCage() {
 }
 
 function startPointCage() {
-  applyPrevState();
+  applyInitialMarkingState();
 
   setContextParameters();
   initialOffset = getInitialOffset();
@@ -168,7 +165,7 @@ function initVertical() {
 }
 
 function startPointVertical() {
-  applyPrevState();
+  applyInitialMarkingState();
 
   setContextParameters();
   initialOffset = getInitialOffset();
@@ -195,7 +192,7 @@ function initHorizontal() {
 }
 
 function startPointHorizontal() {
-  applyPrevState();
+  applyInitialMarkingState();
 
   setContextParameters();
   initialOffset = getInitialOffset();
@@ -226,7 +223,7 @@ function initSingleDiagonal() {
 }
 
 function startPointSingleDiagonal() {
-  applyPrevState();
+  applyInitialMarkingState();
 
   setContextParameters();
   initialOffset = getInitialOffset();
@@ -272,7 +269,7 @@ function initDoubleDiagonal() {
 }
 
 function startPointDoubleDiagonal() {
-  applyPrevState();
+  applyInitialMarkingState();
 
   setContextParameters();
   initialOffset = getInitialOffset();
@@ -320,7 +317,7 @@ function initVerticalWavy() {
 }
 
 function startPointVerticalWavy() {
-  applyPrevState();
+  applyInitialMarkingState();
 
   setContextParameters();
   initialOffset = getInitialOffset();
@@ -360,7 +357,7 @@ function initHorizontalWavy() {
 }
 
 function startPointHorizontalWavy() {
-  applyPrevState();
+  applyInitialMarkingState();
 
   setContextParameters();
   initialOffset = getInitialOffset();

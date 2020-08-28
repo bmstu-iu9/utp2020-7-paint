@@ -16,9 +16,6 @@ markingModalCanvas.setAttribute('height', markingModalCanvas.height);
 
 let markingCanvas = document.createElement('canvas');
 let markingContext = markingCanvas.getContext('2d');
-
-let markingHistory = [];
-
 let maxMarkingCanvasHeight = document.getElementById('markingCanvasWrapper').clientHeight;
 let maxMarkingCanvasWidth = document.getElementById('markingCanvasWrapper').clientWidth;
 
@@ -38,7 +35,6 @@ function useMarkingModal() {
 
   changeModalCanvasSize(maxMarkingCanvasHeight, maxMarkingCanvasWidth, markingModalCanvas);
 
-  markingHistory = [];
   markingColor = 'black';
   markingColorBtn.style.background = 'black';
 
@@ -56,12 +52,10 @@ function useMarkingModal() {
   closeMarkingWithSaving.addEventListener('click', closeModalWithSaving);
   closeMarkingWithoutSaving.addEventListener('click', closeModalWithoutSaving);
 
-  rememberMarkingState();
-
   addEventListener('keydown', escapeExitMarking);
 
   function escapeExitMarking(event) {
-    if (event.code == 'Escape') {
+    if (event.code === 'Escape') {
       closeMarkingWithoutSaving.click();
     }
   }
@@ -93,16 +87,15 @@ function useMarkingModal() {
 
   function deleteChangesMarking() {
     markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
-    markingContext.drawImage(markingHistory[0], 0, 0, markingCanvas.width, markingCanvas.height);
+    markingContext.drawImage(canvas, 0, 0, markingCanvas.width, markingCanvas.height);
     markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
     markingModalContext.drawImage(canvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
-    markingHistory = markingHistory.slice(0, 1);
   }
 }
 
 function applyInitialMarkingState() {
   markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
-  markingContext.drawImage(markingHistory[0], 0, 0, markingCanvas.width, markingCanvas.height);
+  markingContext.drawImage(canvas, 0, 0, markingCanvas.width, markingCanvas.height);
   markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
 }
@@ -110,13 +103,6 @@ function applyInitialMarkingState() {
 function endMarking() {
   markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
-}
-
-function rememberMarkingState() {
-  markingHistory = markingHistory.slice(0, 1);
-  let img = new Image();
-  img.src = markingCanvas.toDataURL();
-  markingHistory.push(img);
 }
 
 
@@ -150,7 +136,6 @@ function startPointCage() {
   markingContext.beginPath();
 
   endMarking();
-  rememberMarkingState();
 }
 
 
@@ -177,7 +162,6 @@ function startPointVertical() {
   markingContext.beginPath();
 
   endMarking();
-  rememberMarkingState();
 }
 
 
@@ -204,7 +188,6 @@ function startPointHorizontal() {
   markingContext.beginPath();
 
   endMarking();
-  rememberMarkingState();
 }
 
 
@@ -232,7 +215,7 @@ function startPointSingleDiagonal() {
 
   markingContext.beginPath();
 
-  if (inclinationAngle == 90) {
+  if (inclinationAngle === 90) {
     drawHorizontal();
   } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
@@ -250,7 +233,6 @@ function startPointSingleDiagonal() {
   markingContext.beginPath();
 
   endMarking();
-  rememberMarkingState();
 }
 
 
@@ -278,7 +260,7 @@ function startPointDoubleDiagonal() {
 
   markingContext.beginPath();
 
-  if (inclinationAngle == 90) {
+  if (inclinationAngle === 90) {
     drawHorizontal();
   } else if (inclinationAngle < 90) {
     angleInRadians = inclinationAngle * Math.PI / 180;
@@ -298,7 +280,6 @@ function startPointDoubleDiagonal() {
   markingContext.beginPath();
 
   endMarking();
-  rememberMarkingState();
 }
 
 
@@ -338,7 +319,6 @@ function startPointVerticalWavy() {
   markingContext.beginPath();
 
   endMarking();
-  rememberMarkingState();
 }
 
 
@@ -378,7 +358,6 @@ function startPointHorizontalWavy() {
   markingContext.beginPath();
 
   endMarking();
-  rememberMarkingState();
 }
 
 
@@ -427,7 +406,7 @@ function getInitialOffset() {
 }
 
 function updateButton() {
-  if (curMarking == null) return;
+  if (curMarking === null) return;
   window["startPoint" + firstToUpper(curMarking)]();
 }
 

@@ -24,9 +24,12 @@ function deleteEyedropper() {
 function stopEyedropper(event) {
   let eventLocation = getEventLocation(this, event);
   let color = getPixelColor(eventLocation.x, eventLocation.y);
-  curColor = color;
-  colorInput.value = '#' + rgbToHex(color);
+  curColor = color.slice(0, 3);
+  colorInput.value = '#' + rgbToHex(curColor);
   document.getElementById('colorBtn').style.background = arrayToRgb(color);
+  if (color[3] !== 0) {
+    addUsedColor();
+  }
   showCurColor();
   switchEyedropperWindow();
   eyedropperButton.click();

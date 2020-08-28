@@ -402,7 +402,7 @@ class Layer {
 
     this.canvas.remove();
     this.display.remove();
-    clearLayerHistory(this.id);
+    deleteLayerHistory(this.id);
 
     if (layers.size === 1) {
       let lastLayer = getOldestLayer();

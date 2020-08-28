@@ -153,7 +153,7 @@ document.getElementById('clear').addEventListener('click', () => {
   rememberState();
 });
 
-function clearLayerHistory(id) {
+function deleteLayerHistory(id) {
   let count = 0, k = 0;
   let photo = photoOfState.layers.get(id);
   for (let i = 1, last = photo[0]; i < photo.length; i++) {
@@ -169,6 +169,14 @@ function clearLayerHistory(id) {
   photoOfState.length -= k;
   curState -= count;
   photoOfState.layers.delete(id);
+}
+
+function clearAllLayersHistory() {
+  photoOfState.layers.forEach((value) => {
+    value.splice(0);
+  });
+  photoOfState.length = 1;
+  curState = 0;
 }
 
 addEventListener('keydown', (event) => {
@@ -207,6 +215,7 @@ changeBorderWidth.value = defaultBorder + 'px';
 
 function setCanvasWidth() {
   clearAllLayers();
+  clearAllLayersHistory();
 
   canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
   allCanvases.forEach((canvas) => {
@@ -263,6 +272,7 @@ changeCanvasWidth.oninput = function () {
 
 function setCanvasHeight() {
   clearAllLayers();
+  clearAllLayersHistory();
 
   canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
   allCanvases.forEach((canvas) => {

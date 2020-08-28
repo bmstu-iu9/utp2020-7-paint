@@ -521,10 +521,4 @@ function toggleModal() {
   modalHints.classList.toggle('show-modalHints');
 }
 
-function windowOnClick(event) {
-  if (event.target === modalHints) {
-    toggleModal();
-  }
-}
-
-window.addEventListener('click', windowOnClick);
+closeHintsModal.addEventListener('click', toggleModal);

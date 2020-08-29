@@ -45,10 +45,10 @@ function drawStraightLine(e) {
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
 
   context.beginPath();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   context.moveTo (oldX, oldY);
   context.lineTo (curX, curY);
   context.stroke();

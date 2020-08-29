@@ -47,10 +47,10 @@ function drawRectangle(e) {
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
 
   context.beginPath();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   context.strokeRect(oldX, oldY, curX - oldX, curY - oldY);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
@@ -107,10 +107,10 @@ function drawCircle(e) {
 
   radius = Math.sqrt(Math.pow(curX - centerX, 2) + Math.pow(curY - centerY, 2));
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
 
   context.beginPath();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
   context.stroke();
 
@@ -163,10 +163,10 @@ function drawEllipse(e) {
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
 
   context.beginPath();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   context.moveTo(centerX, centerY + (curY - centerY) / 2);
   context.bezierCurveTo(centerX, centerY, curX, centerY, curX, centerY + (curY - centerY) / 2);
   context.bezierCurveTo(curX, curY, centerX, curY, centerX, centerY + (curY - centerY) / 2);
@@ -222,10 +222,10 @@ function drawEqTriangle(e) {
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
 
   context.beginPath();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   context.moveTo(startX, startY);
   context.lineTo(curX, curY);
   context.lineTo(startX + (startX - curX), curY);
@@ -281,10 +281,10 @@ function drawRightTriangle(e) {
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
 
   context.beginPath();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   context.moveTo(startX, startY);
   context.lineTo(curX, curY);
   context.lineTo(startX, curY);

@@ -32,32 +32,29 @@ function checkCurLength() {
   }
 }
 
+function drawCurCanvasesState() {
+  clearAllLayers();
+
+  photoOfState.layers.forEach((value, key) => {
+    let layer = layers.get(key).canvas;
+    let ctx = layer.getContext('2d');
+    if (value[curState]) {
+      ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
+    }
+    changePreview(layers.get(key));
+  })
+}
+
 document.getElementById('undo').addEventListener('click', () => {
   if (curState > 0) {
     --curState;
-    clearAllLayers();
-    photoOfState.layers.forEach((value, key) => {
-      let layer = layers.get(key).canvas;
-      let ctx = layer.getContext('2d');
-      if (value[curState]) {
-        ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
-      }
-      changePreview(layers.get(key));
-    })
+    drawCurCanvasesState();
   }
 });
 
 document.getElementById('redo').addEventListener('click', () => {
   if (curState + 1 < photoOfState.length) {
     ++curState;
-    clearAllLayers();
-    photoOfState.layers.forEach((value, key) => {
-      let layer = layers.get(key).canvas;
-      let ctx = layer.getContext('2d');
-      if (value[curState]) {
-        ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
-      }
-      changePreview(layers.get(key));
-    })
+    drawCurCanvasesState();
   }
 });

@@ -111,8 +111,6 @@ function createCanvasHtml(id) {
   newCanvas.setAttribute('width', curCanvasWidth + 'px');
   newCanvas.style.height = curCanvasHeight + 'px';
   newCanvas.setAttribute('height', curCanvasHeight + 'px');
-  newCanvas.style.left = canvas.style.left;
-  newCanvas.style.top = canvas.style.top;
   newCanvas.style.margin = canvas.style.margin;
   getOldestLayer().canvas.after(newCanvas);
   return newCanvas;
@@ -421,7 +419,7 @@ function changePreview(layer) {
   if (arguments.length === 0) {
     layer = activeLayer;
   }
-  let countOfSteps = Math.ceil(Math.log(layer.canvas.width
+  let countOfSteps = Math.ceil(Math.log(curCanvasWidth
                                         / layer.preview.width)
                                / Math.log(2));
   let oc = document.createElement('canvas');
@@ -429,10 +427,10 @@ function changePreview(layer) {
   let dopOc = document.createElement('canvas');
   let dopOctx = dopOc.getContext('2d');
 
-  oc.width = layer.canvas.width;
-  oc.height = layer.canvas.height;
-  dopOc.width = layer.canvas.width;
-  dopOc.height = layer.canvas.height;
+  oc.width = curCanvasWidth;
+  oc.height = curCanvasHeight;
+  dopOc.width = curCanvasWidth;
+  dopOc.height = curCanvasHeight;
 
   octx.drawImage(layer.canvas, 0, 0, oc.width, oc.height);
 

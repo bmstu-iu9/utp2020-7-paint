@@ -496,16 +496,16 @@ function areInCanvas(x, y) {
   return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
 }
 
-function changePreviewSize(preview) {
-  if (curCanvasHeight / maxPreviewHeight > curCanvasWidth / maxPreviewWidth) {
-    preview.style.height = maxPreviewHeight + 'px';
-    preview.style.width = curCanvasWidth * (parseInt(preview.style.height) / curCanvasHeight) + 'px';
+function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
+  if (curCanvasHeight / maxWindowHeight > curCanvasWidth / maxPreviewWidth) {
+    window.style.height = maxWindowHeight + 'px';
+    window.style.width = curCanvasWidth * (parseInt(window.style.height) / curCanvasHeight) + 'px';
   } else {
-    preview.style.width = maxPreviewWidth + 'px';
-    preview.style.height = curCanvasHeight * (parseInt(preview.style.width) / curCanvasWidth) + 'px';
+    window.style.width = maxWindowWidth + 'px';
+    window.style.height = curCanvasHeight * (parseInt(window.style.width) / curCanvasWidth) + 'px';
   }
-  preview.setAttribute('width', preview.style.width);
-  preview.setAttribute('height', preview.style.height);
+  window.setAttribute('width', window.style.width);
+  window.setAttribute('height', window.style.height);
 }
 
 let modalHints = document.querySelector('.modalHints');

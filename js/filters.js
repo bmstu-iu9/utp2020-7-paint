@@ -30,7 +30,7 @@ function useFiltersModal() {
   addEventListener('keydown', escapeExit);
 
   function escapeExit(event) {
-    if (event.code == 'Escape') {
+    if (event.code === 'Escape') {
       closeWithoutSaving.click();
     }
   }

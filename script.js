@@ -328,8 +328,16 @@ function checkPxInput(str, min, max) {
 
 
 function hideAndShow(element) {
+  function closeSettingsMenu(event) {
+    document.getElementById('settings').classList.toggle('pressed');
+    document.getElementById('settingsMenu').hidden = true;
+    document.removeEventListener('keydown', closeSettingsMenu);
+  }
   let menu = document.getElementById(element);
   menu.hidden = !menu.hidden;
+  if (element === 'settingsMenu') {
+    document.addEventListener('keydown', closeSettingsMenu);
+  }
   event.currentTarget.classList.toggle('pressed');
 }
 
@@ -363,16 +371,12 @@ document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
   uploadImage.click();
 });
 
-document.getElementById('brush').addEventListener('click', (event) => {
-  hideAndShow('brushMenu', event);
-});
+const leftMenuLists = ['brush', 'figure', 'settings'];
 
-document.getElementById('figure').addEventListener('click', (event) => {
-  hideAndShow('figureMenu', event);
-});
-
-document.getElementById('settings').addEventListener('click', (event) => {
-  hideAndShow('settingsMenu', event);
+leftMenuLists.forEach((list) => {
+  document.getElementById(list).addEventListener('click', (event) =>{
+    window['hideAndShow'](list + 'Menu', event);
+  })
 });
 
 document.getElementById('openPanel').addEventListener('click', (event) => {

@@ -376,8 +376,6 @@ class Layer {
 
     layers.set(this.id, this);
     allCanvases.push(this.canvas);
-    photoOfState.layers.set(this.id, []);
-    ++photoOfState.length;
   }
 
   delete() {
@@ -558,6 +556,7 @@ function mergeTopHandler(event) {
   oldLayer.ctx.drawImage(targetLayer.canvas, 0, 0);
   targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
   changePreview(targetLayer);
+  rememberState();
 
   oldLayer.delete();
 }
@@ -572,6 +571,7 @@ function mergeBottomHandler(event) {
 
   targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
   changePreview(targetLayer);
+  rememberState();
 
   oldLayer.delete();
 }
@@ -588,6 +588,7 @@ function duplicateLayerHandler(event) {
     if (newLayer !== null) {
       newLayer.ctx.drawImage(source, 0, 0);
       changePreview(newLayer);
+      rememberState();
     }
   }
 }

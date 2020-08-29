@@ -20,11 +20,6 @@ let curCanvasBorder = defaultBorder;
 let curCanvasBorderColor = '#000000';
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
-let curState = 0;
-let photoOfState = {
-  length: 0,
-  layers: new Map()
-};
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -132,20 +127,21 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute('href', img);
 });
 
-function clearCanvas() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  changePreview();
+function clearCanvas(layer) {
+  if (layer) {
+    let canv = layer.canvas;
+    canv.getContext('2d').clearRect(0, 0, canv.width, canv.height);
+    changePreview(layer);
+  } else {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    changePreview();
+  }
 }
 
 function clearAllLayers() {
-  let curCanvasId = activeLayer.id;
   layers.forEach((layer) => {
-    canvas = layer.canvas;
-    context = canvas.getContext('2d');
-    clearCanvas();
+    clearCanvas(layer);
   });
-  canvas = layers.get(curCanvasId).canvas;
-  context = canvas.getContext('2d');
 }
 
 document.getElementById('clear').addEventListener('click', () => {
@@ -154,28 +150,23 @@ document.getElementById('clear').addEventListener('click', () => {
 });
 
 function deleteLayerHistory(id) {
+  let len = photoOfState.length;
   let count = 0, k = 0;
-  let photo = photoOfState.layers.get(id);
-  for (let i = 1, last = photo[0]; i < photo.length; i++) {
-    if (photo[i] !== last) {
-      photoOfState.layers.forEach((state, idOfState) => {
-        if (id != idOfState) state.splice(i - k, 1);
-      });
+  for (let i = 0; i < len; i++) {
+    if (photoOfState[i - k].layerId === id) {
+      photoOfState.splice(i - k, 1);
+      if (i <= curState) ++count;
       ++k;
-      if (i <= curState)++count;
+    } else {
+      delete photoOfState[i - k][id];
     }
-    last = photo[i];
   }
-  photoOfState.length -= k;
   curState -= count;
-  photoOfState.layers.delete(id);
+  if (photoOfState.length === 0) photoOfState = [new Snapshot(-1)];
 }
 
 function clearAllLayersHistory() {
-  photoOfState.layers.forEach((value) => {
-    value.splice(0);
-  });
-  photoOfState.length = 1;
+  photoOfState = [new Snapshot(-1)];
   curState = 0;
 }
 

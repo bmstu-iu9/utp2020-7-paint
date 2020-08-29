@@ -18,24 +18,24 @@ class Snapshot {
   }
 }
 
-let photoOfState = [new Snapshot(-1)];
+let LayersHistory = [new Snapshot(-1)];
 let curState = 0;
 
 function rememberState() {
   let img = new Image();
   img.onload = () => {
     checkCurLength();
-    photoOfState.push(new Snapshot(activeLayer.id, img, photoOfState[curState++]));
+    LayersHistory.push(new Snapshot(activeLayer.id, img, LayersHistory[curState++]));
   }
   img.src = canvas.toDataURL();
 }
 
 function checkCurLength() {
-  let d = photoOfState.length - curState;
-  if (d > 1) photoOfState.splice(curState + 1, d - 1);
+  let d = LayersHistory.length - curState;
+  if (d > 1) LayersHistory.splice(curState + 1, d - 1);
 
-  if (photoOfState.length > MAX_HIST) {
-    photoOfState.shift();
+  if (LayersHistory.length > MAX_HIST) {
+    LayersHistory.shift();
     --curState;
   }
 }
@@ -44,7 +44,7 @@ function drawCurCanvasesState() {
   clearAllLayers();
 
   let index;
-  let snapshot = photoOfState[curState];
+  let snapshot = LayersHistory[curState];
   for (let i in snapshot) {
     if (!isNaN(index = parseInt(i))) {
       let layer = layers.get(index);
@@ -65,7 +65,7 @@ document.getElementById('undo').addEventListener('click', () => {
 });
 
 document.getElementById('redo').addEventListener('click', () => {
-  if (curState + 1 < photoOfState.length) {
+  if (curState + 1 < LayersHistory.length) {
     ++curState;
     drawCurCanvasesState();
   }

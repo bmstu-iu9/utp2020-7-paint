@@ -150,23 +150,23 @@ document.getElementById('clear').addEventListener('click', () => {
 });
 
 function deleteLayerHistory(id) {
-  let len = photoOfState.length;
+  let len = LayersHistory.length;
   let count = 0, k = 0;
   for (let i = 0; i < len; i++) {
-    if (photoOfState[i - k].layerId === id) {
-      photoOfState.splice(i - k, 1);
+    if (LayersHistory[i - k].layerId === id) {
+      LayersHistory.splice(i - k, 1);
       if (i <= curState) ++count;
       ++k;
     } else {
-      delete photoOfState[i - k][id];
+      delete LayersHistory[i - k][id];
     }
   }
   curState -= count;
-  if (photoOfState.length === 0) photoOfState = [new Snapshot(-1)];
+  if (LayersHistory.length === 0) LayersHistory = [new Snapshot(-1)];
 }
 
 function clearAllLayersHistory() {
-  photoOfState = [new Snapshot(-1)];
+  LayersHistory = [new Snapshot(-1)];
   curState = 0;
 }
 

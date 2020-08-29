@@ -7,7 +7,13 @@ let isResized = false;
 function initHand() {
   if (firstClickHand) {
     toggleModal();
-    hintsContent.innerHTML = 'При двойном нажатии на холст в режиме \'руки\' он центрируется';
+    hintsContent.innerHTML =
+    `<p>Инструмент «Рука»</p>
+    <ul>
+    <li>1) Перемещение холста по рабочей области </li>
+    <li>2) Двойное нажатие на холст для центрирования </li>
+    <li>3) Изменение размеров холста через правый нижний угол</li>
+    </ul>`;
     firstClickHand = false;
   }
   canvas.addEventListener('dragstart', function() {

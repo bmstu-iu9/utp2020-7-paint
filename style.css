@@ -26,8 +26,10 @@ body {
 }
 
   #header .toolBtn {
-    width: 3vh;
-    height: 3vh;
+    width: 3.5vh;
+    height: 3.5vh;
+    background-size: 3.2vh 3.2vh;
+    border: 0.2vh solid #000000;
   }
 
 #topPanel {
@@ -50,19 +52,19 @@ body {
   margin-left: 1vh;
 }
 
-#topContainer {
+.topContainer {
   margin-left: auto;
   display: flex;
   text-align: center;
 }
 
-  #topContainer a {
+  .topContainer a {
     margin-left: auto;
     display: flex;
     text-align: center;
   }
 
-  #topContainer .droplist {
+  .topContainer .droplist {
     margin-left: auto;
     display: flex;
     text-align: center;
@@ -111,14 +113,15 @@ body {
 
 .toolBtn {
   display: inline-block;
+  overflow: hidden;
   padding: 0;
   margin: 0.5vh;
   width: 5vh;
   height: 5vh;
   border-radius: 50%;
   border: none;
-  background-size: cover;
-  background-color: #f8f7f7;
+  background-size: contain;
+  background-color: #ffffff;
   outline: none;
 }
 
@@ -480,7 +483,7 @@ option:checked {
     color: #000000;
     width: 5vh;
     height: 3vh;
-    border: none;
+    border: 0.1vh solid #000000;
     padding: 0;
   }
 
@@ -561,7 +564,8 @@ option:checked {
   line-height: 0;
   font-size: 2vh;
   height: 4vh;
-  width: 80vh;
+  width: 90vh;
+  margin: 0;
   background-color: white;
   box-shadow: 0 0 1vh rgba(0, 0, 0, 0.5);
   border-radius: 0.1vh;
@@ -576,13 +580,18 @@ option:checked {
 }
 
   #textMenu input {
+    padding-left: 1vh;
     font-family: 'Passion One';
     font-size: 2vh;
     color: #000000;
-    width: 8vh;
+    width: 11vh;
     height: 3vh;
-    border: none;
-    padding: 0;
+    border: 0.1vh solid #000000;
+    padding-left: 0.2vh;
+    padding-top: 0;
+    padding-right: 0.2vh;
+    padding-bottom: 0;
+    margin: 0;
   }
 
   #textMenu select {
@@ -591,7 +600,8 @@ option:checked {
     color: #000000;
     width: 20vh;
     height: 3vh;
-    border: none;
+    border: 0.1vh solid #000000;
+    margin: 0;
     padding: 0;
   }
 
@@ -600,15 +610,25 @@ option:checked {
     font-size: 2vh;
     width: 8vh;
     height: 3vh;
-    border: none;
+    border: 0.1vh solid #000000;
     padding: 0;
+    margin: 0;
   }
+
+input::-webkit-color-swatch-wrapper {
+  padding: 0;
+  margin:0;
+  background:none;
+}
+input::-webkit-color-swatch {
+  border: none;
+}
 
 #pastedText {
   font-family: 'Passion One';
-  font-size: 20px;
+  font-size: 4vh;
   background-color: white;
-  padding: 10px;
+  padding: 1vh;
   box-sizing: border-box;
   border: 0.2vh dashed #bbbbbb;
   outline: none;

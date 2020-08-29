@@ -214,7 +214,7 @@ function setCanvasWidth() {
     canvas.setAttribute('width', curCanvasWidth + 'px');
   });
   layers.forEach((layer) => {
-    changePreviewSize(layer.preview);
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
   });
 
   document.getElementById('curWidth').innerHTML = curCanvasWidth;
@@ -271,7 +271,7 @@ function setCanvasHeight() {
     canvas.setAttribute('height', curCanvasHeight + 'px');
   });
   layers.forEach((layer) => {
-    changePreviewSize(layer.preview);
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
   });
 
   document.getElementById('curHeight').innerHTML = curCanvasHeight;

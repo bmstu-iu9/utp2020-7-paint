@@ -31,10 +31,9 @@ function closeModalMarking() {
 }
 
 function useMarkingModal() {
+  changeWindowSize(markingModalCanvas, maxMarkingCanvasHeight, maxMarkingCanvasWidth);
+
   originalCanvas = canvas;
-
-  changeModalCanvasSize(maxMarkingCanvasHeight, maxMarkingCanvasWidth, markingModalCanvas);
-
   markingColor = 'black';
   markingColorBtn.style.background = 'black';
 
@@ -96,6 +95,7 @@ function useMarkingModal() {
 function applyInitialMarkingState() {
   markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
   markingContext.drawImage(canvas, 0, 0, markingCanvas.width, markingCanvas.height);
+  
   markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
 }

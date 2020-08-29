@@ -243,7 +243,7 @@ class Layer {
 
       this.index = 50;
       this.canvas.style.zIndex = this.index;
-      changePreviewSize(this.preview);
+      changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
 
       this.isTop = true;
       this.isBottom = true;
@@ -301,7 +301,7 @@ class Layer {
     this.locked = false;
     this.hidden = false;
 
-    changePreviewSize(this.preview);
+    changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
 
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);
@@ -376,8 +376,6 @@ class Layer {
 
     layers.set(this.id, this);
     allCanvases.push(this.canvas);
-    photoOfState.layers.set(this.id, []);
-    ++photoOfState.length;
   }
 
   delete() {
@@ -402,7 +400,7 @@ class Layer {
 
     this.canvas.remove();
     this.display.remove();
-    clearLayerHistory(this.id);
+    deleteLayerHistory(this.id);
 
     if (layers.size === 1) {
       let lastLayer = getOldestLayer();
@@ -558,6 +556,7 @@ function mergeTopHandler(event) {
   oldLayer.ctx.drawImage(targetLayer.canvas, 0, 0);
   targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
   changePreview(targetLayer);
+  rememberState();
 
   oldLayer.delete();
 }
@@ -572,6 +571,7 @@ function mergeBottomHandler(event) {
 
   targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
   changePreview(targetLayer);
+  rememberState();
 
   oldLayer.delete();
 }
@@ -588,6 +588,7 @@ function duplicateLayerHandler(event) {
     if (newLayer !== null) {
       newLayer.ctx.drawImage(source, 0, 0);
       changePreview(newLayer);
+      rememberState();
     }
   }
 }

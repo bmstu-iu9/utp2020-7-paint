@@ -1,48 +1,60 @@
 'use strict';
 
-const MAX_HIST = 20;
+const MAX_HIST = 30;
+
+class Snapshot {
+  constructor(id, image, last) {
+    this.layerId = id;
+    if (last) {
+      layers.forEach((layer, i) => {
+        this[i] = last[i];
+      });
+    } else {
+      layers.forEach((layer, i) => {
+        this[i] = null;
+      });
+    }
+    if (image) this[id] = image;
+  }
+}
+
+let LayersHistory = [new Snapshot(-1)];
+let curState = 0;
 
 function rememberState() {
-  let curId = activeLayer.id;
-  let photoOfLayer = photoOfState.layers;
   let img = new Image();
   img.onload = () => {
     checkCurLength();
-    ++curState;
-    photoOfLayer.get(curId)[curState] = img;
-    photoOfLayer.forEach((value, key) => {
-      if (key !== curId) value[curState] = value[curState - 1];
-    });
-    ++photoOfState.length;
+    LayersHistory.push(new Snapshot(activeLayer.id, img, LayersHistory[curState++]));
   }
   img.src = canvas.toDataURL();
 }
 
 function checkCurLength() {
-  let d = photoOfState.length - curState;
-  if (d > 1) {
-    photoOfState.layers.forEach(value => value.splice(curState + 1, d - 1));
-    photoOfState.length -= d - 1;
-  }
+  let d = LayersHistory.length - curState;
+  if (d > 1) LayersHistory.splice(curState + 1, d - 1);
 
-  if (photoOfState.length > MAX_HIST) {
-    photoOfState.layers.forEach(value => value.shift());
+  if (LayersHistory.length > MAX_HIST) {
+    LayersHistory.shift();
     --curState;
-    --photoOfState.length;
   }
 }
 
 function drawCurCanvasesState() {
   clearAllLayers();
 
-  photoOfState.layers.forEach((value, key) => {
-    let layer = layers.get(key).canvas;
-    let ctx = layer.getContext('2d');
-    if (value[curState]) {
-      ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
+  let index;
+  let snapshot = LayersHistory[curState];
+  for (let i in snapshot) {
+    if (!isNaN(index = parseInt(i))) {
+      let layer = layers.get(index);
+      let ctx = layer.canvas.getContext('2d');
+      if (snapshot[i]) {
+        ctx.drawImage(snapshot[i], 0, 0, snapshot[i].width, snapshot[i].height);
+      }
+      changePreview(layer);
     }
-    changePreview(layers.get(key));
-  })
+  }
 }
 
 document.getElementById('undo').addEventListener('click', () => {
@@ -53,7 +65,7 @@ document.getElementById('undo').addEventListener('click', () => {
 });
 
 document.getElementById('redo').addEventListener('click', () => {
-  if (curState + 1 < photoOfState.length) {
+  if (curState + 1 < LayersHistory.length) {
     ++curState;
     drawCurCanvasesState();
   }

@@ -1,18 +1,6 @@
 'use strict';
 
-function initRectangle() {
-  canvas.style.cursor = 'crosshair';
-  canvas.addEventListener('mousedown', startPointRectangle);
-}
-
-function deleteRectangle() {
-  canvas.style.cursor = 'default';
-  canvas.removeEventListener('mousedown', startPointRectangle);
-  document.removeEventListener('mousemove', drawRectangle);
-  document.removeEventListener('mouseup', endPoint);
-}
-
-function startPointRectangle(e) {
+function initFigure(e) {
   e.preventDefault();
   isDrawing = true;
 
@@ -32,6 +20,70 @@ function startPointRectangle(e) {
   deltaY = e.pageY - oldY;
 
   if (isThereSelection) uniteRememberAndSelectedImages();
+}
+
+function updateCanvasFigures(e) {
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
+  curX = e.pageX - deltaX;
+  curY = e.pageY - deltaY;
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.beginPath();
+  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+}
+
+
+function initStraightLine() {
+  canvas.style.cursor = 'crosshair';
+  canvas.addEventListener('mousedown', startPointStraightLine);
+}
+
+function deleteStraightLine() {
+  canvas.style.cursor = 'default';
+  canvas.removeEventListener('mousedown', startPointStraightLine);
+  document.removeEventListener('mousemove', drawStraightLine);
+  document.removeEventListener('mouseup', endPoint);
+}
+
+function startPointStraightLine(e) {
+  initFigure(e);
+
+  drawStraightLine(e);
+
+  document.addEventListener('mousemove', drawStraightLine);
+  document.addEventListener('mouseup', endPoint);
+}
+
+function drawStraightLine(e) {
+  if (!isDrawing) return;
+
+  updateCanvasFigures(e);
+
+  context.moveTo(oldX, oldY);
+  context.lineTo(curX, curY);
+  context.stroke();
+
+  if (isThereSelection) uniteRememberAndSelectedImages();
+  changePreview();
+}
+
+
+function initRectangle() {
+  canvas.style.cursor = 'crosshair';
+  canvas.addEventListener('mousedown', startPointRectangle);
+}
+
+function deleteRectangle() {
+  canvas.style.cursor = 'default';
+  canvas.removeEventListener('mousedown', startPointRectangle);
+  document.removeEventListener('mousemove', drawRectangle);
+  document.removeEventListener('mouseup', endPoint);
+}
+
+function startPointRectangle(e) {
+  initFigure(e);
 
   drawRectangle(e);
 
@@ -42,15 +94,8 @@ function startPointRectangle(e) {
 function drawRectangle(e) {
   if (!isDrawing) return;
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
+  updateCanvasFigures(e);
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
-
-  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
-
-  context.beginPath();
-  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   context.strokeRect(oldX, oldY, curX - oldX, curY - oldY);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
@@ -58,7 +103,7 @@ function drawRectangle(e) {
 }
 
 
-let centerX, centerY, radius;
+let radius;
 
 function initCircle() {
   canvas.style.cursor = 'crosshair';
@@ -73,24 +118,8 @@ function deleteCircle() {
 }
 
 function startPointCircle(e) {
-  e.preventDefault();
-  isDrawing = true;
+  initFigure(e);
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-  saveImg();
-
-  context.save();
-  context.lineWidth = curToolSize;
-  context.lineJoin = 'round';
-  context.lineCap = 'round';
-  context.strokeStyle = arrayToRgb(curColor);
-
-  centerX = e.offsetX;
-  centerY = e.offsetY;
-  deltaX = e.pageX - centerX;
-  deltaY = e.pageY - centerY;
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
   drawCircle(e);
 
   document.addEventListener('mousemove', drawCircle);
@@ -100,18 +129,10 @@ function startPointCircle(e) {
 function drawCircle(e) {
   if (!isDrawing) return;
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
+  updateCanvasFigures(e);
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
-
-  radius = Math.sqrt(Math.pow(curX - centerX, 2) + Math.pow(curY - centerY, 2));
-
-  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
-
-  context.beginPath();
-  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
-  context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+  radius = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2));
+  context.arc(oldX, oldY, radius, 0, 2 * Math.PI, false);
   context.stroke();
 
   if (isThereSelection) uniteRememberAndSelectedImages();
@@ -132,24 +153,8 @@ function deleteEllipse() {
 }
 
 function startPointEllipse(e) {
-  e.preventDefault();
-  isDrawing = true;
+  initFigure(e);
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-  saveImg();
-
-  context.save();
-  context.lineWidth = curToolSize;
-  context.lineJoin = 'round';
-  context.lineCap = 'round';
-  context.strokeStyle = arrayToRgb(curColor);
-
-  centerX = e.offsetX;
-  centerY = e.offsetY;
-  deltaX = e.pageX - centerX;
-  deltaY = e.pageY - centerY;
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
   drawEllipse(e);
 
   document.addEventListener('mousemove', drawEllipse);
@@ -159,24 +164,17 @@ function startPointEllipse(e) {
 function drawEllipse(e) {
   if (!isDrawing) return;
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  updateCanvasFigures(e);
 
-  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
-
-  context.beginPath();
-  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
-  context.moveTo(centerX, centerY + (curY - centerY) / 2);
-  context.bezierCurveTo(centerX, centerY, curX, centerY, curX, centerY + (curY - centerY) / 2);
-  context.bezierCurveTo(curX, curY, centerX, curY, centerX, centerY + (curY - centerY) / 2);
+  context.moveTo(oldX, oldY + (curY - oldY) / 2);
+  context.bezierCurveTo(oldX, oldY, curX, oldY, curX, oldY + (curY - oldY) / 2);
+  context.bezierCurveTo(curX, curY, oldX, curY, oldX, oldY + (curY - oldY) / 2);
   context.stroke();
 
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
 
-let startX, startY;
 
 function initEqTriangle() {
   canvas.style.cursor = 'crosshair';
@@ -191,24 +189,8 @@ function deleteEqTriangle() {
 }
 
 function startPointEqTriangle(e) {
-  e.preventDefault();
-  isDrawing = true;
+  initFigure(e);
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-  saveImg();
-
-  context.save();
-  context.lineWidth = curToolSize;
-  context.lineJoin = 'round';
-  context.lineCap = 'round';
-  context.strokeStyle = arrayToRgb(curColor);
-
-  startX = e.offsetX;
-  startY = e.offsetY;
-  deltaX = e.pageX - startX;
-  deltaY = e.pageY - startY;
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
   drawEqTriangle(e);
 
   document.addEventListener('mousemove', drawEqTriangle);
@@ -218,18 +200,12 @@ function startPointEqTriangle(e) {
 function drawEqTriangle(e) {
   if (!isDrawing) return;
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  updateCanvasFigures(e);
 
-  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
-
-  context.beginPath();
-  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
-  context.moveTo(startX, startY);
+  context.moveTo(oldX, oldY);
   context.lineTo(curX, curY);
-  context.lineTo(startX + (startX - curX), curY);
-  context.lineTo(startX, startY);
+  context.lineTo(oldX + (oldX - curX), curY);
+  context.lineTo(oldX, oldY);
   context.stroke();
 
   if (isThereSelection) uniteRememberAndSelectedImages();
@@ -250,24 +226,8 @@ function deleteRightTriangle() {
 }
 
 function startPointRightTriangle(e) {
-  e.preventDefault();
-  isDrawing = true;
+  initFigure(e);
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-  saveImg();
-
-  context.save();
-  context.lineWidth = curToolSize;
-  context.lineJoin = 'round';
-  context.lineCap = 'round';
-  context.strokeStyle = arrayToRgb(curColor);
-
-  startX = e.offsetX;
-  startY = e.offsetY;
-  deltaX = e.pageX - startX;
-  deltaY = e.pageY - startY;
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
   drawEqTriangle(e);
 
   document.addEventListener('mousemove', drawRightTriangle);
@@ -277,18 +237,12 @@ function startPointRightTriangle(e) {
 function drawRightTriangle(e) {
   if (!isDrawing) return;
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  updateCanvasFigures(e);
 
-  context.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
-
-  context.beginPath();
-  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
-  context.moveTo(startX, startY);
+  context.moveTo(oldX, oldY);
   context.lineTo(curX, curY);
-  context.lineTo(startX, curY);
-  context.lineTo(startX, startY);
+  context.lineTo(oldX, curY);
+  context.lineTo(oldX, oldY);
   context.stroke();
 
   if (isThereSelection) uniteRememberAndSelectedImages();

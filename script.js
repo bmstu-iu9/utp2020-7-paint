@@ -20,7 +20,7 @@ let curCanvasBorder = defaultBorder;
 let curCanvasBorderColor = '#000000';
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
-let curState = 0;
+// let curState = 0;
 let photoOfState = {
   length: 0,
   layers: new Map()
@@ -136,20 +136,21 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute('href', img);
 });
 
-function clearCanvas() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  changePreview();
+function clearCanvas(layer) {
+  if (layer) {
+    let canv = layer.canvas;
+    canv.getContext('2d').clearRect(0, 0, canv.width, canv.height);
+    changePreview(layer);
+  } else {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    changePreview();
+  }
 }
 
 function clearAllLayers() {
-  let curCanvasId = activeLayer.id;
   layers.forEach((layer) => {
-    canvas = layer.canvas;
-    context = canvas.getContext('2d');
-    clearCanvas();
+    clearCanvas(layer);
   });
-  canvas = layers.get(curCanvasId).canvas;
-  context = canvas.getContext('2d');
 }
 
 document.getElementById('clear').addEventListener('click', () => {
@@ -157,22 +158,25 @@ document.getElementById('clear').addEventListener('click', () => {
   rememberState();
 });
 
-function clearLayerHistory(id) {
+function deleteLayerHistory(id) {
+  let len = LayersHistory.length;
   let count = 0, k = 0;
-  let photo = photoOfState.layers.get(id);
-  for (let i = 1, last = photo[0]; i < photo.length; i++) {
-    if (photo[i] !== last) {
-      photoOfState.layers.forEach((state, idOfState) => {
-        if (id != idOfState) state.splice(i - k, 1);
-      });
+  for (let i = 0; i < len; i++) {
+    if (LayersHistory[i - k].layerId === id) {
+      LayersHistory.splice(i - k, 1);
+      if (i <= curState) ++count;
       ++k;
-      if (i <= curState)++count;
+    } else {
+      delete LayersHistory[i - k][id];
     }
-    last = photo[i];
   }
-  photoOfState.length -= k;
   curState -= count;
-  photoOfState.layers.delete(id);
+  if (LayersHistory.length === 0) LayersHistory = [new Snapshot(-1)];
+}
+
+function clearAllLayersHistory() {
+  LayersHistory = [new Snapshot(-1)];
+  curState = 0;
 }
 
 addEventListener('keydown', (event) => {
@@ -211,6 +215,7 @@ changeBorderWidth.value = defaultBorder + 'px';
 
 function setCanvasWidth() {
   clearAllLayers();
+  clearAllLayersHistory();
 
   canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
   allCanvases.forEach((canvas) => {
@@ -267,6 +272,7 @@ changeCanvasWidth.oninput = function () {
 
 function setCanvasHeight() {
   clearAllLayers();
+  clearAllLayersHistory();
 
   canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
   allCanvases.forEach((canvas) => {
@@ -407,7 +413,7 @@ function hideAndShow(element) {
 }
 
 document.getElementById('help').addEventListener('click', (event) => {
-  toggleModal();
+  toggleHintModal();
   hintsContent.innerHTML = `Горячие клавиши:
       <ul>
           <li>Alt + c — очистить холст</li>
@@ -497,16 +503,16 @@ function areInCanvas(x, y) {
   return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
 }
 
-function changePreviewSize(preview) {
-  if (curCanvasHeight / maxPreviewHeight > curCanvasWidth / maxPreviewWidth) {
-    preview.style.height = maxPreviewHeight + 'px';
-    preview.style.width = curCanvasWidth * (parseInt(preview.style.height) / curCanvasHeight) + 'px';
+function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
+  if (curCanvasHeight / maxWindowHeight > curCanvasWidth / maxPreviewWidth) {
+    window.style.height = maxWindowHeight + 'px';
+    window.style.width = curCanvasWidth * (parseInt(window.style.height) / curCanvasHeight) + 'px';
   } else {
-    preview.style.width = maxPreviewWidth + 'px';
-    preview.style.height = curCanvasHeight * (parseInt(preview.style.width) / curCanvasWidth) + 'px';
+    window.style.width = maxWindowWidth + 'px';
+    window.style.height = curCanvasHeight * (parseInt(window.style.width) / curCanvasWidth) + 'px';
   }
-  preview.setAttribute('width', preview.style.width);
-  preview.setAttribute('height', preview.style.height);
+  window.setAttribute('width', window.style.width);
+  window.setAttribute('height', window.style.height);
 }
 
 let modalHints = document.querySelector('.modalHints');
@@ -515,10 +521,4 @@ function toggleHintModal() {
   modalHints.classList.toggle('show-modalHints');
 }
 
-function windowOnClick(event) {
-  if (event.target === modalHints) {
-    toggleHintModal();
-  }
-}
-
-window.addEventListener('click', windowOnClick);
+closeHintsModal.addEventListener('click', toggleHintModal);

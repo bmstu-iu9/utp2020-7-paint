@@ -3,8 +3,39 @@
 let isDrawing = false;
 let oldX, oldY, newX, newY, distance, angle;
 
+function startCoordinates(e) {
+  e.preventDefault();
+  isDrawing = true;
+
+  if (isThereSelection) rememberCanvasWithoutSelection();
+
+  oldX = e.offsetX;
+  oldY = e.offsetY;
+  deltaX = e.pageX - oldX;
+  deltaY = e.pageY - oldY;
+
+  context.save();
+}
+
+function drawArc(x, y) {
+  context.beginPath();
+  context.arc(x, y, curToolSize / 2, 0, Math.PI * 2, false);
+  context.fill();
+  context.stroke();
+  context.closePath();
+}
+
+function returnSizeToDefault() {
+  context.globalAlpha = '1';
+  toolSizeRange.max = 300;
+  toolSizeText.value = '5px';
+  toolSizeRange.value = 5;
+  curToolSize = 5;
+}
+
 function initBasicBrush() {
   canvas.style.cursor = 'url(\"img/cursors/basic_brush_cursor.png\") 0 25, auto';
+  context.lineWidth = 0.1;
 
   canvas.addEventListener('mousedown', startPointBasicBrush);
 }
@@ -17,27 +48,35 @@ function deleteBasicBrush() {
   document.removeEventListener('mouseup', endPoint);
 }
 
+
+function initSmoothBrush() {
+  canvas.style.cursor = 'url(\"img/cursors/smooth_brush_cursor.png\") 0 25, auto';
+
+  canvas.addEventListener('mousedown', startPointBasicBrush);
+}
+
+function deleteSmoothBrush() {
+  canvas.style.cursor = 'default';
+
+  context.globalAlpha = '1';
+
+  canvas.removeEventListener('mousedown', startPointBasicBrush);
+  document.removeEventListener('mousemove', drawBasicBrush);
+  document.removeEventListener('mouseup', endPoint);
+}
+
+
 function startPointBasicBrush(e) {
-  e.preventDefault();
-  isDrawing = true;
+  startCoordinates(e);
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
+  if (activeInstrument.id === 'smoothBrush') {
+    context.globalAlpha = '0.01';
+  }
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-
-  context.save();
-  context.lineWidth = 0.1;
   context.fillStyle = arrayToRgb(curColor);
   context.strokeStyle = arrayToRgb(curColor);
 
-  context.beginPath();
-  context.arc(oldX, oldY, curToolSize / 2, 0, Math.PI * 2, false);
-  context.fill();
-  context.stroke();
-  context.closePath();
+  drawArc(oldX, oldY);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -61,10 +100,7 @@ function drawBasicBrush(e) {
   for (let i = 0; i < distance; i++) {
     newX = oldX + i * Math.sin(angle);
     newY = oldY + i * Math.cos(angle);
-    context.beginPath();
-    context.arc(newX, newY, curToolSize / 2, 0, Math.PI * 2, false);
-    context.fill();
-    context.stroke();
+    drawArc(newX, newY);
   }
 
   oldX = curX;
@@ -135,80 +171,6 @@ function drawNeonBrush(e) {
 }
 
 
-function initSmoothBrush() {
-  canvas.style.cursor = 'url(\"img/cursors/smooth_brush_cursor.png\") 0 25, auto';
-  canvas.addEventListener('mousedown', startPointSmoothBrush);
-}
-
-function deleteSmoothBrush() {
-  canvas.style.cursor = 'default';
-
-  context.globalAlpha = '1';
-
-  canvas.removeEventListener('mousedown', startPointSmoothBrush);
-  document.removeEventListener('mousemove', drawSmoothBrush);
-  document.removeEventListener('mouseup', endPoint);
-}
-
-function startPointSmoothBrush(e) {
-  e.preventDefault();
-  isDrawing = true;
-
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-
-  context.save();
-  context.lineWidth = 0.1;
-  context.globalAlpha = '0.01';
-  context.fillStyle = arrayToRgb(curColor);
-  context.strokeStyle = arrayToRgb(curColor);
-
-  context.beginPath();
-  context.arc(oldX, oldY, curToolSize / 2, 0, Math.PI * 2, false);
-  context.fill();
-  context.stroke();
-  context.closePath();
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
-
-  drawSmoothBrush(e);
-
-  document.addEventListener('mousemove', drawSmoothBrush);
-  document.addEventListener('mouseup', endPoint);
-}
-
-function drawSmoothBrush(e) {
-  if (!isDrawing) return;
-
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
-
-  distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
-  angle = Math.atan2(curX - oldX, curY - oldY);
-
-  for (let i = 0; i < distance; i++) {
-    newX = oldX + i * Math.sin(angle);
-    newY = oldY + i * Math.cos(angle);
-    context.beginPath();
-    context.arc(newX, newY, curToolSize / 2, 0, Math.PI * 2, false);
-    context.fill();
-    context.stroke();
-  }
-
-  oldX = curX;
-  oldY = curY;
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
-  changePreview();
-}
-
-
 let pointsCounter, prevPoints;
 
 function initSketchBrush() {
@@ -237,19 +199,8 @@ function deleteSketchBrush() {
 }
 
 function startPointSketchBrush(e) {
-  e.preventDefault();
-  isDrawing = true;
-
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  context.save();
+  startCoordinates(e);
   context.lineWidth = curToolSize;
-
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-
   context.strokeStyle = arrayToRgb(curColor);
   context.globalAlpha = '0.1';
 
@@ -275,7 +226,7 @@ function drawSketchBrush(e) {
 
   pointsCounter++;
 
-  if (pointsCounter == 10) pointsCounter = 0;
+  if (pointsCounter === 10) pointsCounter = 0;
 
   context.beginPath();
   context.moveTo(oldX, oldY);
@@ -301,62 +252,28 @@ function drawSketchBrush(e) {
 }
 
 
-function initPatternBrush() {
-  canvas.style.cursor = 'url(\"img/cursors/pattern_brush_cursor.png\") 0 25, auto';
+let dx, dy, d;
 
-  curToolSize = 1;
-  toolSizeRange.value = 1;
-  toolSizeText.value = '1px';
-  toolSizeRange.max = 5;
+function startPointAdvancedBrush(e) {
+  startCoordinates(e);
 
-  canvas.addEventListener('mousedown', startPointPatternBrush);
-}
-
-function deletePatternBrush() {
-  canvas.style.cursor = 'default';
-
-  context.globalAlpha = '1';
-  toolSizeRange.max = 300;
-  toolSizeText.value = '5px';
-  toolSizeRange.value = 5;
-  curToolSize = 5;
-
-  canvas.removeEventListener('mousedown', startPointPatternBrush);
-  document.removeEventListener('mousemove', drawPatternBrush);
-  document.removeEventListener('mouseup', endPoint);
-}
-
-function startPointPatternBrush(e) {
-  e.preventDefault();
-  isDrawing = true;
-
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  context.save();
   context.lineWidth = curToolSize;
   context.globalAlpha = '0.1';
-
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-
   context.strokeStyle = arrayToRgb(curColor);
 
-  prevPoints = new Array();
+  prevPoints = [];
   pointsCounter = 0;
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
-  drawPatternBrush(e);
+  drawAdvancedBrush(e);
 
-  document.addEventListener('mousemove', drawPatternBrush);
+  document.addEventListener('mousemove', drawAdvancedBrush);
   document.addEventListener('mouseup', endPoint);
 }
 
-function drawPatternBrush(e) {
-  let dx, dy, d;
 
+function drawAdvancedBrush(e) {
   if (!isDrawing) return;
 
   if (isThereSelection) rememberCanvasWithoutSelection();
@@ -370,7 +287,6 @@ function drawPatternBrush(e) {
   context.moveTo(oldX, oldY);
   context.lineTo(curX, curY);
   context.stroke();
-
   for (let i = 0; i < prevPoints.length; i++) {
     dx = prevPoints[i][0] - prevPoints[pointsCounter][0];
     dy = prevPoints[i][1] - prevPoints[pointsCounter][1];
@@ -378,8 +294,14 @@ function drawPatternBrush(e) {
 
     if (d < 1000) {
       context.beginPath();
-      context.moveTo(prevPoints[pointsCounter][0] + (dx * 0.2), prevPoints[pointsCounter][1] + (dy * 0.2));
-      context.lineTo(prevPoints[i][0] - (dx * 0.2), prevPoints[i][1] - (dy * 0.2));
+      if (activeInstrument.id === 'patternBrush') {
+        context.moveTo(prevPoints[pointsCounter][0] + (dx * 0.2), prevPoints[pointsCounter][1] + (dy * 0.2));
+        context.lineTo(prevPoints[i][0] - (dx * 0.2), prevPoints[i][1] - (dy * 0.2));
+      }
+      else if (activeInstrument.id === 'furBrush'){
+        context.moveTo(curX + (dx * 0.3), curY + (dy * 0.3));
+        context.lineTo(curX - (dx * 0.3), curY - (dy * 0.3));
+      }
       context.stroke();
     }
   }
@@ -391,6 +313,28 @@ function drawPatternBrush(e) {
 
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
+}
+
+
+function initPatternBrush() {
+  canvas.style.cursor = 'url(\"img/cursors/pattern_brush_cursor.png\") 0 25, auto';
+
+  curToolSize = 1;
+  toolSizeRange.value = 1;
+  toolSizeText.value = '1px';
+  toolSizeRange.max = 5;
+
+  canvas.addEventListener('mousedown', startPointAdvancedBrush);
+}
+
+function deletePatternBrush() {
+  canvas.style.cursor = 'default';
+
+  returnSizeToDefault();
+
+  canvas.removeEventListener('mousedown', startPointAdvancedBrush);
+  document.removeEventListener('mousemove', drawAdvancedBrush);
+  document.removeEventListener('mouseup', endPoint);
 }
 
 
@@ -402,88 +346,17 @@ function initFurBrush() {
   toolSizeText.value = '1px';
   toolSizeRange.max = 5;
 
-  canvas.addEventListener('mousedown', startPointFurBrush);
+  canvas.addEventListener('mousedown', startPointAdvancedBrush);
 }
 
 function deleteFurBrush() {
   canvas.style.cursor = 'default';
 
-  context.globalAlpha = '1';
-  toolSizeRange.max = 300;
-  toolSizeText.value = '5px';
-  toolSizeRange.value = 5;
-  curToolSize = 5;
+  returnSizeToDefault();
 
-  canvas.removeEventListener('mousedown', startPointFurBrush);
-  document.removeEventListener('mousemove', drawFurBrush);
+  canvas.removeEventListener('mousedown', startPointAdvancedBrush);
+  document.removeEventListener('mousemove', drawAdvancedBrush);
   document.removeEventListener('mouseup', endPoint);
-}
-
-function startPointFurBrush(e) {
-  e.preventDefault();
-  isDrawing = true;
-
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  context.save();
-  context.lineWidth = curToolSize;
-  context.globalAlpha = '0.1';
-
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-
-  context.strokeStyle = arrayToRgb(curColor);
-
-  prevPoints = new Array();
-  pointsCounter = 0;
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
-
-  drawFurBrush(e);
-
-  document.addEventListener('mousemove', drawFurBrush);
-  document.addEventListener('mouseup', endPoint);
-}
-
-function drawFurBrush(e) {
-  let dx, dy, d;
-
-  if (!isDrawing) return;
-
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
-
-  prevPoints[pointsCounter] = [curX, curY];
-
-  context.beginPath();
-  context.moveTo(oldX, oldY);
-  context.lineTo(curX, curY);
-  context.stroke();
-
-  for (let i = 0; i < prevPoints.length; i++) {
-    dx = prevPoints[i][0] - prevPoints[pointsCounter][0];
-    dy = prevPoints[i][1] - prevPoints[pointsCounter][1];
-    d = Math.pow(dx, 2) + Math.pow(dy, 2);
-
-    if (d < 4000) {
-      context.beginPath();
-      context.moveTo(curX + (dx * 0.3), curY + (dy * 0.3));
-      context.lineTo(curX - (dx * 0.3), curY - (dy * 0.3));
-      context.stroke();
-    }
-  }
-
-  oldX = curX;
-  oldY = curY;
-
-  pointsCounter++;
-
-  if (isThereSelection) uniteRememberAndSelectedImages();
-  changePreview();
 }
 
 
@@ -501,10 +374,7 @@ function initRectangleBrush() {
 function deleteRectangleBrush() {
   canvas.style.cursor = 'default';
 
-  toolSizeRange.max = 300;
-  toolSizeText.value = '5px';
-  toolSizeRange.value = 5;
-  curToolSize = 5;
+  returnSizeToDefault();
 
   canvas.removeEventListener('mousedown', startPointRectangleBrush);
   document.removeEventListener('mousemove', drawRectangleBrush);
@@ -512,19 +382,9 @@ function deleteRectangleBrush() {
 }
 
 function startPointRectangleBrush(e) {
-  e.preventDefault();
-  isDrawing = true;
+  startCoordinates(e);
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  context.save();
   context.lineWidth = curToolSize;
-
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-
   context.strokeStyle = arrayToRgb(curColor);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
@@ -536,7 +396,7 @@ function startPointRectangleBrush(e) {
 }
 
 function drawRectangleBrush(e) {
-  let dx, dy, nx, ny, angle;
+  let nx, ny, angle;
 
   if (!isDrawing) return;
 
@@ -581,10 +441,7 @@ function initCircleBrush() {
 function deleteCircleBrush() {
   canvas.style.cursor = 'default';
 
-  toolSizeRange.max = 300;
-  toolSizeText.value = '5px';
-  toolSizeRange.value = 5;
-  curToolSize = 5;
+  returnSizeToDefault();
 
   canvas.removeEventListener('mousedown', startPointCircleBrush);
   document.removeEventListener('mousemove', drawCircleBrush);
@@ -592,19 +449,9 @@ function deleteCircleBrush() {
 }
 
 function startPointCircleBrush(e) {
-  e.preventDefault();
-  isDrawing = true;
+  startCoordinates(e);
 
-  if (isThereSelection) rememberCanvasWithoutSelection();
-
-  context.save();
   context.lineWidth = curToolSize;
-
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
-
   context.strokeStyle = arrayToRgb(curColor);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
@@ -616,8 +463,6 @@ function startPointCircleBrush(e) {
 }
 
 function drawCircleBrush(e) {
-  let dx, dy, d;
-
   if (!isDrawing) return;
 
   if (isThereSelection) rememberCanvasWithoutSelection();

@@ -150,23 +150,23 @@ document.getElementById('clear').addEventListener('click', () => {
 });
 
 function deleteLayerHistory(id) {
-  let len = LayersHistory.length;
+  let len = layersHistory.length;
   let count = 0, k = 0;
   for (let i = 0; i < len; i++) {
-    if (LayersHistory[i - k].layerId === id) {
-      LayersHistory.splice(i - k, 1);
+    if (layersHistory[i - k].layerId === id) {
+      layersHistory.splice(i - k, 1);
       if (i <= curState) ++count;
       ++k;
     } else {
-      delete LayersHistory[i - k][id];
+      delete layersHistory[i - k][id];
     }
   }
   curState -= count;
-  if (LayersHistory.length === 0) LayersHistory = [new Snapshot(-1)];
+  if (layersHistory.length === 0) layersHistory = [new Snapshot(-1)];
 }
 
 function clearAllLayersHistory() {
-  LayersHistory = [new Snapshot(-1)];
+  layersHistory = [new Snapshot(-1)];
   curState = 0;
 }
 
@@ -206,7 +206,6 @@ changeBorderWidth.value = defaultBorder + 'px';
 
 function setCanvasWidth() {
   clearAllLayers();
-  clearAllLayersHistory();
 
   canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
   allCanvases.forEach((canvas) => {
@@ -231,6 +230,7 @@ changeCanvasWidth.oninput = function () {
 
   if (checkPxInput(width, minW, maxW)) {
     curCanvasWidth = parseInt(width);
+    clearAllLayersHistory();
     setCanvasWidth();
   } else {
     curCanvasWidth = parseInt(getWidth(width));
@@ -255,6 +255,7 @@ changeCanvasWidth.oninput = function () {
 
   function setWidth(event) {
     if (event.key === 'Enter') {
+      clearAllLayersHistory();
       setCanvasWidth();
       removeEventListener('keydown', setWidth);
     }
@@ -263,7 +264,6 @@ changeCanvasWidth.oninput = function () {
 
 function setCanvasHeight() {
   clearAllLayers();
-  clearAllLayersHistory();
 
   canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
   allCanvases.forEach((canvas) => {
@@ -288,6 +288,7 @@ changeCanvasHeight.oninput = function () {
 
   if (checkPxInput(height, minH, maxH)) {
     curCanvasHeight = parseInt(height);
+    clearAllLayersHistory();
     setCanvasHeight();
   } else {
     curCanvasHeight = parseInt(getHeight(height));
@@ -312,6 +313,7 @@ changeCanvasHeight.oninput = function () {
 
   function setHeight(event) {
     if (event.key === 'Enter') {
+      clearAllLayersHistory();
       setCanvasHeight();
       removeEventListener('keydown', setHeight);
     }

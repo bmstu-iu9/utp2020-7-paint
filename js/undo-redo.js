@@ -1,10 +1,12 @@
 'use strict';
 
-const MAX_HIST = 30;
+const MAX_HIST = 20;
 
 class Snapshot {
-  constructor(id, image, last) {
-    this.layerId = id;
+  constructor(layerId, image, last) {
+    this.layerId = layerId;
+    this.width = curCanvasWidth;
+    this.height = curCanvasHeight;
     if (last) {
       layers.forEach((layer, i) => {
         this[i] = last[i];
@@ -14,37 +16,53 @@ class Snapshot {
         this[i] = null;
       });
     }
-    if (image) this[id] = image;
+    if (image) this[layerId] = image;
   }
 }
 
-let LayersHistory = [new Snapshot(-1)];
+let layersHistory = [new Snapshot(-1)];
 let curState = 0;
 
 function rememberState() {
   let img = new Image();
   img.onload = () => {
     checkCurLength();
-    LayersHistory.push(new Snapshot(activeLayer.id, img, LayersHistory[curState++]));
+    layersHistory.push(new Snapshot(activeLayer.id, img, layersHistory[curState++]));
   }
   img.src = canvas.toDataURL();
 }
 
-function checkCurLength() {
-  let d = LayersHistory.length - curState;
-  if (d > 1) LayersHistory.splice(curState + 1, d - 1);
+function rememberSize() {
+  checkCurLength();
+  let lastSnapshots = layersHistory[curState++];
+  if (curCanvasWidth < lastSnapshots.width || curCanvasHeight < lastSnapshots.height) {
+    layersHistory.push(new Snapshot(-1));
+    let newSnapshots = layersHistory[curState];
+    layers.forEach((layer, i) => {
+      let img = new Image();
+      img.onload = () => {
+        newSnapshots[i] = img;
+      }
+      img.src = layer.canvas.toDataURL();
+    })
+  } else layersHistory.push(new Snapshot(-1, null, lastSnapshots))
+}
 
-  if (LayersHistory.length > MAX_HIST) {
-    LayersHistory.shift();
+function checkCurLength() {
+  let d = layersHistory.length - curState;
+  if (d > 1) layersHistory.splice(curState + 1, d - 1);
+
+  if (layersHistory.length > MAX_HIST) {
+    layersHistory.shift();
     --curState;
   }
 }
 
-function drawCurCanvasesState() {
+function restoreCanvasesState() {
   clearAllLayers();
 
   let index;
-  let snapshot = LayersHistory[curState];
+  let snapshot = layersHistory[curState];
   for (let i in snapshot) {
     if (!isNaN(index = parseInt(i))) {
       let layer = layers.get(index);
@@ -57,16 +75,25 @@ function drawCurCanvasesState() {
   }
 }
 
+function restoreCanvasesSize() {
+  curCanvasWidth = layersHistory[curState].width;
+  curCanvasHeight = layersHistory[curState].height;
+  setCanvasWidth();
+  setCanvasHeight();
+}
+
 document.getElementById('undo').addEventListener('click', () => {
   if (curState > 0) {
     --curState;
-    drawCurCanvasesState();
+    restoreCanvasesSize();
+    restoreCanvasesState();
   }
 });
 
 document.getElementById('redo').addEventListener('click', () => {
-  if (curState + 1 < LayersHistory.length) {
+  if (curState + 1 < layersHistory.length) {
     ++curState;
-    drawCurCanvasesState();
+    restoreCanvasesSize();
+    restoreCanvasesState();
   }
 });

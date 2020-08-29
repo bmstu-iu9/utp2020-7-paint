@@ -17,7 +17,6 @@ let curCanvasColor = [255, 255, 255];
 let curCanvasHeight = defaultHeight;
 let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
-let curCanvasBorderColor = '#000000';
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
 
@@ -198,11 +197,9 @@ addEventListener('keydown', (event) => {
 
 let changeCanvasHeight = document.getElementById('changeCanvasHeight');
 let changeCanvasWidth = document.getElementById('changeCanvasWidth');
-let changeBorderWidth = document.getElementById('changeBorderWidth');
 
 changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
-changeBorderWidth.value = defaultBorder + 'px';
 
 function setCanvasWidth() {
   clearAllLayers();
@@ -320,75 +317,6 @@ changeCanvasHeight.oninput = function () {
   }
 }
 
-changeBorderWidth.oninput = function () {
-  addEventListener('keydown', setBorder);
-
-  let border = changeBorderWidth.value;
-  let maxB = changeBorderWidth.max;
-  let minB = changeBorderWidth.min;
-
-  if (checkPxInput(border, minB, maxB)) {
-    curCanvasBorder = parseInt(border);
-    allCanvases.forEach((canvas) => {
-      canvas.style.borderWidth = curCanvasBorder + 'px';
-    });
-    canvasesField.style.height = canvas.offsetHeight + 'px';
-    canvasesField.style.width = canvas.offsetWidth + 'px';
-    canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
-    canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
-    changeBorderWidth.style.background = '#ffffff';
-  } else {
-    curCanvasBorder = parseInt(getBorder(border));
-    changeBorderWidth.style.background = '#ffd4d4';
-    backCanvas.style.borderWidth = curCanvasBorder;
-  }
-
-  function getBorder(str) {
-
-    if (isNaN(parseInt(str)))
-      return defaultBorder;
-
-    if (parseInt(str) > changeBorderWidth.max)
-      return changeBorderWidth.max;
-
-    if (parseInt(str) < changeBorderWidth.min)
-      return changeBorderWidth.min;
-
-    return defaultBorder;
-  }
-
-  function setBorder(event) {
-    if (event.key === 'Enter') {
-      changeBorderWidth.value = curCanvasBorder + 'px';
-      changeBorderWidth.style.background = '#ffffff';
-      allCanvases.forEach((canvas) => {
-        canvas.style.borderWidth = curCanvasBorder + 'px';
-      });
-      canvasesField.style.height = canvas.offsetHeight + 'px';
-      canvasesField.style.width = canvas.offsetWidth + 'px';
-      canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
-      canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
-
-      removeEventListener('keydown', setBorder);
-    }
-  }
-}
-
-borderColor.oninput = function () {
-  let color = document.getElementById('borderColor').value;
-  if (color) {
-    allCanvases.forEach((canvas) => {
-      canvas.style.borderColor = color;
-    });
-    curCanvasBorderColor = color;
-    colorBorderBtn.style.background = color;
-  } else {
-    allCanvases.forEach((canvas) => {
-      canvas.style.borderColor = '#000000';
-    });
-    curCanvasBorderColor = '#000000';
-  }
-}
 
 function checkPxInput(str, min, max) {
   const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');

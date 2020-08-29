@@ -38,6 +38,12 @@
       <img src="img/leftPanel.png" style="width:5vh; height:5vh;"></img>
     </div>
     <div class="topContainer">
+      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 0.1vh solid black; width: 5vh; height: 5vh; margin-top: 1vh;">
+        <input type="color" id="colorPalette" style="opacity: 0">
+      </button>
+      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
+      </button>
+      <button id="eyedropperWindow" hidden="true"></button>
       <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
     </div>
   </div>
@@ -80,7 +86,7 @@
     </button>
     <button title="Меню кистей" class="toolBtn" id="brush" style="background-image: url(img/tools/all_brushes.svg)">
     </button>
-    <div class="leftMenu" id="brushMenu" style="top:17vh;" hidden="true">
+    <div class="leftMenu" id="brushMenu" style="top:18vh;" hidden="true">
       <button title="Базовая Кисть" class="toolBtn optionTool" id="basicBrush" style="background-image: url(img/tools/basic_brush.svg)">
       </button>
       <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/tools/neon_brush.svg)">
@@ -100,7 +106,7 @@
     </div>
     <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/tools/all_figures.svg)">
     </button>
-    <div class="leftMenu" id="figureMenu" style="top:23vh; width: 40vh;" hidden="true">
+    <div class="leftMenu" id="figureMenu" style="top:25vh; width: 45vh;" hidden="true">
       <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/tools/line.svg)">
       </button>
       <button title="Круг" class="toolBtn" id="circle" style="background-image: url(img/tools/circle.svg)">
@@ -121,7 +127,7 @@
     </button>
     <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
     </button>
-    <div class="leftMenu" id="fillMenu" style="top:48vh; width: 25vh;" hidden="true" style="min-width: 175px;">
+    <div class="leftMenu" id="fillMenu" style="top:53vh; width: 25vh;" hidden="true" style="min-width: 175px;">
       <div class="rangeAndText">
         <input type="range" id="colorDifferenceRange" min="0" max="100">
         <input type="text" id="colorDifferenceText">
@@ -131,20 +137,14 @@
     </button>
     <button title="Фильтры" class="toolBtn trigger" id="filters-modal" style="background-image: url(img/tools/filters.svg)"></button>
     <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
-    <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
-    </button>
-    <button id="eyedropperWindow" hidden="true"></button>
     <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
     </button>
-    <div class="leftMenu" id="toolSettingsMenu" style="top:77.5vh; width: 25vh;" hidden="true">
+    <div class="leftMenu" id="toolSettingsMenu" style="top:79.5vh; width: 25vh;" hidden="true">
       <div class="rangeAndText">
         <input type="range" id="toolSizeRange" min="1" max="300">
         <input type="text" id="toolSizeText">
       </div>
     </div>
-    <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 0.1vh solid black">
-      <input type="color" id="colorPalette" style="opacity: 0">
-    </button>
   </div>
 
 <div id="canvasesField">

@@ -3,14 +3,10 @@
 <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 480 480" style="enable-background:new 0 0 480 480;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FFFFFF;}
-	.st1{fill:#FFDF2B;}
+	.st0{fill:#FFDF2B;}
 </style>
-<path class="st0" d="M240,8c128.1,0,232,103.9,232,232S368.1,472,240,472S8,368.1,8,240S111.9,8,240,8z"/>
 <g>
-</g>
-<g>
-	<polygon class="st1" points="183.2,114.8 79.9,196.5 183.2,296.1 194.6,245.4 327.1,275.9 395.5,339.2 375.4,269 327.1,205.7 
+	<polygon class="st0" points="183.2,114.8 79.9,196.5 183.2,296.1 194.6,245.4 327.1,275.9 395.5,339.2 375.4,269 327.1,205.7 
 		237.7,168.3 201,171.2 191,163.7 	"/>
 	<g>
 		<g>

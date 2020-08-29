@@ -497,7 +497,7 @@ function areInCanvas(x, y) {
 }
 
 function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
-  if (curCanvasHeight / maxWindowHeight > curCanvasWidth / maxPreviewWidth) {
+  if (curCanvasHeight / maxWindowHeight > curCanvasWidth / maxWindowWidth) {
     window.style.height = maxWindowHeight + 'px';
     window.style.width = curCanvasWidth * (parseInt(window.style.height) / curCanvasHeight) + 'px';
   } else {

@@ -3,23 +3,11 @@
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FFFFFF;}
-	.st1{fill:none;}
-	.st2{fill:#FFDF2B;}
-	.st3{font-family:'ArialMT';}
-	.st4{font-size:500px;}
-	.st5{fill:none;stroke:#000000;stroke-width:15;stroke-miterlimit:10;}
+	.st0{fill:#FFDF2B;}
+	.st1{font-family:'ArialMT';}
+	.st2{font-size:500px;}
+	.st3{fill:none;stroke:#000000;stroke-width:15;stroke-miterlimit:10;}
 </style>
-<g>
-	<path class="st0" d="M503.5,256c0,65.6-26.1,128.6-72.5,175s-109.4,72.5-175,72.5c-4.3,0-8.5-0.1-12.7-0.3h-0.2
-		C111.6,496.3,8.5,387.7,8.5,256S111.6,15.7,243.1,8.9h0.2c4.2-0.3,8.4-0.3,12.7-0.3c65.6,0,128.6,26.1,175,72.5
-		S503.5,190.4,503.5,256z"/>
-	<path class="st0" d="M477.9,256c0,131.7-103.1,240.3-234.6,247.1h-0.2C111.6,496.3,8.5,387.7,8.5,256S111.6,15.7,243.1,8.9h0.2
-		C374.8,15.7,477.9,124.3,477.9,256z"/>
-	<rect x="256" y="179.2" class="st0" width="102.4" height="76.8"/>
-	<path class="st0" d="M358.4,119.5v59.7H256v-59.7c0-9.4,7.7-17,17.1-17.1h68.3C350.7,102.4,358.4,110.1,358.4,119.5z"/>
-</g>
-<rect x="115" y="73.9" class="st1" width="268" height="347.1"/>
-<text transform="matrix(1 0 0 1 111 421.0001)" class="st2 st3 st4">A</text>
-<text transform="matrix(1 0 0 1 107 415.3484)" class="st5 st3 st4">A</text>
+<text transform="matrix(1 0 0 1 112 429.3483)" class="st0 st1 st2">A</text>
+<text transform="matrix(1 0 0 1 112 429.3482)" class="st3 st1 st2">A</text>
 </svg>

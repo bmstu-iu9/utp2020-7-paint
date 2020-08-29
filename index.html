@@ -50,15 +50,8 @@
 
   <div class="menu" id="settingsMenu" hidden="true">
     <p>При изменении параметров изображение не сохраняется.</p>
-    <p>Нажмите Enter для установки параметров.</p>
-    <p>Повторно нажмите кнопку настроек, чтобы закрыть панель.</p>
+    <p>Enter - установка параметров, Escape - выход</p>
     <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
-    <div class="field">
-      <p>
-        Высота холста:
-        <input type="text" id="changeCanvasHeight" min="50" max="1000">
-      </p>
-    </div>
     <div class="field">
       <p>
         Ширина холста:
@@ -67,16 +60,8 @@
     </div>
     <div class="field">
       <p>
-        Ширина рамки:
-        <input type="text" id="changeBorderWidth" min="0" max="30">
-      </p>
-    </div>
-    <div class="field">
-      <p>
-        Цвет рамки:
-        <button title="Выбрать цвет" class="toolBtn" id="colorBorderBtn" style="background: black; border: 0.1vh solid black">
-          <input type="color" id="borderColor" style="opacity: 0">
-        </button>
+        Высота холста:
+        <input type="text" id="changeCanvasHeight" min="50" max="1000">
       </p>
     </div>
   </div>

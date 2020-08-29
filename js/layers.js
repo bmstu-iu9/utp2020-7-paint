@@ -311,7 +311,6 @@ class Layer {
     this.duplicateLayerBtn.addEventListener('click', duplicateLayerHandler);
 
     this.canvas.style.borderWidth = curCanvasBorder + 'px';
-    this.canvas.style.borderColor = curCanvasBorderColor;
     this.canvas.style.borderStyle = 'solid';
     this.ctx = this.canvas.getContext('2d');
 

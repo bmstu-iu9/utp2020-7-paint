@@ -24,7 +24,7 @@ function toggleFilterModal() {
 }
 
 function useFiltersModal() {
-  changeModalCanvasSize();
+  changeWindowSize(modalCanvas, maxModalCanvasHeight, maxModalCanvasWidth);
   originalCanvas = canvas;
 
   addEventListener('keydown', escapeExit);
@@ -477,15 +477,3 @@ function useFiltersModal() {
 
 let maxModalCanvasHeight = document.getElementById('modalCanvasWrapper').clientHeight;
 let maxModalCanvasWidth = document.getElementById('modalCanvasWrapper').clientWidth;
-
-function changeModalCanvasSize() {
-  if (curCanvasHeight / maxModalCanvasHeight > curCanvasWidth / maxModalCanvasWidth) {
-    modalCanvas.style.height = maxModalCanvasHeight + 'px';
-    modalCanvas.style.width = curCanvasWidth * (parseInt(modalCanvas.style.height) / curCanvasHeight) + 'px';
-  } else {
-    modalCanvas.style.width = maxModalCanvasWidth + 'px';
-    modalCanvas.style.height = curCanvasHeight * (parseInt(modalCanvas.style.width) / curCanvasWidth) + 'px';
-  }
-  modalCanvas.setAttribute('width', modalCanvas.style.width);
-  modalCanvas.setAttribute('height', modalCanvas.style.height);
-}

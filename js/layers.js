@@ -243,7 +243,7 @@ class Layer {
 
       this.index = 50;
       this.canvas.style.zIndex = this.index;
-      changePreviewSize(this.preview);
+      changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
 
       this.isTop = true;
       this.isBottom = true;
@@ -301,7 +301,7 @@ class Layer {
     this.locked = false;
     this.hidden = false;
 
-    changePreviewSize(this.preview);
+    changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
 
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);

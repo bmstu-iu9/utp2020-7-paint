@@ -2,6 +2,7 @@
 
 let firstClickHand = true;
 let canvasResizer = document.getElementById('canvasResizer');
+let isResized = false;
 
 function initHand() {
   if (firstClickHand) {
@@ -13,12 +14,15 @@ function initHand() {
     return false;
   });
   canvas.addEventListener('mousedown', startMoving);
+  isResized = false;
   canvas.style.cursor = 'grab';
   canvasResizer.hidden = false;
   canvasesField.style.borderColor = '#bbbbbb';
 }
 
 function deleteHand() {
+  if (isResized) rememberSize();
+
   canvas.removeEventListener('mousedown', startMoving);
   canvas.removeEventListener('dblclick', centerCanvas);
   canvas.style.cursor = 'default';
@@ -89,10 +93,12 @@ canvasResizer.addEventListener('mousedown', function(e) {
     } else {
       curCanvasHeight = canvas.offsetHeight;
     }
-    drawCurCanvasesState();
+    restoreCanvasesState();
   }
 
   function stopResize() {
+    isResized = true;
+
     canvas.style.cursor = 'grab';
     document.body.style.cursor = 'default';
     document.removeEventListener('mousemove', resize);

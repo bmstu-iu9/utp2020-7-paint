@@ -4,6 +4,7 @@ let usedColors = [];
 let usedColorsIds = [];
 const maxUsedColors = 3;
 let countOfUsedColors = 0;
+let lastUsedColor = '';
 
 function getCurCoordsOnCanvas(event) {
   let eventLocation = getEventLocation(canvas, event);
@@ -49,14 +50,22 @@ function initUsedColorsIds(){
 }
 
 function addUsedColor() {
+  let curColorHex = '#' + rgbToHex(curColor);
+  if (lastUsedColor === curColorHex ) {
+    return;
+  }
+
+  lastUsedColor = curColorHex;
   if (countOfUsedColors < maxUsedColors) {
-    usedColors[countOfUsedColors++] = '#' + rgbToHex(curColor);
+    usedColors.unshift(curColorHex);
+    countOfUsedColors++;
+    //display there
     //document.getElementById(usedColorsIds[countOfUsedColors]).style.background = '#' + rgbToHex(curColor);
     return;
   }
 
   usedColors.pop();
-  usedColors.unshift('#' + rgbToHex(curColor));
+  usedColors.unshift(curColorHex);
   updateUsedColors();
 }
 

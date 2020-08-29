@@ -82,6 +82,7 @@ canvasResizer.addEventListener('mousedown', function(e) {
   let originalY = canvas.getBoundingClientRect().top;
 
   function resize(e) {
+    if (isThereSelection) deleteSelectedArea();
     if (canvasesField.style.margin === 'auto' || canvasesField.style.margin === '') {
       curCanvasWidth = originalWidth + 2 * (e.pageX - originalMouseX);
       curCanvasHeight = originalHeight + 2 * (e.pageY - originalMouseY);

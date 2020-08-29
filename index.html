@@ -158,6 +158,34 @@
       <img src="img/tools/layers.svg" title="Панель слоёв" width="80%" height="80%" hspace="20%" vspace="10%">
     </div>
     <div class="layerScrollBox" id="layerScrollBox">
+      <div id = "infoWindow" class ="droplist dropWindow">
+        <div class="windowsDropBtns" id ="infoDropBtn">Инфо</div>
+        <div id="infoContent" class="hideContent">
+          <div class="previewInfo" id="previewInfo">
+            <canvas class="preview" id="previewInfoCanvas"></canvas>
+          </div>
+          <p>X: <span id="mouseCordX"></span></p>
+          <p>Y: <span id="mouseCordY"></span></p>
+          <div>
+            <div style="display:inline-block; vertical-align: top; margin-right: 2vh">
+              <p>Размеры:</p>
+              <span style="text-decoration: underline;">
+                <span id="showCurWidth">780</span>x<span id="showCurHeight">400</span>
+              </span>
+            </div>
+            <div style="display:inline-block; vertical-align: top">
+              <p>Цвет:</p>
+              <div id="curColorWindow" style="width: 3vh; height: 3vh; background-color: black; display: inline-block">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id = "colorWindow" class ="droplist dropWindow">
+        <div class="windowsDropBtns" id ="colorDropBtn">Цвета</div>
+        <div id="colorContent" class="hideContent">
+        </div>
+      </div>
       <div class="layer highlight" id="layerDisplay0">
         <div class="previewWindow" id="previewDiv0">
           <canvas class="preview" id="preview0"></canvas>
@@ -292,7 +320,7 @@
 <script src="js/drag-n-drop.js"></script>
 <script src="js/pencil.js"></script>
 <script src="js/brushes.js"></script>
-<script src="js/info-bar.js"></script> 
+<script src="js/info-bar.js"></script>
 <script src="js/palette.js"></script>
 <script src="js/figures.js"></script>
 <script src="js/eraser.js"></script>

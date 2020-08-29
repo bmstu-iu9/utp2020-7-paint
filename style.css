@@ -196,7 +196,7 @@ body {
   box-sizing: border-box;
   top: 11vh;
   right: 0;
-  width: 12%;
+  width: 16%;
   height: 100%;
   background: #eeeeee;
   border-left: 1px solid #cccccc;
@@ -994,4 +994,49 @@ input::-webkit-color-swatch {
 
 #changeBorderWidth {
   background: #ffffff;
+}
+
+.hideContent {
+  display: none;
+}
+
+.hideContent p {
+  margin: 1vh 0vh;
+}
+
+.showContent {
+  display: block;
+}
+
+.dropWindow {
+  background: #fafafa;
+  position: relative;
+  text-align: center;
+  margin-left: 5%;
+  margin-top: 5%;
+  width: 90%;
+}
+
+.windowsDropBtns {
+  background: #9567CA;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+#infoContent p {
+  font-weight: 600;
+}
+
+#infoContent span {
+  font-weight: 400;
+}
+
+.previewInfo {
+  width: 48%;
+  height: 40%;
+  float: left;
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
 }

@@ -18,19 +18,16 @@ function getCurCoordsOnCanvas(event) {
 function showCurCoordsOnCanvas() {
 
   function printCurCoords(event) {
-    //display somewhere on info bar after design
-    //and remove listener when bar is closed
     let coords = getCurCoordsOnCanvas(event);
-
-
+    document.getElementById('mouseCordX').innerHTML = coords.x;
+    document.getElementById('mouseCordY').innerHTML = coords.y;
   }
 
   canvas.addEventListener('mousemove', printCurCoords);
 }
 
 function showCurColor() {
-  //set here color on some window
-  //document.getElementById('curColorWindow').style.background = '#' + rgbToHex(curColor);
+  document.getElementById('curColorWindow').style.background = '#' + rgbToHex(curColor);
 }
 
 function initUsedColorsIds(){

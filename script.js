@@ -217,6 +217,7 @@ function setCanvasWidth() {
   });
 
   document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
   changeCanvasWidth.style.background = '#ffffff';
   changeCanvasWidth.value = curCanvasWidth + 'px';
 }
@@ -275,6 +276,7 @@ function setCanvasHeight() {
   });
 
   document.getElementById('curHeight').innerHTML = curCanvasHeight;
+  document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
   changeCanvasHeight.style.background = '#ffffff';
   changeCanvasHeight.value = curCanvasHeight + 'px';
 }
@@ -515,3 +517,20 @@ function toggleModal() {
 }
 
 closeHintsModal.addEventListener('click', toggleModal);
+
+let infoDropBtn = document.getElementById('infoDropBtn');
+infoDropBtn.addEventListener('click', () => {
+  let infoContent = document.getElementById('infoContent');
+  infoContent.classList.toggle('showContent');
+  if (infoContent.classList.contains('showContent')) {
+    document.addEventListener('mousemove', showCurCoordsOnCanvas(event));
+  } else {
+    document.removeEventListener('mousemove', showCurCoordsOnCanvas(event));
+  }
+});
+
+let colorDropBtn = document.getElementById('colorDropBtn');
+  colorDropBtn.addEventListener('click', () => {
+    let colorContent = document.getElementById('colorContent');
+    colorContent.classList.toggle('showContent');
+});

@@ -1,25 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Imago</title>
-<link rel="stylesheet" href="style.css"></link>
-<link rel="stylesheet" href="preloader.css"></link>
-<link rel="icon" href="img/favicon.ico" type="image/x-icon"></link>
+  <meta charset="UTF-8">
+  <title>Imago</title>
+  <link rel="stylesheet" href="style.css"></link>
+  <link rel="stylesheet" href="preloader.css"></link>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon"></link>
 </head>
 <body>
-<div id="topPanel">
-  <span id="title">IMAGO</span>
-  <div id="topContainer">
-    <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
-    <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
-    <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/tools/clear.svg)"></button>
-    <a id="download" download="image.png">
-      <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/tools/download.svg)">
-      </button>
-    </a>
-    <div class="droplist">
-      <button title="Загрузить изображение" class="toolBtn dropBtn" id="uploadImgBtn" style="background-image: url(img/tools/photo.svg)">
+  <div id="header">
+    <span id="title">IMAGO</span>
+    <div class="topContainer">
+      <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
+      <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
+      <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/tools/clear.svg)"></button>
+      <a id="download" download="image.png">
+        <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/tools/download.svg)">
+        </button>
+      </a>
+      <div class="droplist">
+        <button title="Загрузить изображение" class="toolBtn dropBtn" id="uploadImgBtn" style="background-image: url(img/tools/photo.svg)">
         </button>
         <div title="" class="menu dropMenu" id="uploadImgMenu" hidden="true">
           <input type="file" accept="image/x-png,image/gif,image/jpeg" id="uploadImage" hidden="true">
@@ -28,62 +28,65 @@
             <img src="img/tools/delete_image.svg" id="deleteImage" onclick="deleteImg()">
           </span>
         </div>
-    </div>
-    <button title="Фильтры" class="toolBtn trigger" id="filters-modal" style="background-image: url(img/tools/filters.svg)"></button>
-    <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
-    <div class="droplist">
-      <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
-      <div class="droplist-content">
-        <p>При изменении параметров изображение не сохраняется</p>
-        <p>Нажмите Enter для установки параметров</p>
-        <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
-        <div class="field">
-          <label>Высота холста:</label>
-          <input type="text" size="1" id="changeCanvasHeight" min="50" max ="1000">
-        </div>
-        <div class="field">
-          <label>Ширина холста:</label>
-          <input type="text" size="1" id="changeCanvasWidth" min="50" max="1800">
-        </div>
-        <div class="field">
-          <label>Ширина рамки:</label>
-          <input type="text" size="1" id="changeBorderWidth" min="0" max="30">
-        </div>
-        <div class="field">
-          <label>Цвет рамки:</label>
-          <input type="color" size="1" id="borderColor">
-        </div>
       </div>
-    </div>
-    <div class="droplist">
       <button title="Горячие клавиши" class="toolBtn" id="help" style="background-image: url(img/tools/info.svg)"></button>
-      <div class="menu" id="helpMenu" hidden="true">
-        <ul>
-          <li>Alt + c — очистить холст</li>
-          <li>Alt + p — выбрать цвет</li>
-          <li>Alt + s — сохранить</li>
-          <li>Alt + u — загрузить фото</li>
-          <li>Alt + y — вернуть</li>
-          <li>Alt + z — отменить</li>
-          <li>Ctrl + c — скопировать выделенную область</li>
-          <li>Ctrl + v — вставить скопированную область</li>
-          <li>Ctrl + Backspace — очистить выделенную область</li>
-        </ul>
-      </div>
     </div>
   </div>
-</div>
 
-<div id="leftPanel">
-  <div id="openPanel">
-    <img src="img/leftPanel.png"></img>
+  <div id="topPanel">
+    <div id="openPanel">
+      <img src="img/leftPanel.png" style="width:5vh; height:5vh;"></img>
+    </div>
+    <div class="topContainer">
+      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 0.1vh solid black; width: 5vh; height: 5vh; margin-top: 1vh;">
+        <input type="color" id="colorPalette" style="opacity: 0">
+      </button>
+      <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
+      </button>
+      <button id="eyedropperWindow" hidden="true"></button>
+      <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
+    </div>
   </div>
-  <div id="leftContainer" hidden="true">
+
+  <div class="menu" id="settingsMenu" hidden="true">
+    <p>При изменении параметров изображение не сохраняется.</p>
+    <p>Нажмите Enter для установки параметров.</p>
+    <p>Повторно нажмите кнопку настроек, чтобы закрыть панель.</p>
+    <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
+    <div class="field">
+      <p>
+        Высота холста:
+        <input type="text" id="changeCanvasHeight" min="50" max="1000">
+      </p>
+    </div>
+    <div class="field">
+      <p>
+        Ширина холста:
+        <input type="text" id="changeCanvasWidth" min="50" max="1800">
+      </p>
+    </div>
+    <div class="field">
+      <p>
+        Ширина рамки:
+        <input type="text" id="changeBorderWidth" min="0" max="30">
+      </p>
+    </div>
+    <div class="field">
+      <p>
+        Цвет рамки:
+        <button title="Выбрать цвет" class="toolBtn" id="colorBorderBtn" style="background: black; border: 0.1vh solid black">
+          <input type="color" id="borderColor" style="opacity: 0">
+        </button>
+      </p>
+    </div>
+  </div>
+
+  <div id="leftContainer">
     <button title="Карандаш" class="toolBtn" id="pencil" style="background-image: url(img/tools/pencil.svg)">
     </button>
     <button title="Меню кистей" class="toolBtn" id="brush" style="background-image: url(img/tools/all_brushes.svg)">
     </button>
-    <div class="leftMenu" id="brushMenu" hidden="true">
+    <div class="leftMenu" id="brushMenu" style="top:18vh;" hidden="true">
       <button title="Базовая Кисть" class="toolBtn optionTool" id="basicBrush" style="background-image: url(img/tools/basic_brush.svg)">
       </button>
       <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/tools/neon_brush.svg)">
@@ -103,9 +106,7 @@
     </div>
     <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/tools/all_figures.svg)">
     </button>
-    <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
-    </button>
-    <div class="leftMenu" id="figureMenu" hidden="true">
+    <div class="leftMenu" id="figureMenu" style="top:25vh; width: 45vh;" hidden="true">
       <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/tools/line.svg)">
       </button>
       <button title="Круг" class="toolBtn" id="circle" style="background-image: url(img/tools/circle.svg)">
@@ -119,169 +120,171 @@
       <button title="Прямоугольный треугольник" class="toolBtn" id="rightTriangle" style="background-image: url(img/tools/triangle_90.svg)">
       </button>
     </div>
+    <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
+    </button>
     <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
     <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
     </button>
     <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
     </button>
-    <button title="Прямоугольное выделение" class="toolBtn" id="rectangleSelection" style="background-image: url(img/tools/selection.svg)">
-    </button>
-    <div class="leftMenu" id="fillMenu" hidden="true" style="min-width: 175px;">
+    <div class="leftMenu" id="fillMenu" style="top:53vh; width: 25vh;" hidden="true" style="min-width: 175px;">
       <div class="rangeAndText">
         <input type="range" id="colorDifferenceRange" min="0" max="100">
         <input type="text" id="colorDifferenceText">
       </div>
     </div>
-    <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
+    <button title="Прямоугольное выделение" class="toolBtn" id="rectangleSelection" style="background-image: url(img/tools/selection.svg)">
     </button>
-    <button id="eyedropperWindow" hidden="true"></button>
+    <button title="Фильтры" class="toolBtn trigger" id="filters-modal" style="background-image: url(img/tools/filters.svg)"></button>
+    <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
     <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
     </button>
-    <div class="leftMenu" id="toolSettingsMenu" hidden="true" style="min-width: 175px;">
+    <div class="leftMenu" id="toolSettingsMenu" style="top:79.5vh; width: 25vh;" hidden="true">
       <div class="rangeAndText">
         <input type="range" id="toolSizeRange" min="1" max="300">
         <input type="text" id="toolSizeText">
       </div>
     </div>
-    <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; width: 90px; margin: 6px; border-radius: 0; border: 1px solid black">
-      <input type="color" id="colorPalette" style="opacity: 0">
-    </button>
   </div>
+
+<div id="canvasesField">
+  <canvas class="mainCanvas" id="backCanvas"></canvas>
+  <canvas class="mainCanvas" id="layer0"></canvas>
+  <div id="canvasResizer" hidden="true"></div>
 </div>
 
-<canvas class="mainCanvas" id="backCanvas"></canvas>
-<canvas class="mainCanvas" id="layer0"></canvas>
-
-<div id="layersField" class="layersFieldActive">
-  <div id="openLayersBtn">
-    <img src="img/tools/layers.svg" title="Панель слоёв" width="40px" height="40px" hspace="15px" vspace="5px">
-  </div>
-  <div class="layerScrollBox" id="layerScrollBox">
-    <div class="layer highlight" id="layerDisplay0">
-      <div class="previewWindow" id="previewDiv0">
-        <canvas class="preview" id="preview0"></canvas>
-      </div>
-      <div class="layerBtncontainer" id="btnContainer0">
-        <button title="Скрыть" class="layerBtn visibleLayer" id="hideLayer0"></button>
-        <button title="Заблокировать" class="layerBtn unlockedLayer" id="lockLayer0"></button>
-        <div class="droplist" id="droplist0">
-          <button class="layerOptionsBtn">
-            <img src="img/tools/more_layer.svg" width="20px" height="20px"></img>
-          </button>
-          <div class="layerOptions" id="layerOptions0">
-            <button id="deleteLayer0">Удалить слой</button>
-            <button id="addLayerTop0">Добавить слой сверху</button>
-            <button id="addLayerBottom0">Добавить слой снизу</button>
-            <button id="swapTop0">Поднять слой</button>
-            <button id="swapBottom0">Опустить слой</button>
-            <button id="mergeTop0">Слить с верхним</button>
-            <button id="mergeBottom0">Слить с нижним</button>
-            <button id="duplicateLayer0">Дублировать</button>
+  <div id="layersField" class="layersFieldActive">
+    <div id="openLayersBtn">
+      <img src="img/tools/layers.svg" title="Панель слоёв" width="80%" height="80%" hspace="20%" vspace="10%">
+    </div>
+    <div class="layerScrollBox" id="layerScrollBox">
+      <div class="layer highlight" id="layerDisplay0">
+        <div class="previewWindow" id="previewDiv0">
+          <canvas class="preview" id="preview0"></canvas>
+        </div>
+        <div class="layerBtncontainer" id="btnContainer0">
+          <button title="Скрыть" class="layerBtn visibleLayer" id="hideLayer0"></button>
+          <button title="Заблокировать" class="layerBtn unlockedLayer" id="lockLayer0"></button>
+          <div class="droplist" id="droplist0">
+            <button class="layerOptionsBtn">
+              <img src="img/tools/more_layer.svg" width="20px" height="20px"></img>
+            </button>
+            <div class="layerOptions" id="layerOptions0">
+              <button id="deleteLayer0">Удалить слой</button>
+              <button id="addLayerTop0">Добавить слой сверху</button>
+              <button id="addLayerBottom0">Добавить слой снизу</button>
+              <button id="swapTop0">Поднять слой</button>
+              <button id="swapBottom0">Опустить слой</button>
+              <button id="mergeTop0">Слить с верхним</button>
+              <button id="mergeBottom0">Слить с нижним</button>
+              <button id="duplicateLayer0">Дублировать</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div id="pastedText" contenteditable="true" hidden="true">Текст Alt + Enter</div>
+  <div id="pastedText" contenteditable="true" hidden="true">Текст Alt + Enter</div>
 
-<div class="panel" id="textMenu" hidden="true">
-  <select id="font" class="selectorMenu" onchange="chooseTextFormat()">
-    <option value="serif">Font:</option>
-    <option value="arial"> Arial </option>
-    <option value="'courier new'"> Courier New </option>
-    <option value="'comic sans'"> Comic Sans </option>
-    <option value="cursive"> Cursive </option>
-    <option value="serif"> Serif </option>
-    <option value="sans-serif"> Sans-Serif </option>
-    <option value="monoplace"> Monospace </option>
-    <option value="'times new roman'"> Times New Roman </option>
-    <option value="verdana"> Verdana </option>
-  </select>
-  <label for="fontSize">Text size:</label>
-  <input type="number" id="fontSize" size="2" min="1" max="300" value="20" oninput="chooseTextFormat()">
-  <label for="fontColor">Text color:</label>
-  <input type="color" size="2" id="fontColor" oninput="chooseTextFormat()">
-  <label for="textAngle">Angle:</label>
-  <input type="number" id="textAngle" size="2" min="-360" max="360" value="0" oninput="chooseTextFormat()">
-  <button id="textFormat">OK</button>
-</div>
-
-<div class="resizable" id="photoResizer" hidden="true">
-  <div class="resizers" id="photoInsertion">
-    <button class="rotator middle" id="photoRotator" style="background-image: url(img/rotate.png)">
-    </button>
-    <div class="resizer top-left"></div>
-    <div class="resizer top-right"></div>
-    <div class="resizer bottom-left"></div>
-    <div class="resizer bottom-right"></div>
+  <div class="panel" id="textMenu" hidden="true">
+    <select id="font" class="selectorMenu" onchange="chooseTextFormat()">
+      <option value="serif">Font:</option>
+      <option value="arial"> Arial </option>
+      <option value="'courier new'"> Courier New </option>
+      <option value="'comic sans'"> Comic Sans </option>
+      <option value="cursive"> Cursive </option>
+      <option value="serif"> Serif </option>
+      <option value="sans-serif"> Sans-Serif </option>
+      <option value="monoplace"> Monospace </option>
+      <option value="'times new roman'"> Times New Roman </option>
+      <option value="verdana"> Verdana </option>
+    </select>
+    <label for="fontSize">Text size:</label>
+    <input type="number" id="fontSize" size="2" min="1" max="300" value="20" oninput="chooseTextFormat()">
+    <label for="fontColor">Text color:</label>
+    <input type="color" size="2" id="fontColor" oninput="chooseTextFormat()">
+    <label for="textAngle">Angle:</label>
+    <input type="number" id="textAngle" size="2" min="-360" max="360" value="0" oninput="chooseTextFormat()">
+    <button id="textFormat">OK</button>
   </div>
-</div>
 
-<div class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div title="Сбросить изменения" class="filterHeaderBtns" id="deletingChanges"></div>
-      <div class="filterHeaderBtns" id="undoFilter"></div>
-      <div class="filterHeaderBtns" id="redoFilter"></div>
-      <div class="closeBtnsContainer">
-        <div class="closeButton" id="closeWithoutSaving"></div>
-        <div class="closeButton" id="closeWithSaving"></div>
-      </div>
-    </div>
-    <div class="spaceWrapper">
-      <div class="leftSide">
-        <div class="filterCanvasWrapper" id="modalCanvasWrapper">
-          <canvas class="filterCanvas" id="modalCanvas"></canvas>
-        </div>
-        <div>
-          <div class="rangeAndDescription">
-            <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
-            <p>Контрастность</p>
-          </div>
-          <div class="rangeAndDescription">
-            <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
-            <p>Яркость</p>
-          </div>
-          <div class="rangeAndDescription">
-            <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
-            <p>Резкость</p>
-          </div>
-        </div>
-      </div>
-      <div class="rightSide">
-        <div class="centerFilterBtns colorFiltersBtns">
-          <button title="negative" id="negative" style="background-image: url(img/filters/negative.svg)"></button>
-          <button title="grey-scale" id="grey-scale" style="background-image: url(img/filters/greyscale.svg)"></button>
-          <button title="sepia" id="sepia" style="background-image: url(img/filters/sepia.svg)"></button>
-        </div>
-        <div class="centerFilterBtns colorFiltersBtns">
-          <button title="black-white" id="black-white" style="background-image: url(img/filters/blackwhite.svg)"></button>
-          <button title="rainbowLines" id="sobel" style="background-image: url(img/filters/rainbowlines.svg"></button>
-          <button title="binarization" id="binarization" style="background-image: url(img/filters/binarization.svg)"></button>
-        </div>
-        <div class="centerFilterBtns colorFiltersBtns">
-          <button title="colored" id="colored" style="background-image: url(img/filters/colored.svg)"></button>
-          <button title="horizontal reflection" id="horizontal-reflection" style="background-image: url(img/filters/horizontal_reflection.svg)"></button>
-          <button title="vertical reflection" id="vertical-reflection" style="background-image: url(img/filters/vertical_reflection.svg)"></button>
-        </div>
-        <div class="centerFilterBtns textFilterBtns">
-          <button title="emboss" id="emboss">Объем</button>
-          <button title="blur" id="blur">Блюр</button>
-          <button title="median" id="median">Шум</button>
-        </div>
-      </div>
+  <div class="resizable" id="photoResizer" hidden="true">
+    <div class="resizers" id="photoInsertion">
+      <button class="rotator middle" id="photoRotator" style="background-image: url(img/rotate.png)">
+      </button>
+      <div class="resizer top-left"></div>
+      <div class="resizer top-right"></div>
+      <div class="resizer bottom-left"></div>
+      <div class="resizer bottom-right"></div>
     </div>
   </div>
-</div>
 
-<div id="canvasInsertion" hidden="true"></div>
-
-<div class="modalHints">
-    <div class="modalHints-content" id="hintsContent">
+  <div class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div title="Сбросить изменения" class="filterHeaderBtns" id="deletingChanges"></div>
+        <div class="filterHeaderBtns" id="undoFilter"></div>
+        <div class="filterHeaderBtns" id="redoFilter"></div>
+        <div class="closeBtnsContainer">
+          <div class="closeButton" id="closeWithoutSaving"></div>
+          <div class="closeButton" id="closeWithSaving"></div>
+        </div>
+      </div>
+      <div class="spaceWrapper">
+        <div class="leftSide">
+          <div class="filterCanvasWrapper" id="modalCanvasWrapper">
+            <canvas class="filterCanvas" id="modalCanvas"></canvas>
+          </div>
+          <div>
+            <div class="rangeAndDescription">
+              <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
+              <p>Контрастность</p>
+            </div>
+            <div class="rangeAndDescription">
+              <input type="range" id="brightness" min="-5" max="5" step="0.1"></input>
+              <p>Яркость</p>
+            </div>
+            <div class="rangeAndDescription">
+              <input type="range" id="sharp" min="0" max="4" step="0.1"></input>
+              <p>Резкость</p>
+            </div>
+          </div>
+        </div>
+        <div class="rightSide">
+          <div class="centerFilterBtns colorFiltersBtns">
+            <button title="negative" id="negative" style="background-image: url(img/filters/negative.svg)"></button>
+            <button title="grey-scale" id="grey-scale" style="background-image: url(img/filters/greyscale.svg)"></button>
+            <button title="sepia" id="sepia" style="background-image: url(img/filters/sepia.svg)"></button>
+          </div>
+          <div class="centerFilterBtns colorFiltersBtns">
+            <button title="black-white" id="black-white" style="background-image: url(img/filters/blackwhite.svg)"></button>
+            <button title="rainbowLines" id="sobel" style="background-image: url(img/filters/rainbowlines.svg)"></button>
+            <button title="binarization" id="binarization" style="background-image: url(img/filters/binarization.svg)"></button>
+          </div>
+          <div class="centerFilterBtns colorFiltersBtns">
+            <button title="colored" id="colored" style="background-image: url(img/filters/colored.svg)"></button>
+            <button title="horizontal reflection" id="horizontal-reflection" style="background-image: url(img/filters/horizontal_reflection.svg)"></button>
+            <button title="vertical reflection" id="vertical-reflection" style="background-image: url(img/filters/vertical_reflection.svg)"></button>
+          </div>
+          <div class="centerFilterBtns textFilterBtns">
+            <button title="emboss" id="emboss">Объем</button>
+            <button title="blur" id="blur">Блюр</button>
+            <button title="median" id="median">Шум</button>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
+  <div id="canvasInsertion" hidden="true"></div>
+
+  <div class="modalHints">
+    <div class="hintsWindow">
+      <div id="hintsContent"></div>
+        <button id = "closeHintsModal">Понятно</button>
+    </div>
+  </div>
 
 <script src="preloader.js"></script>
 <script src="script.js"></script>
@@ -294,7 +297,6 @@
 <script src="js/figures.js"></script>
 <script src="js/eraser.js"></script>
 <script src="js/filling.js"></script>
-<script src="js/straight-line.js"></script>
 <script src="js/eyedropper.js"></script>
 <script src="js/hand.js"></script>
 <script src="js/text-insertion.js"></script>

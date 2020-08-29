@@ -37,7 +37,7 @@ function fill(event) {
     return;
   }
 
-  let originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  let originalImageData = context.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
   let resultImageData = originalImageData;
 
   let startRGBA = [
@@ -50,9 +50,9 @@ function fill(event) {
   let stack = [];
 
   let pushed = [];
-  for (let i = 0; i <= canvas.width; i++) {
+  for (let i = 0; i <= curCanvasWidth; i++) {
     pushed[i] = [];
-    for (let j = 0; j <= canvas.height; j++) {
+    for (let j = 0; j <= curCanvasHeight; j++) {
       pushed[i][j] = false;
     }
   }

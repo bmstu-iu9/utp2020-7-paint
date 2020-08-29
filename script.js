@@ -3,6 +3,7 @@
 let backCanvas = document.getElementById('backCanvas');
 let canvas = document.getElementById('layer0');
 let context = canvas.getContext('2d');
+let canvasesField = document.getElementById('canvasesField');
 
 const defaultWidth = 780;
 const defaultHeight = 400;
@@ -19,11 +20,6 @@ let curCanvasBorder = defaultBorder;
 let curCanvasBorderColor = '#000000';
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
-let curState = 0;
-let photoOfState = {
-  length: 0,
-  layers: new Map()
-};
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -33,8 +29,8 @@ let memContext = memCanvas.getContext('2d');
 let uploadImage = document.getElementById('uploadImage');
 
 function saveImg() {
-  memCanvas.width = canvas.width;
-  memCanvas.height = canvas.height;
+  memCanvas.width = curCanvasWidth;
+  memCanvas.height = curCanvasHeight;
   memContext.drawImage(canvas, 0, 0);
 }
 
@@ -121,8 +117,8 @@ downloadBtn.addEventListener('click', () => {
   for (let i = layerScrollBox.children.length - 1; i >= 0; i--) {
     if (parseLayerId(layerScrollBox.children[i].id) != null) {
       resultContext.drawImage(document.getElementById('layer'
-                                                      + parseLayerId(layerScrollBox.children[i].id)),
-                              0, 0);
+        + parseLayerId(layerScrollBox.children[i].id)),
+        0, 0);
     }
   }
 
@@ -131,20 +127,21 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute('href', img);
 });
 
-function clearCanvas() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  changePreview();
+function clearCanvas(layer) {
+  if (layer) {
+    let canv = layer.canvas;
+    canv.getContext('2d').clearRect(0, 0, canv.width, canv.height);
+    changePreview(layer);
+  } else {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    changePreview();
+  }
 }
 
 function clearAllLayers() {
-  let curCanvasId = activeLayer.id;
   layers.forEach((layer) => {
-    canvas = layer.canvas;
-    context = canvas.getContext('2d');
-    clearCanvas();
+    clearCanvas(layer);
   });
-  canvas = layers.get(curCanvasId).canvas;
-  context = canvas.getContext('2d');
 }
 
 document.getElementById('clear').addEventListener('click', () => {
@@ -152,22 +149,25 @@ document.getElementById('clear').addEventListener('click', () => {
   rememberState();
 });
 
-function clearLayerHistory(id) {
+function deleteLayerHistory(id) {
+  let len = layersHistory.length;
   let count = 0, k = 0;
-  let photo = photoOfState.layers.get(id);
-  for (let i = 1, last = photo[0]; i < photo.length; i++) {
-    if (photo[i] !== last) {
-        photoOfState.layers.forEach((state, idOfState) => {
-          if (id != idOfState) state.splice(i - k, 1);
-        });
-        ++k;
-        if (i <= curState) ++count;
+  for (let i = 0; i < len; i++) {
+    if (layersHistory[i - k].layerId === id) {
+      layersHistory.splice(i - k, 1);
+      if (i <= curState) ++count;
+      ++k;
+    } else {
+      delete layersHistory[i - k][id];
     }
-    last = photo[i];
   }
-  photoOfState.length -= k;
   curState -= count;
-  photoOfState.layers.delete(id);
+  if (layersHistory.length === 0) layersHistory = [new Snapshot(-1)];
+}
+
+function clearAllLayersHistory() {
+  layersHistory = [new Snapshot(-1)];
+  curState = 0;
 }
 
 addEventListener('keydown', (event) => {
@@ -204,6 +204,23 @@ changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
 changeBorderWidth.value = defaultBorder + 'px';
 
+function setCanvasWidth() {
+  clearAllLayers();
+
+  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.width = curCanvasWidth + 'px';
+    canvas.setAttribute('width', curCanvasWidth + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
+
+  document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  changeCanvasWidth.style.background = '#ffffff';
+  changeCanvasWidth.value = curCanvasWidth + 'px';
+}
+
 changeCanvasWidth.oninput = function () {
   addEventListener('keydown', setWidth);
 
@@ -213,19 +230,10 @@ changeCanvasWidth.oninput = function () {
 
   if (checkPxInput(width, minW, maxW)) {
     curCanvasWidth = parseInt(width);
-    clearAllLayers();
-
-    changeCanvasWidth.style.background = '#ffffff';
-    allCanvases.forEach((canvas) => {
-      canvas.style.width = curCanvasWidth + 'px';
-      canvas.setAttribute('width', curCanvasWidth + 'px');
-    });
-    layers.forEach((layer) => {
-      changePreviewSize(layer.preview);
-    });
-    document.getElementById('curWidth').innerHTML = curCanvasWidth + '';
+    clearAllLayersHistory();
+    setCanvasWidth();
   } else {
-    curCanvasWidth = getWidth(width);
+    curCanvasWidth = parseInt(getWidth(width));
     changeCanvasWidth.style.background = '#ffd4d4';
   }
 
@@ -247,24 +255,28 @@ changeCanvasWidth.oninput = function () {
 
   function setWidth(event) {
     if (event.key === 'Enter') {
-      let actualWidth = curCanvasWidth;
-
-      clearAllLayers();
-
-      allCanvases.forEach((canvas) => {
-        canvas.style.width = actualWidth + 'px';
-        canvas.setAttribute('width', actualWidth + 'px');
-      });
-      layers.forEach((layer) => {
-        changePreviewSize(layer.preview);
-      });
-
-      changeCanvasWidth.value = actualWidth + 'px';
-      document.getElementById('curWidth').innerHTML = actualWidth + '';
-      changeCanvasWidth.style.background = '#ffffff';
+      clearAllLayersHistory();
+      setCanvasWidth();
       removeEventListener('keydown', setWidth);
     }
   }
+}
+
+function setCanvasHeight() {
+  clearAllLayers();
+
+  canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.height = curCanvasHeight + 'px';
+    canvas.setAttribute('height', curCanvasHeight + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
+
+  document.getElementById('curHeight').innerHTML = curCanvasHeight;
+  changeCanvasHeight.style.background = '#ffffff';
+  changeCanvasHeight.value = curCanvasHeight + 'px';
 }
 
 changeCanvasHeight.oninput = function () {
@@ -276,60 +288,33 @@ changeCanvasHeight.oninput = function () {
 
   if (checkPxInput(height, minH, maxH)) {
     curCanvasHeight = parseInt(height);
-
-    clearAllLayers();
-
-    allCanvases.forEach((canvas) => {
-      canvas.style.height = curCanvasHeight + 'px';
-      canvas.setAttribute('height', curCanvasHeight + 'px');
-    });
-    layers.forEach((layer) => {
-      changePreviewSize(layer.preview);
-    });
-
-    document.getElementById('curHeight').innerHTML = curCanvasHeight + '';
-    changeCanvasHeight.style.background = '#ffffff';
-    changeCanvasHeight.value = curCanvasHeight;
+    clearAllLayersHistory();
+    setCanvasHeight();
   } else {
-    curCanvasHeight = getHeight(height);
+    curCanvasHeight = parseInt(getHeight(height));
     changeCanvasHeight.style.background = '#ffd4d4';
   }
 
- changePreview();
-
+  changePreview();
 
   function getHeight(str) {
 
-  if (isNaN(parseInt(str)))
+    if (isNaN(parseInt(str)))
+      return defaultHeight;
+
+    if (parseInt(str) > changeCanvasHeight.max)
+      return changeCanvasHeight.max;
+
+    if (parseInt(str) < changeCanvasHeight.min)
+      return changeCanvasHeight.min;
+
     return defaultHeight;
-
-   if (parseInt(str) > changeCanvasHeight.max)
-    return changeCanvasHeight.max;
-
-   if (parseInt(str) < changeCanvasHeight.min)
-    return changeCanvasHeight.min;
-
-   return defaultHeight;
   }
 
   function setHeight(event) {
     if (event.key === 'Enter') {
-      let actualHeight = curCanvasHeight;
-
-      clearAllLayers();
-
-      allCanvases.forEach((canvas) => {
-        canvas.style.height = actualHeight + 'px';
-        canvas.setAttribute('height', actualHeight + 'px');
-      });
-      layers.forEach((layer) => {
-        changePreviewSize(layer.preview);
-      });
-
-      changeCanvasHeight.value = actualHeight + 'px';
-      document.getElementById('curHeight').innerHTML = actualHeight + '';
-      changeCanvasHeight.style.background = '#ffffff';
-
+      clearAllLayersHistory();
+      setCanvasHeight();
       removeEventListener('keydown', setHeight);
     }
   }
@@ -347,9 +332,13 @@ changeBorderWidth.oninput = function () {
     allCanvases.forEach((canvas) => {
       canvas.style.borderWidth = curCanvasBorder + 'px';
     });
+    canvasesField.style.height = canvas.offsetHeight + 'px';
+    canvasesField.style.width = canvas.offsetWidth + 'px';
+    canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
+    canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
     changeBorderWidth.style.background = '#ffffff';
   } else {
-    curCanvasBorder = getBorder(border);
+    curCanvasBorder = parseInt(getBorder(border));
     changeBorderWidth.style.background = '#ffd4d4';
     backCanvas.style.borderWidth = curCanvasBorder;
   }
@@ -370,17 +359,18 @@ changeBorderWidth.oninput = function () {
 
   function setBorder(event) {
     if (event.key === 'Enter') {
-      let actualBorder = curCanvasBorder;
-
-      changeBorderWidth.value = actualBorder + 'px';
+      changeBorderWidth.value = curCanvasBorder + 'px';
       changeBorderWidth.style.background = '#ffffff';
       allCanvases.forEach((canvas) => {
-        canvas.style.borderWidth = actualBorder + 'px';
+        canvas.style.borderWidth = curCanvasBorder + 'px';
       });
+      canvasesField.style.height = canvas.offsetHeight + 'px';
+      canvasesField.style.width = canvas.offsetWidth + 'px';
+      canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
+      canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
 
       removeEventListener('keydown', setBorder);
     }
-
   }
 }
 
@@ -391,6 +381,7 @@ borderColor.oninput = function () {
       canvas.style.borderColor = color;
     });
     curCanvasBorderColor = color;
+    colorBorderBtn.style.background = color;
   } else {
     allCanvases.forEach((canvas) => {
       canvas.style.borderColor = '#000000';
@@ -401,9 +392,9 @@ borderColor.oninput = function () {
 
 function checkPxInput(str, min, max) {
   const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return  pxInputRegExp.test(str) &&
-         (parseInt(str) >= min) &&
-         (parseInt(str) <= max);
+  return pxInputRegExp.test(str) &&
+    (parseInt(str) >= min) &&
+    (parseInt(str) <= max);
 }
 
 
@@ -415,7 +406,19 @@ function hideAndShow(element) {
 }
 
 document.getElementById('help').addEventListener('click', (event) => {
-  hideAndShow('helpMenu', event);
+  toggleModal();
+  hintsContent.innerHTML = `Горячие клавиши:
+      <ul>
+          <li>Alt + c — очистить холст</li>
+          <li>Alt + p — выбрать цвет</li>
+          <li>Alt + s — сохранить</li>
+          <li>Alt + u — загрузить фото</li>
+          <li>Alt + y — вернуть</li>
+          <li>Alt + z — отменить</li>
+          <li>Ctrl + c — скопировать выделенную область</li>
+          <li>Ctrl + v — вставить скопированную область</li>
+          <li>Ctrl + Backspace — очистить выделенную область</li>
+      </ul>`;
 });
 
 let firstClickUpload = true;
@@ -440,8 +443,29 @@ document.getElementById('figure').addEventListener('click', (event) => {
   hideAndShow('figureMenu', event);
 });
 
+document.getElementById('settings').addEventListener('click', (event) => {
+  hideAndShow('settingsMenu', event);
+});
+
 document.getElementById('openPanel').addEventListener('click', (event) => {
-  hideAndShow('leftContainer', event);
+  if (document.getElementById('leftContainer').style.width == "8vh") {
+    document.getElementById('leftContainer').style.width = "0";
+    if (document.getElementById('brushMenu').hidden == false) {
+      hideAndShow('brushMenu', event);
+    }
+    if (document.getElementById('figureMenu').hidden == false) {
+      hideAndShow('figureMenu', event);
+    }
+    if (document.getElementById('toolSettingsMenu').hidden == false) {
+      hideAndShow('toolSettingsMenu', event)
+    }
+    if (document.getElementById('fillMenu').hidden == false) {
+      hideAndShow('fillMenu', event)
+    }
+  }
+  else {
+    document.getElementById('leftContainer').style.width = "8vh";
+  }
 });
 
 document.getElementById('toolSettings').addEventListener('click', (event) => {
@@ -472,16 +496,16 @@ function areInCanvas(x, y) {
   return (x < canvas.width && y < canvas.height && x >= 0 && y >= 0);
 }
 
-function changePreviewSize(preview) {
-  if (curCanvasHeight / maxPreviewHeight > curCanvasWidth / maxPreviewWidth) {
-    preview.style.height = maxPreviewHeight + 'px';
-    preview.style.width = curCanvasWidth * (parseInt(preview.style.height) / curCanvasHeight) + 'px';
+function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
+  if (curCanvasHeight / maxWindowHeight > curCanvasWidth / maxWindowWidth) {
+    window.style.height = maxWindowHeight + 'px';
+    window.style.width = curCanvasWidth * (parseInt(window.style.height) / curCanvasHeight) + 'px';
   } else {
-    preview.style.width = maxPreviewWidth + 'px';
-    preview.style.height = curCanvasHeight * (parseInt(preview.style.width) / curCanvasWidth) + 'px';
+    window.style.width = maxWindowWidth + 'px';
+    window.style.height = curCanvasHeight * (parseInt(window.style.width) / curCanvasWidth) + 'px';
   }
-  preview.setAttribute('width', preview.style.width);
-  preview.setAttribute('height', preview.style.height);
+  window.setAttribute('width', window.style.width);
+  window.setAttribute('height', window.style.height);
 }
 
 let modalHints = document.querySelector('.modalHints');
@@ -490,10 +514,4 @@ function toggleModal() {
   modalHints.classList.toggle('show-modalHints');
 }
 
-function windowOnClick(event) {
-  if (event.target === modalHints) {
-    toggleModal();
-  }
-}
-
-window.addEventListener('click', windowOnClick);
+closeHintsModal.addEventListener('click', toggleModal);

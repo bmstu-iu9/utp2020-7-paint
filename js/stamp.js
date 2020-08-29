@@ -35,8 +35,8 @@ function deleteStamp() {
 function selectFragment(e) {
   stampX = e.offsetX;
   stampY = e.offsetY;
-  lastCanvas.width = canvas.width;
-  lastCanvas.height = canvas.height;
+  lastCanvas.width = curCanvasWidth;
+  lastCanvas.height = curCanvasHeight;
   lastContext.drawImage(canvas, 0, 0);
   canvas.style.cursor = 'default';
   canvas.removeEventListener('click', selectFragment);

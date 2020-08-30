@@ -329,9 +329,11 @@ function checkPxInput(str, min, max) {
 
 function hideAndShow(element) {
   function closeSettingsMenu(event) {
-    document.getElementById('settings').classList.toggle('pressed');
-    document.getElementById('settingsMenu').hidden = true;
-    document.removeEventListener('keydown', closeSettingsMenu);
+    if (event.code === 'Escape') {
+      document.getElementById('settings').classList.toggle('pressed');
+      document.getElementById('settingsMenu').hidden = true;
+      document.removeEventListener('keydown', closeSettingsMenu);
+    }
   }
   let menu = document.getElementById(element);
   menu.hidden = !menu.hidden;

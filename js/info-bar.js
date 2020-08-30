@@ -44,10 +44,12 @@ function initUsedColorsIds(){
     let button = document.getElementById(buttonId);
     button.style.background = 'url(\'img/background.png\')';
     button.onclick = () => {
-      curColor = button.style.background.slice(4,-1).split(',');
-      colorInput.value = '#' + rgbToHex(curColor);
-      colorBtn.style.background = colorInput.value;
-      showCurColor();
+      if (button.style.background != 'url("img/background.png")') {
+        curColor = button.style.background.slice(4,-1).split(',');
+        colorInput.value = '#' + rgbToHex(curColor);
+        colorBtn.style.background = colorInput.value;
+        showCurColor();
+      }
     }
   });
 }

@@ -70,7 +70,6 @@ body {
     text-align: center;
   }
 
-
 #openPanel {
   position: fixed;
   width: 8vh;
@@ -89,6 +88,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  align-items: center;
   position: fixed;
   z-index: 1005;
   left: 0;
@@ -535,7 +535,7 @@ option:checked {
       width: 1.5vh;
       height: 1.5vh;
       border-radius: 50%;
-      background: #24a4ff;
+      background: #ffdf2b;
       cursor: pointer;
       box-shadow: 0 1vh 1vh rgba(0,0,0,0.5);
     }
@@ -544,7 +544,7 @@ option:checked {
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #24a4ff;
+      background: #ffdf2b;
       cursor: pointer;
       box-shadow: 0 1vh 1vh rgba(0,0,0,0.5);
     }
@@ -576,7 +576,7 @@ option:checked {
   left: 50%;
   transform: translate(-50%, -50%);
   overflow-y: hidden;
-  z-index: 1000;
+  z-index: 1006;
 }
 
   #textMenu input {
@@ -916,7 +916,7 @@ input::-webkit-color-swatch {
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #24a4ff;
+      background: #ffdf2b;
       cursor: pointer;
       box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
     }

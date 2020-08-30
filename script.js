@@ -418,7 +418,7 @@ document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
   uploadImage.click();
 });
 
-const leftMenuLists = ['brush', 'figure', 'settings'];
+const leftMenuLists = ['brush', 'figure', 'settings', 'eraser'];
 
 leftMenuLists.forEach((list) => {
   document.getElementById(list).addEventListener('click', (event) =>{
@@ -435,11 +435,11 @@ document.getElementById('openPanel').addEventListener('click', (event) => {
     if (document.getElementById('figureMenu').hidden == false) {
       hideAndShow('figureMenu', event);
     }
-    if (document.getElementById('toolSettingsMenu').hidden == false) {
-      hideAndShow('toolSettingsMenu', event)
-    }
     if (document.getElementById('fillMenu').hidden == false) {
       hideAndShow('fillMenu', event)
+    }
+    if (document.getElementById('eraserMenu').hidden == false) {
+      hideAndShow('eraserMenu', event)
     }
   }
   else {

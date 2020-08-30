@@ -27,6 +27,9 @@ function startPointPixelEraser(e) {
   if (isThereSelection) rememberCanvasWithoutSelection();
 
   context.save();
+
+  context.globalCompositeOperation = 'destination-out';
+
   pixelEraserParameters.oldX = e.offsetX;
   pixelEraserParameters.oldY = e.offsetY;
   deltaX = e.pageX - e.offsetX;

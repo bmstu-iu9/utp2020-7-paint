@@ -50,6 +50,8 @@ function drawPixelEraser(e) {
   curX = e.pageX - deltaX;
   curY = e.pageY - deltaY;
 
+  context.globalCompositeOperation = 'destination-out';
+
   pixelEraserParameters.newX = curX;
   pixelEraserParameters.newY = curY;
 
@@ -65,7 +67,9 @@ function drawPixelEraser(e) {
 
   pixelEraserParameters.oldX = curX;
   pixelEraserParameters.oldY = curY;
-  
+
+  context.globalCompositeOperation = 'source-over';
+
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
@@ -79,7 +83,6 @@ function drawPointPixelEraser(x, y) {
     context.lineWidth = 1;
     context.lineJoin = 'miter';
     context.lineCap = 'butt';
-    context.globalCompositeOperation = 'destination-out';
     let x0 = 0;
     let y0 = radius;
     let delta = 1 - 2 * radius;

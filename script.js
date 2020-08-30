@@ -452,13 +452,13 @@ let zoomValue = 1;
 
 function zoomCanvases() {
   zoomValue = Math.min(Math.max(.125, zoomValue), 4);
-  setZoom(canvasesField);
-  setZoom(canvasInsertion);
+  setZoom(canvasesField, 50);
+  setZoom(canvasInsertion, 0);
 }
 
-function setZoom(element) {
+function setZoom(element, originValue) {
   let scale = 'scale(' + zoomValue + ')';
-  let origin = '50% 50%';
+  let origin = originValue + '% ' + originValue + '%';
 
   element.style['transform'] = scale;
   element.style['transformOrigin'] = origin;

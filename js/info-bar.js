@@ -59,11 +59,13 @@ function initUsedColorsIds(){
 
 function addUsedColor() {
   let curColorHex = '#' + rgbToHex(curColor);
-  if (lastUsedColor === curColorHex ) {
+
+  if (usedColors.includes(curColorHex)) {
     return;
   }
 
   lastUsedColor = curColorHex;
+  
   if (countOfUsedColors < maxUsedColors) {
     usedColors.unshift(curColorHex);
     document.getElementById(usedColorsIds[countOfUsedColors]).style.background = '#' + rgbToHex(curColor);

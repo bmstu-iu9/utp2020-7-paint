@@ -38,13 +38,23 @@
       <img src="img/leftPanel.png" style="width:5vh; height:5vh;"></img>
     </div>
     <div class="topContainer">
-      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 0.1vh solid black; width: 5vh; height: 5vh; margin-top: 1vh;">
+      <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
+      <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
+      </button>
+      <button title="Настройки холста" class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
+    </div>
+  </div>
+
+  <div class="leftMenu" id="toolSettingsMenu" style="bottom:0; width:36vh; height:6vh; left:50%; transform: translate(-50%, -50%);" hidden="true">
+    <div class="rangeAndText" style="width:36vh; height:6vh; margin-left:1vh; margin-top:0; margin-right:0; margin-bottom:0;">
+      <input type="range" id="toolSizeRange" min="1" max="300">
+      <input type="text" id="toolSizeText">
+      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 0.1vh solid black; width: 4.7vh; height: 4.7vh; margin-top: 1vh;">
         <input type="color" id="colorPalette" style="opacity: 0">
       </button>
       <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
       </button>
       <button id="eyedropperWindow" hidden="true"></button>
-      <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
       <button title="+" class="toolBtn" id="zoomPlus" style="background-image: url(img/tools/zoom_plus.svg)"></button>
       <button title="-" class="toolBtn" id="zoomMinus" style="background-image: url(img/tools/zoom_minus.svg)"></button>
     </div>
@@ -109,29 +119,24 @@
     </div>
     <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
     </button>
+    <div class="leftMenu" id="eraserMenu" style="top:31.5vh; width: 7vh;" hidden="true" style="min-width: 175px;">
+      <button title="Ластик (жёсткий)" class="toolBtn" id="pixelEraser" style="background-image: url(img/tools/pixel_eraser.svg)">
+      </button>
+    </div>
     <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
-    <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
-    </button>
     <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
     </button>
-    <div class="leftMenu" id="fillMenu" style="top:53vh; width: 25vh;" hidden="true" style="min-width: 175px;">
+    <div class="leftMenu" id="fillMenu" style="top:46vh; width: 25vh;" hidden="true" style="min-width: 175px;">
       <div class="rangeAndText">
         <input type="range" id="colorDifferenceRange" min="0" max="100">
         <input type="text" id="colorDifferenceText">
       </div>
     </div>
+    <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
+    </button>
     <button title="Прямоугольное выделение" class="toolBtn" id="rectangleSelection" style="background-image: url(img/tools/selection.svg)">
     </button>
     <button title="Фильтры" class="toolBtn trigger" id="filters-modal" style="background-image: url(img/tools/filters.svg)"></button>
-    <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
-    <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
-    </button>
-    <div class="leftMenu" id="toolSettingsMenu" style="top:79.5vh; width: 25vh;" hidden="true">
-      <div class="rangeAndText">
-        <input type="range" id="toolSizeRange" min="1" max="300">
-        <input type="text" id="toolSizeText">
-      </div>
-    </div>
   </div>
 
 <div id="canvasesField">
@@ -290,6 +295,7 @@
 <script src="js/stamp.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/selection.js"></script>
+<script src="js/pixel-eraser.js"></script>
 <script src="js/instruments-switcher.js"></script>
 <script src="js/tool-size.js"></script>
 <script src="js/color-difference.js"></script>

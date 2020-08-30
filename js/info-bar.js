@@ -2,7 +2,7 @@
 
 let usedColors = [];
 let usedColorsIds = [];
-const maxUsedColors = 3;
+const maxUsedColors = 8;
 let countOfUsedColors = 0;
 let lastUsedColor = '';
 
@@ -40,13 +40,13 @@ function initUsedColorsIds(){
     button.id = usedColorsIds[i];
     document.getElementById('colorContent').appendChild(button);
   }
-  /*create there elements on canvas*/
   usedColorsIds.forEach((buttonId) => {
     let button = document.getElementById(buttonId);
     button.style.background = 'url(\'img/background.png\')';
     button.onclick = () => {
-      curColor = hexToRgb(button.style.background);
-      colorInput.value = button.style.background;
+      curColor = button.style.background.slice(4,-1).split(',');
+      colorInput.value = '#' + rgbToHex(curColor);
+      colorBtn.style.background = colorInput.value;
       showCurColor();
     }
   });
@@ -73,6 +73,6 @@ function addUsedColor() {
 
 function updateUsedColors() {
   usedColorsIds.forEach((id, i) => {
-    document.getElementById(id).style.background = usedColor[i];
+    document.getElementById(id).style.background = usedColors[i];
   });
 }

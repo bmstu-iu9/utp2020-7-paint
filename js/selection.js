@@ -195,10 +195,8 @@ function insertCanvas(copyCanvas) {
       let posOfCanvas = getElementPosition(canvas);
       let dx = (posOfPhoto.x - posOfCanvas.x - curCanvasBorder) / zoomValue;
       let dy = (posOfPhoto.y - posOfCanvas.y - curCanvasBorder) / zoomValue;
-      let dWidth = curCopyCanvas.width / zoomValue;
-      let dHeight = curCopyCanvas.height / zoomValue;
 
-      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, dWidth, dHeight);
+      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
 
       canvasInsertion.hidden = true;
       document.removeEventListener('keydown', pressForInsertion);

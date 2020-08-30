@@ -455,6 +455,7 @@ function zoomCanvases(e) {
   zoomValue += e.deltaY * -0.001;
   zoomValue = Math.min(Math.max(.125, zoomValue), 4);
   setZoom(canvasesField);
+  setZoom(canvasInsertion);
 }
 
 function setZoom(element) {

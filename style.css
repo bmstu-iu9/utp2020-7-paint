@@ -810,8 +810,8 @@ input::-webkit-color-swatch {
   left: 50%;
   transform: translate(-50%, -55%);
   background-color: white;
-  width: 900px;
-  height: 500px;
+  width: 70vw;
+  height: 75vh;
   padding: 0;
 }
 
@@ -820,7 +820,6 @@ input::-webkit-color-swatch {
   width: 100%;
   height: 6%;
   background-color: #ffdf2b;
-  color: black;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -828,23 +827,22 @@ input::-webkit-color-swatch {
 
 .leftSide {
   margin: 0;
-  width: 550px;
+  width: 35vw;
   display: inline-block;
-  padding-left: 20px;
 }
 
 .filterCanvasWrapper {
-  width: 500px;
-  height: 350px;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  width: 35vw;
+  height: 45vh;
+  margin-top: 4vh;
+  margin-bottom: 2vh;
 }
 
 .filterCanvas {
   background: repeat url("img/background.png");
   display: inline-block;
   position: relative;
-  border: 1px solid black;
+  border: 0.2vh solid black;
   height: 100%;
   width: 100%;
 }
@@ -854,14 +852,14 @@ input::-webkit-color-swatch {
   display: inline-flex;
   flex-direction: column;
   margin: 0;
-  width: 300px;
+  width: 35vw;
   height: 100%;
   justify-content: space-around;
 }
 
 .colorFiltersBtns button {
-  width: 60px;
-  height: 60px;
+  width: 10vh;
+  height: 10vh;
   border: none;
   border-radius: 50%;
   outline: none;
@@ -877,8 +875,9 @@ input::-webkit-color-swatch {
 }
 
 .textFilterBtns button {
-  width: 80px;
-  height: 30px;
+  width: 12vh;
+  height: 4vh;
+  font-size: 2.5vh;
   border: none;
   border-radius: 50%;
   outline: none;
@@ -893,54 +892,55 @@ input::-webkit-color-swatch {
   width: 30%;
 }
 
-  .rangeAndDescription p {
-    text-align: center;
-    color: #4A4A4A;
-  }
+.rangeAndDescription p {
+  font-size: 3vh;
+  text-align: center;
+  color: #4A4A4A;
+}
 
-  .rangeAndDescription input[type='range'] {
-    -webkit-appearance: none;
-    height: 5px;
-    width: 100%;
-    border-radius: 5px;
-    background: #d3d3d3;
-    background-size: cover;
-    outline: none;
-    margin-right: 5px;
-    -webkit-transition: .2s;
-  }
+.rangeAndDescription input[type='range'] {
+  -webkit-appearance: none;
+  height: 5px;
+  width: 100%;
+  border-radius: 5px;
+  background: #d3d3d3;
+  background-size: cover;
+  outline: none;
+  margin-right: 5px;
+  -webkit-transition: .2s;
+}
 
-    .rangeAndDescription input[type='range']::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #24a4ff;
-      cursor: pointer;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
-    }
+.rangeAndDescription input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #24a4ff;
+  cursor: pointer;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+}
 
-    .rangeAndDescription input[type='range']::-moz-range-thumb {
-      width: 25px;
-      height: 25px;
-      background: #24a4ff;
-      cursor: pointer;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
-    }
-
-.filterHeaderBtns {
+.rangeAndDescription input[type='range']::-moz-range-thumb {
   width: 25px;
   height: 25px;
+  background: #24a4ff;
+  cursor: pointer;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.filterHeaderBtns {
+  width: 4vh;
+  height: 4vh;
   text-align: center;
   cursor: pointer;
   display: inline-block;
-  margin-right: 2px;
+  margin-right: 0.5vh;
 }
 
-  .filterHeaderBtns:first-child {
-    margin-left: 2px;
-  }
+.filterHeaderBtns:first-child {
+  margin-left: 1vh;
+}
 
 #deletingChanges {
   border-radius: 50%;
@@ -967,16 +967,17 @@ input::-webkit-color-swatch {
 
 .closeBtnsContainer {
   position: absolute;
-  right: 1px;
-  width: 55px;
-  height: 25px;
+  right: 0.4vh;
+  width: 10vh;
+  height: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .closeButton {
-  width: 25px;
-  height: 25px;
+  width: 4vh;
+  height: 4vh;
   cursor: pointer;
 }
 

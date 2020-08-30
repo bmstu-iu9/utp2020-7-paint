@@ -1,6 +1,6 @@
 'use strict';
 
-const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush', 'pixelEraser'
+const allIds = ['pencil', 'eraser', 'basicBrush', 'neonBrush', 'smoothBrush',
                 'sketchBrush', 'patternBrush', 'furBrush', 'rectangleBrush','circleBrush',
                 'rectangle', 'circle', 'ellipse', 'eqTriangle', 'rightTriangle', 'straightLine',
                 'eyedropper', 'filling', 'hand', 'text', 'stamp', 'rectangleSelection'];

@@ -52,8 +52,8 @@ function getPixelColor(x, y) {
 }
 
 function handleEyedropper(event) {
-  let eventLocation = getEventLocation(this, event);
-  let color = getPixelColor(eventLocation.x, eventLocation.y);
+  let eventCoords = getCurCoords(event);
+  let color = getPixelColor(eventCoords[0], eventCoords[1]);
   if (color.every(elem => elem === 0)) {
     eyedropperWindow.style.background = 'url(\'img/background.png\')';
   } else eyedropperWindow.style.background = arrayToRgb(color);

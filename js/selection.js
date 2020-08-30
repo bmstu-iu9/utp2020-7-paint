@@ -193,8 +193,8 @@ function insertCanvas(copyCanvas) {
       if (isThereSelection) rememberCanvasWithoutSelection();
       let posOfPhoto = getElementPosition(canvasInsertion);
       let posOfCanvas = getElementPosition(canvas);
-      let dx = (posOfPhoto.x - posOfCanvas.x - curCanvasBorder) / zoomValue;
-      let dy = (posOfPhoto.y - posOfCanvas.y - curCanvasBorder) / zoomValue;
+      let dx = Math.round((posOfPhoto.x - posOfCanvas.x - curCanvasBorder) / zoomValue);
+      let dy = Math.round((posOfPhoto.y - posOfCanvas.y - curCanvasBorder) / zoomValue);
 
       context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
 

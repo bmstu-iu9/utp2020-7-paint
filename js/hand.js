@@ -76,7 +76,7 @@ canvasResizer.addEventListener('mousedown', function(e) {
   e.stopPropagation();
   document.body.style.cursor = 'nwse-resize';
   canvas.style.cursor = 'nwse-resize';
-  let originalWidth = curCanvasWidth, originalHeight = curCanvasHeight;
+  let originalWidth = curCanvasWidth * zoomValue, originalHeight = curCanvasHeight * zoomValue;
   let originalMouseX = e.pageX, originalMouseY = e.pageY;
   let originalX = canvas.getBoundingClientRect().left;
   let originalY = canvas.getBoundingClientRect().top;
@@ -84,11 +84,11 @@ canvasResizer.addEventListener('mousedown', function(e) {
   function resize(e) {
     if (isThereSelection) deleteSelectedArea();
     if (canvasesField.style.margin === 'auto' || canvasesField.style.margin === '') {
-      curCanvasWidth = originalWidth + 2 * (e.pageX - originalMouseX);
-      curCanvasHeight = originalHeight + 2 * (e.pageY - originalMouseY);
+      curCanvasWidth = (originalWidth + 2 * (e.pageX - originalMouseX)) / zoomValue;
+      curCanvasHeight = (originalHeight + 2 * (e.pageY - originalMouseY)) / zoomValue;
     } else {
-      curCanvasWidth = originalWidth + (e.pageX - originalMouseX);
-      curCanvasHeight = originalHeight + (e.pageY - originalMouseY);
+      curCanvasWidth = originalWidth / zoomValue + (e.pageX - originalMouseX);
+      curCanvasHeight = originalHeight / zoomValue + (e.pageY - originalMouseY);
     }
     if (curCanvasWidth <= changeCanvasWidth.max && curCanvasWidth >= changeCanvasWidth.min) {
       setCanvasWidth();

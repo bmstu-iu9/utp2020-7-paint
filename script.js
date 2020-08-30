@@ -450,9 +450,7 @@ closeHintsModal.addEventListener('click', toggleModal);
 
 let zoomValue = 1;
 
-function zoomCanvases(e) {
-  e.stopPropagation();
-  zoomValue += e.deltaY * -0.001;
+function zoomCanvases() {
   zoomValue = Math.min(Math.max(.125, zoomValue), 4);
   setZoom(canvasesField);
   setZoom(canvasInsertion);
@@ -460,7 +458,7 @@ function zoomCanvases(e) {
 
 function setZoom(element) {
   let scale = 'scale(' + zoomValue + ')';
-  let origin = '0% 0%';
+  let origin = '50% 50%';
 
   element.style['transform'] = scale;
   element.style['transformOrigin'] = origin;
@@ -471,4 +469,12 @@ function setZoom(element) {
   })
 }
 
-document.addEventListener('wheel', zoomCanvases);
+document.getElementById('zoomPlus').onclick = () => {
+  zoomValue += 0.1;
+  zoomCanvases();
+}
+
+document.getElementById('zoomMinus').onclick = () => {
+  zoomValue -= 0.1;
+  zoomCanvases();
+}

@@ -27,12 +27,9 @@ function startPointPixelEraser(e) {
   if (isThereSelection) rememberCanvasWithoutSelection();
 
   context.save();
-<<<<<<< HEAD
   context.globalCompositeOperation = 'destination-out';
-  
+
   [pixelEraserParameters.oldX, pixelEraserParameters.oldY] = getCurCoords(e);
-=======
->>>>>>> redesign
 
   drawPointPixelEraser(...getCurCoords(e));
 
@@ -69,11 +66,6 @@ function drawPixelEraser(e) {
   pixelEraserParameters.oldX = curX;
   pixelEraserParameters.oldY = curY;
 
-<<<<<<< HEAD
-=======
-  context.globalCompositeOperation = 'source-over';
-
->>>>>>> redesign
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }

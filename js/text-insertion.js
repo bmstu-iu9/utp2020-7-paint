@@ -47,7 +47,7 @@ function deleteText() {
     textMenu.hidden = true;
   }
 
-  canvas.removeEventListener('mousemove', drawTextInsertion);
+  document.removeEventListener('mousemove', drawTextInsertion);
   document.removeEventListener('mouseup', stopInsertion);
 
   fontSize.value = '20';
@@ -99,7 +99,7 @@ function startPointText(e) {
   drawTextInsertion(e);
 
   textFormat.removeEventListener('click', startPointText);
-  canvas.addEventListener('mousemove', drawTextInsertion);
+  document.addEventListener('mousemove', drawTextInsertion);
   document.addEventListener('mouseup', stopInsertion);
 }
 
@@ -107,5 +107,5 @@ function drawTextInsertion(e) {
   canvas.style.cursor = 'crosshair';
   if (!isDrawing) return;
 
-  writeText(e.offsetX, e.offsetY);
+  writeText(...getCurCoords(e));
 }

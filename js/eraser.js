@@ -31,10 +31,7 @@ function startPointEraser(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  eraserParameters.oldX = e.offsetX;
-  eraserParameters.oldY = e.offsetY;
-  deltaX = e.pageX - e.offsetX;
-  deltaY = e.pageY - e.offsetY;
+  [eraserParameters.oldX, eraserParameters.oldY = e.offsetY] = getCurCoords(e);
 
   context.save();
   context.globalCompositeOperation = 'destination-out';
@@ -61,8 +58,7 @@ function drawEraser(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   context.globalCompositeOperation = 'destination-out';
 

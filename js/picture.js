@@ -32,12 +32,13 @@ function pressForImgInsertion() {
       y: canvas.getBoundingClientRect().top + curCanvasBorder
     };
     let dx = posOfPhoto.x - posOfCanvas.x + 2.5, dy = posOfPhoto.y - posOfCanvas.y + 2.5;
-    let dWidth = photoResizer.clientWidth - 6, dHeight = photoResizer.clientHeight - 6;
+    let dWidth = (photoResizer.clientWidth - 6) / zoomValue;
+    let dHeight = (photoResizer.clientHeight - 6) / zoomValue;
 
     context.save();
-    context.translate(dx, dy);
+    context.translate(dx / zoomValue, dy / zoomValue);
     context.rotate(photoAngle);
-    context.drawImage(curImg, 0, 0, curImg.width, curImg.height, -deltaImgX, -deltaImgY, dWidth, dHeight);
+    context.drawImage(curImg, 0, 0, curImg.width, curImg.height, -deltaImgX / zoomValue, -deltaImgY / zoomValue, dWidth, dHeight);
     context.restore();
 
     deleteImageBtn.click();
@@ -88,7 +89,7 @@ function insertImg(img) {
     photoResizer.hidden = false;
     photoResizer.style.width = photoWidth + 'px';
     photoResizer.style.height = 'auto';
-    photoResizer.style.top = '50px';
+    photoResizer.style.top = '150px';
     photoResizer.style.left = (docWidth - photoWidth) / 2 + 'px';
     photoResizer.style.zIndex = activeLayer.index;
 

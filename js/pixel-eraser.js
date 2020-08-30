@@ -27,12 +27,9 @@ function startPointPixelEraser(e) {
   if (isThereSelection) rememberCanvasWithoutSelection();
 
   context.save();
-  pixelEraserParameters.oldX = e.offsetX;
-  pixelEraserParameters.oldY = e.offsetY;
-  deltaX = e.pageX - e.offsetX;
-  deltaY = e.pageY - e.offsetY;
+  [pixelEraserParameters.oldX, pixelEraserParameters.oldY] = getCurCoords(e);
 
-  drawPointPixelEraser(e.offsetX, e.offsetY);
+  drawPointPixelEraser(...getCurCoords(e));
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -47,8 +44,7 @@ function drawPixelEraser(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   pixelEraserParameters.newX = curX;
   pixelEraserParameters.newY = curY;
@@ -65,7 +61,7 @@ function drawPixelEraser(e) {
 
   pixelEraserParameters.oldX = curX;
   pixelEraserParameters.oldY = curY;
-  
+
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }

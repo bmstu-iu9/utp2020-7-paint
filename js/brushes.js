@@ -9,10 +9,7 @@ function startCoordinates(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
+  [oldX, oldY] = getCurCoords(e);
 
   context.save();
 }
@@ -91,8 +88,7 @@ function drawBasicBrush(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
   angle = Math.atan2(curX - oldX, curY - oldY);
@@ -137,12 +133,9 @@ function startPointNeonBrush(e) {
   context.lineWidth = curToolSize;
   context.lineJoin = 'round';
   context.lineCap = 'round';
-  context.strokeStyle = arrayToRgb(curColor)
+  context.strokeStyle = arrayToRgb(curColor);
   context.shadowBlur = curToolSize;
-  context.shadowColor = arrayToRgb(curColor)
-
-  deltaX = e.pageX - e.offsetX;
-  deltaY = e.pageY - e.offsetY;
+  context.shadowColor = arrayToRgb(curColor);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -157,8 +150,7 @@ function drawNeonBrush(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   context.lineTo(curX, curY);
   context.stroke();
@@ -206,7 +198,7 @@ function startPointSketchBrush(e) {
 
   prevPoints = new Array(10);
   pointsCounter = 0;
-  prevPoints[pointsCounter] = [e.offsetX, e.offsetY];
+  prevPoints[pointsCounter] = getCurCoords(e);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -221,8 +213,7 @@ function drawSketchBrush(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   pointsCounter++;
 
@@ -278,8 +269,7 @@ function drawAdvancedBrush(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   prevPoints[pointsCounter] = [curX, curY];
 
@@ -402,8 +392,7 @@ function drawRectangleBrush(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   dx = curX - oldX;
   dy = curY - oldY;
@@ -467,8 +456,7 @@ function drawCircleBrush(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   dx = curX - oldX;
   dy = curY - oldY;

@@ -447,3 +447,27 @@ function toggleModal() {
 }
 
 closeHintsModal.addEventListener('click', toggleModal);
+
+let zoomValue = 1;
+
+function zoomCanvases(e) {
+  e.stopPropagation();
+  zoomValue += e.deltaY * -0.001;
+  zoomValue = Math.min(Math.max(.125, zoomValue), 4);
+  setZoom(canvasesField);
+}
+
+function setZoom(element) {
+  let scale = 'scale(' + zoomValue + ')';
+  let origin = '0% 0%';
+
+  element.style['transform'] = scale;
+  element.style['transformOrigin'] = origin;
+
+  ['webkit', 'moz', 'ms', 'o'].forEach((pre) => {
+    element.style[pre + 'Transform'] = scale;
+    element.style[pre + 'TransformOrigin'] = origin;
+  })
+}
+
+document.addEventListener('wheel', zoomCanvases);

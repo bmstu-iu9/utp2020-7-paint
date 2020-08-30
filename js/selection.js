@@ -61,10 +61,8 @@ function startPointRectangleSelection(e) {
   isDrawing = true;
 
   if (isThereSelection) deleteSelectedArea();
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
+
+  [oldX, oldY] = getCurCoords(e);
 
   document.addEventListener('mousemove', drawRectangleSelection);
   document.addEventListener('mouseup', endSelectionPoint);
@@ -91,8 +89,7 @@ function drawRectangleSelection(e) {
 
   isThereSelection = true;
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCurCoords(e);
 
   let selectionContext = document.getElementById('selectionCanvas').getContext('2d');
   selectionContext.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
@@ -196,10 +193,12 @@ function insertCanvas(copyCanvas) {
       if (isThereSelection) rememberCanvasWithoutSelection();
       let posOfPhoto = getElementPosition(canvasInsertion);
       let posOfCanvas = getElementPosition(canvas);
-      let dx = posOfPhoto.x - posOfCanvas.x - curCanvasBorder;
-      let dy = posOfPhoto.y - posOfCanvas.y - curCanvasBorder;
+      let dx = (posOfPhoto.x - posOfCanvas.x - curCanvasBorder) / zoomValue;
+      let dy = (posOfPhoto.y - posOfCanvas.y - curCanvasBorder) / zoomValue;
+      let dWidth = curCopyCanvas.width / zoomValue;
+      let dHeight = curCopyCanvas.height / zoomValue;
 
-      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
+      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, dWidth, dHeight);
 
       canvasInsertion.hidden = true;
       document.removeEventListener('keydown', pressForInsertion);

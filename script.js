@@ -213,6 +213,9 @@ changeCanvasWidth.oninput = function () {
       curCanvasWidth = parseInt(getWidth(width));
     }
 
+    clearAllLayersHistory();
+    clearAllLayers();
+
     canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
     allCanvases.forEach((canvas) => {
       canvas.style.width = curCanvasWidth + 'px';
@@ -256,7 +259,6 @@ changeCanvasWidth.oninput = function () {
 
   function setWidth(event) {
     if (event.code === 'Enter') {
-      clearAllLayersHistory();
       setCanvasWidth();
       removeEventListener('keydown', setWidth);
     }
@@ -275,6 +277,8 @@ changeCanvasHeight.oninput = function () {
       curCanvasHeight = parseInt(getHeight(height));
     }
 
+    clearAllLayers();
+    clearAllLayersHistory();
 
     canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
     allCanvases.forEach((canvas) => {
@@ -318,7 +322,6 @@ changeCanvasHeight.oninput = function () {
 
   function setHeight(event) {
     if (event.code === 'Enter') {
-      clearAllLayersHistory();
       setCanvasHeight();
       removeEventListener('keydown', setHeight);
     }
@@ -338,11 +341,9 @@ function checkPxInput(str, min, max) {
 function hideAndShow(element) {
   function closeSettingsMenu(event) {
     if (event.code === 'Escape') {
-      console.log(event.code);
       document.getElementById('settings').classList.toggle('pressed');
       document.getElementById('settingsMenu').hidden = true;
       document.removeEventListener('keydown', closeSettingsMenu);
-      //TETQEGAGHGAHGHGHGHGHGGHHG
     }
   }
   let menu = document.getElementById(element);

@@ -19,8 +19,18 @@ function useFiltersModal() {
   let modalCanvas = document.getElementById('modalCanvas');
   let filterCanvas = document.createElement('canvas');
   let modalContext = modalCanvas.getContext('2d');
-  
-  changeWindowSize(modalCanvas, maxModalCanvasHeight, maxModalCanvasWidth);
+
+  changeWindowSize (modalCanvas, maxModalCanvasHeight, maxModalCanvasWidth);
+  if (curCanvasHeight / maxModalCanvasHeight > curCanvasWidth / maxModalCanvasWidth) {
+    modalCanvas.style.width = parseInt(modalCanvas.style.width) / maxModalCanvasWidth * 100 + '%';
+    modalCanvas.style.height = 100 + '%';
+  } else {
+    modalCanvas.style.height = parseInt(modalCanvas.style.height) / maxModalCanvasHeight * 100 + '%';
+    modalCanvas.style.width = 100 + '%';
+  }
+  modalCanvas.setAttribute('width', modalCanvas.style.width);
+  modalCanvas.setAttribute('height', modalCanvas.style.height);
+
   let originalCanvas = canvas;
 
   addEventListener('keydown', escapeExit);
@@ -68,7 +78,7 @@ function useFiltersModal() {
     rememberState();
     changePreview();
   }
-  
+
   function removeModalEventListeners() {
     undoFilter.removeEventListener('click', applyPrevState);
     redoFilter.removeEventListener('click', applyNextState);
@@ -76,27 +86,27 @@ function useFiltersModal() {
     closeWithoutSaving.removeEventListener('click', closeModalWithoutSaving);
     deletingChanges.removeEventListener('click', deleteChanges);
     removeEventListener('keydown', escapeExit);
-    
+
     allSimpleFilters.forEach((filter) => {
       let button = document.getElementById(filter);
       button.onclick = null;
     });
-    
+
     sobelFilterButton.onclick = null;
     horizontalReflectionFilterButton.onclick = null;
     verticalReflectionFilterButton.onclick = null;
     embossFilterButton.onclick = null;
     medianFilterButton.onclick = null;
     blurFilterButton.onclick = null;
-    
+
     contrastRange.oninput = null;
     contrastRange.onmouseup = null;
     contrastRange.onchange = null;
-    
+
     brightnessRange.oninput = null;
     brightnessRange.onmouseup = null;
     brightnessRange.onchange = null;
-    
+
     sharpRange.oninput = null;
     sharpRange.onmouseup = null;
     sharpRange.onchange = null;
@@ -183,16 +193,16 @@ function useFiltersModal() {
   verticalReflectionFilterButton.onclick = () => { applyVerticalReflection(); rememberFilterState(); }
 
   function applySimpleFilter(filterName) {
-    let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);   
+    let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
     let changePixel;
-    
+
     switch(filterName) {
       case 'negative':
         changePixel = function(x, y) {
           let red = curImageData.data[getIndexOfRedInData(x, y)];
           let green = curImageData.data[getIndexOfGreenInData(x, y)];
           let blue = curImageData.data[getIndexOfBlueInData(x, y)];
-          
+
           curImageData.data[getIndexOfRedInData(x, y)] = 255 - red;
           curImageData.data[getIndexOfGreenInData(x, y)] = 255 - green;
           curImageData.data[getIndexOfBlueInData(x, y)] = 255 - blue;
@@ -204,7 +214,7 @@ function useFiltersModal() {
           let green = curImageData.data[getIndexOfGreenInData(x, y)];
           let blue = curImageData.data[getIndexOfBlueInData(x, y)];
           let grey = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-          
+
           curImageData.data[getIndexOfRedInData(x, y)] = grey;
           curImageData.data[getIndexOfGreenInData(x, y)] = grey;
           curImageData.data[getIndexOfBlueInData(x, y)] = grey;
@@ -215,7 +225,7 @@ function useFiltersModal() {
           let red = curImageData.data[getIndexOfRedInData(x, y)];
           let green = curImageData.data[getIndexOfGreenInData(x, y)];
           let blue = curImageData.data[getIndexOfBlueInData(x, y)];
-          
+
           curImageData.data[getIndexOfRedInData(x, y)] = red * 0.393 + green * 0.769 + blue * 0.189;
           curImageData.data[getIndexOfGreenInData(x, y)] = red * 0.349 + green * 0.686 + blue * 0.168;
           curImageData.data[getIndexOfBlueInData(x, y)] = red * 0.272 + green * 0.534 + blue * 0.131;
@@ -226,7 +236,7 @@ function useFiltersModal() {
           let red = curImageData.data[getIndexOfRedInData(x, y)];
           let green = curImageData.data[getIndexOfGreenInData(x, y)];
           let blue = curImageData.data[getIndexOfBlueInData(x, y)];
-          
+
           let threshold = 255 / 2 * 3;
           if (red + green + blue > threshold) {
             curImageData.data[getIndexOfRedInData(x, y)] = 255;
@@ -244,7 +254,7 @@ function useFiltersModal() {
           let red = curImageData.data[getIndexOfRedInData(x, y)];
           let green = curImageData.data[getIndexOfGreenInData(x, y)];
           let blue = curImageData.data[getIndexOfBlueInData(x, y)];
-          
+
           curImageData.data[getIndexOfRedInData(x, y)] = 1.6914 * red - 0.6094 * green - 0.082 * blue;
           curImageData.data[getIndexOfGreenInData(x, y)] = -0.3086 * red + 1.3906 * green - 0.082 * blue;
           curImageData.data[getIndexOfBlueInData(x, y)] = -0.3086 * red - 0.6094 * green + 1.918 * blue;
@@ -255,15 +265,15 @@ function useFiltersModal() {
           let red = curImageData.data[getIndexOfRedInData(x, y)];
           let green = curImageData.data[getIndexOfGreenInData(x, y)];
           let blue = curImageData.data[getIndexOfBlueInData(x, y)];
-          
+
           curImageData.data[getIndexOfRedInData(x, y)] = 255 * Math.floor(red / 128);
           curImageData.data[getIndexOfGreenInData(x, y)] = 255 * Math.floor(green / 128);
           curImageData.data[getIndexOfBlueInData(x, y)] = 255 * Math.floor(blue / 128);
         };
         break;
     }
-   
-    
+
+
     for (let i = 0; i < canvas.width; i++) {
       for (let j = 0; j < canvas.height; j++) {
         changePixel(i, j);

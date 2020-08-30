@@ -199,7 +199,7 @@ body {
   width: 12%;
   height: 100%;
   background: #eeeeee;
-  border-left: 1px solid #cccccc;
+  border-left: 0.2vh solid #cccccc;
   transition: 0.5s;
   transform: translateX(0%);
   z-index: 1000;
@@ -212,10 +212,12 @@ body {
 #openLayersBtn {
   position: absolute;
   z-index: 1000;
-  width: 60px;
-  height: 50px;
-  bottom: 70px;
-  left: -60px;
+  width: 11vh;
+  height: 8vh;
+  bottom: 13vh;
+  left: -11vh;
+  display: flex;
+  align-items: center;
   background-color: #ffdf2b;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
 }
@@ -828,6 +830,7 @@ input::-webkit-color-swatch {
 .leftSide {
   margin: 0;
   width: 35vw;
+  height: 100%;
   display: inline-block;
 }
 
@@ -878,6 +881,7 @@ input::-webkit-color-swatch {
   width: 12vh;
   height: 4vh;
   font-size: 2.5vh;
+  text-align: center;
   border: none;
   border-radius: 50%;
   outline: none;
@@ -900,33 +904,33 @@ input::-webkit-color-swatch {
 
 .rangeAndDescription input[type='range'] {
   -webkit-appearance: none;
-  height: 5px;
+  height: 1vh;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 1vh;
   background: #d3d3d3;
   background-size: cover;
   outline: none;
-  margin-right: 5px;
+  margin-right: 1vh;
   -webkit-transition: .2s;
 }
 
 .rangeAndDescription input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 4vh;
+  height: 4vh;
   border-radius: 50%;
   background: #24a4ff;
   cursor: pointer;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1vh 1vh rgba(0, 0, 0, 0.5);
 }
 
 .rangeAndDescription input[type='range']::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
+  width: 4vh;
+  height: 4vh;
   background: #24a4ff;
   cursor: pointer;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1vh 1vh rgba(0, 0, 0, 0.5);
 }
 
 .filterHeaderBtns {

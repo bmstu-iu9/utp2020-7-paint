@@ -91,12 +91,12 @@ canvasResizer.addEventListener('mousedown', function(e) {
       curCanvasHeight = originalHeight + (e.pageY - originalMouseY);
     }
     if (curCanvasWidth <= changeCanvasWidth.max && curCanvasWidth >= changeCanvasWidth.min) {
-      setCanvasWidth();
+      changeCanvasWidth();
     } else {
       curCanvasWidth = canvas.offsetWidth;
     }
     if (curCanvasHeight <= changeCanvasHeight.max && curCanvasHeight >= changeCanvasHeight.min) {
-      setCanvasHeight();
+      changeCanvasHeight();
     } else {
       curCanvasHeight = canvas.offsetHeight;
     }

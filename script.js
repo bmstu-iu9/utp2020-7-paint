@@ -336,6 +336,40 @@ function checkPxInput(str, min, max) {
     (parseInt(str) <= max);
 }
 
+function changeCanvasHeight() {
+  clearAllLayers();
+
+  canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.height = curCanvasHeight + 'px';
+    canvas.setAttribute('height', curCanvasHeight + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
+
+  document.getElementById('curHeight').innerHTML = curCanvasHeight;
+  changeCanvasHeight.style.background = '#ffffff';
+  changeCanvasHeight.value = curCanvasHeight + 'px';
+}
+
+function changeCanvasWidth() {
+  clearAllLayers();
+
+  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.width = curCanvasWidth + 'px';
+    canvas.setAttribute('width', curCanvasWidth + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
+
+  document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  changeCanvasWidth.style.background = '#ffffff';
+  changeCanvasWidth.value = curCanvasWidth + 'px';
+}
+
 
 
 function hideAndShow(element) {

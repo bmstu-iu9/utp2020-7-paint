@@ -78,8 +78,8 @@ function restoreCanvasesState() {
 function restoreCanvasesSize() {
   curCanvasWidth = layersHistory[curState].width;
   curCanvasHeight = layersHistory[curState].height;
-  setCanvasWidth();
-  setCanvasHeight();
+  changeCanvasWidth();
+  changeCanvasHeight();
 }
 
 document.getElementById('undo').addEventListener('click', () => {

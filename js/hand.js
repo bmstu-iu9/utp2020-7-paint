@@ -84,11 +84,11 @@ canvasResizer.addEventListener('mousedown', function(e) {
   function resize(e) {
     if (isThereSelection) deleteSelectedArea();
     if (canvasesField.style.margin === 'auto' || canvasesField.style.margin === '') {
-      curCanvasWidth = (originalWidth + 2 * (e.pageX - originalMouseX)) / zoomValue;
-      curCanvasHeight = (originalHeight + 2 * (e.pageY - originalMouseY)) / zoomValue;
+      curCanvasWidth = (originalWidth + (e.pageX - originalMouseX) / zoomValue * 2) / zoomValue;
+      curCanvasHeight = (originalHeight + (e.pageY - originalMouseY) / zoomValue * 2) / zoomValue;
     } else {
-      curCanvasWidth = originalWidth / zoomValue + (e.pageX - originalMouseX);
-      curCanvasHeight = originalHeight / zoomValue + (e.pageY - originalMouseY);
+      curCanvasWidth = (originalWidth + (e.pageX - originalMouseX)) / zoomValue;
+      curCanvasHeight = (originalHeight + (e.pageY - originalMouseY)) / zoomValue;
     }
     if (curCanvasWidth <= changeCanvasWidth.max && curCanvasWidth >= changeCanvasWidth.min) {
       setCanvasWidth();

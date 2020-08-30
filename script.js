@@ -448,17 +448,17 @@ function toggleModal() {
 
 closeHintsModal.addEventListener('click', toggleModal);
 
-let zoomValue = 1;
+let zoomValue = 1, zoomTimer;
 
 function zoomCanvases() {
   zoomValue = Math.min(Math.max(.125, zoomValue), 4);
-  setZoom(canvasesField, 50);
-  setZoom(canvasInsertion, 0);
+  setZoom(canvasesField);
+  setZoom(canvasInsertion);
 }
 
-function setZoom(element, originValue) {
+function setZoom(element) {
   let scale = 'scale(' + zoomValue + ')';
-  let origin = originValue + '% ' + originValue + '%';
+  let origin = '0% 0%';
 
   element.style['transform'] = scale;
   element.style['transformOrigin'] = origin;
@@ -469,12 +469,24 @@ function setZoom(element, originValue) {
   })
 }
 
-document.getElementById('zoomPlus').onclick = () => {
-  zoomValue += 0.1;
-  zoomCanvases();
-}
+document.getElementById('zoomPlus').addEventListener('mousedown', (e) => {
+  zoomTimer = setInterval(() => {
+    zoomValue += 0.005;
+    zoomCanvases();
+  }, 8);
+})
 
-document.getElementById('zoomMinus').onclick = () => {
-  zoomValue -= 0.1;
-  zoomCanvases();
-}
+document.getElementById('zoomMinus').addEventListener('mousedown', (e) => {
+  zoomTimer = setInterval(() => {
+    zoomValue -= 0.005;
+    zoomCanvases();
+  }, 8);
+})
+
+document.getElementById('zoomMinus').addEventListener('mouseup', (e) => {
+  clearInterval(zoomTimer);
+})
+
+document.getElementById('zoomPlus').addEventListener('mouseup', (e) => {
+  clearInterval(zoomTimer);
+})

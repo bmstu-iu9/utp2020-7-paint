@@ -199,8 +199,8 @@ function insertCanvas(copyCanvas) {
         x: canvas.getBoundingClientRect().left,
         y: canvas.getBoundingClientRect().top
       };
-      let dx = Math.round((posOfPhoto.x - posOfCanvas.x - curCanvasBorder * zoomValue) / zoomValue);
-      let dy = Math.round((posOfPhoto.y - posOfCanvas.y - curCanvasBorder * zoomValue) / zoomValue);
+      let dx = Math.round((posOfPhoto.x - posOfCanvas.x) / zoomValue + 3 - curCanvasBorder);
+      let dy = Math.round((posOfPhoto.y - posOfCanvas.y) / zoomValue + 3 - curCanvasBorder);
 
       context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
 

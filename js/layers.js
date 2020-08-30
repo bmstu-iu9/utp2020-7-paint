@@ -160,6 +160,8 @@ function setUpLayer(layer) {
 
   activeInstrument && !layer.locked && activeInstrument.init();
   activeLayer = layer;
+  infoCanvasContext.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
+  infoCanvasContext.drawImage(activeLayer.preview, 0, 0, infoCanvas.width, infoCanvas.height);
 }
 
 function switchLayer(event) {
@@ -440,6 +442,9 @@ function changePreview(layer) {
     octx.clearRect(0, 0, dopOc.width, dopOc.height);
     octx.drawImage(dopOc, 0, 0, oc.width / 2, oc.height / 2);
   }
+
+  infoCanvasContext.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
+  infoCanvasContext.drawImage(activeLayer.preview, 0, 0, infoCanvas.width, infoCanvas.height);
 
   let previewContext = layer.preview.getContext('2d');
   previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);

@@ -8,6 +8,9 @@ let lastUsedColor = '';
 
 initUsedColorsIds();
 
+let infoCanvas = document.getElementById('previewInfoCanvas');
+let infoCanvasContext = previewInfoCanvas.getContext('2d');
+
 function getCurCoordsOnCanvas(event) {
   let eventLocation = getEventLocation(canvas, event);
 

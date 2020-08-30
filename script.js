@@ -520,14 +520,14 @@ document.getElementById('zoomPlus').addEventListener('mousedown', (e) => {
   zoomTimer = setInterval(() => {
     zoomValue += 0.005;
     zoomCanvases();
-  }, 8);
+  }, 10);
 })
 
 document.getElementById('zoomMinus').addEventListener('mousedown', (e) => {
   zoomTimer = setInterval(() => {
     zoomValue -= 0.005;
     zoomCanvases();
-  }, 8);
+  }, 10);
 })
 
 document.getElementById('zoomMinus').addEventListener('mouseup', (e) => {
@@ -537,3 +537,7 @@ document.getElementById('zoomMinus').addEventListener('mouseup', (e) => {
 document.getElementById('zoomPlus').addEventListener('mouseup', (e) => {
   clearInterval(zoomTimer);
 })
+
+function getZoomPercentage() {
+  return (zoomValue * 100).toFixed(1);
+}

@@ -336,7 +336,7 @@ function checkPxInput(str, min, max) {
     (parseInt(str) <= max);
 }
 
-function changeCanvasHeight() {
+function newCanvasHeight() {
   clearAllLayers();
 
   canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
@@ -353,7 +353,7 @@ function changeCanvasHeight() {
   changeCanvasHeight.value = curCanvasHeight + 'px';
 }
 
-function changeCanvasWidth() {
+function newCanvasWidth() {
   clearAllLayers();
 
   canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';

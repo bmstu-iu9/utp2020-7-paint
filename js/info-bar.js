@@ -6,6 +6,8 @@ const maxUsedColors = 3;
 let countOfUsedColors = 0;
 let lastUsedColor = '';
 
+initUsedColorsIds();
+
 function getCurCoordsOnCanvas(event) {
   let eventLocation = getEventLocation(canvas, event);
 
@@ -32,7 +34,11 @@ function showCurColor() {
 
 function initUsedColorsIds(){
   for (let i = 0; i < maxUsedColors; i++){
+    let button = document.createElement('button');
+    button.classList.add('colorBtn');
     usedColorsIds[i] = 'colorBtn' + i;
+    button.id = usedColorsIds[i];
+    document.getElementById('colorContent').appendChild(button);
   }
   /*create there elements on canvas*/
   usedColorsIds.forEach((buttonId) => {
@@ -55,9 +61,8 @@ function addUsedColor() {
   lastUsedColor = curColorHex;
   if (countOfUsedColors < maxUsedColors) {
     usedColors.unshift(curColorHex);
+    document.getElementById(usedColorsIds[countOfUsedColors]).style.background = '#' + rgbToHex(curColor);
     countOfUsedColors++;
-    //display there
-    //document.getElementById(usedColorsIds[countOfUsedColors]).style.background = '#' + rgbToHex(curColor);
     return;
   }
 

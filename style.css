@@ -1040,3 +1040,12 @@ input::-webkit-color-swatch {
   display: flex;
   align-items: center;
 }
+
+.colorBtn {
+  width: 4vh;
+  height: 4vh;
+  border: 0.1vh solid black;
+  outline: none;
+  margin: 1vh;
+  background-color: transparent;
+}

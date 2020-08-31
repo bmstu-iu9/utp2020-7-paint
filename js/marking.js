@@ -31,6 +31,8 @@ function closeModalMarking() {
 }
 
 function useMarkingModal() {
+  let originalCanvas = canvas;
+  
   changeWindowSize(markingModalCanvas, maxMarkingCanvasHeight, maxMarkingCanvasWidth);
 
   originalCanvas = canvas;
@@ -95,7 +97,6 @@ function useMarkingModal() {
 function applyInitialMarkingState() {
   markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
   markingContext.drawImage(canvas, 0, 0, markingCanvas.width, markingCanvas.height);
-  
   markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
 }

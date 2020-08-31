@@ -197,8 +197,8 @@ body {
   box-sizing: border-box;
   top: 11vh;
   right: 0;
-  width: 12%;
-  height: 100%;
+  width: 22vh;
+  height: 89vh;
   background: #eeeeee;
   border-left: 0.2vh solid #cccccc;
   transition: 0.5s;
@@ -213,10 +213,10 @@ body {
 #openLayersBtn {
   position: absolute;
   z-index: 1000;
-  width: 11vh;
-  height: 8vh;
+  width: 8vh;
+  height: 7vh;
   bottom: 13vh;
-  left: -11vh;
+  left: -8vh;
   display: flex;
   align-items: center;
   background-color: #ffdf2b;
@@ -229,7 +229,7 @@ body {
   left: 0;
   overflow-y: scroll;
   width: 100%;
-  height: 100%;
+  height: 89vh;
 }
 
   .layerScrollBox::-webkit-scrollbar-track {
@@ -278,8 +278,9 @@ body {
 
 .visibleLayer {
   background-image: url('img/tools/show_layer.svg');
-  background-size: cover;
+  background-size: contain;
   background-color: #fafafa;
+  overflow: hidden;
   border: none;
   outline: none;
 }
@@ -290,7 +291,7 @@ body {
 
 .unlockedLayer {
   background-image: url("img/tools/unlock_layer.svg");
-  background-size: cover;
+  background-size: contain;
   background-color: #fafafa;
   border: none;
   outline: none;

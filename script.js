@@ -504,8 +504,6 @@ function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
     window.style.height = parseInt(window.style.height) / maxWindowHeight * 100 + '%';
     window.style.width = 100 + '%';
   }
-  window.setAttribute('width', window.style.width);
-  window.setAttribute('height', window.style.height);
 }
 
 let modalHints = document.querySelector('.modalHints');

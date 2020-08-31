@@ -21,6 +21,8 @@ function useFiltersModal() {
   let modalContext = modalCanvas.getContext('2d');
 
   changeWindowSize (modalCanvas, maxModalCanvasHeight, maxModalCanvasWidth);
+  modalCanvas.setAttribute('width', parseInt(modalCanvas.style.width) * maxModalCanvasWidth / 100);
+  modalCanvas.setAttribute('height', parseInt(modalCanvas.style.height) * maxModalCanvasHeight / 100);
 
   let originalCanvas = canvas;
 

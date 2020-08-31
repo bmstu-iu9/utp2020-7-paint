@@ -435,23 +435,23 @@ leftMenuLists.forEach((list) => {
 });
 
 document.getElementById('openPanel').addEventListener('click', (event) => {
-  if (document.getElementById('leftContainer').style.width == "8vh") {
-    document.getElementById('leftContainer').style.width = "0";
-    if (document.getElementById('brushMenu').hidden == false) {
+  if (document.getElementById('leftContainer').style.left === "0vh") {
+    document.getElementById('leftContainer').style.left = "-8vh";
+    if (document.getElementById('brushMenu').hidden === false) {
       hideAndShow('brushMenu', event);
     }
-    if (document.getElementById('figureMenu').hidden == false) {
+    if (document.getElementById('figureMenu').hidden === false) {
       hideAndShow('figureMenu', event);
     }
-    if (document.getElementById('fillMenu').hidden == false) {
+    if (document.getElementById('fillMenu').hidden === false) {
       hideAndShow('fillMenu', event)
     }
-    if (document.getElementById('eraserMenu').hidden == false) {
+    if (document.getElementById('eraserMenu').hidden === false) {
       hideAndShow('eraserMenu', event)
     }
   }
   else {
-    document.getElementById('leftContainer').style.width = "8vh";
+    document.getElementById('leftContainer').style.left = "0vh";
   }
 });
 

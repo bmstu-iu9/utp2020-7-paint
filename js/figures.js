@@ -14,7 +14,7 @@ function initFigure(e) {
   context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
-  [oldX, oldY] = getCurCoords(e);
+  [oldX, oldY] = getCoordsOnCanvas(e);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 }
@@ -22,7 +22,7 @@ function initFigure(e) {
 function updateCanvasFigures(e) {
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  [curX, curY] = getCurCoords(e);
+  [curX, curY] = getCoordsOnCanvas(e);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 

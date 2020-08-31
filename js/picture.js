@@ -5,7 +5,7 @@ let photoRotator = document.getElementById('photoRotator');
 let deleteImageBtn = document.getElementById('deleteImage');
 let curImg, originalImgWidth, originalImgHeight;
 let deltaImgX, deltaImgY;
-let photoAngle = 0, sign = 1;
+let photoAngle = 0, angleSign = 1;
 
 function rotatePhoto() {
   photoResizer.style.webkitTransform = 'rotate('+photoAngle+'rad)';
@@ -16,6 +16,7 @@ function rotatePhoto() {
 }
 
 function getMiddleCoords(element) {
+  console.log(element.getBoundingClientRect().left);
   return {
     x: element.getBoundingClientRect().left + element.getBoundingClientRect().width / 2,
     y: element.getBoundingClientRect().top + element.getBoundingClientRect().height / 2
@@ -28,15 +29,16 @@ function pressForImgInsertion() {
   if (event.code === 'Enter') {
     let posOfPhoto = getMiddleCoords(photoResizer);
     let posOfCanvas = {
-      x: canvas.getBoundingClientRect().left + curCanvasBorder,
-      y: canvas.getBoundingClientRect().top + curCanvasBorder
+      x: canvas.getBoundingClientRect().left,
+      y: canvas.getBoundingClientRect().top
     };
-    let dx = posOfPhoto.x - posOfCanvas.x + 2.5, dy = posOfPhoto.y - posOfCanvas.y + 2.5;
-    let dWidth = (photoResizer.clientWidth - 6) / zoomValue;
-    let dHeight = (photoResizer.clientHeight - 6) / zoomValue;
+    let dx = (posOfPhoto.x + 2.5 - posOfCanvas.x) / zoomValue - curCanvasBorder;
+    let dy = (posOfPhoto.y + 2.5 - posOfCanvas.y) / zoomValue - curCanvasBorder;
+    let dWidth = (deltaImgX * 2 - 6) / zoomValue;
+    let dHeight = (deltaImgY * 2 - 6) / zoomValue;
 
     context.save();
-    context.translate(dx / zoomValue, dy / zoomValue);
+    context.translate(dx, dy);
     context.rotate(photoAngle);
     context.drawImage(curImg, 0, 0, curImg.width, curImg.height, -deltaImgX / zoomValue, -deltaImgY / zoomValue, dWidth, dHeight);
     context.restore();
@@ -80,7 +82,7 @@ function insertImg(img) {
       photo.style.width = photoWidth + 'px';
     }
 
-    sign = 1;
+    angleSign = 1;
     if (photoAngle) {
       photoAngle = 0;
       rotatePhoto();
@@ -89,7 +91,7 @@ function insertImg(img) {
     photoResizer.hidden = false;
     photoResizer.style.width = photoWidth + 'px';
     photoResizer.style.height = 'auto';
-    photoResizer.style.top = '150px';
+    photoResizer.style.top = '15%';
     photoResizer.style.left = (docWidth - photoWidth) / 2 + 'px';
     photoResizer.style.zIndex = activeLayer.index;
 
@@ -116,8 +118,8 @@ photoResizer.addEventListener('mousedown', (e) => {
   let shiftY = e.clientY - (curMiddle.y - deltaImgY);
 
   function moveAt(x, y) {
-    photoResizer.style.left = x - shiftX + pageXOffset + 'px';
-    photoResizer.style.top = y - shiftY + pageYOffset + 'px';
+    photoResizer.style.left = x - shiftX + 'px';
+    photoResizer.style.top = y - shiftY + 'px';
   }
 
   function move(e) {
@@ -179,10 +181,10 @@ photoRotator.addEventListener('mousedown', (e) => {
     let n2 = { x: -normal.y, y: normal.x };
     let coDeirect = coDirectional(n1, n2);
 
-    sign = (coDeirect && sign > 0 || !coDeirect && sign < 0) ? sign : sign * (-1);
+    angleSign = (coDeirect && angleSign > 0 || !coDeirect && angleSign < 0) ? angleSign : angleSign * (-1);
     let cos = (x1 * x2 + y1 * y2) / (dist1 * dist2);
     if (Math.abs(cos) > 1) cos = Math.trunc(cos);
-    photoAngle += sign * Math.acos(cos);
+    photoAngle += angleSign * Math.acos(cos);
     lastX = x;
     lastY = y;
 
@@ -211,8 +213,8 @@ function makeResizablePhoto(element) {
       e.stopPropagation();
       originalWidth = element.clientWidth;
       originalHeight = element.clientHeight;
-      originalX = getMiddleCoords(img).x - deltaImgX + pageXOffset;
-      originalY = getMiddleCoords(img).y - deltaImgY + pageYOffset;
+      originalX = getMiddleCoords(img).x - deltaImgX;
+      originalY = getMiddleCoords(img).y - deltaImgY;
       center = getTranslations(originalX + originalWidth/2, originalY + originalHeight/2);
       document.addEventListener('mousemove', resize);
       document.addEventListener('mouseup', stopResize);

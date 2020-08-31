@@ -29,9 +29,9 @@ function startPointPixelEraser(e) {
   context.save();
   context.globalCompositeOperation = 'destination-out';
 
-  [pixelEraserParameters.oldX, pixelEraserParameters.oldY] = getCurCoords(e);
+  [pixelEraserParameters.oldX, pixelEraserParameters.oldY] = getCoordsOnCanvas(e);
 
-  drawPointPixelEraser(...getCurCoords(e));
+  drawPointPixelEraser(...getCoordsOnCanvas(e));
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -46,7 +46,7 @@ function drawPixelEraser(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  [curX, curY] = getCurCoords(e);
+  [curX, curY] = getCoordsOnCanvas(e);
 
   context.globalCompositeOperation = 'destination-out';
 

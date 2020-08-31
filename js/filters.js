@@ -21,15 +21,6 @@ function useFiltersModal() {
   let modalContext = modalCanvas.getContext('2d');
 
   changeWindowSize (modalCanvas, maxModalCanvasHeight, maxModalCanvasWidth);
-  if (curCanvasHeight / maxModalCanvasHeight > curCanvasWidth / maxModalCanvasWidth) {
-    modalCanvas.style.width = parseInt(modalCanvas.style.width) / maxModalCanvasWidth * 100 + '%';
-    modalCanvas.style.height = 100 + '%';
-  } else {
-    modalCanvas.style.height = parseInt(modalCanvas.style.height) / maxModalCanvasHeight * 100 + '%';
-    modalCanvas.style.width = 100 + '%';
-  }
-  modalCanvas.setAttribute('width', modalCanvas.style.width);
-  modalCanvas.setAttribute('height', modalCanvas.style.height);
 
   let originalCanvas = canvas;
 

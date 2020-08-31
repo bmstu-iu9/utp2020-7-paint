@@ -137,8 +137,9 @@ body {
   }
 
 .layerBtn {
-  width: 20%;
-  height: 40%;
+  width: 2.8vh;
+  height: 2.8vh;
+  padding: 0;
 }
 
 .optionTool {
@@ -233,16 +234,16 @@ body {
 
   .layerScrollBox::-webkit-scrollbar-track {
     background-color: #d4d4d4;
-    padding: 20px 0;
+    padding: 2vh 0;
   }
 
   .layerScrollBox::-webkit-scrollbar {
-    width: 7px;
+    width: 1vh;
   }
 
   .layerScrollBox::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    border-radius: 0.4vh;
+    box-shadow: inset 0 0 0.4px rgba(0,0,0,.3);
     background: linear-gradient(#FFA600, #FFFC48);
   }
 
@@ -252,13 +253,13 @@ body {
   margin-left: 5%;
   margin-top: 5%;
   width: 90%;
-  height: 36px;
+  height: 5vh;
   display: flex;
   align-items: center;
 }
 
   .layer.highlight {
-    border: solid 1px #ff7f50;
+    border: solid 0.2vh #ff7f50;
   }
 
 .addLayer {
@@ -267,16 +268,15 @@ body {
 
 .layerBtncontainer {
   position: absolute;
-  right: 1px;
-  height: 20px;
+  right: 0.2vh;
+  height: 5vh;
   width: 50%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .visibleLayer {
-  width: 20px;
-  height: 20px;
   background-image: url('img/tools/show_layer.svg');
   background-size: cover;
   background-color: #fafafa;
@@ -289,8 +289,6 @@ body {
 }
 
 .unlockedLayer {
-  width: 20px;
-  height: 20px;
   background-image: url("img/tools/unlock_layer.svg");
   background-size: cover;
   background-color: #fafafa;
@@ -303,12 +301,13 @@ body {
 }
 
 .layerOptions {
-  right: 2%;
+  right: 10%;
+  top: 2.8vh;
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 100px;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  width: 8vw;
+  box-shadow: 0 2vh 4vh 0 rgba(0,0,0,0.2);
   z-index: 1000;
 }
 
@@ -319,10 +318,11 @@ body {
 
 .layerOptions button {
   width: 100%;
-  font-size: 12px;
-  padding: 2px 4px;
+  height: 5vh;
+  font-size: 2vh;
+  padding: 0.1vh 0.2vh;
   border: none;
-  border-bottom: 1px solid #b6b6b6;
+  border-bottom: 0.1vh solid #b6b6b6;
   outline: none;
 }
 
@@ -339,6 +339,9 @@ body {
   }
 
 .layerOptionsBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
   border: none;
   outline: none;
   background-color: #fafafa;
@@ -347,15 +350,18 @@ body {
 
 .layerOptionsImg {
   content: url(img/tools/more_layer.svg);
-  width: 20px;
-  height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%
 }
 
 .previewWindow {
   width: 42%;
-  height: 36px;
+  height: 5vh;
   float: left;
-  margin-left: 2px;
+  margin-left: 0.4vh;
   display: flex;
   align-items: center;
 }
@@ -367,7 +373,7 @@ canvas.preview {
   position: relative;
   height: 100%;
   width: 100%;
-  border: 1px solid black;
+  border: 0.2vh solid black;
 }
 
 #colorIndicatorDynamic {

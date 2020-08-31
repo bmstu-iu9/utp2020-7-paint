@@ -107,5 +107,5 @@ function drawTextInsertion(e) {
   canvas.style.cursor = 'crosshair';
   if (!isDrawing) return;
 
-  writeText(...getCurCoords(e));
+  writeText(...getCoordsOnCanvas(e));
 }

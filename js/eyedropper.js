@@ -22,8 +22,8 @@ function deleteEyedropper() {
 }
 
 function stopEyedropper(event) {
-  let eventLocation = getEventLocation(this, event);
-  let color = getPixelColor(eventLocation.x, eventLocation.y);
+  let eventCoords = getCoordsOnCanvas(event);
+  let color = getPixelColor(eventCoords[0], eventCoords[1]);
   curColor = color;
   colorInput.value = '#' + rgbToHex(color);
   document.getElementById('colorBtn').style.background = arrayToRgb(color);
@@ -52,7 +52,7 @@ function getPixelColor(x, y) {
 }
 
 function handleEyedropper(event) {
-  let eventCoords = getCurCoords(event);
+  let eventCoords = getCoordsOnCanvas(event);
   let color = getPixelColor(eventCoords[0], eventCoords[1]);
   if (color.every(elem => elem === 0)) {
     eyedropperWindow.style.background = 'url(\'img/background.png\')';

@@ -20,12 +20,12 @@ function endPoint() {
   context.beginPath();
 }
 
-function getCurCoords(e) {
+function getCoordsOnCanvas(e) {
   deltaX = canvas.getBoundingClientRect().left + curCanvasBorder * zoomValue;
   deltaY = canvas.getBoundingClientRect().top + curCanvasBorder * zoomValue;
   return [
-    Math.round((e.pageX - deltaX - pageXOffset) / zoomValue),
-    Math.round((e.pageY - deltaY - pageYOffset) / zoomValue)
+    Math.round((e.pageX - deltaX) / zoomValue),
+    Math.round((e.pageY - deltaY) / zoomValue)
   ]
 }
 
@@ -50,9 +50,9 @@ function startPointPencil(e) {
   context.save();
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  [pencilParameters.oldX, pencilParameters.oldY] = getCurCoords(e);
+  [pencilParameters.oldX, pencilParameters.oldY] = getCoordsOnCanvas(e);
 
-  drawPointPencil(...getCurCoords(e));
+  drawPointPencil(...getCoordsOnCanvas(e));
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -67,7 +67,7 @@ function drawPencil(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  [curX, curY] = getCurCoords(e);
+  [curX, curY] = getCoordsOnCanvas(e);
 
   pencilParameters.newX = curX;
   pencilParameters.newY = curY;

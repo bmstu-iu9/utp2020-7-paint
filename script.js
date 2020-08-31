@@ -420,7 +420,7 @@ document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
     hintsContent.innerHTML = `Горячие клавиши:
       <br>
       <br> Enter — вставить фото
-      <br> Двойное нажатие левой кнопкой мыши на фото — вернуть исходный размер`;
+      <br> Двойное нажатие на фото — вернуть исходный размер`;
     firstClickUpload = false;
   }
   uploadImage.click();

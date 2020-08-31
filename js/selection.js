@@ -62,7 +62,7 @@ function startPointRectangleSelection(e) {
 
   if (isThereSelection) deleteSelectedArea();
 
-  [oldX, oldY] = getCurCoords(e);
+  [oldX, oldY] = getCoordsOnCanvas(e);
 
   document.addEventListener('mousemove', drawRectangleSelection);
   document.addEventListener('mouseup', endSelectionPoint);
@@ -89,7 +89,7 @@ function drawRectangleSelection(e) {
 
   isThereSelection = true;
 
-  [curX, curY] = getCurCoords(e);
+  [curX, curY] = getCoordsOnCanvas(e);
 
   let selectionContext = document.getElementById('selectionCanvas').getContext('2d');
   selectionContext.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
@@ -239,8 +239,8 @@ canvasInsertion.addEventListener('mousedown', (e) => {
   let shiftY = e.clientY - canvasInsertion.getBoundingClientRect().top;
 
   function moveAt(x, y) {
-    canvasInsertion.style.left = x - shiftX + pageXOffset + 'px';
-    canvasInsertion.style.top = y - shiftY + pageYOffset + 'px';
+    canvasInsertion.style.left = x - shiftX + 'px';
+    canvasInsertion.style.top = y - shiftY + 'px';
   }
 
   function move(e) {

@@ -33,7 +33,7 @@ function deleteStamp() {
 }
 
 function selectFragment(e) {
-  [stampX, stampY] = getCurCoords(e);
+  [stampX, stampY] = getCoordsOnCanvas(e);
   lastCanvas.width = curCanvasWidth;
   lastCanvas.height = curCanvasHeight;
   lastContext.drawImage(canvas, 0, 0);
@@ -55,13 +55,13 @@ function startPointStamp(e) {
   if (isThereSelection) rememberCanvasWithoutSelection();
   context.save();
 
-  [oldX, oldY] = getCurCoords(e);
+  [oldX, oldY] = getCoordsOnCanvas(e);
   oldX -= curToolSize / 2;
   oldY -= curToolSize / 2;
 
   if (!isStamping) {
     isStamping = true;
-    let [x, y] = getCurCoords(e);
+    let [x, y] = getCoordsOnCanvas(e);
     x -= stampX;
     y -= stampY;
     resizeMemCanvas(Math.abs(x), Math.abs(y));
@@ -82,7 +82,7 @@ function drawStamp(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  [curX, curY] = getCurCoords(e);
+  [curX, curY] = getCoordsOnCanvas(e);
   curX -= curToolSize / 2;
   curY -= curToolSize / 2;
 

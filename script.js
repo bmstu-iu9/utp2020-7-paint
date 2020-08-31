@@ -514,7 +514,7 @@ function toggleHintModal() {
   modalHints.classList.toggle('show-modalHints');
 }
 
-closeHintsModal.addEventListener('click', toggleModal);
+closeHintsModal.addEventListener('click', toggleHintModal);
 
 let zoomValue = 1, isZooming = false;
 

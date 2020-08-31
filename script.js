@@ -126,6 +126,8 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute('href', img);
 });
 
+let clearCanvasBtn = document.getElementById('clearCanvasBtn');
+
 function clearCanvas(layer) {
   if (layer) {
     let canv = layer.canvas;
@@ -143,7 +145,7 @@ function clearAllLayers() {
   });
 }
 
-document.getElementById('clear').addEventListener('click', () => {
+clearCanvasBtn.addEventListener('click', () => {
   clearCanvas();
   rememberState();
 });
@@ -173,7 +175,7 @@ addEventListener('keydown', (event) => {
   if (event.altKey) {
     switch (event.key) {
       case 'c':
-        document.getElementById('clear').click();
+        clearCanvasBtn.click();
         break;
       case 'p':
         colorInput.click();
@@ -185,11 +187,16 @@ addEventListener('keydown', (event) => {
         uploadImage.click();
         break;
       case 'y':
-        document.getElementById('redo').click();
+        redo.click();
         break;
       case 'z':
-        document.getElementById('undo').click();
+        undo.click();
         break;
+      default:
+        if (event.shiftKey) {
+          zoomValue = 1;
+          zoomCanvases();
+        }
     }
   }
 });
@@ -398,6 +405,7 @@ document.getElementById('help').addEventListener('click', (event) => {
           <li>Alt + u — загрузить фото</li>
           <li>Alt + y — вернуть</li>
           <li>Alt + z — отменить</li>
+          <li>Alt + shift — 100% масштабирование холста</li>
           <li>Ctrl + c — скопировать выделенную область</li>
           <li>Ctrl + v — вставить скопированную область</li>
           <li>Ctrl + Backspace — очистить выделенную область</li>
@@ -495,10 +503,9 @@ function toggleModal() {
 
 closeHintsModal.addEventListener('click', toggleModal);
 
-let zoomValue = 1, zoomTimer;
+let zoomValue = 1, isZooming = false;
 
 function zoomCanvases() {
-  zoomValue = Math.min(Math.max(.125, zoomValue), 4);
   setZoom(canvasesField);
   setZoom(canvasInsertion);
 }
@@ -510,34 +517,32 @@ function setZoom(element) {
   element.style['transform'] = scale;
   element.style['transformOrigin'] = origin;
 
-  ['webkit', 'moz', 'ms', 'o'].forEach((pre) => {
-    element.style[pre + 'Transform'] = scale;
-    element.style[pre + 'TransformOrigin'] = origin;
+  ['webkit', 'moz', 'ms', 'o'].forEach((prefix) => {
+    element.style[prefix + 'Transform'] = scale;
+    element.style[prefix + 'TransformOrigin'] = origin;
   })
 }
 
-document.getElementById('zoomPlus').addEventListener('mousedown', (e) => {
-  zoomTimer = setInterval(() => {
-    zoomValue += 0.005;
+document.getElementById('zoomPlus').addEventListener('mousedown', () => {
+  isZooming = true;
+  zoomingPlus();
+
+  function zoomingPlus() {
+    if (zoomValue === 4) return;
+    zoomValue = Math.ceil(zoomValue * 100 + 0.5) / 100;
     zoomCanvases();
-  }, 10);
+    if (isZooming) setTimeout(zoomingPlus, 20);
+  }
 })
 
-document.getElementById('zoomMinus').addEventListener('mousedown', (e) => {
-  zoomTimer = setInterval(() => {
-    zoomValue -= 0.005;
+document.getElementById('zoomMinus').addEventListener('mousedown', () => {
+  isZooming = true;
+  zoomingMinus();
+
+  function zoomingMinus() {
+    if (zoomValue === 0.1) return;
+    zoomValue = Math.floor(zoomValue * 100 - 0.5) / 100;
     zoomCanvases();
-  }, 10);
+    if (isZooming) setTimeout(zoomingMinus, 20);
+  }
 })
-
-document.getElementById('zoomMinus').addEventListener('mouseup', (e) => {
-  clearInterval(zoomTimer);
-})
-
-document.getElementById('zoomPlus').addEventListener('mouseup', (e) => {
-  clearInterval(zoomTimer);
-})
-
-function getZoomPercentage() {
-  return (zoomValue * 100).toFixed(1);
-}

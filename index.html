@@ -13,7 +13,7 @@
     <div class="topContainer">
       <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
       <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
-      <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/tools/clear.svg)"></button>
+      <button title="Очистить" class="toolBtn" id="clearCanvasBtn" style="background-image: url(img/tools/clear.svg)"></button>
       <a id="download" download="image.png">
         <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/tools/download.svg)">
         </button>
@@ -43,8 +43,8 @@
       </button>
       <button title="Настройки холста" class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
     </div>
-    <button title="+" class="toolBtn" id="zoomPlus" style="background-image: url(img/tools/zoom_plus.svg)"></button>
-    <button title="-" class="toolBtn" id="zoomMinus" style="background-image: url(img/tools/zoom_minus.svg)"></button>
+    <button class="toolBtn" id="zoomPlus" onclick="isZooming = false" style="background-image: url(img/tools/zoom_plus.svg)"></button>
+    <button class="toolBtn" id="zoomMinus" onclick="isZooming = false" style="background-image: url(img/tools/zoom_minus.svg)"></button>
   </div>
 
   <div class="leftMenu" id="toolSettingsMenu" style="bottom:0; width:36vh; height:6vh; left:50%; transform: translate(-50%, -50%);" hidden="true">

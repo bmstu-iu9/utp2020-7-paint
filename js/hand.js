@@ -68,7 +68,7 @@ function startMoving(e) {
 function centerCanvas() {
   canvasesField.style.margin = 'auto';
   canvasesField.style.left = 0;
-  canvasesField.style.top = 45 + 'px';
+  canvasesField.style.top = '45px';
 }
 
 canvasResizer.addEventListener('mousedown', function(e) {
@@ -76,7 +76,7 @@ canvasResizer.addEventListener('mousedown', function(e) {
   e.stopPropagation();
   document.body.style.cursor = 'nwse-resize';
   canvas.style.cursor = 'nwse-resize';
-  let originalWidth = curCanvasWidth * zoomValue, originalHeight = curCanvasHeight * zoomValue;
+  let originalWidth = curCanvasWidth, originalHeight = curCanvasHeight;
   let originalMouseX = e.pageX, originalMouseY = e.pageY;
   let originalX = canvas.getBoundingClientRect().left;
   let originalY = canvas.getBoundingClientRect().top;
@@ -84,21 +84,19 @@ canvasResizer.addEventListener('mousedown', function(e) {
   function resize(e) {
     if (isThereSelection) deleteSelectedArea();
     if (canvasesField.style.margin === 'auto' || canvasesField.style.margin === '') {
-      curCanvasWidth = (originalWidth + (e.pageX - originalMouseX) / zoomValue * 2) / zoomValue;
-      curCanvasHeight = (originalHeight + (e.pageY - originalMouseY) / zoomValue * 2) / zoomValue;
-    } else {
-      curCanvasWidth = (originalWidth + (e.pageX - originalMouseX)) / zoomValue;
-      curCanvasHeight = (originalHeight + (e.pageY - originalMouseY)) / zoomValue;
+      canvasesField.style.margin = '0';
+      canvasesField.style.left = originalX - 3 * zoomValue + 'px';
+      canvasesField.style.top = originalY - 3 * zoomValue + 'px';
     }
-    if (curCanvasWidth <= changeCanvasWidth.max && curCanvasWidth >= changeCanvasWidth.min) {
+    let newWidth = Math.round(originalWidth + (e.pageX - originalMouseX) / zoomValue);
+    let newHeight = Math.round(originalHeight + (e.pageY - originalMouseY) / zoomValue);
+    if (newWidth <= changeCanvasWidth.max && newWidth >= changeCanvasWidth.min) {
+      curCanvasWidth = newWidth;
       newCanvasWidth();
-    } else {
-      curCanvasWidth = canvas.offsetWidth;
     }
-    if (curCanvasHeight <= changeCanvasHeight.max && curCanvasHeight >= changeCanvasHeight.min) {
+    if (newHeight <= changeCanvasHeight.max && newHeight >= changeCanvasHeight.min) {
+      curCanvasHeight = newHeight;
       newCanvasHeight();
-    } else {
-      curCanvasHeight = canvas.offsetHeight;
     }
     restoreCanvasesState();
   }

@@ -487,9 +487,13 @@ function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
   if (curCanvasHeight / maxWindowHeight > curCanvasWidth / maxWindowWidth) {
     window.style.height = maxWindowHeight + 'px';
     window.style.width = curCanvasWidth * (parseInt(window.style.height) / curCanvasHeight) + 'px';
+    window.style.width = parseInt(window.style.width) / maxWindowWidth * 100 + '%';
+    window.style.height = 100 + '%';
   } else {
     window.style.width = maxWindowWidth + 'px';
     window.style.height = curCanvasHeight * (parseInt(window.style.width) / curCanvasWidth) + 'px';
+    window.style.height = parseInt(window.style.height) / maxWindowHeight * 100 + '%';
+    window.style.width = 100 + '%';
   }
   window.setAttribute('width', window.style.width);
   window.setAttribute('height', window.style.height);

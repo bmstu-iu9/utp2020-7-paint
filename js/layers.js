@@ -89,10 +89,12 @@ function createLayerHtml(id) {
 
   let layerDroplist = document.createElement('div');
   layerDroplist.classList.add('droplist');
+  layerDroplist.classList.add('layerBtn');
   layerDroplist.id = 'droplist' + id;
 
   let menuBtn = document.createElement('button');
   menuBtn.classList.add('layerOptionsBtn');
+  menuBtn.classList.add('layerBtn');
   let menuBtnImg = document.createElement('img');
   menuBtnImg.classList.add('layerOptionsImg');
   menuBtn.appendChild(menuBtnImg);

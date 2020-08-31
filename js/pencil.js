@@ -20,6 +20,15 @@ function endPoint() {
   context.beginPath();
 }
 
+function getCoordsOnCanvas(e) {
+  deltaX = canvas.getBoundingClientRect().left + curCanvasBorder * zoomValue;
+  deltaY = canvas.getBoundingClientRect().top + curCanvasBorder * zoomValue;
+  return [
+    Math.round((e.pageX - deltaX) / zoomValue),
+    Math.round((e.pageY - deltaY) / zoomValue)
+  ]
+}
+
 function initPencil() {
   canvas.style.cursor = 'url(\"img/cursors/pencil_cursor.png\") 0 25, auto';
 
@@ -41,12 +50,9 @@ function startPointPencil(e) {
   context.save();
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  pencilParameters.oldX = e.offsetX;
-  pencilParameters.oldY = e.offsetY;
-  deltaX = e.pageX - e.offsetX;
-  deltaY = e.pageY - e.offsetY;
+  [pencilParameters.oldX, pencilParameters.oldY] = getCoordsOnCanvas(e);
 
-  drawPointPencil(e.offsetX, e.offsetY);
+  drawPointPencil(...getCoordsOnCanvas(e));
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -60,11 +66,11 @@ function drawPencil(e) {
   if (!isDrawing) return;
 
   if (isThereSelection) rememberCanvasWithoutSelection();
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
 
-  pencilParameters.newX = e.curX;
-  pencilParameters.newY = e.curY;
+  [curX, curY] = getCoordsOnCanvas(e);
+
+  pencilParameters.newX = curX;
+  pencilParameters.newY = curY;
 
   pencilParameters.distance = Math.sqrt(Math.pow(curX - pencilParameters.oldX, 2) + Math.pow(curY - pencilParameters.oldY, 2));
   pencilParameters.angle = Math.atan2(curX - pencilParameters.oldX, curY - pencilParameters.oldY);

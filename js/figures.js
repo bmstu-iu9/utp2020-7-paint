@@ -14,10 +14,7 @@ function initFigure(e) {
   context.lineCap = 'round';
   context.strokeStyle = arrayToRgb(curColor);
 
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
+  [oldX, oldY] = getCoordsOnCanvas(e);
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 }
@@ -25,8 +22,7 @@ function initFigure(e) {
 function updateCanvasFigures(e) {
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCoordsOnCanvas(e);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 

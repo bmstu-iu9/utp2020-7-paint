@@ -2,23 +2,33 @@
 
 let firstClickHand = true;
 let canvasResizer = document.getElementById('canvasResizer');
+let isResized = false;
 
 function initHand() {
   if (firstClickHand) {
     toggleHintModal();
-    hintsContent.innerHTML = 'При двойном нажатии на холст в режиме \'руки\' он центрируется';
+    hintsContent.innerHTML =
+    `<p>Инструмент «Рука»</p>
+    <ul>
+    <li>1) Перемещение холста по рабочей области </li>
+    <li>2) Двойное нажатие на холст для центрирования </li>
+    <li>3) Изменение размеров холста через правый нижний угол</li>
+    </ul>`;
     firstClickHand = false;
   }
   canvas.addEventListener('dragstart', function() {
     return false;
   });
   canvas.addEventListener('mousedown', startMoving);
+  isResized = false;
   canvas.style.cursor = 'grab';
   canvasResizer.hidden = false;
   canvasesField.style.borderColor = '#bbbbbb';
 }
 
 function deleteHand() {
+  if (isResized) rememberSize();
+
   canvas.removeEventListener('mousedown', startMoving);
   canvas.removeEventListener('dblclick', centerCanvas);
   canvas.style.cursor = 'default';
@@ -58,7 +68,7 @@ function startMoving(e) {
 function centerCanvas() {
   canvasesField.style.margin = 'auto';
   canvasesField.style.left = 0;
-  canvasesField.style.top = 45 + 'px';
+  canvasesField.style.top = '45px';
 }
 
 canvasResizer.addEventListener('mousedown', function(e) {
@@ -72,27 +82,28 @@ canvasResizer.addEventListener('mousedown', function(e) {
   let originalY = canvas.getBoundingClientRect().top;
 
   function resize(e) {
+    if (isThereSelection) deleteSelectedArea();
     if (canvasesField.style.margin === 'auto' || canvasesField.style.margin === '') {
-      curCanvasWidth = originalWidth + 2 * (e.pageX - originalMouseX);
-      curCanvasHeight = originalHeight + 2 * (e.pageY - originalMouseY);
-    } else {
-      curCanvasWidth = originalWidth + (e.pageX - originalMouseX);
-      curCanvasHeight = originalHeight + (e.pageY - originalMouseY);
+      canvasesField.style.margin = '0';
+      canvasesField.style.left = originalX - 3 * zoomValue + 'px';
+      canvasesField.style.top = originalY - 3 * zoomValue + 'px';
     }
-    if (curCanvasWidth <= changeCanvasWidth.max && curCanvasWidth >= changeCanvasWidth.min) {
-      setCanvasWidth();
-    } else {
-      curCanvasWidth = canvas.offsetWidth;
+    let newWidth = Math.round(originalWidth + (e.pageX - originalMouseX) / zoomValue);
+    let newHeight = Math.round(originalHeight + (e.pageY - originalMouseY) / zoomValue);
+    if (newWidth <= changeCanvasWidth.max && newWidth >= changeCanvasWidth.min) {
+      curCanvasWidth = newWidth;
+      newCanvasWidth();
     }
-    if (curCanvasHeight <= changeCanvasHeight.max && curCanvasHeight >= changeCanvasHeight.min) {
-      setCanvasHeight();
-    } else {
-      curCanvasHeight = canvas.offsetHeight;
+    if (newHeight <= changeCanvasHeight.max && newHeight >= changeCanvasHeight.min) {
+      curCanvasHeight = newHeight;
+      newCanvasHeight();
     }
-    drawCurCanvasesState();
+    restoreCanvasesState();
   }
 
   function stopResize() {
+    isResized = true;
+
     canvas.style.cursor = 'grab';
     document.body.style.cursor = 'default';
     document.removeEventListener('mousemove', resize);

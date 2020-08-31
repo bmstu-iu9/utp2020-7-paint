@@ -61,10 +61,8 @@ function startPointRectangleSelection(e) {
   isDrawing = true;
 
   if (isThereSelection) deleteSelectedArea();
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
+
+  [oldX, oldY] = getCoordsOnCanvas(e);
 
   document.addEventListener('mousemove', drawRectangleSelection);
   document.addEventListener('mouseup', endSelectionPoint);
@@ -91,8 +89,7 @@ function drawRectangleSelection(e) {
 
   isThereSelection = true;
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCoordsOnCanvas(e);
 
   let selectionContext = document.getElementById('selectionCanvas').getContext('2d');
   selectionContext.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
@@ -194,10 +191,16 @@ function insertCanvas(copyCanvas) {
   function pressForInsertion() {
     if (event.code === 'Enter' && event.altKey) {
       if (isThereSelection) rememberCanvasWithoutSelection();
-      let posOfPhoto = getElementPosition(canvasInsertion);
-      let posOfCanvas = getElementPosition(canvas);
-      let dx = posOfPhoto.x - posOfCanvas.x - curCanvasBorder;
-      let dy = posOfPhoto.y - posOfCanvas.y - curCanvasBorder;
+      let posOfPhoto = {
+        x: canvasInsertion.getBoundingClientRect().left,
+        y: canvasInsertion.getBoundingClientRect().top
+      };
+      let posOfCanvas = {
+        x: canvas.getBoundingClientRect().left,
+        y: canvas.getBoundingClientRect().top
+      };
+      let dx = Math.round((posOfPhoto.x - posOfCanvas.x) / zoomValue + 3 - curCanvasBorder);
+      let dy = Math.round((posOfPhoto.y - posOfCanvas.y) / zoomValue + 3 - curCanvasBorder);
 
       context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
 
@@ -236,8 +239,8 @@ canvasInsertion.addEventListener('mousedown', (e) => {
   let shiftY = e.clientY - canvasInsertion.getBoundingClientRect().top;
 
   function moveAt(x, y) {
-    canvasInsertion.style.left = x - shiftX + pageXOffset + 'px';
-    canvasInsertion.style.top = y - shiftY + pageYOffset + 'px';
+    canvasInsertion.style.left = x - shiftX + 'px';
+    canvasInsertion.style.top = y - shiftY + 'px';
   }
 
   function move(e) {

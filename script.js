@@ -551,11 +551,12 @@ let colorDropBtn = document.getElementById('colorDropBtn');
 let zoomValue = 1, isZooming = false,
 showZoomValue = document.getElementById('showZoomValue');
 
-showZoomValue.innerHTML = '100.0%';
+showZoomValue.innerHTML = '100%';
 
 function zoomCanvases() {
   setZoom(canvasesField);
   setZoom(canvasInsertion);
+  showZoomValue.innerHTML = Math.trunc(zoomValue * 100) + '%';
 }
 
 function setZoom(element) {
@@ -571,10 +572,6 @@ function setZoom(element) {
   })
 }
 
-function getZoomPercentage() {
-  return (zoomValue * 100).toFixed(1);
-}
-
 document.getElementById('zoomPlus').addEventListener('mousedown', () => {
   isZooming = true;
   zoomingPlus();
@@ -584,7 +581,6 @@ document.getElementById('zoomPlus').addEventListener('mousedown', () => {
     zoomValue = Math.ceil(zoomValue * 100 + 0.5) / 100;
     zoomCanvases();
     if (isZooming) setTimeout(zoomingPlus, 20);
-    showZoomValue.innerHTML = getZoomPercentage() + '%';
   }
 })
 
@@ -597,6 +593,5 @@ document.getElementById('zoomMinus').addEventListener('mousedown', () => {
     zoomValue = Math.floor(zoomValue * 100 - 0.5) / 100;
     zoomCanvases();
     if (isZooming) setTimeout(zoomingMinus, 20);
-    showZoomValue.innerHTML = getZoomPercentage() + '%';
   }
 })

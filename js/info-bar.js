@@ -11,21 +11,12 @@ initUsedColorsIds();
 let infoCanvas = document.getElementById('previewInfoCanvas');
 let infoCanvasContext = previewInfoCanvas.getContext('2d');
 
-function getCurCoordsOnCanvas(event) {
-  let eventLocation = getEventLocation(canvas, event);
-
-  return {
-    x :  eventLocation.x - curCanvasBorder,
-    y :  eventLocation.y - curCanvasBorder
-  };
-}
-
 function showCurCoordsOnCanvas() {
 
   function printCurCoords(event) {
-    let coords = getCurCoordsOnCanvas(event);
-    document.getElementById('mouseCordX').innerHTML = coords.x;
-    document.getElementById('mouseCordY').innerHTML = coords.y;
+    let [x, y] = getCoordsOnCanvas(event);
+    document.getElementById('mouseCordX').innerHTML = x;
+    document.getElementById('mouseCordY').innerHTML = y;
   }
 
   canvas.addEventListener('mousemove', printCurCoords);
@@ -65,7 +56,7 @@ function addUsedColor() {
   }
 
   lastUsedColor = curColorHex;
-  
+
   if (countOfUsedColors < maxUsedColors) {
     usedColors.unshift(curColorHex);
     document.getElementById(usedColorsIds[countOfUsedColors]).style.background = '#' + rgbToHex(curColor);

@@ -482,6 +482,11 @@ document.getElementById('openLayersBtn').addEventListener('click', (event) => {
   document.getElementById('layersField').classList.toggle('layersFieldClosed');
 });
 
+document.getElementById('showCurSizes').addEventListener('click', (event) => {
+  hideAndShow('settingsMenu', event);
+});
+
+
 function getIndexOfRedInData(x, y) {
   return canvas.width * y * 4 + x * 4;
 }
@@ -543,7 +548,10 @@ let colorDropBtn = document.getElementById('colorDropBtn');
     colorContent.classList.toggle('showContent');
 });
 
-let zoomValue = 1, isZooming = false;
+let zoomValue = 1, isZooming = false,
+showZoomValue = document.getElementById('showZoomValue');
+
+showZoomValue.innerHTML = '100.0%';
 
 function zoomCanvases() {
   setZoom(canvasesField);
@@ -563,6 +571,10 @@ function setZoom(element) {
   })
 }
 
+function getZoomPercentage() {
+  return (zoomValue * 100).toFixed(1);
+}
+
 document.getElementById('zoomPlus').addEventListener('mousedown', () => {
   isZooming = true;
   zoomingPlus();
@@ -572,6 +584,7 @@ document.getElementById('zoomPlus').addEventListener('mousedown', () => {
     zoomValue = Math.ceil(zoomValue * 100 + 0.5) / 100;
     zoomCanvases();
     if (isZooming) setTimeout(zoomingPlus, 20);
+    showZoomValue.innerHTML = getZoomPercentage() + '%';
   }
 })
 
@@ -584,5 +597,6 @@ document.getElementById('zoomMinus').addEventListener('mousedown', () => {
     zoomValue = Math.floor(zoomValue * 100 - 0.5) / 100;
     zoomCanvases();
     if (isZooming) setTimeout(zoomingMinus, 20);
+    showZoomValue.innerHTML = getZoomPercentage() + '%';
   }
 })

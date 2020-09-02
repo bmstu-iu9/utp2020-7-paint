@@ -8,9 +8,9 @@ let firstClickStamp = true;
 
 function initStamp() {
   if (firstClickStamp) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML =
-    `<p>Алгоритм работы со штампом:</p>
+    `<p>Алгоритм работы с инструментом «Штамп»:</p>
     <ul>
     <li>1) Установить точку копирования щелчком левой кнопки мыши</li>
     <li>2) Зажать левую кнопку мыши и движением курсора начать проявлять скопированный фрагмент</li>
@@ -33,8 +33,7 @@ function deleteStamp() {
 }
 
 function selectFragment(e) {
-  stampX = e.offsetX;
-  stampY = e.offsetY;
+  [stampX, stampY] = getCoordsOnCanvas(e);
   lastCanvas.width = curCanvasWidth;
   lastCanvas.height = curCanvasHeight;
   lastContext.drawImage(canvas, 0, 0);
@@ -55,15 +54,16 @@ function startPointStamp(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
   context.save();
-  oldX = e.offsetX - curToolSize / 2;
-  oldY = e.offsetY - curToolSize / 2;
-  deltaX = e.pageX - e.offsetX;
-  deltaY = e.pageY - e.offsetY;
+
+  [oldX, oldY] = getCoordsOnCanvas(e);
+  oldX -= curToolSize / 2;
+  oldY -= curToolSize / 2;
 
   if (!isStamping) {
     isStamping = true;
-    let x = e.offsetX - stampX;
-    let y = e.offsetY - stampY;
+    let [x, y] = getCoordsOnCanvas(e);
+    x -= stampX;
+    y -= stampY;
     resizeMemCanvas(Math.abs(x), Math.abs(y));
     memContext.drawImage(canvas, 0, 0);
     memContext.drawImage(lastCanvas, x, y);
@@ -81,8 +81,10 @@ function drawStamp(e) {
   if (!isDrawing) return;
 
   if (isThereSelection) rememberCanvasWithoutSelection();
-  curX = e.pageX - deltaX - curToolSize / 2;
-  curY = e.pageY - deltaY - curToolSize / 2;
+
+  [curX, curY] = getCoordsOnCanvas(e);
+  curX -= curToolSize / 2;
+  curY -= curToolSize / 2;
 
   distance = Math.sqrt(Math.pow(curX - oldX, 2) + Math.pow(curY - oldY, 2))
   angle = Math.atan2(curX - oldX, curY - oldY);

@@ -89,11 +89,14 @@ function createLayerHtml(id) {
 
   let layerDroplist = document.createElement('div');
   layerDroplist.classList.add('droplist');
+  layerDroplist.classList.add('layerBtn');
   layerDroplist.id = 'droplist' + id;
 
   let menuBtn = document.createElement('button');
   menuBtn.classList.add('layerOptionsBtn');
+  menuBtn.classList.add('layerBtn');
   let menuBtnImg = document.createElement('img');
+  menuBtnImg.src = 'img/tools/more_layer.svg'; 
   menuBtnImg.classList.add('layerOptionsImg');
   menuBtn.appendChild(menuBtnImg);
   layerDroplist.appendChild(menuBtn);
@@ -313,7 +316,6 @@ class Layer {
     this.duplicateLayerBtn.addEventListener('click', duplicateLayerHandler);
 
     this.canvas.style.borderWidth = curCanvasBorder + 'px';
-    this.canvas.style.borderColor = curCanvasBorderColor;
     this.canvas.style.borderStyle = 'solid';
     this.ctx = this.canvas.getContext('2d');
 

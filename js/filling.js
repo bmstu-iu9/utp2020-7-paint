@@ -6,7 +6,7 @@ function initFilling() {
   document.getElementById('fillMenu').hidden = false;
   document.getElementById('filling').classList.add('pressed');
   if (firstClickFilling) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML =
     `Процент заливки регулирует допустимую разницу в цветах. <br>
     Например, 0% заливает только точно такой же цвет, а 100% заливает все цвета.`;

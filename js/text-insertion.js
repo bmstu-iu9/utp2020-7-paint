@@ -1,6 +1,6 @@
 'use strict';
 
-let textToInsert, dxOfText, dyOfText;
+let textToInsert, curTextSize, dxOfText, dyOfText;
 let textElements = ['textMenu', 'textFormat', 'fontSize', 'fontColor', 'textAngle', 'pastedText', 'font'];
 
 textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);
@@ -26,6 +26,7 @@ function initText() {
       let padding = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('padding').replace('px', ''));
       dxOfText = pastedText.clientWidth - padding * 2;
       dyOfText = pastedText.clientHeight - padding * 2;
+      curTextSize = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('font-size').replace('px', ''));
       pastedText.hidden = true;
       textMenu.hidden = false;
       textFormat.addEventListener('click', startPointText);
@@ -46,11 +47,11 @@ function deleteText() {
     textMenu.hidden = true;
   }
 
-  canvas.removeEventListener('mousemove', drawTextInsertion);
+  document.removeEventListener('mousemove', drawTextInsertion);
   document.removeEventListener('mouseup', stopInsertion);
 
   fontSize.value = '20';
-  font.value = 'serif';
+  font.value = "'passion one'";
   textAngle.value = 0;
   fontColor.value = '#000000';
   pastedText.innerHTML = 'Текст Alt + Enter';
@@ -69,14 +70,14 @@ function writeText(x, y) {
       context.fillText(textToInsert[i], x, y + i * del);
   }
 
-  let k = fontSize.value / 20;
+  let k = fontSize.value / curTextSize;
 
   if (textAngle.value == 0) {
-    write(x - dxOfText * k / 2, y - dyOfText / 2);
+    write(x - dxOfText * k / 2, y - dyOfText * k / 2);
   } else {
     context.translate(x, y);
     context.rotate((Math.PI / 180) * textAngle.value);
-    write(-dxOfText * k / 2, -dyOfText / 2);
+    write(-dxOfText * k / 2, -dyOfText * k / 2);
   }
   context.restore();
 
@@ -98,7 +99,7 @@ function startPointText(e) {
   drawTextInsertion(e);
 
   textFormat.removeEventListener('click', startPointText);
-  canvas.addEventListener('mousemove', drawTextInsertion);
+  document.addEventListener('mousemove', drawTextInsertion);
   document.addEventListener('mouseup', stopInsertion);
 }
 
@@ -106,5 +107,5 @@ function drawTextInsertion(e) {
   canvas.style.cursor = 'crosshair';
   if (!isDrawing) return;
 
-  writeText(e.offsetX, e.offsetY);
+  writeText(...getCoordsOnCanvas(e));
 }

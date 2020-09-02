@@ -5,6 +5,7 @@ html {
 }
 
 body {
+  overflow: hidden;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -70,7 +71,6 @@ body {
     text-align: center;
   }
 
-
 #openPanel {
   position: fixed;
   width: 8vh;
@@ -85,13 +85,14 @@ body {
   line-height: 0;
   top: 11vh;
   height: 89vh;
-  width: 0;
+  width: 8vh;
   margin: 0;
   padding: 0;
   text-align: center;
+  align-items: center;
   position: fixed;
   z-index: 1005;
-  left: 0;
+  left: -8vh;
   background-color: #ffffff;
   transition: 0.5s;
   overflow: hidden;
@@ -137,8 +138,9 @@ body {
   }
 
 .layerBtn {
-  width: 20%;
-  height: 40%;
+  width: 2.8vh;
+  height: 2.8vh;
+  padding: 0;
 }
 
 .optionTool {
@@ -196,10 +198,10 @@ body {
   box-sizing: border-box;
   top: 11vh;
   right: 0;
-  width: 16%;
-  height: 100%;
+  width: 22vh;
+  height: 89vh;
   background: #eeeeee;
-  border-left: 1px solid #cccccc;
+  border-left: 0.2vh solid #cccccc;
   transition: 0.5s;
   transform: translateX(0%);
   z-index: 1000;
@@ -212,10 +214,12 @@ body {
 #openLayersBtn {
   position: absolute;
   z-index: 1000;
-  width: 60px;
-  height: 50px;
-  bottom: 70px;
-  left: -60px;
+  width: 8vh;
+  height: 7vh;
+  bottom: 2vh;
+  left: -8vh;
+  display: flex;
+  align-items: center;
   background-color: #ffdf2b;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
 }
@@ -226,21 +230,21 @@ body {
   left: 0;
   overflow-y: scroll;
   width: 100%;
-  height: 100%;
+  height: 89vh;
 }
 
   .layerScrollBox::-webkit-scrollbar-track {
     background-color: #d4d4d4;
-    padding: 20px 0;
+    padding: 2vh 0;
   }
 
   .layerScrollBox::-webkit-scrollbar {
-    width: 7px;
+    width: 1vh;
   }
 
   .layerScrollBox::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    border-radius: 0.4vh;
+    box-shadow: inset 0 0 0.4px rgba(0,0,0,.3);
     background: linear-gradient(#FFA600, #FFFC48);
   }
 
@@ -250,13 +254,13 @@ body {
   margin-left: 5%;
   margin-top: 5%;
   width: 90%;
-  height: 36px;
+  height: 5vh;
   display: flex;
   align-items: center;
 }
 
   .layer.highlight {
-    border: solid 1px #ff7f50;
+    border: solid 0.2vh #ff7f50;
   }
 
 .addLayer {
@@ -265,19 +269,19 @@ body {
 
 .layerBtncontainer {
   position: absolute;
-  right: 1px;
-  height: 20px;
+  right: 0.2vh;
+  height: 5vh;
   width: 50%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .visibleLayer {
-  width: 20px;
-  height: 20px;
   background-image: url('img/tools/show_layer.svg');
-  background-size: cover;
+  background-size: contain;
   background-color: #fafafa;
+  overflow: hidden;
   border: none;
   outline: none;
 }
@@ -287,10 +291,8 @@ body {
 }
 
 .unlockedLayer {
-  width: 20px;
-  height: 20px;
   background-image: url("img/tools/unlock_layer.svg");
-  background-size: cover;
+  background-size: contain;
   background-color: #fafafa;
   border: none;
   outline: none;
@@ -301,12 +303,13 @@ body {
 }
 
 .layerOptions {
-  right: 2%;
+  right: 10%;
+  top: 2.8vh;
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 100px;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  width: 8vw;
+  box-shadow: 0 2vh 4vh 0 rgba(0,0,0,0.2);
   z-index: 1000;
 }
 
@@ -317,10 +320,11 @@ body {
 
 .layerOptions button {
   width: 100%;
-  font-size: 12px;
-  padding: 2px 4px;
+  height: 5vh;
+  font-size: 2vh;
+  padding: 0.1vh 0.2vh;
   border: none;
-  border-bottom: 1px solid #b6b6b6;
+  border-bottom: 0.1vh solid #b6b6b6;
   outline: none;
 }
 
@@ -337,6 +341,9 @@ body {
   }
 
 .layerOptionsBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
   border: none;
   outline: none;
   background-color: #fafafa;
@@ -345,15 +352,18 @@ body {
 
 .layerOptionsImg {
   content: url(img/tools/more_layer.svg);
-  width: 20px;
-  height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%
 }
 
 .previewWindow {
   width: 42%;
-  height: 36px;
+  height: 5vh;
   float: left;
-  margin-left: 2px;
+  margin-left: 0.4vh;
   display: flex;
   align-items: center;
 }
@@ -365,7 +375,7 @@ canvas.preview {
   position: relative;
   height: 100%;
   width: 100%;
-  border: 1px solid black;
+  border: 0.2vh solid black;
 }
 
 #colorIndicatorDynamic {
@@ -535,7 +545,7 @@ option:checked {
       width: 1.5vh;
       height: 1.5vh;
       border-radius: 50%;
-      background: #24a4ff;
+      background: #ffdf2b;
       cursor: pointer;
       box-shadow: 0 1vh 1vh rgba(0,0,0,0.5);
     }
@@ -544,7 +554,7 @@ option:checked {
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #24a4ff;
+      background: #ffdf2b;
       cursor: pointer;
       box-shadow: 0 1vh 1vh rgba(0,0,0,0.5);
     }
@@ -576,7 +586,7 @@ option:checked {
   left: 50%;
   transform: translate(-50%, -50%);
   overflow-y: hidden;
-  z-index: 1000;
+  z-index: 1006;
 }
 
   #textMenu input {
@@ -810,8 +820,8 @@ input::-webkit-color-swatch {
   left: 50%;
   transform: translate(-50%, -55%);
   background-color: white;
-  width: 900px;
-  height: 500px;
+  width: 70vw;
+  height: 75vh;
   padding: 0;
 }
 
@@ -820,7 +830,6 @@ input::-webkit-color-swatch {
   width: 100%;
   height: 6%;
   background-color: #ffdf2b;
-  color: black;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -828,23 +837,24 @@ input::-webkit-color-swatch {
 
 .leftSide {
   margin: 0;
-  width: 550px;
+  margin-right: -0.01vh;
+  width: 35vw;
+  height: 100%;
   display: inline-block;
-  padding-left: 20px;
 }
 
-.filterCanvasWrapper {
-  width: 500px;
-  height: 350px;
-  margin-top: 20px;
-  margin-bottom: 30px;
+.modalCanvasWrapper {
+  width: 35vw;
+  height: 45vh;
+  margin-top: 4vh;
+  margin-bottom: 2vh;
 }
 
-.filterCanvas {
+.modalCanvas {
   background: repeat url("img/background.png");
   display: inline-block;
   position: relative;
-  border: 1px solid black;
+  border: 0.2vh solid black;
   height: 100%;
   width: 100%;
 }
@@ -854,14 +864,14 @@ input::-webkit-color-swatch {
   display: inline-flex;
   flex-direction: column;
   margin: 0;
-  width: 300px;
+  width: 35vw;
   height: 100%;
   justify-content: space-around;
 }
 
 .colorFiltersBtns button {
-  width: 60px;
-  height: 60px;
+  width: 10vh;
+  height: 10vh;
   border: none;
   border-radius: 50%;
   outline: none;
@@ -877,8 +887,10 @@ input::-webkit-color-swatch {
 }
 
 .textFilterBtns button {
-  width: 80px;
-  height: 30px;
+  width: 12vh;
+  height: 4vh;
+  font-size: 2.5vh;
+  text-align: center;
   border: none;
   border-radius: 50%;
   outline: none;
@@ -893,94 +905,97 @@ input::-webkit-color-swatch {
   width: 30%;
 }
 
-  .rangeAndDescription p {
-    text-align: center;
-    color: #4A4A4A;
-  }
+.rangeAndDescription p {
+  font-size: 3vh;
+  text-align: center;
+  color: #4A4A4A;
+}
 
-  .rangeAndDescription input[type='range'] {
-    -webkit-appearance: none;
-    height: 5px;
-    width: 100%;
-    border-radius: 5px;
-    background: #d3d3d3;
-    background-size: cover;
-    outline: none;
-    margin-right: 5px;
-    -webkit-transition: .2s;
-  }
+.rangeAndDescription input[type='range'] {
+  -webkit-appearance: none;
+  height: 1vh;
+  width: 100%;
+  border-radius: 1vh;
+  background: #d3d3d3;
+  background-size: cover;
+  outline: none;
+  margin-right: 1vh;
+  -webkit-transition: .2s;
+}
 
-    .rangeAndDescription input[type='range']::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #24a4ff;
-      cursor: pointer;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
-    }
+.rangeAndDescription input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4vh;
+  height: 4vh;
+  border-radius: 50%;
+  background: #24a4ff;
+  cursor: pointer;
+  box-shadow: 0 1vh 1vh rgba(0, 0, 0, 0.5);
+}
 
-    .rangeAndDescription input[type='range']::-moz-range-thumb {
-      width: 25px;
-      height: 25px;
-      background: #24a4ff;
-      cursor: pointer;
-      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
-    }
+.rangeAndDescription input[type='range']::-moz-range-thumb {
+  width: 4vh;
+  height: 4vh;
+  background: #24a4ff;
+  cursor: pointer;
+  box-shadow: 0 1vh 1vh rgba(0, 0, 0, 0.5);
+}
 
-.filterHeaderBtns {
-  width: 25px;
-  height: 25px;
+.modalHeaderBtns {
+  width: 4vh;
+  height: 4vh;
   text-align: center;
   cursor: pointer;
   display: inline-block;
-  margin-right: 2px;
+  margin-right: 0.5vh;
 }
 
-  .filterHeaderBtns:first-child {
-    margin-left: 2px;
-  }
+.modalHeaderBtns:first-child {
+  margin-left: 1vh;
+}
 
-#deletingChanges {
+.deleteChanges {
   border-radius: 50%;
   background-color: white;
   background-image: url("img/filters/filters_restore.svg");
   background-size: cover;
 }
 
-#undoFilter {
+.undoModalBtn {
   background-image: url("img/filters/filters_undo.svg");
 }
 
-#redoFilter {
+.redoModalBtn {
   background-image: url("img/filters/filters_redo.svg");
 }
 
-#closeWithoutSaving {
+.closeWithoutSavingBtn {
   background-image: url("img/filters/filters_close.svg");
 }
 
-#closeWithSaving {
+.closeWithSavingBtn {
   background-image: url("img/filters/filters_ready.svg");
 }
 
 .closeBtnsContainer {
   position: absolute;
-  right: 1px;
-  width: 55px;
-  height: 25px;
+  right: 0.4vh;
+  width: 10vh;
+  height: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .closeButton {
-  width: 25px;
-  height: 25px;
+  width: 4vh;
+  height: 4vh;
   cursor: pointer;
 }
 
 .spaceWrapper {
+  font-size: 0;
   white-space: nowrap;
   height: 94%;
 }
@@ -1048,4 +1063,58 @@ input::-webkit-color-swatch {
   outline: none;
   margin: 1vh;
   background-color: transparent;
+}
+
+.markingCanvasContainer {
+  margin-right: 2vh;
+}
+
+.markingMenu button {
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  background-size: cover;
+}
+
+.markingMenu p {
+  font-size: 3vh;
+  margin: 0.5vh;
+}
+
+.markingBtnsContainer {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+}
+
+.mainMarkingBtns {
+  width: 40vw;
+  height: 8vh;
+}
+
+.markingRange {
+  display: flex;
+  align-items: center;
+  width: 20vw;
+  height: 8vh;
+}
+
+.markingRange input[type='range'] {
+  height: 0.7vh;
+  width: 50%;
+}
+
+.markingRange input[type='text'] {
+  padding: 0vh 0.3vh;
+  margin: 0px;
+  height: 3.5vh;
+  width: 30%;
+  background: lightgray;
+  border-radius: 1vh;
+  border: none;
+  font-family: 'Times New Roman';
+  font-size: 3vh;
+  text-align: center;
+  -webkit-appearance: none;
+  outline:none;
 }

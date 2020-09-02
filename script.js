@@ -17,9 +17,17 @@ let curCanvasColor = [255, 255, 255];
 let curCanvasHeight = defaultHeight;
 let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
-let curCanvasBorderColor = '#000000';
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
+// let curState = 0;
+let photoOfState = {
+  length: 0,
+  layers: new Map()
+};
+let markingInterval = 100;
+let markingAmplitude = 45;
+let inclinationAngle = 45;
+let markingSize = 1;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -127,6 +135,8 @@ downloadBtn.addEventListener('click', () => {
   downloadBtn.setAttribute('href', img);
 });
 
+let clearCanvasBtn = document.getElementById('clearCanvasBtn');
+
 function clearCanvas(layer) {
   if (layer) {
     let canv = layer.canvas;
@@ -144,7 +154,7 @@ function clearAllLayers() {
   });
 }
 
-document.getElementById('clear').addEventListener('click', () => {
+clearCanvasBtn.addEventListener('click', () => {
   clearCanvas();
   rememberState();
 });
@@ -174,7 +184,7 @@ addEventListener('keydown', (event) => {
   if (event.altKey) {
     switch (event.key) {
       case 'c':
-        document.getElementById('clear').click();
+        clearCanvasBtn.click();
         break;
       case 'p':
         colorInput.click();
@@ -186,11 +196,16 @@ addEventListener('keydown', (event) => {
         uploadImage.click();
         break;
       case 'y':
-        document.getElementById('redo').click();
+        redo.click();
         break;
       case 'z':
-        document.getElementById('undo').click();
+        undo.click();
         break;
+      default:
+        if (event.shiftKey) {
+          zoomValue = 1;
+          zoomCanvases();
+        }
     }
   }
 });
@@ -198,45 +213,54 @@ addEventListener('keydown', (event) => {
 
 let changeCanvasHeight = document.getElementById('changeCanvasHeight');
 let changeCanvasWidth = document.getElementById('changeCanvasWidth');
-let changeBorderWidth = document.getElementById('changeBorderWidth');
 
 changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
-changeBorderWidth.value = defaultBorder + 'px';
 
-function setCanvasWidth() {
-  clearAllLayers();
 
-  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
-  allCanvases.forEach((canvas) => {
-    canvas.style.width = curCanvasWidth + 'px';
-    canvas.setAttribute('width', curCanvasWidth + 'px');
-  });
-  layers.forEach((layer) => {
-    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
-  });
+changeCanvasWidth.oninput = function () {
 
   document.getElementById('curWidth').innerHTML = curCanvasWidth;
   document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
   changeCanvasWidth.style.background = '#ffffff';
   changeCanvasWidth.value = curCanvasWidth + 'px';
-}
 
-changeCanvasWidth.oninput = function () {
-  addEventListener('keydown', setWidth);
+  function setCanvasWidth() {
+    let width = changeCanvasWidth.value;
+
+    if (checkPxInput(width, minW, maxW)) {
+      curCanvasWidth = parseInt(width);
+    } else {
+      curCanvasWidth = parseInt(getWidth(width));
+    }
+
+    clearAllLayersHistory();
+    clearAllLayers();
+
+    canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
+    allCanvases.forEach((canvas) => {
+      canvas.style.width = curCanvasWidth + 'px';
+      canvas.setAttribute('width', curCanvasWidth + 'px');
+    });
+    layers.forEach((layer) => {
+      changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+    });
+
+    document.getElementById('curWidth').innerHTML = curCanvasWidth;
+    changeCanvasWidth.style.background = '#ffffff';
+    changeCanvasWidth.value = curCanvasWidth + 'px';
+  }
+
+  document.getElementById('settingsMenu').addEventListener('keydown', setWidth);
 
   let width = changeCanvasWidth.value;
   let maxW = changeCanvasWidth.max;
   let minW = changeCanvasWidth.min;
 
-  if (checkPxInput(width, minW, maxW)) {
-    curCanvasWidth = parseInt(width);
-    clearAllLayersHistory();
-    setCanvasWidth();
-  } else {
-    curCanvasWidth = parseInt(getWidth(width));
+  if (!checkPxInput(width, minW, maxW)) {
     changeCanvasWidth.style.background = '#ffd4d4';
   }
+
 
   changePreview();
 
@@ -255,45 +279,54 @@ changeCanvasWidth.oninput = function () {
   }
 
   function setWidth(event) {
-    if (event.key === 'Enter') {
-      clearAllLayersHistory();
+    if (event.code === 'Enter') {
       setCanvasWidth();
       removeEventListener('keydown', setWidth);
     }
   }
 }
 
-function setCanvasHeight() {
-  clearAllLayers();
 
-  canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
-  allCanvases.forEach((canvas) => {
-    canvas.style.height = curCanvasHeight + 'px';
-    canvas.setAttribute('height', curCanvasHeight + 'px');
-  });
-  layers.forEach((layer) => {
-    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
-  });
+changeCanvasHeight.oninput = function () {
 
   document.getElementById('curHeight').innerHTML = curCanvasHeight;
   document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
   changeCanvasHeight.style.background = '#ffffff';
   changeCanvasHeight.value = curCanvasHeight + 'px';
-}
 
-changeCanvasHeight.oninput = function () {
-  addEventListener('keydown', setHeight);
+  function setCanvasHeight() {
+    let height = changeCanvasHeight.value;
+
+    if (checkPxInput(height, minH, maxH)) {
+      curCanvasHeight = parseInt(height);
+    } else {
+      curCanvasHeight = parseInt(getHeight(height));
+    }
+
+    clearAllLayers();
+    clearAllLayersHistory();
+
+    canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
+    allCanvases.forEach((canvas) => {
+      canvas.style.height = curCanvasHeight + 'px';
+      canvas.setAttribute('height', curCanvasHeight + 'px');
+    });
+    layers.forEach((layer) => {
+      changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+    });
+
+    document.getElementById('curHeight').innerHTML = curCanvasHeight;
+    changeCanvasHeight.style.background = '#ffffff';
+    changeCanvasHeight.value = curCanvasHeight + 'px';
+  }
+
+  document.getElementById('settingsMenu').addEventListener('keydown', setHeight);
 
   let height = changeCanvasHeight.value;
   let maxH = changeCanvasHeight.max;
   let minH = changeCanvasHeight.min;
 
-  if (checkPxInput(height, minH, maxH)) {
-    curCanvasHeight = parseInt(height);
-    clearAllLayersHistory();
-    setCanvasHeight();
-  } else {
-    curCanvasHeight = parseInt(getHeight(height));
+  if (!checkPxInput(height, minH, maxH)) {
     changeCanvasHeight.style.background = '#ffd4d4';
   }
 
@@ -314,83 +347,13 @@ changeCanvasHeight.oninput = function () {
   }
 
   function setHeight(event) {
-    if (event.key === 'Enter') {
-      clearAllLayersHistory();
+    if (event.code === 'Enter') {
       setCanvasHeight();
       removeEventListener('keydown', setHeight);
     }
   }
 }
 
-changeBorderWidth.oninput = function () {
-  addEventListener('keydown', setBorder);
-
-  let border = changeBorderWidth.value;
-  let maxB = changeBorderWidth.max;
-  let minB = changeBorderWidth.min;
-
-  if (checkPxInput(border, minB, maxB)) {
-    curCanvasBorder = parseInt(border);
-    allCanvases.forEach((canvas) => {
-      canvas.style.borderWidth = curCanvasBorder + 'px';
-    });
-    canvasesField.style.height = canvas.offsetHeight + 'px';
-    canvasesField.style.width = canvas.offsetWidth + 'px';
-    canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
-    canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
-    changeBorderWidth.style.background = '#ffffff';
-  } else {
-    curCanvasBorder = parseInt(getBorder(border));
-    changeBorderWidth.style.background = '#ffd4d4';
-    backCanvas.style.borderWidth = curCanvasBorder;
-  }
-
-  function getBorder(str) {
-
-    if (isNaN(parseInt(str)))
-      return defaultBorder;
-
-    if (parseInt(str) > changeBorderWidth.max)
-      return changeBorderWidth.max;
-
-    if (parseInt(str) < changeBorderWidth.min)
-      return changeBorderWidth.min;
-
-    return defaultBorder;
-  }
-
-  function setBorder(event) {
-    if (event.key === 'Enter') {
-      changeBorderWidth.value = curCanvasBorder + 'px';
-      changeBorderWidth.style.background = '#ffffff';
-      allCanvases.forEach((canvas) => {
-        canvas.style.borderWidth = curCanvasBorder + 'px';
-      });
-      canvasesField.style.height = canvas.offsetHeight + 'px';
-      canvasesField.style.width = canvas.offsetWidth + 'px';
-      canvasesField.style.maxHeight = parseInt(changeCanvasHeight.max) + 2 * curCanvasBorder + 'px';
-      canvasesField.style.maxWidth = parseInt(changeCanvasWidth.max) + 2 * curCanvasBorder + 'px';
-
-      removeEventListener('keydown', setBorder);
-    }
-  }
-}
-
-borderColor.oninput = function () {
-  let color = document.getElementById('borderColor').value;
-  if (color) {
-    allCanvases.forEach((canvas) => {
-      canvas.style.borderColor = color;
-    });
-    curCanvasBorderColor = color;
-    colorBorderBtn.style.background = color;
-  } else {
-    allCanvases.forEach((canvas) => {
-      canvas.style.borderColor = '#000000';
-    });
-    curCanvasBorderColor = '#000000';
-  }
-}
 
 function checkPxInput(str, min, max) {
   const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
@@ -399,16 +362,60 @@ function checkPxInput(str, min, max) {
     (parseInt(str) <= max);
 }
 
+function newCanvasHeight() {
+  clearAllLayers();
+
+  canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.height = curCanvasHeight + 'px';
+    canvas.setAttribute('height', curCanvasHeight + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
+
+  document.getElementById('curHeight').innerHTML = curCanvasHeight;
+  changeCanvasHeight.style.background = '#ffffff';
+  changeCanvasHeight.value = curCanvasHeight + 'px';
+}
+
+function newCanvasWidth() {
+  clearAllLayers();
+
+  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.width = curCanvasWidth + 'px';
+    canvas.setAttribute('width', curCanvasWidth + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
+
+  document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  changeCanvasWidth.style.background = '#ffffff';
+  changeCanvasWidth.value = curCanvasWidth + 'px';
+}
+
 
 
 function hideAndShow(element) {
+  function closeSettingsMenu(event) {
+    if (event.code === 'Escape') {
+      document.getElementById('settings').classList.toggle('pressed');
+      document.getElementById('settingsMenu').hidden = true;
+      document.removeEventListener('keydown', closeSettingsMenu);
+    }
+  }
   let menu = document.getElementById(element);
   menu.hidden = !menu.hidden;
+  if (element === 'settingsMenu') {
+    document.addEventListener('keydown', closeSettingsMenu);
+  }
   event.currentTarget.classList.toggle('pressed');
 }
 
 document.getElementById('help').addEventListener('click', (event) => {
-  toggleModal();
+  toggleHintModal();
   hintsContent.innerHTML = `Горячие клавиши:
       <ul>
           <li>Alt + c — очистить холст</li>
@@ -417,6 +424,7 @@ document.getElementById('help').addEventListener('click', (event) => {
           <li>Alt + u — загрузить фото</li>
           <li>Alt + y — вернуть</li>
           <li>Alt + z — отменить</li>
+          <li>Alt + shift — 100% масштабирование холста</li>
           <li>Ctrl + c — скопировать выделенную область</li>
           <li>Ctrl + v — вставить скопированную область</li>
           <li>Ctrl + Backspace — очистить выделенную область</li>
@@ -427,46 +435,42 @@ let firstClickUpload = true;
 
 document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
   if (firstClickUpload) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML = `Горячие клавиши:
       <br>
       <br> Enter — вставить фото
-      <br> Двойное нажатие левой кнопкой мыши на фото — вернуть исходный размер`;
+      <br> Двойное нажатие на фото — вернуть исходный размер`;
     firstClickUpload = false;
   }
   uploadImage.click();
 });
 
-document.getElementById('brush').addEventListener('click', (event) => {
-  hideAndShow('brushMenu', event);
-});
+const leftMenuLists = ['brush', 'figure', 'settings', 'eraser'];
 
-document.getElementById('figure').addEventListener('click', (event) => {
-  hideAndShow('figureMenu', event);
-});
-
-document.getElementById('settings').addEventListener('click', (event) => {
-  hideAndShow('settingsMenu', event);
+leftMenuLists.forEach((list) => {
+  document.getElementById(list).addEventListener('click', (event) =>{
+    window['hideAndShow'](list + 'Menu', event);
+  })
 });
 
 document.getElementById('openPanel').addEventListener('click', (event) => {
-  if (document.getElementById('leftContainer').style.width == "8vh") {
-    document.getElementById('leftContainer').style.width = "0";
-    if (document.getElementById('brushMenu').hidden == false) {
+  if (document.getElementById('leftContainer').style.left === "0vh") {
+    document.getElementById('leftContainer').style.left = "-8vh";
+    if (document.getElementById('brushMenu').hidden === false) {
       hideAndShow('brushMenu', event);
     }
-    if (document.getElementById('figureMenu').hidden == false) {
+    if (document.getElementById('figureMenu').hidden === false) {
       hideAndShow('figureMenu', event);
     }
-    if (document.getElementById('toolSettingsMenu').hidden == false) {
-      hideAndShow('toolSettingsMenu', event)
-    }
-    if (document.getElementById('fillMenu').hidden == false) {
+    if (document.getElementById('fillMenu').hidden === false) {
       hideAndShow('fillMenu', event)
+    }
+    if (document.getElementById('eraserMenu').hidden === false) {
+      hideAndShow('eraserMenu', event)
     }
   }
   else {
-    document.getElementById('leftContainer').style.width = "8vh";
+    document.getElementById('leftContainer').style.left = "0vh";
   }
 });
 
@@ -502,9 +506,13 @@ function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
   if (curCanvasHeight / maxWindowHeight > curCanvasWidth / maxWindowWidth) {
     window.style.height = maxWindowHeight + 'px';
     window.style.width = curCanvasWidth * (parseInt(window.style.height) / curCanvasHeight) + 'px';
+    window.style.width = parseInt(window.style.width) / maxWindowWidth * 100 + '%';
+    window.style.height = 100 + '%';
   } else {
     window.style.width = maxWindowWidth + 'px';
     window.style.height = curCanvasHeight * (parseInt(window.style.width) / curCanvasWidth) + 'px';
+    window.style.height = parseInt(window.style.height) / maxWindowHeight * 100 + '%';
+    window.style.width = 100 + '%';
   }
   window.setAttribute('width', window.style.width);
   window.setAttribute('height', window.style.height);
@@ -512,11 +520,11 @@ function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
 
 let modalHints = document.querySelector('.modalHints');
 
-function toggleModal() {
+function toggleHintModal() {
   modalHints.classList.toggle('show-modalHints');
 }
 
-closeHintsModal.addEventListener('click', toggleModal);
+closeHintsModal.addEventListener('click', toggleHintModal);
 
 let infoDropBtn = document.getElementById('infoDropBtn');
 infoDropBtn.addEventListener('click', () => {
@@ -534,3 +542,47 @@ let colorDropBtn = document.getElementById('colorDropBtn');
     let colorContent = document.getElementById('colorContent');
     colorContent.classList.toggle('showContent');
 });
+
+let zoomValue = 1, isZooming = false;
+
+function zoomCanvases() {
+  setZoom(canvasesField);
+  setZoom(canvasInsertion);
+}
+
+function setZoom(element) {
+  let scale = 'scale(' + zoomValue + ')';
+  let origin = '0% 0%';
+
+  element.style['transform'] = scale;
+  element.style['transformOrigin'] = origin;
+
+  ['webkit', 'moz', 'ms', 'o'].forEach((prefix) => {
+    element.style[prefix + 'Transform'] = scale;
+    element.style[prefix + 'TransformOrigin'] = origin;
+  })
+}
+
+document.getElementById('zoomPlus').addEventListener('mousedown', () => {
+  isZooming = true;
+  zoomingPlus();
+
+  function zoomingPlus() {
+    if (zoomValue === 4) return;
+    zoomValue = Math.ceil(zoomValue * 100 + 0.5) / 100;
+    zoomCanvases();
+    if (isZooming) setTimeout(zoomingPlus, 20);
+  }
+})
+
+document.getElementById('zoomMinus').addEventListener('mousedown', () => {
+  isZooming = true;
+  zoomingMinus();
+
+  function zoomingMinus() {
+    if (zoomValue === 0.1) return;
+    zoomValue = Math.floor(zoomValue * 100 - 0.5) / 100;
+    zoomCanvases();
+    if (isZooming) setTimeout(zoomingMinus, 20);
+  }
+})

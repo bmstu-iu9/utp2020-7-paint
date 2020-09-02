@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     <div class="topContainer">
       <button title="Отменить" class="toolBtn" id="undo" style="background-image: url(img/tools/undo.svg)"></button>
       <button title="Вернуть" class="toolBtn" id="redo" style="background-image: url(img/tools/redo.svg)"></button>
-      <button title="Очистить" class="toolBtn" id="clear" style="background-image: url(img/tools/clear.svg)"></button>
+      <button title="Очистить" class="toolBtn" id="clearCanvasBtn" style="background-image: url(img/tools/clear.svg)"></button>
       <a id="download" download="image.png">
         <button title="Сохранить" class="toolBtn" id="save" style="background-image: url(img/tools/download.svg)">
         </button>
@@ -38,27 +38,33 @@
       <img src="img/leftPanel.png" style="width:5vh; height:5vh;"></img>
     </div>
     <div class="topContainer">
-      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 0.1vh solid black; width: 5vh; height: 5vh; margin-top: 1vh;">
+      <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
+      <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
+      </button>
+      <button title="Настройки холста" class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
+    </div>
+    <button class="toolBtn" id="zoomPlus" onclick="isZooming = false" style="background-image: url(img/tools/zoom_plus.svg)"></button>
+    <button class="toolBtn" id="zoomMinus" onclick="isZooming = false" style="background-image: url(img/tools/zoom_minus.svg)"></button>
+  </div>
+
+  <div class="leftMenu" id="toolSettingsMenu" style="bottom:0; width:36vh; height:6vh; left:50%; transform: translate(-50%, -50%);" hidden="true">
+    <div class="rangeAndText" style="width:36vh; height:6vh; margin-left:1vh; margin-top:0; margin-right:0; margin-bottom:0;">
+      <input type="range" id="toolSizeRange" min="1" max="300">
+      <input type="text" id="toolSizeText">
+      <button title="Выбрать цвет" class="toolBtn" id="colorBtn" style="background: black; border: 0.1vh solid black; width: 4.7vh; height: 4.7vh; margin-top: 1vh;">
         <input type="color" id="colorPalette" style="opacity: 0">
       </button>
       <button title="Пипетка" class="toolBtn" id="eyedropper" style="background-image: url(img/tools/dropper.svg)">
       </button>
-      <button id="eyedropperWindow" hidden="true"></button>
-      <button class="toolBtn" id="settings" style="background-image: url(img/tools/settings.svg)"></button>
     </div>
   </div>
 
+  <button id="eyedropperWindow" hidden="true"></button>
+
   <div class="menu" id="settingsMenu" hidden="true">
     <p>При изменении параметров изображение не сохраняется.</p>
-    <p>Нажмите Enter для установки параметров.</p>
-    <p>Повторно нажмите кнопку настроек, чтобы закрыть панель.</p>
+    <p>Enter - установка параметров, Escape - выход</p>
     <p>Текущие параметры: <span id="curWidth">780</span>x<span id="curHeight">400</span></p>
-    <div class="field">
-      <p>
-        Высота холста:
-        <input type="text" id="changeCanvasHeight" min="50" max="1000">
-      </p>
-    </div>
     <div class="field">
       <p>
         Ширина холста:
@@ -67,16 +73,8 @@
     </div>
     <div class="field">
       <p>
-        Ширина рамки:
-        <input type="text" id="changeBorderWidth" min="0" max="30">
-      </p>
-    </div>
-    <div class="field">
-      <p>
-        Цвет рамки:
-        <button title="Выбрать цвет" class="toolBtn" id="colorBorderBtn" style="background: black; border: 0.1vh solid black">
-          <input type="color" id="borderColor" style="opacity: 0">
-        </button>
+        Высота холста:
+        <input type="text" id="changeCanvasHeight" min="50" max="1000">
       </p>
     </div>
   </div>
@@ -122,29 +120,25 @@
     </div>
     <button title="Ластик" class="toolBtn" id="eraser" style="background-image: url(img/tools/eraser.svg)">
     </button>
+    <div class="leftMenu" id="eraserMenu" style="top:31.5vh; width: 7vh;" hidden="true" style="min-width: 175px;">
+      <button title="Ластик (жёсткий)" class="toolBtn" id="pixelEraser" style="background-image: url(img/tools/pixel_eraser.svg)">
+      </button>
+    </div>
     <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
-    <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
-    </button>
     <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
     </button>
-    <div class="leftMenu" id="fillMenu" style="top:53vh; width: 25vh;" hidden="true" style="min-width: 175px;">
+    <div class="leftMenu" id="fillMenu" style="top:46vh; width: 25vh;" hidden="true" style="min-width: 175px;">
       <div class="rangeAndText">
         <input type="range" id="colorDifferenceRange" min="0" max="100">
         <input type="text" id="colorDifferenceText">
       </div>
     </div>
+    <button title="Штамп" class="toolBtn" id="stamp" style="background-image: url(img/tools/stamp.svg)">
+    </button>
     <button title="Прямоугольное выделение" class="toolBtn" id="rectangleSelection" style="background-image: url(img/tools/selection.svg)">
     </button>
     <button title="Фильтры" class="toolBtn trigger" id="filters-modal" style="background-image: url(img/tools/filters.svg)"></button>
-    <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
-    <button title="Настройки инструмента" class="toolBtn" id="toolSettings" style="background-image: url(img/tools/tool_settings.svg)">
-    </button>
-    <div class="leftMenu" id="toolSettingsMenu" style="top:79.5vh; width: 25vh;" hidden="true">
-      <div class="rangeAndText">
-        <input type="range" id="toolSizeRange" min="1" max="300">
-        <input type="text" id="toolSizeText">
-      </div>
-    </div>
+    <button title="Узоры" class="toolBtn" id="marking" style="background: green" ></button>
   </div>
 
 <div id="canvasesField">
@@ -193,9 +187,9 @@
         <div class="layerBtncontainer" id="btnContainer0">
           <button title="Скрыть" class="layerBtn visibleLayer" id="hideLayer0"></button>
           <button title="Заблокировать" class="layerBtn unlockedLayer" id="lockLayer0"></button>
-          <div class="droplist" id="droplist0">
-            <button class="layerOptionsBtn">
-              <img src="img/tools/more_layer.svg" width="20px" height="20px"></img>
+          <div class="droplist" id="droplist0" style="width: 2.8vh; height: 2.8vh">
+            <button class="layerBtn layerOptionsBtn">
+              <img src="img/tools/more_layer.svg" class="layerOptionsImg"></img>
             </button>
             <div class="layerOptions" id="layerOptions0">
               <button id="deleteLayer0">Удалить слой</button>
@@ -217,7 +211,7 @@
 
   <div class="panel" id="textMenu" hidden="true">
     <select id="font" class="selectorMenu" onchange="chooseTextFormat()">
-      <option value="serif">Font:</option>
+      <option value="'passion one'">Font:</option>
       <option value="arial"> Arial </option>
       <option value="'courier new'"> Courier New </option>
       <option value="'comic sans'"> Comic Sans </option>
@@ -248,23 +242,23 @@
     </div>
   </div>
 
-  <div class="modal">
+  <div class="modal" id="filterModal">
     <div class="modal-content">
       <div class="modal-header">
-        <div title="Сбросить изменения" class="filterHeaderBtns" id="deletingChanges"></div>
-        <div class="filterHeaderBtns" id="undoFilter"></div>
-        <div class="filterHeaderBtns" id="redoFilter"></div>
+        <div title="Сбросить изменения" class="modalHeaderBtns deleteChanges" id="deletingChanges"></div>
+        <div class="modalHeaderBtns undoModalBtn" id="undoFilter"></div>
+        <div class="modalHeaderBtns redoModalBtn" id="redoFilter"></div>
         <div class="closeBtnsContainer">
-          <div class="closeButton" id="closeWithoutSaving"></div>
-          <div class="closeButton" id="closeWithSaving"></div>
+          <div class="closeButton closeWithoutSavingBtn" id="closeWithoutSaving"></div>
+          <div class="closeButton closeWithSavingBtn" id="closeWithSaving"></div>
         </div>
       </div>
       <div class="spaceWrapper">
         <div class="leftSide">
-          <div class="filterCanvasWrapper" id="modalCanvasWrapper">
-            <canvas class="filterCanvas" id="modalCanvas"></canvas>
+          <div class="modalCanvasWrapper" id="modalCanvasWrapper">
+            <canvas class="modalCanvas" id="modalCanvas"></canvas>
           </div>
-          <div>
+          <div style="position: absolute; left: 0; bottom: 0; width: 35vw">
             <div class="rangeAndDescription">
               <input type="range" id="contrast" min="0" max="2" step="0.1"></input>
               <p>Контрастность</p>
@@ -287,7 +281,7 @@
           </div>
           <div class="centerFilterBtns colorFiltersBtns">
             <button title="black-white" id="black-white" style="background-image: url(img/filters/blackwhite.svg)"></button>
-            <button title="rainbowLines" id="sobel" style="background-image: url(img/filters/rainbowlines.svg)"></button>
+            <button title="rainbowLines" id="sobel" style="background-image: url(img/filters/rainbowlines.svg"></button>
             <button title="binarization" id="binarization" style="background-image: url(img/filters/binarization.svg)"></button>
           </div>
           <div class="centerFilterBtns colorFiltersBtns">
@@ -299,6 +293,71 @@
             <button title="emboss" id="emboss">Объем</button>
             <button title="blur" id="blur">Блюр</button>
             <button title="median" id="median">Шум</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="markingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div title="Сбросить изменения" class="modalHeaderBtns deleteChanges" id="deletingChangesMarking"></div>
+        <div class="closeBtnsContainer">
+          <div class="closeButton closeWithoutSavingBtn" id="closeMarkingWithoutSaving"></div>
+          <div class="closeButton closeWithSavingBtn" id="closeMarkingWithSaving"></div>
+        </div>
+      </div>
+      <div class="spaceWrapper">
+        <div class="leftSide markingCanvasContainer">
+          <div class="modalCanvasWrapper" id="markingCanvasWrapper">
+            <canvas class="modalCanvas" id="markingModalCanvas"></canvas>
+          </div>
+        </div>
+        <div class="rightSide markingMenu">
+          <p>Цвет: </p>
+          <button title="Цвет разметки" id="markingColorBtn" style="background: black; width: 5vh; height: 5vh; border-radius: 50%;">
+            <input type="color" id="markingColor" style="opacity: 0">
+          </button>
+          <p>Толщина линий разметки: </p>
+          <div class="rangeAndDescription markingRange">
+            <input type="range" id="toolMarkingSizeRange" min="1" max="100">
+            <input type="text" id="toolMarkingSizeText">
+          </div>
+          <p>Расстояние между линиями: </p>
+          <div class="rangeAndDescription markingRange">
+            <input type="range" id="toolMarkingRange" min="10" max="600">
+            <input type="text" id="toolMarkingText">
+          </div>
+          <div class="markingBtnsContainer mainMarkingBtns">
+            <button title="Клетка" class="toolBtn" id="cage" style="background-image: url(img/marking/squares.svg)">
+            </button>
+            <button title="Вертикальная разметка" class="toolBtn" id="vertical" style="background-image: url(img/marking/vertical_lines.svg)">
+            </button>
+            <button title="Горизонтальная разметка" class="toolBtn" id="horizontal" style="background-image: url(img/marking/horizontal_lines.svg)">
+            </button>
+          </div>
+          <p>Угол наклона диагональной разметки: </p>
+          <div class="rangeAndDescription markingRange">
+            <input type="range" id="toolAngleRange" min="0" max="180">
+            <input type="text" id="toolAngleText">
+          </div>
+          <div class="markingBtnsContainer">
+            <button title="Одинарная диагональная разметка" class="toolBtn" id="singleDiagonal" style="background-image: url(img/marking/diagonal_lines.svg)">
+            </button>
+            <button title="Двойная диагональная разметка" class="toolBtn" id="doubleDiagonal" style="background-image: url(img/marking/double_diagonal_lines.svg)">
+            </button>
+          </div>
+          <p>Амплитуда волнистой разметки: </p>
+          <div class="rangeAndDescription markingRange">
+            <input type="range" id="toolAmplitudeRange" min="0" max="180">
+            <input type="text" id="toolAmplitudeText">
+          </div>
+          <div class="markingBtnsContainer">
+            <button title="Горизонтальная волнистая разметка" class="toolBtn" id="horizontalWavy" style="background-image: url(img/marking/spiral_horizontal.svg)">
+            </button>
+            <button title="Вертикальная волнистая разметка" class="toolBtn" id="verticalWavy" style="background-image: url(img/marking/spiral_vertical.svg)">
+            </button>
           </div>
         </div>
       </div>
@@ -332,7 +391,9 @@
 <script src="js/stamp.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/selection.js"></script>
+<script src="js/pixel-eraser.js"></script>
 <script src="js/instruments-switcher.js"></script>
+<script src="js/marking.js"></script>
 <script src="js/tool-size.js"></script>
 <script src="js/color-difference.js"></script>
 <script src="js/undo-redo.js"></script>

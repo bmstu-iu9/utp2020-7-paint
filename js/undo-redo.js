@@ -22,6 +22,8 @@ class Snapshot {
 
 let layersHistory = [new Snapshot(-1)];
 let curState = 0;
+let undo = document.getElementById('undo');
+let redo = document.getElementById('redo');
 
 function rememberState() {
   let img = new Image();
@@ -78,11 +80,11 @@ function restoreCanvasesState() {
 function restoreCanvasesSize() {
   curCanvasWidth = layersHistory[curState].width;
   curCanvasHeight = layersHistory[curState].height;
-  setCanvasWidth();
-  setCanvasHeight();
+  newCanvasWidth();
+  newCanvasHeight();
 }
 
-document.getElementById('undo').addEventListener('click', () => {
+undo.addEventListener('click', () => {
   if (curState > 0) {
     --curState;
     restoreCanvasesSize();
@@ -90,7 +92,7 @@ document.getElementById('undo').addEventListener('click', () => {
   }
 });
 
-document.getElementById('redo').addEventListener('click', () => {
+redo.addEventListener('click', () => {
   if (curState + 1 < layersHistory.length) {
     ++curState;
     restoreCanvasesSize();

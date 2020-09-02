@@ -1,7 +1,8 @@
 'use strict';
 
 let textToInsert, curTextSize, dxOfText, dyOfText;
-let textElements = ['textMenu', 'textFormat', 'fontSize', 'fontColor', 'textAngle', 'pastedText', 'font'];
+let textElements = ['textMenu', 'textPanel', 'textEnter', 'textFormat', 'fontSize',
+                    'fontColor', 'textAngle', 'pastedText', 'font'];
 
 textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);
 
@@ -19,42 +20,44 @@ function chooseTextFormat() {
 function initText() {
   saveImg();
   pastedText.hidden = false;
-  document.addEventListener('keydown', pressForInsertion);
+  textPanel.hidden = false;
+  textEnter.style.display = 'inline-block';
+}
 
-  function pressForInsertion() {
-    if (event.code === 'Enter' && event.altKey) {
-      let padding = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('padding').replace('px', ''));
-      dxOfText = pastedText.clientWidth - padding * 2;
-      dyOfText = pastedText.clientHeight - padding * 2;
-      curTextSize = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('font-size').replace('px', ''));
-      pastedText.hidden = true;
-      textMenu.hidden = false;
-      textFormat.addEventListener('click', startPointText);
-      textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
-      chooseTextFormat();
-      document.removeEventListener('keydown', pressForInsertion);
-    }
-  }
+function insertText() {
+  let padding = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('padding-left').replace('px', ''));
+  dxOfText = pastedText.clientWidth - padding * 2;
+  dyOfText = pastedText.clientHeight - padding * 2;
+
+  textEnter.style.display = 'none';
+  textMenu.style.display = 'flex';
+  pastedText.hidden = true;
+
+  textFormat.addEventListener('click', startPointText);
+  curTextSize = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('font-size').replace('px', ''));
+  textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
+  chooseTextFormat();
 }
 
 function deleteText() {
   canvas.style.cursor = 'default';
   pastedText.hidden = true;
 
-  if (!textMenu.hidden) {
+  if (!textPanel.hidden) {
     clearCanvas();
     context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
-    textMenu.hidden = true;
+    textPanel.hidden = true;
+    textMenu.style.display = 'none';
   }
 
   document.removeEventListener('mousemove', drawTextInsertion);
   document.removeEventListener('mouseup', stopInsertion);
 
   fontSize.value = '20';
-  font.value = "'passion one'";
+  font.value = 'serif';
   textAngle.value = 0;
   fontColor.value = '#000000';
-  pastedText.innerHTML = 'Текст Alt + Enter';
+  pastedText.innerHTML = 'Текст';
 }
 
 function writeText(x, y) {
@@ -93,8 +96,9 @@ function stopInsertion() {
 
 function startPointText(e) {
   isDrawing = true;
-  textMenu.hidden = true;
+  textPanel.hidden = true;
   pastedText.hidden = true;
+  textMenu.style.display = 'none';
 
   drawTextInsertion(e);
 

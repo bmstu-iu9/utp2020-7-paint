@@ -32,8 +32,10 @@ function closeModalMarking() {
 
 function useMarkingModal() {
   let originalCanvas = canvas;
-  
+
   changeWindowSize(markingModalCanvas, maxMarkingCanvasHeight, maxMarkingCanvasWidth);
+  markingModalCanvas.setAttribute('width', parseInt(markingModalCanvas.style.width) * maxMarkingCanvasWidth / 100);
+  markingModalCanvas.setAttribute('height', parseInt(markingModalCanvas.style.height) * maxMarkingCanvasHeight / 100);
 
   originalCanvas = canvas;
   markingColor = 'black';

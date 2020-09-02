@@ -1011,14 +1011,15 @@ input::-webkit-color-swatch {
   background: #ffffff;
 }
 
-/* .markingMenu {
-  margin-top: 1vh;
-} */
+.markingCanvasContainer {
+  margin-right: 2vh;
+}
 
 .markingMenu button {
   border: none;
   border-radius: 50%;
   outline: none;
+  background-size: cover;
 }
 
 .markingMenu p {
@@ -1030,6 +1031,11 @@ input::-webkit-color-swatch {
   width: 100%;
   display: flex;
   justify-content: start;
+}
+
+.mainMarkingBtns {
+  width: 40vw;
+  height: 8vh;
 }
 
 .markingRange {

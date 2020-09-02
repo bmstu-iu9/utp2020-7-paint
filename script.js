@@ -19,7 +19,6 @@ let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
-// let curState = 0;
 let photoOfState = {
   length: 0,
   layers: new Map()
@@ -218,49 +217,44 @@ changeCanvasHeight.value = defaultHeight + 'px';
 changeCanvasWidth.value = defaultWidth + 'px';
 
 
-changeCanvasWidth.oninput = function () {
+function setCanvasWidth() {
+  clearAllLayers();
+  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.width = curCanvasWidth + 'px';
+    canvas.setAttribute('width', curCanvasWidth + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
 
   document.getElementById('curWidth').innerHTML = curCanvasWidth;
   document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
   changeCanvasWidth.style.background = '#ffffff';
   changeCanvasWidth.value = curCanvasWidth + 'px';
+}
 
-  function setCanvasWidth() {
-    let width = changeCanvasWidth.value;
-
-    if (checkPxInput(width, minW, maxW)) {
-      curCanvasWidth = parseInt(width);
-    } else {
-      curCanvasWidth = parseInt(getWidth(width));
-    }
-
-    clearAllLayersHistory();
-    clearAllLayers();
-
-    canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
-    allCanvases.forEach((canvas) => {
-      canvas.style.width = curCanvasWidth + 'px';
-      canvas.setAttribute('width', curCanvasWidth + 'px');
-    });
-    layers.forEach((layer) => {
-      changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
-    });
-
-    document.getElementById('curWidth').innerHTML = curCanvasWidth;
-    changeCanvasWidth.style.background = '#ffffff';
-    changeCanvasWidth.value = curCanvasWidth + 'px';
-  }
-
-  document.getElementById('settingsMenu').addEventListener('keydown', setWidth);
+changeCanvasWidth.oninput = function () {
+  addEventListener('keydown', setWidth);
 
   let width = changeCanvasWidth.value;
   let maxW = changeCanvasWidth.max;
   let minW = changeCanvasWidth.min;
 
+  if (checkPxInput(width, minW, maxW)) {
+    curCanvasWidth = parseInt(width);
+  } else {
+    curCanvasWidth = parseInt(getWidth(width));
+  }
+
+  clearAllLayersHistory();
+  clearAllLayers();
+
+  document.getElementById('settingsMenu').addEventListener('keydown', setWidth);
+
   if (!checkPxInput(width, minW, maxW)) {
     changeCanvasWidth.style.background = '#ffd4d4';
   }
-
 
   changePreview();
 
@@ -286,45 +280,37 @@ changeCanvasWidth.oninput = function () {
   }
 }
 
+function setCanvasHeight() {
+  clearAllLayers();
 
-changeCanvasHeight.oninput = function () {
+  canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.height = curCanvasHeight + 'px';
+    canvas.setAttribute('height', curCanvasHeight + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
 
   document.getElementById('curHeight').innerHTML = curCanvasHeight;
   document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
   changeCanvasHeight.style.background = '#ffffff';
   changeCanvasHeight.value = curCanvasHeight + 'px';
+}
 
-  function setCanvasHeight() {
-    let height = changeCanvasHeight.value;
-
-    if (checkPxInput(height, minH, maxH)) {
-      curCanvasHeight = parseInt(height);
-    } else {
-      curCanvasHeight = parseInt(getHeight(height));
-    }
-
-    clearAllLayers();
-    clearAllLayersHistory();
-
-    canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
-    allCanvases.forEach((canvas) => {
-      canvas.style.height = curCanvasHeight + 'px';
-      canvas.setAttribute('height', curCanvasHeight + 'px');
-    });
-    layers.forEach((layer) => {
-      changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
-    });
-
-    document.getElementById('curHeight').innerHTML = curCanvasHeight;
-    changeCanvasHeight.style.background = '#ffffff';
-    changeCanvasHeight.value = curCanvasHeight + 'px';
-  }
-
-  document.getElementById('settingsMenu').addEventListener('keydown', setHeight);
+changeCanvasHeight.oninput = function () {
 
   let height = changeCanvasHeight.value;
   let maxH = changeCanvasHeight.max;
   let minH = changeCanvasHeight.min;
+
+  if (checkPxInput(height, minH, maxH)) {
+    curCanvasHeight = parseInt(height);
+  } else {
+    curCanvasHeight = parseInt(getHeight(height));
+  }
+
+  document.getElementById('settingsMenu').addEventListener('keydown', setHeight);
 
   if (!checkPxInput(height, minH, maxH)) {
     changeCanvasHeight.style.background = '#ffd4d4';

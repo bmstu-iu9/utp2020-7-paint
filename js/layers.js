@@ -96,6 +96,7 @@ function createLayerHtml(id) {
   menuBtn.classList.add('layerOptionsBtn');
   menuBtn.classList.add('layerBtn');
   let menuBtnImg = document.createElement('img');
+  menuBtnImg.src = 'img/tools/more_layer.svg'; 
   menuBtnImg.classList.add('layerOptionsImg');
   menuBtn.appendChild(menuBtnImg);
   layerDroplist.appendChild(menuBtn);

@@ -85,14 +85,14 @@ body {
   line-height: 0;
   top: 11vh;
   height: 89vh;
-  width: 0;
+  width: 8vh;
   margin: 0;
   padding: 0;
   text-align: center;
   align-items: center;
   position: fixed;
   z-index: 1005;
-  left: 0;
+  left: -8vh;
   background-color: #ffffff;
   transition: 0.5s;
   overflow: hidden;

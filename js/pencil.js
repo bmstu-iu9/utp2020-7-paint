@@ -17,6 +17,7 @@ function endPoint() {
     rememberState();
     isDrawing = false;
   }
+  addUsedColor();
   context.beginPath();
 }
 

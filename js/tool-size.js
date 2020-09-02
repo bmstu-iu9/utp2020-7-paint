@@ -1,54 +1,76 @@
 'use strict';
 
-let toolSizeRange = document.getElementById('toolSizeRange');
-let toolSizeText = document.getElementById('toolSizeText');
+let newToolValue;
+
+let toolSizeRange = document.getElementById("toolSizeRange");
+let toolSizeText = document.getElementById("toolSizeText");
+let defaultSize = curToolSize;
 
 toolSizeRange.value = curToolSize;
 toolSizeText.value = `${curToolSize}px`;
 
-let defaultSize = curToolSize;
-
-toolSizeRange.oninput = () => {
-  toolSizeText.value = toolSizeRange.value + 'px';
-  toolSizeText.style.background = 'white';
-}
+toolSizeRange.oninput = () => { onInputRange(toolSizeText, toolSizeRange, 'px'); }
 
 toolSizeRange.onchange = () => { curToolSize = toolSizeRange.value; }
 
 toolSizeText.oninput = () => {
+  onInputText(toolSizeText, toolSizeRange, defaultSize, 'px');
+  curToolSize = newToolValue;
+}
 
-  let toolSize = toolSizeText.value;
-  let maxTS = toolSizeRange.max;
-  let minTS = toolSizeRange.min;
+toolSizeText.onchange = () => { onChangeText(toolSizeText, toolSizeRange, curToolSize, 'px'); }
 
-  if (checkPxInput(toolSize, minTS, maxTS)) {
-    toolSizeText.style.background = 'white';
-    toolSizeRange.value = parseInt(toolSize);
-    curToolSize = parseInt(toolSizeText.value);
-  } else {
-    toolSizeText.style.background = '#ffd4d4';
-    curToolSize = getToolSize(parseInt(toolSize), toolSizeRange);
+function onInputRange(toolText, toolRange, measureUnit) {
+  toolText.value = toolRange.value + measureUnit;
+  toolText.style.background = "white";
+}
+
+function onChangeText(toolText, toolRange, value, measureUnit) {
+  let toolSize = toolText.value;
+  let maxTS = toolText.max;
+  let minTS = toolText.min;
+  let flag;
+
+  if (measureUnit == 'px') {
+    flag = checkPxInput(toolSize, minTS, maxTS);
+  } else if (measureUnit == '°') {
+    flag = checkDegreeInput(toolSize, minTS, maxTS);
   }
 
-  function getToolSize(toolSizeNum, toolSizeRange) {
-    if (toolSizeNum > toolSizeRange.max) { return toolSizeRange.max; }
-    if (toolSizeNum < toolSizeRange.min) { return toolSizeRange.min; }
-    return defaultSize;
+  if (flag) {
+    toolText.value = parseInt(toolSize) + measureUnit;
+    toolRange.value = parseInt(toolSize);
+  } else {
+    toolRange.value = value;
+    toolText.value = value + measureUnit;
+    toolText.style.background = "white";
   }
 }
 
-toolSizeText.onchange = () => {
+function onInputText(toolText, toolRange, defaultValue, measureUnit) {
+  let toolSize = toolText.value;
+  let maxTS = toolRange.max;
+  let minTS = toolRange.min;
+  let flag;
 
-  let toolSize = toolSizeText.value;
-  let maxTS = toolSizeText.max;
-  let minTS = toolSizeText.min;
+  if (measureUnit == 'px') {
+    flag = checkPxInput(toolSize, minTS, maxTS);
+  } else if (measureUnit == '°') {
+    flag = checkDegreeInput(toolSize, minTS, maxTS);
+  }
 
-  if (checkPxInput(toolSize, minTS, maxTS)) {
-    toolSizeText.value = parseInt(toolSize) + 'px';
-    toolSizeRange.value = parseInt(toolSize);
+  if (flag) {
+    toolText.style.background = "white";
+    toolRange.value = parseInt(toolSize);
+    newToolValue = parseInt(toolText.value);
   } else {
-    toolSizeRange.value = curToolSize;
-    toolSizeText.value = curToolSize + 'px';
-    toolSizeText.style.background = 'white';
+    toolText.style.background = "#ffd4d4";
+    newToolValue = getTool(parseInt(toolSize), toolRange);
+  }
+
+  function getTool(toolNum, toolRange) {
+    if (toolNum > parseInt(toolRange.max)) { return parseInt(toolRange.max); }
+    if (toolNum < parseInt(toolRange.min)) { return parseInt(toolRange.min); }
+    return defaultValue;
   }
 }

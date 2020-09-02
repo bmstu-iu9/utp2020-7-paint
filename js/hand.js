@@ -6,7 +6,7 @@ let isResized = false;
 
 function initHand() {
   if (firstClickHand) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML =
     `<p>Инструмент «Рука»</p>
     <ul>

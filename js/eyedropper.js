@@ -22,11 +22,15 @@ function deleteEyedropper() {
 }
 
 function stopEyedropper(event) {
-  let eventCoords = getCoordsOnCanvas(event);
-  let color = getPixelColor(eventCoords[0], eventCoords[1]);
-  curColor = color;
-  colorInput.value = '#' + rgbToHex(color);
+  let eventLocation = getEventLocation(this, event);
+  let color = getPixelColor(eventLocation.x, eventLocation.y);
+  curColor = color.slice(0, 3);
+  colorInput.value = '#' + rgbToHex(curColor);
   document.getElementById('colorBtn').style.background = arrayToRgb(color);
+  if (color[3] !== 0) {
+    addUsedColor();
+  }
+  showCurColor();
   switchEyedropperWindow();
   eyedropperButton.click();
 }

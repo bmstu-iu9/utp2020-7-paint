@@ -8,7 +8,7 @@ let firstClickStamp = true;
 
 function initStamp() {
   if (firstClickStamp) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML =
     `<p>Алгоритм работы с инструментом «Штамп»:</p>
     <ul>

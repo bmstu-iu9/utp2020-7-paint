@@ -19,6 +19,15 @@ let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
+// let curState = 0;
+let photoOfState = {
+  length: 0,
+  layers: new Map()
+};
+let markingInterval = 100;
+let markingAmplitude = 45;
+let inclinationAngle = 45;
+let markingSize = 1;
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -211,6 +220,11 @@ changeCanvasWidth.value = defaultWidth + 'px';
 
 changeCanvasWidth.oninput = function () {
 
+  document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
+  changeCanvasWidth.style.background = '#ffffff';
+  changeCanvasWidth.value = curCanvasWidth + 'px';
+
   function setCanvasWidth() {
     let width = changeCanvasWidth.value;
 
@@ -274,6 +288,11 @@ changeCanvasWidth.oninput = function () {
 
 
 changeCanvasHeight.oninput = function () {
+
+  document.getElementById('curHeight').innerHTML = curCanvasHeight;
+  document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
+  changeCanvasHeight.style.background = '#ffffff';
+  changeCanvasHeight.value = curCanvasHeight + 'px';
 
   function setCanvasHeight() {
     let height = changeCanvasHeight.value;
@@ -396,7 +415,7 @@ function hideAndShow(element) {
 }
 
 document.getElementById('help').addEventListener('click', (event) => {
-  toggleModal();
+  toggleHintModal();
   hintsContent.innerHTML = `Горячие клавиши:
       <ul>
           <li>Alt + c — очистить холст</li>
@@ -416,7 +435,7 @@ let firstClickUpload = true;
 
 document.getElementById('uploadImgBtn').addEventListener('click', (event) => {
   if (firstClickUpload) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML = `Горячие клавиши:
       <br>
       <br> Enter — вставить фото
@@ -463,6 +482,11 @@ document.getElementById('openLayersBtn').addEventListener('click', (event) => {
   document.getElementById('layersField').classList.toggle('layersFieldClosed');
 });
 
+document.getElementById('showCurSizes').addEventListener('click', (event) => {
+  hideAndShow('settingsMenu', event);
+});
+
+
 function getIndexOfRedInData(x, y) {
   return canvas.width * y * 4 + x * 4;
 }
@@ -501,13 +525,33 @@ function changeWindowSize(window, maxWindowHeight, maxWindowWidth) {
 
 let modalHints = document.querySelector('.modalHints');
 
-function toggleModal() {
+function toggleHintModal() {
   modalHints.classList.toggle('show-modalHints');
 }
 
-closeHintsModal.addEventListener('click', toggleModal);
+closeHintsModal.addEventListener('click', toggleHintModal);
 
-let zoomValue = 1, isZooming = false;
+let infoDropBtn = document.getElementById('infoDropBtn');
+infoDropBtn.addEventListener('click', () => {
+  let infoContent = document.getElementById('infoContent');
+  infoContent.classList.toggle('showContent');
+  if (infoContent.classList.contains('showContent')) {
+    document.addEventListener('mousemove', showCurCoordsOnCanvas(event));
+  } else {
+    document.removeEventListener('mousemove', showCurCoordsOnCanvas(event));
+  }
+});
+
+let colorDropBtn = document.getElementById('colorDropBtn');
+  colorDropBtn.addEventListener('click', () => {
+    let colorContent = document.getElementById('colorContent');
+    colorContent.classList.toggle('showContent');
+});
+
+let zoomValue = 1, isZooming = false,
+showZoomValue = document.getElementById('showZoomValue');
+
+showZoomValue.innerHTML = '100.0%';
 
 function zoomCanvases() {
   setZoom(canvasesField);
@@ -527,6 +571,10 @@ function setZoom(element) {
   })
 }
 
+function getZoomPercentage() {
+  return (zoomValue * 100).toFixed(1);
+}
+
 document.getElementById('zoomPlus').addEventListener('mousedown', () => {
   isZooming = true;
   zoomingPlus();
@@ -536,6 +584,7 @@ document.getElementById('zoomPlus').addEventListener('mousedown', () => {
     zoomValue = Math.ceil(zoomValue * 100 + 0.5) / 100;
     zoomCanvases();
     if (isZooming) setTimeout(zoomingPlus, 20);
+    showZoomValue.innerHTML = getZoomPercentage() + '%';
   }
 })
 
@@ -548,5 +597,6 @@ document.getElementById('zoomMinus').addEventListener('mousedown', () => {
     zoomValue = Math.floor(zoomValue * 100 - 0.5) / 100;
     zoomCanvases();
     if (isZooming) setTimeout(zoomingMinus, 20);
+    showZoomValue.innerHTML = getZoomPercentage() + '%';
   }
 })

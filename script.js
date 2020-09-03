@@ -19,10 +19,7 @@ let curCanvasWidth = defaultWidth;
 let curCanvasBorder = defaultBorder;
 let curToolSize = 5;
 let curAllowableColorDifference = 0;
-let photoOfState = {
-  length: 0,
-  layers: new Map()
-};
+
 let markingInterval = 100;
 let markingAmplitude = 45;
 let inclinationAngle = 45;
@@ -87,14 +84,10 @@ function arrayToRgb(color) {
 }
 
 uploadImage.addEventListener('change', () => {
-  if (document.getElementById('uploadImgMenu').hidden) {
-    hideAndShow('uploadImgMenu', event);
-  }
   let target = event.target;
   if (target.files && target.files[0]) {
     handleImg(target.files[0]);
   }
-  document.getElementById('chosenImg').innerHTML = target.files[0].name;
 });
 
 function handleImg(img) {

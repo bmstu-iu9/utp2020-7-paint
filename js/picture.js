@@ -23,9 +23,8 @@ function getMiddleCoords(element) {
 }
 
 function pressForImgInsertion(e) {
-  e.stopPropagation();
   e.preventDefault();
-  if (e.code === 'Enter') {
+  if (e.code === 'Enter' && !e.altKey) {
     let posOfPhoto = getMiddleCoords(photoResizer);
     let posOfCanvas = {
       x: canvas.getBoundingClientRect().left,

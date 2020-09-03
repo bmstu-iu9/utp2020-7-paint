@@ -12,6 +12,11 @@ const defaultBorder = 1;
 let maxPreviewHeight = document.getElementById("previewDiv0").clientHeight;
 let maxPreviewWidth = document.getElementById("previewDiv0").clientWidth;
 
+let infoCanvas = document.getElementById('previewInfoCanvas');
+let infoCanvasContext = previewInfoCanvas.getContext('2d');
+let maxInfoCanvasHeight = document.getElementById("previewInfo").clientHeight;
+let maxInfoCanvasWidth = document.getElementById("previewInfo").clientWidth;
+
 let curColor = [0, 0, 0];
 let curCanvasColor = [255, 255, 255];
 let curCanvasHeight = defaultHeight;
@@ -248,6 +253,7 @@ function setCanvasWidth() {
   layers.forEach((layer) => {
     changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
   });
+  changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
   document.getElementById('curWidth').innerHTML = curCanvasWidth;
   document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
@@ -312,6 +318,7 @@ function setCanvasHeight() {
   layers.forEach((layer) => {
     changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
   });
+  changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
   document.getElementById('curHeight').innerHTML = curCanvasHeight;
   document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
@@ -359,6 +366,7 @@ function newCanvasHeight() {
   layers.forEach((layer) => {
     changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
   });
+  changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
   document.getElementById('curHeight').innerHTML = curCanvasHeight;
   changeCanvasHeight.style.background = '#ffffff';
@@ -376,6 +384,7 @@ function newCanvasWidth() {
   layers.forEach((layer) => {
     changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
   });
+  changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
   document.getElementById('curWidth').innerHTML = curCanvasWidth;
   changeCanvasWidth.style.background = '#ffffff';
@@ -523,6 +532,9 @@ infoDropBtn.addEventListener('click', () => {
   infoContent.classList.toggle('showContent');
   if (infoContent.classList.contains('showContent')) {
     document.addEventListener('mousemove', showCurCoordsOnCanvas(event));
+    maxInfoCanvasHeight = document.getElementById("previewInfo").clientHeight;
+    maxInfoCanvasWidth = document.getElementById("previewInfo").clientWidth
+    changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
   } else {
     document.removeEventListener('mousemove', showCurCoordsOnCanvas(event));
   }

@@ -1041,8 +1041,8 @@ input::-webkit-color-swatch {
 }
 
 .previewInfo {
-  width: 48%;
-  height: 40%;
+  width: 11vh;
+  height: 7vh;
   float: left;
   margin-left: 2px;
   display: flex;

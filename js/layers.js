@@ -96,7 +96,7 @@ function createLayerHtml(id) {
   menuBtn.classList.add('layerOptionsBtn');
   menuBtn.classList.add('layerBtn');
   let menuBtnImg = document.createElement('img');
-  menuBtnImg.src = 'img/tools/more_layer.svg'; 
+  menuBtnImg.src = 'img/tools/more_layer.svg';
   menuBtnImg.classList.add('layerOptionsImg');
   menuBtn.appendChild(menuBtnImg);
   layerDroplist.appendChild(menuBtn);
@@ -249,6 +249,7 @@ class Layer {
       this.index = 50;
       this.canvas.style.zIndex = this.index;
       changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
+      changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
       this.isTop = true;
       this.isBottom = true;
@@ -307,6 +308,7 @@ class Layer {
     this.hidden = false;
 
     changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
+    changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);

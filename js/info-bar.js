@@ -8,9 +8,6 @@ let lastUsedColor = '';
 
 initUsedColorsIds();
 
-let infoCanvas = document.getElementById('previewInfoCanvas');
-let infoCanvasContext = previewInfoCanvas.getContext('2d');
-
 function showCurCoordsOnCanvas() {
 
   function printCurCoords(event) {

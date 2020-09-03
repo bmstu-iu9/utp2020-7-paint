@@ -211,45 +211,10 @@ changeCanvasWidth.value = defaultWidth + 'px';
 
 
 function setCanvasWidth() {
-  clearAllLayers();
-  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
-  allCanvases.forEach((canvas) => {
-    canvas.style.width = curCanvasWidth + 'px';
-    canvas.setAttribute('width', curCanvasWidth + 'px');
-  });
-  layers.forEach((layer) => {
-    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
-  });
-
-  document.getElementById('curWidth').innerHTML = curCanvasWidth;
-  document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
-  changeCanvasWidth.style.background = '#ffffff';
-  changeCanvasWidth.value = curCanvasWidth + 'px';
-}
-
-changeCanvasWidth.oninput = function () {
-  addEventListener('keydown', setWidth);
 
   let width = changeCanvasWidth.value;
   let maxW = changeCanvasWidth.max;
   let minW = changeCanvasWidth.min;
-
-  if (checkPxInput(width, minW, maxW)) {
-    curCanvasWidth = parseInt(width);
-  } else {
-    curCanvasWidth = parseInt(getWidth(width));
-  }
-
-  clearAllLayersHistory();
-  clearAllLayers();
-
-  document.getElementById('settingsMenu').addEventListener('keydown', setWidth);
-
-  if (!checkPxInput(width, minW, maxW)) {
-    changeCanvasWidth.style.background = '#ffd4d4';
-  }
-
-  changePreview();
 
   function getWidth(str) {
 
@@ -265,16 +230,79 @@ changeCanvasWidth.oninput = function () {
     return defaultWidth;
   }
 
+  if (checkPxInput(width, minW, maxW)) {
+    curCanvasWidth = parseInt(width);
+  } else {
+    curCanvasWidth = parseInt(getWidth(width));
+  }
+
+  clearAllLayers();
+  changePreview();
+
+
+  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
+  allCanvases.forEach((canvas) => {
+    canvas.style.width = curCanvasWidth + 'px';
+    canvas.setAttribute('width', curCanvasWidth + 'px');
+  });
+  layers.forEach((layer) => {
+    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
+  });
+
+  document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
+  changeCanvasWidth.style.background = '#ffffff';
+  changeCanvasWidth.value = curCanvasWidth + 'px';
+}
+
+
+changeCanvasWidth.oninput = function () {
+
+  let width = changeCanvasWidth.value;
+
+  document.getElementById('settingsMenu').addEventListener('keydown', setWidth);
+
+  if (width !== curCanvasWidth + 'px') {
+    changeCanvasWidth.style.background = '#ffd4d4';
+  } else {
+    changeCanvasWidth.style.background = '#ffffff';
+  }
+
   function setWidth(event) {
     if (event.code === 'Enter') {
       setCanvasWidth();
-      removeEventListener('keydown', setWidth);
+      document.getElementById('settingsMenu').removeEventListener('keydown', setWidth);
     }
   }
 }
 
 function setCanvasHeight() {
+
+  let height = changeCanvasHeight.value;
+  let maxH = changeCanvasHeight.max;
+  let minH = changeCanvasHeight.min;
+
+  function getHeight(str) {
+
+    if (isNaN(parseInt(str)))
+      return defaultHeight;
+
+    if (parseInt(str) > changeCanvasHeight.max)
+      return changeCanvasHeight.max;
+
+    if (parseInt(str) < changeCanvasHeight.min)
+      return changeCanvasHeight.min;
+    return defaultHeight;
+  }
+
+  if (checkPxInput(height, minH, maxH)) {
+    curCanvasHeight = parseInt(height);
+  } else {
+    curCanvasHeight = parseInt(getHeight(height));
+  }
+
   clearAllLayers();
+  changePreview();
 
   canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
   allCanvases.forEach((canvas) => {
@@ -289,46 +317,25 @@ function setCanvasHeight() {
   document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
   changeCanvasHeight.style.background = '#ffffff';
   changeCanvasHeight.value = curCanvasHeight + 'px';
+  document.getElementById('settingsMenu').removeEventListener('keydown', setHeight);
 }
 
 changeCanvasHeight.oninput = function () {
 
   let height = changeCanvasHeight.value;
-  let maxH = changeCanvasHeight.max;
-  let minH = changeCanvasHeight.min;
-
-  if (checkPxInput(height, minH, maxH)) {
-    curCanvasHeight = parseInt(height);
-  } else {
-    curCanvasHeight = parseInt(getHeight(height));
-  }
 
   document.getElementById('settingsMenu').addEventListener('keydown', setHeight);
 
-  if (!checkPxInput(height, minH, maxH)) {
+  if (height !== curCanvasHeight+'px') {
     changeCanvasHeight.style.background = '#ffd4d4';
-  }
-
-  changePreview();
-
-  function getHeight(str) {
-
-    if (isNaN(parseInt(str)))
-      return defaultHeight;
-
-    if (parseInt(str) > changeCanvasHeight.max)
-      return changeCanvasHeight.max;
-
-    if (parseInt(str) < changeCanvasHeight.min)
-      return changeCanvasHeight.min;
-
-    return defaultHeight;
+  } else {
+    changeCanvasHeight.style.background = '#ffffff';
   }
 
   function setHeight(event) {
     if (event.code === 'Enter') {
       setCanvasHeight();
-      removeEventListener('keydown', setHeight);
+      document.getElementById('settingsMenu').removeEventListener('keydown', setHeight);
     }
   }
 }

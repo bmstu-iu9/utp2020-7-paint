@@ -164,8 +164,7 @@ function setUpLayer(layer) {
   activeInstrument && !layer.locked && activeInstrument.init();
   activeLayer = layer;
   infoCanvasContext.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
-  infoCanvasContext.drawImage(oc, 0, 0, oc.width/ (2 ** i), oc.height / (2 ** i),
-                                  0, 0, infoCanvas.width, infoCanvas.height);
+  infoCanvasContext.drawImage(activeLayer.preview, 0, 0, infoCanvas.width, infoCanvas.height);
 }
 
 function switchLayer(event) {

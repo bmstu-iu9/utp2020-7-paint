@@ -132,8 +132,7 @@ body {
 
   .toolBtn.pressed,
   #help:hover,
-  #help.pressed,
-  #deleteImage:hover {
+  #help.pressed {
     border: solid 0.1vh #ff7f50;
   }
 
@@ -569,7 +568,7 @@ option:checked {
   box-shadow: 0 5px 5px rgba(0,0,0,0.5);
 }
 
-#textMenu {
+#textPanel {
   font-family: 'Passion One';
   line-height: 0;
   font-size: 2vh;
@@ -589,8 +588,15 @@ option:checked {
   z-index: 1006;
 }
 
+#textMenu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
   #textMenu input {
     padding-left: 1vh;
+    box-sizing: content-box;
     font-family: 'Passion One';
     font-size: 2vh;
     color: #000000;
@@ -601,7 +607,7 @@ option:checked {
     padding-top: 0;
     padding-right: 0.2vh;
     padding-bottom: 0;
-    margin: 0;
+    margin: 0.3vh;
   }
 
   #textMenu select {
@@ -611,19 +617,20 @@ option:checked {
     width: 20vh;
     height: 3vh;
     border: 0.1vh solid #000000;
-    margin: 0;
+    margin: 0.3vh;
     padding: 0;
   }
 
-  #textMenu button {
-    font-family: 'Passion One';
-    font-size: 2vh;
-    width: 8vh;
-    height: 3vh;
-    border: 0.1vh solid #000000;
-    padding: 0;
-    margin: 0;
-  }
+.textBtn {
+  font-family: 'Passion One';
+  box-sizing: content-box;
+  font-size: 2vh;
+  width: 8vh;
+  height: 3vh;
+  border: 0.1vh solid #000000;
+  padding: 0;
+  margin: 0.3vh;
+}
 
 input::-webkit-color-swatch-wrapper {
   padding: 0;
@@ -784,20 +791,6 @@ input::-webkit-color-swatch {
 
 #closeHintsModal:hover {
   background-position: right;
-}
-
-#imageMenu {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-#deleteImage {
-  height: 25px;
-  width: 25px;
-  border: 1px solid transparent;
-  border-radius: 50%;
-  margin-left: 20px;
 }
 
 .modal {

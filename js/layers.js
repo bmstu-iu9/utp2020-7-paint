@@ -96,7 +96,7 @@ function createLayerHtml(id) {
   menuBtn.classList.add('layerOptionsBtn');
   menuBtn.classList.add('layerBtn');
   let menuBtnImg = document.createElement('img');
-  menuBtnImg.src = 'img/tools/more_layer.svg'; 
+  menuBtnImg.src = 'img/tools/more_layer.svg';
   menuBtnImg.classList.add('layerOptionsImg');
   menuBtn.appendChild(menuBtnImg);
   layerDroplist.appendChild(menuBtn);
@@ -164,7 +164,8 @@ function setUpLayer(layer) {
   activeInstrument && !layer.locked && activeInstrument.init();
   activeLayer = layer;
   infoCanvasContext.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
-  infoCanvasContext.drawImage(activeLayer.preview, 0, 0, infoCanvas.width, infoCanvas.height);
+  infoCanvasContext.drawImage(oc, 0, 0, oc.width/ (2 ** i), oc.height / (2 ** i),
+                                  0, 0, infoCanvas.width, infoCanvas.height);
 }
 
 function switchLayer(event) {
@@ -249,6 +250,7 @@ class Layer {
       this.index = 50;
       this.canvas.style.zIndex = this.index;
       changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
+      changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
       this.isTop = true;
       this.isBottom = true;
@@ -307,6 +309,7 @@ class Layer {
     this.hidden = false;
 
     changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
+    changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);

@@ -241,26 +241,10 @@ function setCanvasWidth() {
     curCanvasWidth = parseInt(getWidth(width));
   }
 
-  clearAllLayers();
   changePreview();
 
-
-  canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
-  allCanvases.forEach((canvas) => {
-    canvas.style.width = curCanvasWidth + 'px';
-    canvas.setAttribute('width', curCanvasWidth + 'px');
-  });
-  layers.forEach((layer) => {
-    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
-  });
-  changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
-
-  document.getElementById('curWidth').innerHTML = curCanvasWidth;
-  document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
-  changeCanvasWidth.style.background = '#ffffff';
-  changeCanvasWidth.value = curCanvasWidth + 'px';
+  updateCanvasWidth();
 }
-
 
 changeCanvasWidth.oninput = function () {
 
@@ -307,24 +291,9 @@ function setCanvasHeight() {
     curCanvasHeight = parseInt(getHeight(height));
   }
 
-  clearAllLayers();
   changePreview();
 
-  canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
-  allCanvases.forEach((canvas) => {
-    canvas.style.height = curCanvasHeight + 'px';
-    canvas.setAttribute('height', curCanvasHeight + 'px');
-  });
-  layers.forEach((layer) => {
-    changeWindowSize(layer.preview, maxPreviewHeight, maxPreviewWidth);
-  });
-  changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
-
-  document.getElementById('curHeight').innerHTML = curCanvasHeight;
-  document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
-  changeCanvasHeight.style.background = '#ffffff';
-  changeCanvasHeight.value = curCanvasHeight + 'px';
-  document.getElementById('settingsMenu').removeEventListener('keydown', setHeight);
+  updateCanvasHeight();
 }
 
 changeCanvasHeight.oninput = function () {
@@ -348,14 +317,7 @@ changeCanvasHeight.oninput = function () {
 }
 
 
-function checkPxInput(str, min, max) {
-  const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
-  return pxInputRegExp.test(str) &&
-    (parseInt(str) >= min) &&
-    (parseInt(str) <= max);
-}
-
-function newCanvasHeight() {
+function updateCanvasHeight() {
   clearAllLayers();
 
   canvasesField.style.height = curCanvasHeight + 2 * curCanvasBorder + 'px';
@@ -369,11 +331,12 @@ function newCanvasHeight() {
   changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
   document.getElementById('curHeight').innerHTML = curCanvasHeight;
+  document.getElementById('showCurHeight').innerHTML = curCanvasHeight;
   changeCanvasHeight.style.background = '#ffffff';
   changeCanvasHeight.value = curCanvasHeight + 'px';
 }
 
-function newCanvasWidth() {
+function updateCanvasWidth() {
   clearAllLayers();
 
   canvasesField.style.width = curCanvasWidth  + 2 * curCanvasBorder + 'px';
@@ -387,11 +350,17 @@ function newCanvasWidth() {
   changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
   document.getElementById('curWidth').innerHTML = curCanvasWidth;
+  document.getElementById('showCurWidth').innerHTML = curCanvasWidth;
   changeCanvasWidth.style.background = '#ffffff';
   changeCanvasWidth.value = curCanvasWidth + 'px';
 }
 
-
+function checkPxInput(str, min, max) {
+  const pxInputRegExp = new RegExp(`^\\d+(px|)$`, 'i');
+  return pxInputRegExp.test(str) &&
+    (parseInt(str) >= min) &&
+    (parseInt(str) <= max);
+}
 
 function hideAndShow(element) {
   function closeSettingsMenu(event) {

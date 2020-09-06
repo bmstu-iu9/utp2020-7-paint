@@ -92,11 +92,11 @@ canvasResizer.addEventListener('mousedown', function(e) {
     let newHeight = Math.round(originalHeight + (e.pageY - originalMouseY) / zoomValue);
     if (newWidth <= changeCanvasWidth.max && newWidth >= changeCanvasWidth.min) {
       curCanvasWidth = newWidth;
-      newCanvasWidth();
+      updateCanvasWidth();
     }
     if (newHeight <= changeCanvasHeight.max && newHeight >= changeCanvasHeight.min) {
       curCanvasHeight = newHeight;
-      newCanvasHeight();
+      updateCanvasHeight();
     }
     restoreCanvasesState();
   }

@@ -504,6 +504,8 @@ infoDropBtn.addEventListener('click', () => {
     maxInfoCanvasHeight = document.getElementById("previewInfo").clientHeight;
     maxInfoCanvasWidth = document.getElementById("previewInfo").clientWidth
     changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
+    infoCanvasContext.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
+    infoCanvasContext.drawImage(activeLayer.preview, 0, 0, infoCanvas.width, infoCanvas.height);
   } else {
     document.removeEventListener('mousemove', showCurCoordsOnCanvas(event));
   }

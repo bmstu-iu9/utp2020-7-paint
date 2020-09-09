@@ -147,7 +147,7 @@ function useFiltersModal() {
     curStateFilter = 0;
   }
 
-  let allSimpleFilters = ['negative', 'grey-scale', 'sepia', 'black-white', 'binarization', 'colored'];
+  const allSimpleFilters = ['negative', 'grey-scale', 'sepia', 'black-white', 'binarization', 'colored'];
   allSimpleFilters.forEach((filter) => {
     let button = document.getElementById(filter);
     button.onclick = () => {

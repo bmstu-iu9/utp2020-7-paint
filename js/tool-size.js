@@ -53,9 +53,9 @@ function onInputText(toolText, toolRange, defaultValue, measureUnit) {
   let minTS = toolRange.min;
   let flag;
 
-  if (measureUnit == 'px') {
+  if (measureUnit === 'px') {
     flag = checkPxInput(toolSize, minTS, maxTS);
-  } else if (measureUnit == '°') {
+  } else if (measureUnit === '°') {
     flag = checkDegreeInput(toolSize, minTS, maxTS);
   }
 

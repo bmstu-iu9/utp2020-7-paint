@@ -31,9 +31,9 @@ function onChangeText(toolText, toolRange, value, measureUnit) {
   let minTS = toolText.min;
   let flag;
 
-  if (measureUnit == 'px') {
+  if (measureUnit === 'px') {
     flag = checkPxInput(toolSize, minTS, maxTS);
-  } else if (measureUnit == '°') {
+  } else if (measureUnit === '°') {
     flag = checkDegreeInput(toolSize, minTS, maxTS);
   }
 

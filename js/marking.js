@@ -91,6 +91,7 @@ function useMarkingModal() {
   function deleteChangesMarking() {
     markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
     markingContext.drawImage(canvas, 0, 0, markingCanvas.width, markingCanvas.height);
+
     markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
     markingModalContext.drawImage(canvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
   }
@@ -99,6 +100,7 @@ function useMarkingModal() {
 function applyInitialMarkingState() {
   markingContext.clearRect(0, 0, markingCanvas.width, markingCanvas.height);
   markingContext.drawImage(canvas, 0, 0, markingCanvas.width, markingCanvas.height);
+
   markingModalContext.clearRect(0, 0, markingModalCanvas.width, markingModalCanvas.height);
   markingModalContext.drawImage(markingCanvas, 0, 0, markingModalCanvas.width, markingModalCanvas.height);
 }
@@ -224,12 +226,12 @@ function startPointSingleDiagonal() {
     angleInRadians = inclinationAngle * Math.PI / 180;
     shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(markingCanvas.height, 0, shift);
+    drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
   } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
     shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(0, markingCanvas.height, shift);
+    drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
   }
 
   markingContext.stroke();
@@ -269,14 +271,14 @@ function startPointDoubleDiagonal() {
     angleInRadians = inclinationAngle * Math.PI / 180;
     shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(markingCanvas.height, 0, shift);
-    drawDiagonal(0, markingCanvas.height, shift);
+    drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
+    drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
   } else if (inclinationAngle > 90) {
     angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
     shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(markingCanvas.height, 0, shift);
-    drawDiagonal(0, markingCanvas.height, shift);
+    drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
+    drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
   }
 
   markingContext.stroke();
@@ -379,11 +381,13 @@ function drawHorizontal() {
   }
 }
 
-function drawDiagonal(drawLineFrom, drawLineTo, shift) {
+function drawDiagonal(drawLineFrom, drawLineTo, shift, inclinationAngle) {
   let newInterval = shift / 5 + markingInterval;
+  let upperAndLowerMargins = (inclinationAngle < 90) ? -markingSize : markingSize;
+
   for (let x = initialOffset - shift; x < markingCanvas.width + shift; x += newInterval) {
-    markingContext.moveTo(x - shift/2, drawLineFrom);
-    markingContext.lineTo(x + shift/2, drawLineTo);
+    markingContext.moveTo(x - shift/2, drawLineFrom - upperAndLowerMargins);
+    markingContext.lineTo(x + shift/2, drawLineTo + upperAndLowerMargins);
   }
 }
 

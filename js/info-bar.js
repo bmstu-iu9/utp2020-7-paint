@@ -36,7 +36,7 @@ function initUsedColorsIds(){
     button.style.background = 'url(\'img/background.png\')';
     button.onclick = () => {
       if (button.style.background != 'url("img/background.png")') {
-        curColor = button.style.background.slice(4,-1).split(',');
+        curColor = button.style.background.slice(4, -1).split(',');
         colorInput.value = '#' + rgbToHex(curColor);
         colorBtn.style.background = colorInput.value;
         showCurColor();

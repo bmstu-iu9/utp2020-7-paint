@@ -29,7 +29,7 @@
 
   <div id="topPanel">
     <div id="openPanel">
-      <img src="img/leftPanel.png" style="width:5vh; height:5vh;"></img>
+      <img src="img/leftPanel.png" style="width:5vh; height:5vh"></img>
     </div>
     <div class="topContainer">
       <button title="Рука" class="toolBtn" id="hand" style="background-image: url(img/tools/hand.svg)"></button>
@@ -41,7 +41,7 @@
     <button class="toolBtn" id="zoomMinus" onclick="isZooming = false" style="background-image: url(img/tools/zoom_minus.svg)"></button>
   </div>
 
-  <div class="leftMenu" id="toolSettingsMenu" style="bottom: 0; width:36vh; height: 6vh; left: 50%; transform: translate(-50%, -50%)" hidden="true">
+  <div class="leftMenu" id="toolSettingsMenu" style="bottom: 0; width: 36vh; height: 6vh; left: 50%; transform: translate(-50%, -50%)" hidden="true">
     <div class="rangeAndText" style="width: 36vh; height: 6vh; margin-left: 1vh; margin-top: 0; margin-right: 0; margin-bottom: 0">
       <input type="range" id="toolSizeRange" min="1" max="300">
       <input type="text" id="toolSizeText">
@@ -78,7 +78,7 @@
     </button>
     <button title="Меню кистей" class="toolBtn" id="brush" style="background-image: url(img/tools/all_brushes.svg)">
     </button>
-    <div class="leftMenu" id="brushMenu" style="top:18vh" hidden="true">
+    <div class="leftMenu" id="brushMenu" style="top: 18vh" hidden="true">
       <button title="Базовая Кисть" class="toolBtn optionTool" id="basicBrush" style="background-image: url(img/tools/basic_brush.svg)">
       </button>
       <button title="Неоновая Кисть" class="toolBtn optionTool" id="neonBrush" style="background-image: url(img/tools/neon_brush.svg)">
@@ -98,7 +98,7 @@
     </div>
     <button title="Фигуры" class="toolBtn" id="figure" style="background-image: url(img/tools/all_figures.svg)">
     </button>
-    <div class="leftMenu" id="figureMenu" style="top:25vh; width: 45vh" hidden="true">
+    <div class="leftMenu" id="figureMenu" style="top: 25vh; width: 45vh" hidden="true">
       <button title="Прямая линия" class="toolBtn" id="straightLine" style="background-image: url(img/tools/line.svg)">
       </button>
       <button title="Круг" class="toolBtn" id="circle" style="background-image: url(img/tools/circle.svg)">
@@ -121,7 +121,7 @@
     <button title="Вставить текст" class="toolBtn" id="text" style="background-image: url(img/tools/text.svg)"></button>
     <button title="Заливка цветом" class="toolBtn" id="filling" style="background-image: url(img/tools/bucket.svg)">
     </button>
-    <div class="leftMenu" id="fillMenu" style="top:46vh; width: 25vh;" hidden="true" style="min-width: 175px;">
+    <div class="leftMenu" id="fillMenu" style="top: 46vh; width: 25vh" hidden="true" style="min-width: 175px;">
       <div class="rangeAndText">
         <input type="range" id="colorDifferenceRange" min="0" max="100">
         <input type="text" id="colorDifferenceText">
@@ -156,13 +156,13 @@
           <p>Y: <span id="mouseCordY"></span></p>
           <p>Zoom: <span id="showZoomValue"></span></p>
           <div>
-            <div style="display:inline-block; vertical-align: top; margin-right: 2vh">
+            <div style="display: inline-block; vertical-align: top; margin-right: 2vh">
               <p>Размеры:</p>
               <span id="showCurSizes" style="text-decoration: underline; cursor: pointer">
                 <span id="showCurWidth">780</span>x<span id="showCurHeight">400</span>
               </span>
             </div>
-            <div style="display:inline-block; vertical-align: top">
+            <div style="display: inline-block; vertical-align: top">
               <p>Цвет:</p>
               <div id="curColorWindow" style="width: 3vh; height: 3vh; background-color: black; display: inline-block">
               </div>
@@ -314,7 +314,7 @@
         </div>
         <div class="rightSide markingMenu">
           <p>Цвет: </p>
-          <button title="Цвет разметки" id="markingColorBtn" style="background: black; width: 5vh; height: 5vh; border-radius: 50%;">
+          <button title="Цвет разметки" id="markingColorBtn" style="background: black; width: 5vh; height: 5vh; border-radius: 50%">
             <input type="color" id="markingColor" style="opacity: 0">
           </button>
           <p>Толщина линий разметки: </p>

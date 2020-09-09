@@ -311,7 +311,9 @@ function startPointVerticalWavy() {
 
   let cy = 0;
 
-  for (let cx = initialOffset - markingAmplitude; cx < markingCanvas.width + markingAmplitude; cx += markingInterval) {
+  for (let cx = initialOffset - markingAmplitude;
+       cx < markingCanvas.width + markingAmplitude;
+       cx += markingInterval) {
     markingContext.moveTo(cx, cy);
     for (let i = 1; i < markingCanvas.height; i++) {
       let y = 3 * i;
@@ -414,7 +416,7 @@ function getInitialOffset() {
 
 function updateButton() {
   if (curMarking === null) return;
-  window["startPoint" + firstToUpper(curMarking)]();
+  window['startPoint' + firstToUpper(curMarking)]();
 }
 
 function disableMarkingTextAndRange(isDisabledMarkingSizeAndInterval, isDisabledAngle, isDisabledAmplitude) {
@@ -539,7 +541,7 @@ toolAmplitudeText.onchange = () => {
 
 function checkDegreeInput(str, min, max) {
   const degreeInputRegExp = new RegExp(`^\\d+(°|)$`, 'i');
-  return  degreeInputRegExp.test(str) &&
+  return degreeInputRegExp.test(str) &&
          (parseInt(str) >= min) &&
          (parseInt(str) <= max);
 }

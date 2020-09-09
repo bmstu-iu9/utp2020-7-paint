@@ -772,7 +772,7 @@ input::-webkit-color-swatch {
 }
 
 #closeHintsModal {
-  float:right;
+  float: right;
   outline: none;
   background-color: transparent;
   text-align: center;
@@ -1009,7 +1009,7 @@ input::-webkit-color-swatch {
 }
 
 .hideContent p {
-  margin: 1vh 0vh;
+  margin: 1vh 0;
 }
 
 .showContent {
@@ -1099,7 +1099,7 @@ input::-webkit-color-swatch {
 
 .markingRange input[type='text'] {
   padding: 0vh 0.3vh;
-  margin: 0px;
+  margin: 0;
   height: 3.5vh;
   width: 30%;
   background: lightgray;
@@ -1109,5 +1109,5 @@ input::-webkit-color-swatch {
   font-size: 3vh;
   text-align: center;
   -webkit-appearance: none;
-  outline:none;
+  outline: none;
 }

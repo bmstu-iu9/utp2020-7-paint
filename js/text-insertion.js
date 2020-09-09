@@ -1,7 +1,7 @@
 'use strict';
 
 let textToInsert, curTextSize, dxOfText, dyOfText;
-let textElements = ['textMenu', 'textPanel', 'textEnter', 'textFormat', 'fontSize',
+const textElements = ['textMenu', 'textPanel', 'textEnter', 'textFormat', 'fontSize',
                     'fontColor', 'textAngle', 'pastedText', 'font'];
 
 textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);

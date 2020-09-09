@@ -7,6 +7,7 @@ class Snapshot {
     this.layerId = layerId;
     this.width = curCanvasWidth;
     this.height = curCanvasHeight;
+
     if (last) {
       layers.forEach((layer, i) => {
         this[i] = last[i];

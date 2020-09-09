@@ -38,7 +38,11 @@ function pressForImgInsertion(e) {
     context.save();
     context.translate(dx, dy);
     context.rotate(photoAngle);
-    context.drawImage(curImg, 0, 0, curImg.width, curImg.height, -deltaImgX / zoomValue, -deltaImgY / zoomValue, dWidth, dHeight);
+    context.drawImage(curImg,
+                      0, 0,
+                      curImg.width, curImg.height,
+                      -deltaImgX / zoomValue, -deltaImgY / zoomValue,
+                      dWidth, dHeight);
     context.restore();
 
     deleteImg();

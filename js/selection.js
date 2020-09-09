@@ -202,7 +202,11 @@ function insertCanvas(copyCanvas) {
       let dx = Math.round((posOfPhoto.x - posOfCanvas.x) / zoomValue + 3 - curCanvasBorder);
       let dy = Math.round((posOfPhoto.y - posOfCanvas.y) / zoomValue + 3 - curCanvasBorder);
 
-      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
+      context.drawImage(curCopyCanvas,
+                        0, 0,
+                        curCopyCanvas.width, curCopyCanvas.height,
+                        dx, dy,
+                        curCopyCanvas.width, curCopyCanvas.height);
 
       canvasInsertion.hidden = true;
       document.removeEventListener('keydown', pressForInsertion);

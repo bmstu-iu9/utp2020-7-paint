@@ -60,11 +60,11 @@ function onInputText(toolText, toolRange, defaultValue, measureUnit) {
   }
 
   if (flag) {
-    toolText.style.background = "white";
+    toolText.style.background = 'white';
     toolRange.value = parseInt(toolSize);
     newToolValue = parseInt(toolText.value);
   } else {
-    toolText.style.background = "#ffd4d4";
+    toolText.style.background = '#ffd4d4';
     newToolValue = getTool(parseInt(toolSize), toolRange);
   }
 

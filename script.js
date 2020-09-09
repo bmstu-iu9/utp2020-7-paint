@@ -418,8 +418,8 @@ leftMenuLists.forEach((list) => {
 });
 
 document.getElementById('openPanel').addEventListener('click', (event) => {
-  if (document.getElementById('leftContainer').style.left === "0vh") {
-    document.getElementById('leftContainer').style.left = "-8vh";
+  if (document.getElementById('leftContainer').style.left === '0vh') {
+    document.getElementById('leftContainer').style.left = '-8vh';
     if (document.getElementById('brushMenu').hidden === false) {
       hideAndShow('brushMenu', event);
     }
@@ -434,7 +434,7 @@ document.getElementById('openPanel').addEventListener('click', (event) => {
     }
   }
   else {
-    document.getElementById('leftContainer').style.left = "0vh";
+    document.getElementById('leftContainer').style.left = '0vh';
   }
 });
 

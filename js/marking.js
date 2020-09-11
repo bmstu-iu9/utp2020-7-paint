@@ -111,7 +111,7 @@ function endMarking() {
 }
 
 
-const allMarkings = ['cage','vertical', 'horizontal', 'singleDiagonal',
+const allMarkings = ['cage', 'vertical', 'horizontal', 'singleDiagonal',
  'doubleDiagonal', 'verticalWavy', 'horizontalWavy'];
 
  allMarkings.forEach((marking) => {
@@ -144,7 +144,6 @@ function startPointCage() {
 }
 
 
-
 function initVertical() {
   setTextAndRangeParameters();
   curMarking = 'vertical';
@@ -168,7 +167,6 @@ function startPointVertical() {
 
   endMarking();
 }
-
 
 
 function initHorizontal() {
@@ -196,7 +194,6 @@ function startPointHorizontal() {
 }
 
 
-
 function initSingleDiagonal() {
   setTextAndRangeParameters();
   curMarking = 'singleDiagonal';
@@ -220,18 +217,24 @@ function startPointSingleDiagonal() {
 
   markingContext.beginPath();
 
-  if (inclinationAngle === 90) {
-    drawHorizontal();
-  } else if (inclinationAngle < 90) {
-    angleInRadians = inclinationAngle * Math.PI / 180;
-    shift = markingCanvas.height * Math.tan(angleInRadians);
+  switch (true) {
+    case (inclinationAngle === 90):
+      drawHorizontal();
+      break;
 
-    drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
-  } else if (inclinationAngle > 90) {
-    angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
-    shift = markingCanvas.height * Math.tan(angleInRadians);
+    case (inclinationAngle < 90):
+      angleInRadians = inclinationAngle * Math.PI / 180;
+      shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
+      drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
+      break;
+
+    case (inclinationAngle > 90):
+      angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
+      shift = markingCanvas.height * Math.tan(angleInRadians);
+
+      drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
+      break;
   }
 
   markingContext.stroke();
@@ -239,7 +242,6 @@ function startPointSingleDiagonal() {
 
   endMarking();
 }
-
 
 
 function initDoubleDiagonal() {
@@ -265,20 +267,26 @@ function startPointDoubleDiagonal() {
 
   markingContext.beginPath();
 
-  if (inclinationAngle === 90) {
-    drawHorizontal();
-  } else if (inclinationAngle < 90) {
-    angleInRadians = inclinationAngle * Math.PI / 180;
-    shift = markingCanvas.height * Math.tan(angleInRadians);
+  switch (true) {
+    case (inclinationAngle === 90):
+      drawHorizontal();
+      break;
 
-    drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
-    drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
-  } else if (inclinationAngle > 90) {
-    angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
-    shift = markingCanvas.height * Math.tan(angleInRadians);
+    case (inclinationAngle < 90):
+      angleInRadians = inclinationAngle * Math.PI / 180;
+      shift = markingCanvas.height * Math.tan(angleInRadians);
 
-    drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
-    drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
+      drawDiagonal(markingCanvas.height, 0, shift, inclinationAngle);
+      drawDiagonal(0, markingCanvas.height, shift, 180 - inclinationAngle);
+      break;
+
+    case (inclinationAngle > 90):
+      angleInRadians = (180 - inclinationAngle) * Math.PI / 180;
+      shift = markingCanvas.height * Math.tan(angleInRadians);
+
+      drawDiagonal(markingCanvas.height, 0, shift, 180 - inclinationAngle);
+      drawDiagonal(0, markingCanvas.height, shift, inclinationAngle);
+      break;
   }
 
   markingContext.stroke();
@@ -286,7 +294,6 @@ function startPointDoubleDiagonal() {
 
   endMarking();
 }
-
 
 
 function initVerticalWavy() {
@@ -329,7 +336,6 @@ function startPointVerticalWavy() {
 }
 
 
-
 function initHorizontalWavy() {
   setTextAndRangeParameters();
   curMarking = 'horizontalWavy';
@@ -366,7 +372,6 @@ function startPointHorizontalWavy() {
 
   endMarking();
 }
-
 
 
 function drawVertical() {
@@ -434,7 +439,6 @@ function disableMarkingTextAndRange(isDisabledMarkingSizeAndInterval, isDisabled
 }
 
 
-
 let toolMarkingRange = document.getElementById("toolMarkingRange");
 let toolMarkingText = document.getElementById("toolMarkingText");
 let defaultMarking = markingInterval;
@@ -464,7 +468,6 @@ toolAmplitudeRange.value = markingAmplitude;
 toolAmplitudeText.value = `${markingAmplitude}°`;
 
 
-
 toolMarkingRange.oninput = () => { onInputRange(toolMarkingText, toolMarkingRange, 'px'); }
 
 toolMarkingSizeRange.oninput = () => { onInputRange(toolMarkingSizeText, toolMarkingSizeRange, 'px'); }
@@ -472,7 +475,6 @@ toolMarkingSizeRange.oninput = () => { onInputRange(toolMarkingSizeText, toolMar
 toolAngleRange.oninput = () => { onInputRange(toolAngleText, toolAngleRange, '°'); }
 
 toolAmplitudeRange.oninput = () => { onInputRange(toolAmplitudeText, toolAmplitudeRange, '°'); }
-
 
 
 toolMarkingText.oninput = () => {
@@ -496,7 +498,6 @@ toolAmplitudeText.oninput = () => {
 }
 
 
-
 toolMarkingRange.onchange = () => {
   markingInterval = parseInt(toolMarkingRange.value);
   updateButton();
@@ -516,7 +517,6 @@ toolAmplitudeRange.onchange = () => {
   markingAmplitude = parseInt(toolAmplitudeRange.value);
   updateButton();
 }
-
 
 
 toolMarkingText.onchange = () => {
@@ -545,7 +545,6 @@ function checkDegreeInput(str, min, max) {
          (parseInt(str) >= min) &&
          (parseInt(str) <= max);
 }
-
 
 
 let markingColorInput = document.getElementById('markingColor');

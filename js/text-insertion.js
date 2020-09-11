@@ -25,7 +25,7 @@ function initText() {
 }
 
 function insertText() {
-  let padding = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('padding-left').replace('px', ''));
+  let padding = getComputedStyleValue('padding-left');
   dxOfText = pastedText.clientWidth - padding * 2;
   dyOfText = pastedText.clientHeight - padding * 2;
 
@@ -34,9 +34,13 @@ function insertText() {
   pastedText.hidden = true;
 
   textFormat.addEventListener('click', startPointText);
-  curTextSize = parseFloat(getComputedStyle(pastedText, null).getPropertyValue('font-size').replace('px', ''));
+  curTextSize = getComputedStyleValue('font-size');
   textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
   chooseTextFormat();
+
+  function getComputedStyleValue(element) {
+    return parseFloat(getComputedStyle(pastedText, null).getPropertyValue(element).replace('px', ''));
+  }
 }
 
 function deleteText() {

@@ -395,6 +395,11 @@ document.getElementById('help').addEventListener('click', (event) => {
       </ul>`;
 });
 
+function updateCanvasParameters() {
+  updateCanvasWidth();
+  updateCanvasHeight();
+}
+
 let firstClickUpload = true;
 
 document.getElementById('uploadImgBtn').addEventListener('click', (event) => {

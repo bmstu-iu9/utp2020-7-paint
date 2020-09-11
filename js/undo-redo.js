@@ -28,6 +28,7 @@ let redo = document.getElementById('redo');
 
 function rememberState() {
   let img = new Image();
+
   img.onload = () => {
     checkCurLength();
     layersHistory.push(new Snapshot(activeLayer.id, img, layersHistory[curState++]));
@@ -37,10 +38,12 @@ function rememberState() {
 
 function rememberSize() {
   checkCurLength();
+
   let lastSnapshots = layersHistory[curState++];
   if (curCanvasWidth < lastSnapshots.width || curCanvasHeight < lastSnapshots.height) {
     layersHistory.push(new Snapshot(-1));
     let newSnapshots = layersHistory[curState];
+    
     layers.forEach((layer, i) => {
       let img = new Image();
       img.onload = () => {
@@ -48,7 +51,9 @@ function rememberSize() {
       }
       img.src = layer.canvas.toDataURL();
     })
-  } else layersHistory.push(new Snapshot(-1, null, lastSnapshots))
+  } else {
+    layersHistory.push(new Snapshot(-1, null, lastSnapshots));
+  }
 }
 
 function checkCurLength() {
@@ -81,8 +86,7 @@ function restoreCanvasesState() {
 function restoreCanvasesSize() {
   curCanvasWidth = layersHistory[curState].width;
   curCanvasHeight = layersHistory[curState].height;
-  updateCanvasWidth();
-  updateCanvasHeight();
+  updateCanvasParameters();
 }
 
 undo.addEventListener('click', () => {

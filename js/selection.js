@@ -24,7 +24,7 @@ function endSelectionPoint() {
     if (leftTopPointSelection[0] !== rightBottomPointSelection[0] && leftTopPointSelection[1] !== rightBottomPointSelection[1]) {
       defineSelectedArea();
     } else {
-      alert('Выделенная область не может содержать 0 пикселей'); //TODO : in design make it pretty
+      alert('Выделенная область не может содержать 0 пикселей');
       deleteSelectedArea();
     }
   }
@@ -224,8 +224,10 @@ function insertCanvas(copyCanvas) {
     canvasInsertion.hidden = false;
     canvasInsertion.style.width = 'auto';
     canvasInsertion.style.height = 'auto';
-    canvasInsertion.style.top = canvas.getBoundingClientRect().top + curCanvasHeight / 2 - canvasInsertion.offsetHeight / 2 + 'px';
-    canvasInsertion.style.left = canvas.getBoundingClientRect().left + curCanvasWidth / 2 + - canvasInsertion.offsetWidth / 2 + 'px';
+    canvasInsertion.style.top = canvas.getBoundingClientRect().top + curCanvasHeight / 2
+                                - canvasInsertion.offsetHeight / 2 + 'px';
+    canvasInsertion.style.left = canvas.getBoundingClientRect().left + curCanvasWidth / 2
+                                - canvasInsertion.offsetWidth / 2 + 'px';
     canvasInsertion.style.zIndex = activeLayer.index;
   }
 

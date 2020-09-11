@@ -29,7 +29,7 @@ function onChangeText(toolText, toolRange, value, measureUnit) {
   let toolSize = toolText.value;
   let maxTS = toolText.max;
   let minTS = toolText.min;
-  let flag;
+  let flag = false;
 
   if (measureUnit === 'px') {
     flag = checkPxInput(toolSize, minTS, maxTS);

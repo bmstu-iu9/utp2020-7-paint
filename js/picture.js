@@ -180,9 +180,9 @@ photoRotator.addEventListener('mousedown', (e) => {
     let pr = getProjectionPoint(vector.x, vector.y, normal.x, normal.y, center.x, center.y);
     let n1 = getVectorCords(pr.x, pr.y, x, y);
     let n2 = { x: -normal.y, y: normal.x };
-    let coDeirect = coDirectional(n1, n2);
+    let coDirect = coDirectional(n1, n2);
 
-    angleSign = (coDeirect && angleSign > 0 || !coDeirect && angleSign < 0) ? angleSign : angleSign * (-1);
+    angleSign = (coDirect && angleSign > 0 || !coDirect && angleSign < 0) ? angleSign : angleSign * (-1);
     let cos = (x1 * x2 + y1 * y2) / (dist1 * dist2);
     if (Math.abs(cos) > 1) cos = Math.trunc(cos);
     photoAngle += angleSign * Math.acos(cos);

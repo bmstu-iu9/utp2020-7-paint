@@ -2,11 +2,9 @@
 
 let photoResizer = document.getElementById('photoResizer');
 let photoRotator = document.getElementById('photoRotator');
-let deleteImageBtn = document.getElementById('deleteImage');
-let isResizing = false, isRotating = false;
 let curImg, originalImgWidth, originalImgHeight;
 let deltaImgX, deltaImgY;
-let photoAngle = 0, sign = 1;
+let photoAngle = 0, angleSign = 1;
 
 function rotatePhoto() {
   photoResizer.style.webkitTransform = 'rotate('+photoAngle+'rad)';
@@ -17,31 +15,36 @@ function rotatePhoto() {
 }
 
 function getMiddleCoords(element) {
+  console.log(element.getBoundingClientRect().left);
   return {
     x: element.getBoundingClientRect().left + element.getBoundingClientRect().width / 2,
     y: element.getBoundingClientRect().top + element.getBoundingClientRect().height / 2
   }
 }
 
-deleteImageBtn.addEventListener('click', e => hideAndShow('uploadImgMenu', e));
-
-function pressForImgInsertion() {
-  if (event.code === 'Enter') {
+function pressForImgInsertion(e) {
+  e.preventDefault();
+  if (e.code === 'Enter' && !e.altKey) {
     let posOfPhoto = getMiddleCoords(photoResizer);
     let posOfCanvas = {
-      x: canvas.getBoundingClientRect().left + curCanvasBorder,
-      y: canvas.getBoundingClientRect().top + curCanvasBorder
+      x: canvas.getBoundingClientRect().left,
+      y: canvas.getBoundingClientRect().top
     };
-    let dx = posOfPhoto.x - posOfCanvas.x + 2.5, dy = posOfPhoto.y - posOfCanvas.y + 2.5;
-    let dWidth = photoResizer.clientWidth - 6, dHeight = photoResizer.clientHeight - 6;
+    let dx = (posOfPhoto.x + 2.5 - posOfCanvas.x) / zoomValue - curCanvasBorder;
+    let dy = (posOfPhoto.y + 2.5 - posOfCanvas.y) / zoomValue - curCanvasBorder;
+    let dWidth = (deltaImgX * 2 - 6) / zoomValue;
+    let dHeight = (deltaImgY * 2 - 6) / zoomValue;
 
     context.save();
     context.translate(dx, dy);
     context.rotate(photoAngle);
-    context.drawImage(curImg, 0, 0, curImg.width, curImg.height, -deltaImgX, -deltaImgY, dWidth, dHeight);
+    context.drawImage(curImg,
+                      0, 0,
+                      curImg.width, curImg.height,
+                      -deltaImgX / zoomValue, -deltaImgY / zoomValue,
+                      dWidth, dHeight);
     context.restore();
 
-    deleteImageBtn.click();
     deleteImg();
     changePreview();
     rememberState();
@@ -80,7 +83,7 @@ function insertImg(img) {
       photo.style.width = photoWidth + 'px';
     }
 
-    sign = 1;
+    angleSign = 1;
     if (photoAngle) {
       photoAngle = 0;
       rotatePhoto();
@@ -89,7 +92,7 @@ function insertImg(img) {
     photoResizer.hidden = false;
     photoResizer.style.width = photoWidth + 'px';
     photoResizer.style.height = 'auto';
-    photoResizer.style.top = '50px';
+    photoResizer.style.top = '15%';
     photoResizer.style.left = (docWidth - photoWidth) / 2 + 'px';
     photoResizer.style.zIndex = activeLayer.index;
 
@@ -109,17 +112,19 @@ function insertImg(img) {
 photoResizer.ondragstart = () => false;
 
 photoResizer.addEventListener('mousedown', (e) => {
+  e.stopPropagation();
+  photoResizer.style.zIndex = activeLayer.index;
   let curMiddle = getMiddleCoords(photoResizer);
   let shiftX = e.clientX - (curMiddle.x - deltaImgX);
   let shiftY = e.clientY - (curMiddle.y - deltaImgY);
 
   function moveAt(x, y) {
-    photoResizer.style.left = x - shiftX + pageXOffset + 'px';
-    photoResizer.style.top = y - shiftY + pageYOffset + 'px';
+    photoResizer.style.left = x - shiftX + 'px';
+    photoResizer.style.top = y - shiftY + 'px';
   }
 
   function move(e) {
-    if (!isResizing && !isRotating) moveAt(e.clientX, e.clientY);
+    moveAt(e.clientX, e.clientY);
   }
 
   function stop() {
@@ -134,7 +139,7 @@ photoResizer.addEventListener('mousedown', (e) => {
 
 photoRotator.addEventListener('mousedown', (e) => {
   e.preventDefault();
-  isRotating = true;
+  e.stopPropagation();
   let lastX = e.pageX, lastY = e.pageY;
   let center = getMiddleCoords(photoResizer);
 
@@ -175,12 +180,12 @@ photoRotator.addEventListener('mousedown', (e) => {
     let pr = getProjectionPoint(vector.x, vector.y, normal.x, normal.y, center.x, center.y);
     let n1 = getVectorCords(pr.x, pr.y, x, y);
     let n2 = { x: -normal.y, y: normal.x };
-    let coDeirect = coDirectional(n1, n2);
+    let coDirect = coDirectional(n1, n2);
 
-    sign = (coDeirect && sign > 0 || !coDeirect && sign < 0) ? sign : sign * (-1);
+    angleSign = (coDirect && angleSign > 0 || !coDirect && angleSign < 0) ? angleSign : angleSign * (-1);
     let cos = (x1 * x2 + y1 * y2) / (dist1 * dist2);
     if (Math.abs(cos) > 1) cos = Math.trunc(cos);
-    photoAngle += sign * Math.acos(cos);
+    photoAngle += angleSign * Math.acos(cos);
     lastX = x;
     lastY = y;
 
@@ -188,7 +193,6 @@ photoRotator.addEventListener('mousedown', (e) => {
   }
 
   function stopRotate() {
-    isRotating = false;
     document.removeEventListener('mousemove', rotate);
     document.removeEventListener('mouseup', stopRotate);
   }
@@ -207,10 +211,11 @@ function makeResizablePhoto(element) {
     let currentResizer = resizers[i];
     currentResizer.addEventListener('mousedown', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       originalWidth = element.clientWidth;
       originalHeight = element.clientHeight;
-      originalX = getMiddleCoords(img).x - deltaImgX + pageXOffset;
-      originalY = getMiddleCoords(img).y - deltaImgY + pageYOffset;
+      originalX = getMiddleCoords(img).x - deltaImgX;
+      originalY = getMiddleCoords(img).y - deltaImgY;
       center = getTranslations(originalX + originalWidth/2, originalY + originalHeight/2);
       document.addEventListener('mousemove', resize);
       document.addEventListener('mouseup', stopResize);
@@ -272,7 +277,6 @@ function makeResizablePhoto(element) {
     }
 
     function resize(e) {
-      isResizing = true;
       let width, height;
 
       if (currentResizer.classList.contains('bottom-right')) {
@@ -329,8 +333,8 @@ function makeResizablePhoto(element) {
     }
 
     function stopResize() {
-      isResizing = false;
       document.removeEventListener('mousemove', resize);
+      document.removeEventListener('mouseup', stopResize);
     }
   }
 }

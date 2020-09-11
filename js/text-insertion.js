@@ -1,13 +1,14 @@
 'use strict';
 
-let textToInsert, dxOfText, dyOfText;
-let textElements = ['textMenu', 'textFormat', 'fontSize', 'fontColor', 'textAngle', 'pastedText', 'font'];
+let textToInsert, curTextSize, dxOfText, dyOfText;
+const textElements = ['textMenu', 'textPanel', 'textEnter', 'textFormat', 'fontSize',
+                    'fontColor', 'textAngle', 'pastedText', 'font'];
 
 textElements.forEach(x => window[x + '= document.getElementById(\'' + x + '\')']);
 
 function chooseTextFormat() {
   if (!isThereSelection) {
-    writeText(canvas.width / 2, canvas.height / 2);
+    writeText(curCanvasWidth / 2, curCanvasHeight / 2);
   } else {
     writeText(leftTopPointSelection[0]
               + (rightBottomPointSelection[0] - leftTopPointSelection[0]) / 2,
@@ -19,19 +20,26 @@ function chooseTextFormat() {
 function initText() {
   saveImg();
   pastedText.hidden = false;
-  document.addEventListener('keydown', pressForInsertion);
+  textPanel.hidden = false;
+  textEnter.style.display = 'inline-block';
+}
 
-  function pressForInsertion() {
-    if (event.code === 'Enter' && event.altKey) {
-      dxOfText = pastedText.getBoundingClientRect().width;
-      dyOfText = pastedText.getBoundingClientRect().height;
-      pastedText.hidden = true;
-      textMenu.hidden = false;
-      textFormat.addEventListener('click', startPointText);
-      textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
-      chooseTextFormat();
-      document.removeEventListener('keydown', pressForInsertion);
-    }
+function insertText() {
+  let padding = getComputedStyleValue('padding-left');
+  dxOfText = pastedText.clientWidth - padding * 2;
+  dyOfText = pastedText.clientHeight - padding * 2;
+
+  textEnter.style.display = 'none';
+  textMenu.style.display = 'flex';
+  pastedText.hidden = true;
+
+  textFormat.addEventListener('click', startPointText);
+  curTextSize = getComputedStyleValue('font-size');
+  textToInsert = pastedText.innerHTML.replace(/\<br\>/g, ' ').replace(/<\/div\>|\&nbsp;/g, '').split('<div>');
+  chooseTextFormat();
+
+  function getComputedStyleValue(element) {
+    return parseFloat(getComputedStyle(pastedText, null).getPropertyValue(element).replace('px', ''));
   }
 }
 
@@ -39,25 +47,26 @@ function deleteText() {
   canvas.style.cursor = 'default';
   pastedText.hidden = true;
 
-  if (!textMenu.hidden) {
+  if (!textPanel.hidden) {
     clearCanvas();
-    context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
-    textMenu.hidden = true;
+    context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
+    textPanel.hidden = true;
+    textMenu.style.display = 'none';
   }
 
-  canvas.removeEventListener('mousemove', drawTextInsertion);
+  document.removeEventListener('mousemove', drawTextInsertion);
   document.removeEventListener('mouseup', stopInsertion);
 
   fontSize.value = '20';
   font.value = 'serif';
   textAngle.value = 0;
   fontColor.value = '#000000';
-  pastedText.innerHTML = 'Текст Alt + Enter';
+  pastedText.innerHTML = 'Текст';
 }
 
 function writeText(x, y) {
   clearCanvas();
-  context.drawImage(memCanvas, 0, 0, canvas.width, canvas.height);
+  context.drawImage(memCanvas, 0, 0, curCanvasWidth, curCanvasHeight);
   if (isThereSelection) rememberCanvasWithoutSelection();
   context.save();
 
@@ -68,14 +77,14 @@ function writeText(x, y) {
       context.fillText(textToInsert[i], x, y + i * del);
   }
 
-  let k = fontSize.value / 20;
+  let k = fontSize.value / curTextSize;
 
   if (textAngle.value == 0) {
-    write(x - dxOfText * k / 2, y - dyOfText / 2);
+    write(x - dxOfText * k / 2, y - dyOfText * k / 2);
   } else {
     context.translate(x, y);
     context.rotate((Math.PI / 180) * textAngle.value);
-    write(-dxOfText * k / 2, -dyOfText / 2);
+    write(-dxOfText * k / 2, -dyOfText * k / 2);
   }
   context.restore();
 
@@ -91,13 +100,14 @@ function stopInsertion() {
 
 function startPointText(e) {
   isDrawing = true;
-  textMenu.hidden = true;
+  textPanel.hidden = true;
   pastedText.hidden = true;
+  textMenu.style.display = 'none';
 
   drawTextInsertion(e);
 
   textFormat.removeEventListener('click', startPointText);
-  canvas.addEventListener('mousemove', drawTextInsertion);
+  document.addEventListener('mousemove', drawTextInsertion);
   document.addEventListener('mouseup', stopInsertion);
 }
 
@@ -105,5 +115,5 @@ function drawTextInsertion(e) {
   canvas.style.cursor = 'crosshair';
   if (!isDrawing) return;
 
-  writeText(e.offsetX, e.offsetY);
+  writeText(...getCoordsOnCanvas(e));
 }

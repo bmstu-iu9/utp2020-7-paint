@@ -6,7 +6,7 @@ function initFilling() {
   document.getElementById('fillMenu').hidden = false;
   document.getElementById('filling').classList.add('pressed');
   if (firstClickFilling) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML =
     `Процент заливки регулирует допустимую разницу в цветах. <br>
     Например, 0% заливает только точно такой же цвет, а 100% заливает все цвета.`;
@@ -37,7 +37,7 @@ function fill(event) {
     return;
   }
 
-  let originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  let originalImageData = context.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
   let resultImageData = originalImageData;
 
   let startRGBA = [
@@ -50,9 +50,9 @@ function fill(event) {
   let stack = [];
 
   let pushed = [];
-  for (let i = 0; i <= canvas.width; i++) {
+  for (let i = 0; i <= curCanvasWidth; i++) {
     pushed[i] = [];
-    for (let j = 0; j <= canvas.height; j++) {
+    for (let j = 0; j <= curCanvasHeight; j++) {
       pushed[i][j] = false;
     }
   }

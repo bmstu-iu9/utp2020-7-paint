@@ -7,6 +7,7 @@ colorInput.addEventListener('input', () => {
   let color = colorInput.value;
   curColor = hexToRgb(color);
   colorBtn.style.background = color;
+  showCurColor();
 });
 
 colorBtn.addEventListener('click', () => {

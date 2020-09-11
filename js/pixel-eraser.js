@@ -27,12 +27,11 @@ function startPointPixelEraser(e) {
   if (isThereSelection) rememberCanvasWithoutSelection();
 
   context.save();
-  pixelEraserParameters.oldX = e.offsetX;
-  pixelEraserParameters.oldY = e.offsetY;
-  deltaX = e.pageX - e.offsetX;
-  deltaY = e.pageY - e.offsetY;
+  context.globalCompositeOperation = 'destination-out';
 
-  drawPointPixelEraser(e.offsetX, e.offsetY);
+  [pixelEraserParameters.oldX, pixelEraserParameters.oldY] = getCoordsOnCanvas(e);
+
+  drawPointPixelEraser(...getCoordsOnCanvas(e));
 
   if (isThereSelection) uniteRememberAndSelectedImages();
 
@@ -47,8 +46,9 @@ function drawPixelEraser(e) {
 
   if (isThereSelection) rememberCanvasWithoutSelection();
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCoordsOnCanvas(e);
+
+  context.globalCompositeOperation = 'destination-out';
 
   pixelEraserParameters.newX = curX;
   pixelEraserParameters.newY = curY;
@@ -65,7 +65,7 @@ function drawPixelEraser(e) {
 
   pixelEraserParameters.oldX = curX;
   pixelEraserParameters.oldY = curY;
-  
+
   if (isThereSelection) uniteRememberAndSelectedImages();
   changePreview();
 }
@@ -79,7 +79,6 @@ function drawPointPixelEraser(x, y) {
     context.lineWidth = 1;
     context.lineJoin = 'miter';
     context.lineCap = 'butt';
-    context.globalCompositeOperation = 'destination-out';
     let x0 = 0;
     let y0 = radius;
     let delta = 1 - 2 * radius;

@@ -2,62 +2,105 @@
 
 const MAX_HIST = 20;
 
+class Snapshot {
+  constructor(layerId, image, last) {
+    this.layerId = layerId;
+    this.width = curCanvasWidth;
+    this.height = curCanvasHeight;
+
+    if (last) {
+      layers.forEach((layer, i) => {
+        this[i] = last[i];
+      });
+    } else {
+      layers.forEach((layer, i) => {
+        this[i] = null;
+      });
+    }
+    if (image) this[layerId] = image;
+  }
+}
+
+let layersHistory = [new Snapshot(-1)];
+let curState = 0;
+let undo = document.getElementById('undo');
+let redo = document.getElementById('redo');
+
 function rememberState() {
-  let curId = activeLayer.id;
-  let photoOfLayer = photoOfState.layers;
   let img = new Image();
+
   img.onload = () => {
     checkCurLength();
-    ++curState;
-    photoOfLayer.get(curId)[curState] = img;
-    photoOfLayer.forEach((value, key) => {
-      if (key !== curId) value[curState] = value[curState - 1];
-    });
-    ++photoOfState.length;
+    layersHistory.push(new Snapshot(activeLayer.id, img, layersHistory[curState++]));
   }
   img.src = canvas.toDataURL();
 }
 
-function checkCurLength() {
-  let d = photoOfState.length - curState;
-  if (d > 1) {
-    photoOfState.layers.forEach(value => value.splice(curState + 1, d - 1));
-    photoOfState.length -= d - 1;
-  }
+function rememberSize() {
+  checkCurLength();
 
-  if (photoOfState.length > MAX_HIST) {
-    photoOfState.layers.forEach(value => value.shift());
-    --curState;
-    --photoOfState.length;
+  let lastSnapshots = layersHistory[curState++];
+  if (curCanvasWidth < lastSnapshots.width || curCanvasHeight < lastSnapshots.height) {
+    layersHistory.push(new Snapshot(-1));
+    let newSnapshots = layersHistory[curState];
+    
+    layers.forEach((layer, i) => {
+      let img = new Image();
+      img.onload = () => {
+        newSnapshots[i] = img;
+      }
+      img.src = layer.canvas.toDataURL();
+    })
+  } else {
+    layersHistory.push(new Snapshot(-1, null, lastSnapshots));
   }
 }
 
-document.getElementById('undo').addEventListener('click', () => {
+function checkCurLength() {
+  let d = layersHistory.length - curState;
+  if (d > 1) layersHistory.splice(curState + 1, d - 1);
+
+  if (layersHistory.length > MAX_HIST) {
+    layersHistory.shift();
+    --curState;
+  }
+}
+
+function restoreCanvasesState() {
+  clearAllLayers();
+
+  let index;
+  let snapshot = layersHistory[curState];
+  for (let i in snapshot) {
+    if (!isNaN(index = parseInt(i))) {
+      let layer = layers.get(index);
+      let ctx = layer.canvas.getContext('2d');
+      if (snapshot[i]) {
+        ctx.drawImage(snapshot[i], 0, 0, snapshot[i].width, snapshot[i].height);
+      }
+      changePreview(layer);
+    }
+  }
+}
+
+function restoreCanvasesSize() {
+  curCanvasWidth = layersHistory[curState].width;
+  curCanvasHeight = layersHistory[curState].height;
+  updateCanvasParameters();
+}
+
+undo.addEventListener('click', () => {
   if (curState > 0) {
     --curState;
-    clearAllLayers();
-    photoOfState.layers.forEach((value, key) => {
-      let layer = layers.get(key).canvas;
-      let ctx = layer.getContext('2d');
-      if (value[curState]) {
-        ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
-      }
-      changePreview(layers.get(key));
-    })
+    restoreCanvasesSize();
+    restoreCanvasesState();
   }
 });
 
-document.getElementById('redo').addEventListener('click', () => {
-  if (curState + 1 < photoOfState.length) {
+redo.addEventListener('click', () => {
+  if (curState + 1 < layersHistory.length) {
     ++curState;
-    clearAllLayers();
-    photoOfState.layers.forEach((value, key) => {
-      let layer = layers.get(key).canvas;
-      let ctx = layer.getContext('2d');
-      if (value[curState]) {
-        ctx.drawImage(value[curState], 0, 0, value[curState].width, value[curState].height);
-      }
-      changePreview(layers.get(key));
-    })
+    restoreCanvasesSize();
+    restoreCanvasesState();
   }
 });

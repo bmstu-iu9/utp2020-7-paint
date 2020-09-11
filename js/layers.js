@@ -89,11 +89,14 @@ function createLayerHtml(id) {
 
   let layerDroplist = document.createElement('div');
   layerDroplist.classList.add('droplist');
+  layerDroplist.classList.add('layerBtn');
   layerDroplist.id = 'droplist' + id;
 
   let menuBtn = document.createElement('button');
   menuBtn.classList.add('layerOptionsBtn');
+  menuBtn.classList.add('layerBtn');
   let menuBtnImg = document.createElement('img');
+  menuBtnImg.src = 'img/tools/more_layer.svg';
   menuBtnImg.classList.add('layerOptionsImg');
   menuBtn.appendChild(menuBtnImg);
   layerDroplist.appendChild(menuBtn);
@@ -111,8 +114,6 @@ function createCanvasHtml(id) {
   newCanvas.setAttribute('width', curCanvasWidth + 'px');
   newCanvas.style.height = curCanvasHeight + 'px';
   newCanvas.setAttribute('height', curCanvasHeight + 'px');
-  newCanvas.style.left = canvas.style.left;
-  newCanvas.style.top = canvas.style.top;
   newCanvas.style.margin = canvas.style.margin;
   getOldestLayer().canvas.after(newCanvas);
   return newCanvas;
@@ -162,6 +163,8 @@ function setUpLayer(layer) {
 
   activeInstrument && !layer.locked && activeInstrument.init();
   activeLayer = layer;
+  infoCanvasContext.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
+  infoCanvasContext.drawImage(activeLayer.preview, 0, 0, infoCanvas.width, infoCanvas.height);
 }
 
 function switchLayer(event) {
@@ -245,7 +248,8 @@ class Layer {
 
       this.index = 50;
       this.canvas.style.zIndex = this.index;
-      changePreviewSize(this.preview);
+      changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
+      changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
       this.isTop = true;
       this.isBottom = true;
@@ -303,7 +307,8 @@ class Layer {
     this.locked = false;
     this.hidden = false;
 
-    changePreviewSize(this.preview);
+    changeWindowSize(this.preview, maxPreviewHeight, maxPreviewWidth);
+    changeWindowSize(infoCanvas, maxInfoCanvasHeight, maxInfoCanvasWidth);
 
     this.display.addEventListener('click', switchLayer);
     this.hideBtn.addEventListener('click', hideLayerHandler);
@@ -313,7 +318,6 @@ class Layer {
     this.duplicateLayerBtn.addEventListener('click', duplicateLayerHandler);
 
     this.canvas.style.borderWidth = curCanvasBorder + 'px';
-    this.canvas.style.borderColor = curCanvasBorderColor;
     this.canvas.style.borderStyle = 'solid';
     this.ctx = this.canvas.getContext('2d');
 
@@ -378,8 +382,6 @@ class Layer {
 
     layers.set(this.id, this);
     allCanvases.push(this.canvas);
-    photoOfState.layers.set(this.id, []);
-    ++photoOfState.length;
   }
 
   delete() {
@@ -404,7 +406,7 @@ class Layer {
 
     this.canvas.remove();
     this.display.remove();
-    clearLayerHistory(this.id);
+    deleteLayerHistory(this.id);
 
     if (layers.size === 1) {
       let lastLayer = getOldestLayer();
@@ -421,7 +423,7 @@ function changePreview(layer) {
   if (arguments.length === 0) {
     layer = activeLayer;
   }
-  let countOfSteps = Math.ceil(Math.log(layer.canvas.width
+  let countOfSteps = Math.ceil(Math.log(curCanvasWidth
                                         / layer.preview.width)
                                / Math.log(2));
   let oc = document.createElement('canvas');
@@ -429,10 +431,10 @@ function changePreview(layer) {
   let dopOc = document.createElement('canvas');
   let dopOctx = dopOc.getContext('2d');
 
-  oc.width = layer.canvas.width;
-  oc.height = layer.canvas.height;
-  dopOc.width = layer.canvas.width;
-  dopOc.height = layer.canvas.height;
+  oc.width = curCanvasWidth;
+  oc.height = curCanvasHeight;
+  dopOc.width = curCanvasWidth;
+  dopOc.height = curCanvasHeight;
 
   octx.drawImage(layer.canvas, 0, 0, oc.width, oc.height);
 
@@ -444,6 +446,10 @@ function changePreview(layer) {
     octx.clearRect(0, 0, dopOc.width, dopOc.height);
     octx.drawImage(dopOc, 0, 0, oc.width / 2, oc.height / 2);
   }
+
+  infoCanvasContext.clearRect(0, 0, infoCanvas.width, infoCanvas.height);
+  infoCanvasContext.drawImage(oc, 0, 0, oc.width/ (2 ** i), oc.height / (2 ** i),
+                                  0, 0, infoCanvas.width, infoCanvas.height);
 
   let previewContext = layer.preview.getContext('2d');
   previewContext.clearRect(0, 0, layer.preview.width, layer.preview.height);
@@ -560,6 +566,7 @@ function mergeTopHandler(event) {
   oldLayer.ctx.drawImage(targetLayer.canvas, 0, 0);
   targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
   changePreview(targetLayer);
+  rememberState();
 
   oldLayer.delete();
 }
@@ -574,6 +581,7 @@ function mergeBottomHandler(event) {
 
   targetLayer.ctx.drawImage(oldLayer.canvas, 0, 0);
   changePreview(targetLayer);
+  rememberState();
 
   oldLayer.delete();
 }
@@ -590,6 +598,7 @@ function duplicateLayerHandler(event) {
     if (newLayer !== null) {
       newLayer.ctx.drawImage(source, 0, 0);
       changePreview(newLayer);
+      rememberState();
     }
   }
 }

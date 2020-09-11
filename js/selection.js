@@ -24,7 +24,7 @@ function endSelectionPoint() {
     if (leftTopPointSelection[0] !== rightBottomPointSelection[0] && leftTopPointSelection[1] !== rightBottomPointSelection[1]) {
       defineSelectedArea();
     } else {
-      alert('Выделенная область не может содержать 0 пикселей'); //TODO : in design make it pretty
+      alert('Выделенная область не может содержать 0 пикселей');
       deleteSelectedArea();
     }
   }
@@ -32,7 +32,7 @@ function endSelectionPoint() {
 
 function initRectangleSelection() {
   if (firstClickSelection) {
-    toggleModal();
+    toggleHintModal();
     hintsContent.innerHTML =
     `<p>Копирование и вставка выделенной области: </p>
     <ul>
@@ -61,10 +61,8 @@ function startPointRectangleSelection(e) {
   isDrawing = true;
 
   if (isThereSelection) deleteSelectedArea();
-  oldX = e.offsetX;
-  oldY = e.offsetY;
-  deltaX = e.pageX - oldX;
-  deltaY = e.pageY - oldY;
+
+  [oldX, oldY] = getCoordsOnCanvas(e);
 
   document.addEventListener('mousemove', drawRectangleSelection);
   document.addEventListener('mouseup', endSelectionPoint);
@@ -78,27 +76,23 @@ function drawRectangleSelection(e) {
     selectionCanvas.id = 'selectionCanvas';
     allCanvases.push(selectionCanvas);
 
-    document.body.appendChild(selectionCanvas);
+    canvasesField.appendChild(selectionCanvas);
 
     selectionCanvas.classList.add('mainCanvas');
     selectionCanvas.style.width = curCanvasWidth + 'px';
     selectionCanvas.style.height = curCanvasHeight + 'px';
     selectionCanvas.setAttribute('width', curCanvasWidth);
     selectionCanvas.setAttribute('height', curCanvasHeight);
-    selectionCanvas.style.top = canvas.style.top;
-    selectionCanvas.style.left = canvas.style.left;
-    selectionCanvas.style.margin = canvas.style.margin;
     selectionCanvas.style.zIndex = 999;
     selectionCanvas.style.pointerEvents = 'none';
   }
 
   isThereSelection = true;
 
-  curX = e.pageX - deltaX;
-  curY = e.pageY - deltaY;
+  [curX, curY] = getCoordsOnCanvas(e);
 
   let selectionContext = document.getElementById('selectionCanvas').getContext('2d');
-  selectionContext.clearRect(0, 0, canvas.width, canvas.height);
+  selectionContext.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
   selectionContext.beginPath();
   selectionContext.setLineDash([5, 5]);
   selectionContext.strokeStyle = 'grey';
@@ -110,20 +104,20 @@ function drawRectangleSelection(e) {
 
 
 function rememberCanvasWithoutSelection() {
-  rememberedCanvas.width = canvas.width;
-  rememberedCanvas.height = canvas.height;
-  rememberedContext.clearRect(0, 0, canvas.width, canvas.height);
+  rememberedCanvas.width = curCanvasWidth;
+  rememberedCanvas.height = curCanvasHeight;
+  rememberedContext.clearRect(0, 0, curCanvasWidth, curCanvasHeight);
   rememberedContext.drawImage(canvas, 0, 0);
 }
 
 function uniteRememberAndSelectedImages() {
-  let curImageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  let rememberedImageData = rememberedContext.getImageData(0, 0, canvas.width, canvas.height);
+  let curImageData = context.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
+  let rememberedImageData = rememberedContext.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
 
   let resultImageData = curImageData;
 
-  for (let i = 0; i < canvas.width; i++) {
-    for (let j = 0; j < canvas.height; j++) {
+  for (let i = 0; i < curCanvasWidth; i++) {
+    for (let j = 0; j < curCanvasHeight; j++) {
       if (arrayOfSelectedArea[i] === undefined || arrayOfSelectedArea[i][j] !== true) {
         resultImageData.data[getIndexOfRedInData(i, j)] = rememberedImageData.data[getIndexOfRedInData(i, j)];
         resultImageData.data[getIndexOfGreenInData(i, j)] = rememberedImageData.data[getIndexOfGreenInData(i, j)];
@@ -176,9 +170,9 @@ function copySelectedArea() {
 }
 
 function clearSelectedArea() {
-  let resultImageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < canvas.width; i++) {
-    for (let j = 0; j < canvas.height; j++) {
+  let resultImageData = context.getImageData(0, 0, curCanvasWidth, curCanvasHeight);
+  for (let i = 0; i < curCanvasWidth; i++) {
+    for (let j = 0; j < curCanvasHeight; j++) {
       if (arrayOfSelectedArea[i] !== undefined && arrayOfSelectedArea[i][j] === true) {
         resultImageData.data[getIndexOfRedInData(i, j)] = 0;
         resultImageData.data[getIndexOfGreenInData(i, j)] = 0;
@@ -197,12 +191,22 @@ function insertCanvas(copyCanvas) {
   function pressForInsertion() {
     if (event.code === 'Enter' && event.altKey) {
       if (isThereSelection) rememberCanvasWithoutSelection();
-      let posOfPhoto = getElementPosition(canvasInsertion);
-      let posOfCanvas = getElementPosition(canvas);
-      let dx = Math.floor(posOfPhoto.x - posOfCanvas.x - curCanvasBorder + 3);
-      let dy = Math.floor(posOfPhoto.y - posOfCanvas.y - curCanvasBorder + 3);
+      let posOfPhoto = {
+        x: canvasInsertion.getBoundingClientRect().left,
+        y: canvasInsertion.getBoundingClientRect().top
+      };
+      let posOfCanvas = {
+        x: canvas.getBoundingClientRect().left,
+        y: canvas.getBoundingClientRect().top
+      };
+      let dx = Math.round((posOfPhoto.x - posOfCanvas.x) / zoomValue + 3 - curCanvasBorder);
+      let dy = Math.round((posOfPhoto.y - posOfCanvas.y) / zoomValue + 3 - curCanvasBorder);
 
-      context.drawImage(curCopyCanvas, 0, 0, curCopyCanvas.width, curCopyCanvas.height, dx, dy, curCopyCanvas.width, curCopyCanvas.height);
+      context.drawImage(curCopyCanvas,
+                        0, 0,
+                        curCopyCanvas.width, curCopyCanvas.height,
+                        dx, dy,
+                        curCopyCanvas.width, curCopyCanvas.height);
 
       canvasInsertion.hidden = true;
       document.removeEventListener('keydown', pressForInsertion);
@@ -220,8 +224,10 @@ function insertCanvas(copyCanvas) {
     canvasInsertion.hidden = false;
     canvasInsertion.style.width = 'auto';
     canvasInsertion.style.height = 'auto';
-    canvasInsertion.style.top = canvas.getBoundingClientRect().top + canvas.height / 2 - canvasInsertion.offsetHeight / 2 + 'px';
-    canvasInsertion.style.left = canvas.getBoundingClientRect().left + canvas.width / 2 + - canvasInsertion.offsetWidth / 2 + 'px';
+    canvasInsertion.style.top = canvas.getBoundingClientRect().top + curCanvasHeight / 2
+                                - canvasInsertion.offsetHeight / 2 + 'px';
+    canvasInsertion.style.left = canvas.getBoundingClientRect().left + curCanvasWidth / 2
+                                - canvasInsertion.offsetWidth / 2 + 'px';
     canvasInsertion.style.zIndex = activeLayer.index;
   }
 
@@ -239,8 +245,8 @@ canvasInsertion.addEventListener('mousedown', (e) => {
   let shiftY = e.clientY - canvasInsertion.getBoundingClientRect().top;
 
   function moveAt(x, y) {
-    canvasInsertion.style.left = x - shiftX + pageXOffset + 'px';
-    canvasInsertion.style.top = y - shiftY + pageYOffset + 'px';
+    canvasInsertion.style.left = x - shiftX + 'px';
+    canvasInsertion.style.top = y - shiftY + 'px';
   }
 
   function move(e) {
